@@ -1,0 +1,45 @@
+openapi: "3.0.2"
+info:
+  title: API Title
+  version: "1.0"
+servers:
+  - url: https://api.microblog.fi
+    description: Microblogi palvelun rajapintakuvaus
+
+components:
+  schemas:
+    Entry:
+      type: object
+      properties:
+        header:
+          type: string
+          example: Blog entry header
+        text:
+          type: string
+          example: Blog entry main text
+tags:
+  - name: blog
+    description: Blog entry related functions.
+  - name: media
+    description: User media related functions.
+  - name: portfolio
+    description: User portfolio related functions.
+  - name: usertags
+    description: Tag-management related functions.
+  - name: find
+    description: Content searching related functions.
+paths:
+  /blog:
+    post:
+      tags:
+        - blog
+      summary: Post new entry to the user's blog.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Entry"
+
+      responses:
+        "200":
+          description: OK
