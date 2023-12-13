@@ -7,16 +7,53 @@ servers:
     description: Microblogi palvelun rajapintakuvaus
 
 components:
+  responses:
+    OK:
+      description: OK
+
   schemas:
     Entry:
       type: object
       properties:
+        date:
+          type: string
+          format: date
         header:
           type: string
           example: Blog entry header
         text:
           type: string
           example: Blog entry main text
+
+    knownEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date
+        header:
+          type: string
+          example: Blog entry header
+        text:
+          type: string
+          example: Blog entry main text
+
+    queryEntries:
+      type: array
+      items:
+        type: integer
+
+    multipleEntries:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+          example: [1, 2, 3, 4]
+
 tags:
   - name: blog
     description: Blog entry related functions.
@@ -28,18 +65,89 @@ tags:
     description: Tag-management related functions.
   - name: find
     description: Content searching related functions.
+  - name: login
+    description: User authentication related functions.
 paths:
-  /blog:
+  /blog/{userId}:
+    get:
+      tags:
+        - blog
+      summary: Get entries filtered by userId and optionally by date
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: successfull operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/knownEntry"
+
     post:
+      responses:
+        "200":
+          description: OK
       tags:
         - blog
       summary: Post new entry to the user's blog.
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/Entry"
-
+    delete:
       responses:
         "200":
-          description: OK
+          $ref: "#/components/responses/OK"
+      tags:
+        - blog
+      summary: Delete one or several blog entries.
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: postId
+          in: query
+          schema:
+            $ref: "#/components/schemas/queryEntries"
+          explode: false
+          required: true
+
+  /blog/{userId}/{postId}:
+    put:
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      tags:
+        - blog
+      summary: Update blog entry.
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: postId
+          in: path
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/knownEntry"
