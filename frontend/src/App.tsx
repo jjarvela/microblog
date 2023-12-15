@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserTimeline from "./Components/UserTimeline";
 import UserProfile from "./Components/UserProfile";
 import UserSettings from "./Components/UserSettings";
@@ -11,14 +11,13 @@ import Landing from "./Components/Landing";
 import LogIn from "./Components/LogIn";
 import Search from "./Components/Search";
 
-
 function App() {
   return (
-  <>
-    <h1>Microblog Frontend</h1>
+    <div className="mx-6 mt-4">
+      <h1 className="mb-2 text-3xl font-bold underline">Microblog Frontend</h1>
 
-    <Router>
-        <Routes> 
+      <Router>
+        <Routes>
           {/*Universal routes*/}
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<LogIn />} />
@@ -35,9 +34,9 @@ function App() {
           {/*Group routes*/}
           <Route path="/groups" element={<GroupList />} />
           <Route path="/groups/:id" element={<GroupProfile />} />
-      </Routes>
-    </Router>
-  </>
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
