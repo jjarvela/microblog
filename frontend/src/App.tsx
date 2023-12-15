@@ -14,7 +14,9 @@ import Search from "./Components/Search";
 function App() {
   return (
     <div className="mx-6 mt-4">
-      <h1 className="mb-2 text-3xl font-bold underline">Microblog Frontend</h1>
+      <h1 className="font-heading mb-2 text-3xl font-bold underline">
+        Microblog Frontend
+      </h1>
 
       <Router>
         <Routes>
