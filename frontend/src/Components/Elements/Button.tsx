@@ -1,6 +1,6 @@
-function Button(props: { children?: React.ReactNode }) {
+function Button(props: { children?: React.ReactNode, class: string }) {
   return (
-    <button className="btn-primary">
+    <button className={`${props.class}`}>
       {props.children}
     </button>
   );

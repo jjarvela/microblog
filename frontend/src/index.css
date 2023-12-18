@@ -34,4 +34,7 @@
     .btn-primary {
         @apply font-heading m-4 rounded-full px-5 py-2 text-lg font-light text-white drop-shadow-md bg-primary active:outline-double active:outline-primary active:text-outline;
     }
+    .btn-secondary {
+        @apply font-heading m-4 rounded-full px-5 py-2 text-lg font-light text-secondary bg-transparent outline outline-secondary hover:bg-black25 active:bg-transparent;
+    }
 }
