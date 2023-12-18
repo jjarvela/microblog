@@ -1,3 +1,92 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --Primary-Gradient: linear-gradient(270deg, #F28B36 0%, #EF6140 100%);
+    --Primary-Gradient-Hover: linear-gradient(90deg, #EC522D 0%, #EF7226 100%);
+    --Primary-Gradient-Active: linear-gradient(90deg, #F8975F 0%, #F9B158 100%);
+    --Primary-Disabled: linear-gradient(90deg, #946865 0%, #957462 100%);
+}
+
+@layer base {
+    .link {
+        @apply text-primary;
+        text-decoration: none;
+    }
+
+    .link:hover {
+        @apply text-secondary;
+        text-decoration: none;
+    }
+
+    p a {
+        @apply link;
+    }
+
+    h1 {
+        @apply font-heading;
+        font-weight: 600;
+        font-size: 2.986rem;
+    }
+
+    h2 {
+        @apply font-heading;
+        font-weight: 600;
+        font-size: 2.488rem;
+    }
+
+    h3 {
+        @apply font-heading;
+        font-weight: 400;
+        font-size: 2.074rem;
+    }
+
+    h4 {
+        @apply font-heading;
+        font-weight: 300;
+        font-size: 1.728rem;
+    }
+    
+    h5 {
+        @apply font-heading;
+        font-weight: 300;
+        font-size: 1.44rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    small {
+        font-size: 0.833rem;
+    }
+    
+    .bg-primary-gradient {
+        background: var(--Primary-Gradient);
+        background: "primary";
+    }
+
+    .bg-primary-gradient:hover {
+        background: var(--Primary-Gradient-Hover);
+        background: #EC522D;
+    }
+
+    .bg-primary-gradient:active {
+        background: var(--Primary-Gradient-Active);
+        background: #F9B158;
+    }
+
+    .text-outline {
+        text-shadow: 0px 0px 2px #EF6140, 0px 0px 2px #EF6140, 0px 0px 2px #EF6140;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply m-4 rounded-full px-5 py-2 text-white drop-shadow-md bg-primary-gradient active:outline-double active:outline-primary active:text-outline;
+    }
+    .btn-secondary {
+        @apply m-4 rounded-full px-5 py-2 text-secondary bg-transparent outline outline-secondary hover:bg-black25 active:bg-transparent;
+    }
+}
