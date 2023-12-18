@@ -15,13 +15,13 @@ const tempTags = [
 function RightSidebar() {
   return (
     <div className="col flex h-full w-full max-w-[16rem] flex-col border-l border-black25">
-      <h1 className="my-4 text-center font-heading text-2xl text-secondary">
+      <h3 className="my-4 text-center text-secondary">
         Top Trends
-      </h1>
+      </h3>
       <ul className="ml-12 mr-6 list-decimal">
         {tempTags.map((val, i) => (
           <li key={i} className="border-b py-2 last:border-b-0">
-            <Link className="text-primary" to={""}>
+            <Link className="link" to={""}>
               {val}
             </Link>
           </li>
