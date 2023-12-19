@@ -103,4 +103,17 @@
   .thumbnail {
     @apply mx-2 rounded-xl border border-black25 bg-white px-1 py-3 dark:border-white75 dark:bg-black;
   }
+
+  .img-thumb {
+    overflow: hidden;
+  }
+
+  .img-thumb img {
+    size: 80%;
+    transition: all 0.8s ease;
+  }
+
+  .img-thumb img:hover {
+    transform: scale(120%);
+  }
 }
