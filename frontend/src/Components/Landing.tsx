@@ -10,16 +10,13 @@ function Landing() {
 
   return (
     <div className="h-full">
-      <div id="landing-backgrounds">
-        <div className="absolute -z-30 h-full w-full bg-white" />
-        <div className="landing-scroll absolute bottom-0 -z-10 h-full w-full bg-gradient-to-l from-primaryFrom to-primaryTo" />
-        <div className="landing-scroll-2 absolute bottom-0 -z-20 h-full w-full bg-primary" />
-      </div>
+      <div className="landing-scroll absolute bottom-0 -z-10 h-full w-full bg-gradient-to-l from-primaryFrom to-primaryTo" />
+      <div className="landing-scroll-2 absolute bottom-0 -z-20 h-full w-full bg-primary" />
       <div className="flex h-full w-full flex-row items-center justify-between">
         <h2 className="m-auto hidden break-words text-center md:block">
           Welcome to Microblog
         </h2>
-        <div className="m-auto flex h-full w-full flex-col items-center justify-center border-x border-black25 bg-white min-[500px]:w-[32rem] min-[500px]:w-fit md:m-0 md:mx-0">
+        <div className="m-auto flex h-full w-full flex-col items-center justify-center border-x border-black25 bg-white dark:border-black75 dark:bg-black min-[500px]:w-[32rem] md:m-0 md:mx-0">
           <form className="flex flex-col justify-center gap-4 text-center md:min-w-[20rem]">
             <h3>{register ? "Sign up today!" : "Welcome back!"}</h3>
             <TextInput placeholder="Username" />
