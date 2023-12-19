@@ -6,6 +6,9 @@
   "scripts": {
     "test": "backend-test"
   },
+  "prisma": {
+    "seed": "ts-node ./prisma/seed.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jjarvela/microblog.git"
