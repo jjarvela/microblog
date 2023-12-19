@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import UserTimeline from "./Components/UserTimeline";
 import UserProfile from "./Components/UserProfile";
 import UserSettings from "./Components/UserSettings";
@@ -10,32 +10,38 @@ import GroupProfile from "./Components/GroupProfile";
 import Landing from "./Components/Landing";
 import LogIn from "./Components/LogIn";
 import Search from "./Components/Search";
+import Header from "./Components/Header";
+import LeftSidebar from "./Components/LeftSidebar";
+import RightSidebar from "./Components/RightSidebar";
 
 function App() {
   return (
-    <div className="mx-6 mt-4">
-      <h1 className="mb-2 text-3xl font-bold underline">Microblog Frontend</h1>
+    <div className="app flex h-screen flex-col">
+      <Header />
+      <div className="flex h-full flex-row">
+        <LeftSidebar />
+        <main className="flex-grow">
+          <Routes>
+            {/*Universal routes*/}
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/search" element={<Search />} />
 
-      <Router>
-        <Routes>
-          {/*Universal routes*/}
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/search" element={<Search />} />
+            {/*User routes*/}
+            <Route path="/home" element={<UserTimeline />} />
+            <Route path="/user/:username" element={<UserProfile />} />
+            <Route path="/settings" element={<UserSettings />} />
+            <Route path="/notifications" element={<UserNotifications />} />
+            <Route path="/messages" element={<UserMessages />} />
+            <Route path="/following" element={<UserFollowing />} />
 
-          {/*User routes*/}
-          <Route path="/home" element={<UserTimeline />} />
-          <Route path="/user/:username" element={<UserProfile />} />
-          <Route path="/settings" element={<UserSettings />} />
-          <Route path="/notifications" element={<UserNotifications />} />
-          <Route path="/messages" element={<UserMessages />} />
-          <Route path="/following" element={<UserFollowing />} />
-
-          {/*Group routes*/}
-          <Route path="/groups" element={<GroupList />} />
-          <Route path="/groups/:id" element={<GroupProfile />} />
-        </Routes>
-      </Router>
+            {/*Group routes*/}
+            <Route path="/groups" element={<GroupList />} />
+            <Route path="/groups/:id" element={<GroupProfile />} />
+          </Routes>
+        </main>
+        <RightSidebar />
+      </div>
     </div>
   );
 }
