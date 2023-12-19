@@ -88,4 +88,8 @@
     .btn-secondary {
         @apply m-4 rounded-full px-5 py-2 text-secondary bg-transparent outline outline-secondary hover:bg-black25 active:bg-transparent;
     }
+
+    .thumbnail {
+        @apply mx-2 py-3 px-1 rounded-xl bg-white border border-black25 dark:bg-black dark:border-white75;
+    }
 }
