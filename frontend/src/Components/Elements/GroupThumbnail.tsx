@@ -19,8 +19,8 @@ function GroupThumbnail({
   rule,
 }: GroupThumbnailProps) {
   return (
-    <div className="thumbnail my-1">
-      <div className="flex justify-start">
+    <div className="timeline-box">
+      <div className="flex justify-start gap-4">
         <ProfilePicture width={80} />
         <div className="flex-grow">
           <div className="flex justify-between">
@@ -55,7 +55,7 @@ function GroupThumbnail({
           <div className="mx-4">
             <p className="text-black75 dark:text-white">{groupDescription}</p>
           </div>
-          <div className="flex content-start justify-end">
+          <div className="flex content-start justify-end gap-4">
             <Button class="btn-primary">
               <small>Follow</small>
             </Button>
