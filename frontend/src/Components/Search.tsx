@@ -2,6 +2,7 @@ import Button from "./Elements/Button";
 import GroupThumbnail from "./Elements/GroupThumbnail";
 import { ImageThumb } from "./Elements/ImageThumb";
 import UserThumbnail from "./Elements/UserThumbnail";
+import { VideoThumb } from "./Elements/VideoThumb";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
 import { MaterialSymbolsPhotoCameraRounded } from "./Icons/MaterialSymbolsPhotoCameraRounded";
@@ -111,6 +112,8 @@ const Search = () => {
           height={150}
         />
       </div>
+
+      <VideoThumb />
     </div>
   );
 };

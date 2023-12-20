@@ -1,3 +1,5 @@
+import "./imgThumb.css";
+
 type ImageThumbProps = {
   image: string;
   width: number;
