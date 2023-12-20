@@ -37,7 +37,7 @@ function UserThumbnail({
                 </small>
               </div>
             </div>
-            <div className="flex content-start justify-end">
+            <div className="flex content-start justify-end gap-4">
               <Button class="btn-primary">
                 <small>Follow</small>
               </Button>

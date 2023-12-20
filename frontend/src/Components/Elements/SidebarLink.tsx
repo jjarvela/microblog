@@ -6,21 +6,21 @@ function SidebarLink(props: { to: string; text: string; icon?: ReactNode }) {
     <NavLink
       to={props.to}
       // The aria-[current=page] selector is standing in for the active class feature of NavLink.
-      className="flex 
+      className="aria-[current=page]:bg-primary-gradient 
+                flex 
                 w-full 
                 flex-row 
                 items-center 
-                gap-4 
-                border-b-2
-                p-4 
+                gap-4
+                border-b-2 
                border-black50 
-               dark:border-white
+               p-4
                text-black75
-               dark:text-white
-              hover:bg-black25 
+               hover:bg-black25
+              aria-[current=page]:text-white 
+              dark:border-white50
+              dark:text-white 
               dark:hover:bg-black75
-              aria-[current=page]:bg-primary-gradient 
-              aria-[current=page]:text-white
               dark:aria-[current=page]:text-black
               "
     >
