@@ -7,29 +7,37 @@ import { ProfilePicture } from "./ProfilePicture";
 
 type PostProps = {
   profileName: string;
+  profileImage?: string;
   username: string;
+  text: string;
+  reactions: number;
+  tags: string[];
+  time: Date;
 };
 
-function Post({ profileName, username }: PostProps) {
+function Post({
+  profileName,
+  profileImage,
+  username,
+  text,
+  reactions,
+  tags,
+  time,
+}: PostProps) {
   return (
-    <div className="timeline-box flex flex-col overflow-clip border-black50">
+    <div className="timeline-box flex flex-col overflow-clip">
       <div className="flex flex-row items-center gap-4">
-        <ProfilePicture width={80} />
+        <ProfilePicture width={80} image={profileImage} />
         <h5>{profileName}</h5>
         <p className="text-black50">{username}</p>
-        <p className="ml-auto mr-3 self-start">2023-12-20 14:42 GMT+2</p>
+        <p className="ml-auto mr-3 self-start">{time.toLocaleString()}</p>
       </div>
       <div className="m-6 flex flex-col gap-2">
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-          possimus mollitia impedit ut ipsum repellat dolor quae, provident odit
-          aliquid? Sed magni suscipit, voluptate quo modi odit consectetur velit
-          a?
-        </div>
+        <div>{text}</div>
         <p className="flex flex-row gap-4">
-          <a>#hashtag</a>
-          <a>#longerhashtag</a>
-          <a>#tag</a>
+          {tags.map((val, i) => (
+            <a key={i}>{val}</a>
+          ))}
         </p>
         <div className="flex flex-row justify-center gap-4 text-2xl">
           <MaterialSymbolsFavoriteOutlineRounded />
@@ -42,7 +50,7 @@ function Post({ profileName, username }: PostProps) {
         <span className="text-lg">
           <PhFireSimpleBold />
         </span>
-        <p>42 Reactions</p>
+        <p>{reactions} Reactions</p>
       </div>
     </div>
   );
