@@ -305,7 +305,7 @@ paths:
           schema:
             type: string
 
-  /portfolio/{userId}/{folderId}:
+  # /portfolio/{userId}/{folderId}:
 
   /user/{userId}/profile:
     get:
