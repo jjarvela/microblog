@@ -18,8 +18,8 @@ function UserThumbnail({
   following,
 }: UserThumbnailProps) {
   return (
-    <div className="thumbnail">
-      <div className="flex justify-start">
+    <div className="timeline-box">
+      <div className="flex justify-start gap-4">
         <ProfilePicture width={80} />
         <div className="flex-grow">
           <div className="flex justify-between">
