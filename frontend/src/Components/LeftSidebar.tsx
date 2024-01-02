@@ -10,7 +10,7 @@ import PhHashStraightBold from "./Icons/PhHashStraightBold";
 
 function LeftSidebar() {
   return (
-    <div className="col flex h-full w-full max-w-[16rem] flex-col border-r border-black25">
+    <div className="col flex h-full w-full max-w-[16rem] flex-col border-r border-black50 dark:to-black75">
       <nav>
         <SidebarLink
           to="/home"

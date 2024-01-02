@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1000"
+   height="250"
+   viewBox="0 0 264.58333 66.14583"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="wave.svg"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.66397327"
+     inkscape:cx="456.34367"
+     inkscape:cy="341.12819"
+     inkscape:window-width="1920"
+     inkscape:window-height="1177"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="scale(1,0.25)">
+    <path
+       style="fill:#999999;stroke:none;stroke-width:4.23333;stroke-linejoin:round"
+       d="M 0,0 C 66.145829,0 66.145829,132.29168 133.35,132.29167 198.43749,132.29166 198.43749,0 264.58333,0 V 264.58333 H 0 Z"
+       id="path1" />
+  </g>
+</svg>
