@@ -4,6 +4,7 @@ import MaterialSymbolsFlagRounded from "../Icons/MaterialSymbolsFlagRounded";
 import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
 import PhFireSimpleBold from "../Icons/PhFireSimpleBold";
 import { ProfilePicture } from "./ProfilePicture";
+import UsernameRepost from "./UsernameRepost";
 
 type PostProps = {
   profileName: string;
@@ -26,6 +27,11 @@ function Post({
 }: PostProps) {
   return (
     <div className="timeline-box flex flex-col overflow-clip">
+      {/* Add conditional rendering for repost */}
+      <div className="-mx-3 mb-4 flex flex-row justify-end border-b px-6 py-3">
+        <UsernameRepost username={username} />
+      </div>
+
       <div className="flex flex-row items-center gap-4">
         <ProfilePicture width={80} image={profileImage} />
         <h5>{profileName}</h5>
