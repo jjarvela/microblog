@@ -70,8 +70,38 @@ const Search = () => {
           height={150}
         />
 
+        <VideoThumb
+          video="https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4"
+          width={150}
+          height={150}
+        />
+
         <ImageThumb
           image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          width={150}
+          height={150}
+        />
+
+        <ImageThumb
+          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          width={150}
+          height={150}
+        />
+
+        <VideoThumb
+          video="https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4"
+          width={150}
+          height={150}
+        />
+
+        <ImageThumb
+          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          width={150}
+          height={150}
+        />
+
+        <VideoThumb
+          video="https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4"
           width={150}
           height={150}
         />
@@ -100,20 +130,12 @@ const Search = () => {
           height={150}
         />
 
-        <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          width={150}
-          height={150}
-        />
-
-        <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+        <VideoThumb
+          video="https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4"
           width={150}
           height={150}
         />
       </div>
-
-      <VideoThumb />
     </div>
   );
 };
