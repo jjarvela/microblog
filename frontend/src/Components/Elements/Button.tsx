@@ -1,6 +1,19 @@
-function Button(props: { children?: React.ReactNode, class: string }) {
+import { MouseEvent } from "react";
+
+type ButtonProps = {
+  children?: React.ReactNode;
+  class: string;
+  type?: "submit" | "reset" | "button" | undefined;
+  onClick?: (event: MouseEvent) => void;
+};
+
+function Button(props: ButtonProps) {
   return (
-    <button className={`${props.class}`}>
+    <button
+      onClick={(e) => (props.onClick ? props.onClick(e) : null)}
+      className={`${props.class}`}
+      type={props.type}
+    >
       {props.children}
     </button>
   );

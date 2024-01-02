@@ -3,89 +3,105 @@
 @tailwind utilities;
 
 :root {
-    --Primary-Gradient: linear-gradient(270deg, #F28B36 0%, #EF6140 100%);
-    --Primary-Gradient-Hover: linear-gradient(90deg, #EC522D 0%, #EF7226 100%);
-    --Primary-Gradient-Active: linear-gradient(90deg, #F8975F 0%, #F9B158 100%);
-    --Primary-Disabled: linear-gradient(90deg, #946865 0%, #957462 100%);
+  --Primary-Gradient: linear-gradient(270deg, #f28b36 0%, #ef6140 100%);
+  --Primary-Gradient-Hover: linear-gradient(90deg, #ec522d 0%, #ef7226 100%);
+  --Primary-Gradient-Active: linear-gradient(90deg, #f8975f 0%, #f9b158 100%);
+  --Primary-Disabled: linear-gradient(90deg, #946865 0%, #957462 100%);
 }
 
 @layer base {
-    body {
-        @apply text-black;
-    }
-    
-    .link {
-        @apply text-primary;
-        text-decoration: none;
-    }
+  body {
+    @apply bg-white text-black dark:bg-black dark:text-white;
+  }
 
-    .link:hover {
-        @apply text-secondary;
-        text-decoration: none;
-    }
+  .link {
+    @apply text-primary;
+    text-decoration: none;
+  }
 
-    p a {
-        @apply link;
-    }
+  .link:hover {
+    @apply text-secondary;
+    text-decoration: none;
+  }
 
-    h1 {
-        @apply font-heading text-4xl;
-        font-weight: 600;
-    }
+  p a {
+    @apply link;
+  }
 
-    h2 {
-        @apply font-heading text-3xl;
-        font-weight: 600;
-    }
+  h1 {
+    @apply font-heading text-4xl;
+    font-weight: 600;
+  }
 
-    h3 {
-        @apply font-heading text-2xl;
-        font-weight: 400;
-    }
+  h2 {
+    @apply font-heading text-3xl;
+    font-weight: 600;
+  }
 
-    h4 {
-        @apply font-heading text-xl;
-        font-weight: 300;
-    }
-    
-    h5 {
-        @apply font-heading text-lg;
-        font-weight: 300;
-    }
+  h3 {
+    @apply font-heading text-2xl;
+    font-weight: 400;
+  }
 
-    p {
-        @apply text-base;
-    }
+  h4 {
+    @apply font-heading text-xl;
+    font-weight: 300;
+  }
 
-    small {
-        @apply text-sm;
-    }
-    
-    .bg-primary-gradient {
-        background: var(--Primary-Gradient);
-        background: "primary";
-    }
+  h5 {
+    @apply font-heading text-lg;
+    font-weight: 300;
+  }
 
-    .bg-primary-gradient:hover {
-        background: var(--Primary-Gradient-Hover);
-        background: #EC522D;
-    }
+  p {
+    @apply text-base;
+  }
 
-    .bg-primary-gradient:active {
-        background: var(--Primary-Gradient-Active);
-        background: #F9B158;
-    }
+  small {
+    @apply text-sm;
+  }
+  input {
+    /* Normal decoration */
+    @apply rounded-xl border bg-white px-1 py-1 outline-1 dark:border-black50 dark:bg-black;
+    @apply border-black50 hover:border-black75 focus:border-primary focus:shadow-[0px_0px_5px_2px_var()] focus:shadow-primary focus:outline-none dark:hover:border-black25;
+    /* Invalid decoration */
+    @apply invalid:border-warning invalid:bg-warningBg invalid:hover:border-warningHover invalid:focus:border-warningHover invalid:focus:shadow-warning dark:invalid:bg-warningBgDark;
+  }
 
-    .text-outline {
-        text-shadow: 0px 0px 2px #EF6140, 0px 0px 2px #EF6140, 0px 0px 2px #EF6140;
-    }
+  input:focus {
+    box-shadow: 0px 0px 3.5px 2px #f28b36;
+  }
+  .bg-primary-gradient {
+    background: var(--Primary-Gradient);
+    background: "primary";
+  }
+
+  .bg-primary-gradient:hover {
+    background: var(--Primary-Gradient-Hover);
+    background: #ec522d;
+  }
+
+  .bg-primary-gradient:active {
+    background: var(--Primary-Gradient-Active);
+    background: #f9b158;
+  }
+
+  .text-outline {
+    text-shadow:
+      0px 0px 2px #ef6140,
+      0px 0px 2px #ef6140,
+      0px 0px 2px #ef6140;
+  }
 }
 
 @layer components {
-    .btn-primary {
-        @apply m-4 rounded-full px-5 py-2 text-white drop-shadow-md bg-primary-gradient active:outline-double active:outline-primary active:text-outline;
-    }
-    .btn-secondary {
-        @apply m-4 rounded-full px-5 py-2 text-secondary bg-transparent outline outline-secondary hover:bg-black25 active:bg-transparent;
-    }
+  .btn-primary {
+    @apply bg-primary-gradient active:text-outline rounded-full px-3 py-1 text-white drop-shadow-md active:outline-double active:outline-primary lg:px-5 lg:py-2;
+  }
+  .btn-secondary {
+    @apply rounded-full bg-transparent px-3 py-1 text-secondary outline outline-secondary hover:bg-black25 active:bg-transparent lg:px-5 lg:py-2;
+  }
+  .timeline-box {
+    @apply mx-4 rounded-xl border border-black50 bg-white p-3 dark:border-white50 dark:bg-black;
+  }
 }
