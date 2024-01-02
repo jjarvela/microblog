@@ -5,7 +5,7 @@ type ImageThumbProps = {
   width: number;
   height: number;
 };
-export function ImageThumb({ image, width, height }: ImageThumbProps) {
+export default function ImageThumb({ image, width, height }: ImageThumbProps) {
   return (
     <div className="img-thumb" style={{ width: width, height: height }}>
       <img src={image} style={{ minWidth: width, minHeight: height }}></img>
