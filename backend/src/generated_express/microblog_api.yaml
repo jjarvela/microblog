@@ -12,7 +12,7 @@ components:
       description: OK
 
   schemas:
-    Entry:
+    blogEntry:
       description: Blog entry that hasn't assigned an id.
       type: object
       properties:
@@ -26,7 +26,7 @@ components:
           type: string
           example: Blog entry main text
 
-    knownEntry:
+    refEntry:
       description: Blog entry that can be referred with an id.
       type: object
       properties:
@@ -43,6 +43,19 @@ components:
           type: string
           example: Blog entry main text
 
+    userAuth:
+      description: User authentication object.
+      type: object
+      properties:
+        userId:
+          description: User id
+          type: string
+        password:
+          type: string
+        jwt:
+          description: Optional serialized authorization data for client.
+          type: string
+
     queryEntries:
       type: array
       items:
@@ -58,8 +71,34 @@ components:
             type: string
             format: base64
 
+    newUserObject:
+      type: object
+      description: Schema to create new user.
+      required:
+        - userName
+        - screenName
+        - email
+        - birthday
+
+      properties:
+        screenName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        location:
+          type: string
+        birthday:
+          type: string
+          format: date
+
     userObject:
       type: object
+      required:
+        - userName
+        - email
+
       properties:
         screenName:
           type: string
@@ -86,7 +125,7 @@ components:
             description: Mime type string for the media file.
           mediaId:
             type: string
-            description: Uniqe id for media file.
+            description: Unique id for media file.
           folderId:
             type: string
             description: The folder media file is related to.
@@ -151,7 +190,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/knownEntry"
+                  $ref: "#/components/schemas/refEntry"
 
     post:
       responses:
@@ -170,7 +209,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Entry"
+              $ref: "#/components/schemas/blogEntry"
     delete:
       responses:
         "200":
@@ -214,7 +253,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/knownEntry"
+              $ref: "#/components/schemas/refEntry"
 
   /media/{userId}/{folderId}:
     post:
@@ -305,8 +344,6 @@ paths:
           schema:
             type: string
 
-  # /portfolio/{userId}/{folderId}:
-
   /user/{userId}/profile:
     get:
       summary: Get user profile atributes.
@@ -340,3 +377,32 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/userProfile"
+
+  /user/register:
+    post:
+      summary: Send user's registration data.
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newUserObject"
+
+  /login:
+    post:
+      summary: Login using user's credentials.
+      operationId: "loginUser"
+      tags:
+        - login
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userAuth"
