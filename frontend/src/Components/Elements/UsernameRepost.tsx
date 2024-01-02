@@ -4,7 +4,7 @@ type UsernameRepostProps = {
 
 function UsernameRepost(props: UsernameRepostProps) {
   return (
-    <div className="mb-2 flex">
+    <div className="mb-1 flex">
       <div>
         <p className="text-black50">{props.username} reposted</p>
       </div>

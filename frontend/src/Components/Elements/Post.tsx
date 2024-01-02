@@ -3,6 +3,7 @@ import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavor
 import MaterialSymbolsFlagRounded from "../Icons/MaterialSymbolsFlagRounded";
 import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
 import PhFireSimpleBold from "../Icons/PhFireSimpleBold";
+import InReplyTo from "./InReplyTo";
 import { ProfilePicture } from "./ProfilePicture";
 import UsernameRepost from "./UsernameRepost";
 
@@ -27,8 +28,8 @@ function Post({
 }: PostProps) {
   return (
     <div className="timeline-box flex flex-col overflow-clip">
-      {/* Add conditional rendering for repost */}
-      <div className="-mx-3 mb-4 flex flex-row justify-end border-b px-6 py-3">
+      {/* Add conditional rendering for UsernameRepost */}
+      <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-gray-500 px-6 pb-1">
         <UsernameRepost username={username} />
       </div>
 
@@ -38,6 +39,12 @@ function Post({
         <p className="text-black50">{username}</p>
         <p className="ml-auto mr-3 self-start">{time.toLocaleString()}</p>
       </div>
+
+      {/* Add conditional rendering for InReplyTo */}
+      <div className="-mx-3 mt-4 flex flex-row justify-start border-y border-gray-500 px-4 py-4">
+        <InReplyTo username={username} />
+      </div>
+
       <div className="m-6 flex flex-col gap-2">
         <div>{text}</div>
         <p className="flex flex-row gap-4">
