@@ -1,0 +1,408 @@
+openapi: "3.0.2"
+info:
+  title: API Title
+  version: "0.5"
+servers:
+  - url: https://api.microblog.fi
+    description: Microblogi palvelun rajapintakuvaus
+
+components:
+  responses:
+    OK:
+      description: OK
+
+  schemas:
+    blogEntry:
+      description: Blog entry that hasn't assigned an id.
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        header:
+          type: string
+          example: Blog entry header
+        text:
+          type: string
+          example: Blog entry main text
+
+    refEntry:
+      description: Blog entry that can be referred with an id.
+      type: object
+      properties:
+        id:
+          description: Blog entry id.
+          type: integer
+        date:
+          type: string
+          format: date
+        header:
+          type: string
+          example: Blog entry header
+        text:
+          type: string
+          example: Blog entry main text
+
+    userAuth:
+      description: User authentication object.
+      type: object
+      properties:
+        userId:
+          description: User id
+          type: string
+        password:
+          type: string
+        jwt:
+          description: Optional serialized authorization data for client.
+          type: string
+
+    queryEntries:
+      type: array
+      items:
+        type: integer
+        description: List of blog entry ids.
+
+    multipleFiles:
+      type: array
+      items:
+        type: object
+        properties:
+          imagefile:
+            type: string
+            format: base64
+
+    newUserObject:
+      type: object
+      description: Schema to create new user.
+      required:
+        - userName
+        - screenName
+        - email
+        - birthday
+
+      properties:
+        screenName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        location:
+          type: string
+        birthday:
+          type: string
+          format: date
+
+    userObject:
+      type: object
+      required:
+        - userName
+        - email
+
+      properties:
+        screenName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        location:
+          type: string
+        birthday:
+          type: string
+          format: date
+
+    mediaRes:
+      type: array
+      items:
+        type: object
+        properties:
+          fileUrl:
+            type: string
+            description: URL to access the media file.
+          mimeType:
+            type: string
+            description: Mime type string for the media file.
+          mediaId:
+            type: string
+            description: Unique id for media file.
+          folderId:
+            type: string
+            description: The folder media file is related to.
+
+    portfolioRes:
+      type: array
+      items:
+        type: object
+        properties:
+          userId:
+            type: string
+            description: User uuid
+
+    userProfile:
+      type: object
+      required:
+        - userId
+        - atrObj
+      properties:
+        userId:
+          type: string
+          description: User uuid
+        published:
+          type: boolean
+          description: Is profile visible to all.
+
+tags:
+  - name: blog
+    description: Blog entry related functions.
+  - name: media
+    description: User media related functions.
+  - name: portfolio
+    description: User portfolio related functions.
+  - name: usertags
+    description: Tag-management related functions.
+  - name: find
+    description: Content searching related functions.
+  - name: login
+    description: User authentication related functions.
+  - name: group
+    description: Groups related functions.
+  - name: user
+    description: User profile related functions.
+
+paths:
+  /blog/{userId}:
+    get:
+      tags:
+        - blog
+      summary: Get entries filtered by userId and optionally by date
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: successfull operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/refEntry"
+
+    post:
+      responses:
+        "200":
+          description: OK
+      tags:
+        - blog
+      summary: Post new entry to the user's blog.
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/blogEntry"
+    delete:
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      tags:
+        - blog
+      summary: Delete one or several blog entries.
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: postId
+          in: query
+          schema:
+            $ref: "#/components/schemas/queryEntries"
+          explode: false
+          required: true
+
+  /blog/{userId}/{postId}:
+    put:
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      tags:
+        - blog
+      summary: Update blog entry.
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: postId
+          in: path
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/refEntry"
+
+  /media/{userId}/{folderId}:
+    post:
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      tags:
+        - media
+      summary: Upload a media files to selected folder.
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
+        - name: folderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Array of multipart/formdata in base64 encoding.
+        content:
+          multipart/formdata:
+            schema:
+              $ref: "#/components/schemas/multipleFiles"
+            encoding:
+              multipleFiles:
+                contentType: image/png, image/jpeg
+
+  /media/{userId}:
+    get:
+      summary: Get list of media files and their location.
+      responses:
+        "200":
+          description: Response including user's media files.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/mediaRes"
+      tags:
+        - media
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
+  /media/{userId}/{mediaId}:
+    delete:
+      summary: Delete refered media file.
+      tags:
+        - media
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: mediaId
+          required: true
+          in: path
+          schema:
+            type: string
+
+  /portfolio/{userId}/public:
+    get:
+      summary: List public portfolio items.
+      tags:
+        - portfolio
+      responses:
+        "200":
+          description: Response contains user's portfolio items and their location.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/portfolioRes"
+
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
+  /user/{userId}/profile:
+    get:
+      summary: Get user profile atributes.
+      operationId: getProfile
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+    patch:
+      summary: Update user profile elements.
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userProfile"
+
+  /user/register:
+    post:
+      summary: Send user's registration data.
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newUserObject"
+
+  /login:
+    post:
+      summary: Login using user's credentials.
+      operationId: "loginUser"
+      tags:
+        - login
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userAuth"
