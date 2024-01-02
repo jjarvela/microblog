@@ -1,5 +1,9 @@
+import { useRef } from "react";
+import Button from "./Elements/Button";
+import PostModal from "./Elements/PostModal";
 import SidebarLink from "./Elements/SidebarLink";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
+import MaterialSymbolsEditSquareOutlineRounded from "./Icons/MaterialSymbolsEditSquareOutlineRounded";
 import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
 import MaterialSymbolsHomeRounded from "./Icons/MaterialSymbolsHomeRounded";
 import MaterialSymbolsMailRounded from "./Icons/MaterialSymbolsMailRounded";
@@ -9,6 +13,8 @@ import MaterialSymbolsSettingsRounded from "./Icons/MaterialSymbolsSettingsRound
 import PhHashStraightBold from "./Icons/PhHashStraightBold";
 
 function LeftSidebar() {
+  const postModal = useRef<HTMLDialogElement>(null);
+
   return (
     <div className="col flex h-full w-full max-w-[16rem] flex-col border-r border-black50 dark:to-black75">
       <nav>
@@ -53,9 +59,24 @@ function LeftSidebar() {
           icon={<PhHashStraightBold />}
         />
       </nav>
+      <div id="newPostButton" className="flex items-center justify-center p-12">
+        <Button
+          class="btn-primary flex h-16 w-16 items-center justify-center p-0 text-2xl"
+          onClick={() => postModal.current?.showModal()}
+        >
+          <MaterialSymbolsEditSquareOutlineRounded />
+        </Button>
+      </div>
       <div className="mb-4 flex h-full flex-col items-center justify-end">
         <p>© 2023 Team Yellow</p>
       </div>
+      <PostModal
+        profileName="Posting profile name"
+        username="@poster"
+        text=""
+        tags={[]}
+        refObject={postModal}
+      />
     </div>
   );
 }
