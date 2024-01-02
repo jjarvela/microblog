@@ -63,6 +63,7 @@ function LeftSidebar() {
         <Button
           class="btn-primary flex h-16 w-16 items-center justify-center p-0 text-2xl"
           onClick={() => postModal.current?.showModal()}
+          type="button"
         >
           <MaterialSymbolsEditSquareOutlineRounded />
         </Button>
@@ -71,8 +72,8 @@ function LeftSidebar() {
         <p>© 2023 Team Yellow</p>
       </div>
       <PostModal
-        profileName="Posting profile name"
-        username="@poster"
+        profileName="Temp Poster"
+        username="@tempposter"
         text=""
         tags={[]}
         refObject={postModal}

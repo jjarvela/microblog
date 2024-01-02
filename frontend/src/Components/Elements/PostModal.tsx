@@ -1,5 +1,6 @@
 import Button from "./Button";
 import { ProfilePicture } from "./ProfilePicture";
+import TextAreaInput from "./TextAreaInput";
 
 type NewPostProps = {
   profileName: string;
@@ -21,16 +22,42 @@ function PostModal({
   return (
     <dialog
       ref={refObject}
-      className="rounded-xl border border-black50 bg-white p-3 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50 dark:bg-black"
+      className="rounded-xl border border-black50 bg-white p-4 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50 dark:bg-black dark:text-white"
     >
-      <div className="flex flex-row items-center gap-4">
-        <ProfilePicture width={80} image={profileImage} />
-        <h5>{profileName}</h5>
-        <p className="text-black50">{username}</p>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-row items-center gap-4">
+          <h3>Post to</h3>
+          <ProfilePicture width={80} image={profileImage} />
+          <h5>{profileName}</h5>
+          <p className="text-black50">{username}</p>
+        </div>
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            refObject.current?.close();
+          }}
+        >
+          <TextAreaInput
+            text={text}
+            placeholder="Post text..."
+            showCount
+            maxLength={500}
+          />
+          <div className="flex flex-row justify-between">
+            <Button
+              class="btn-secondary"
+              onClick={() => refObject.current?.close()}
+              type="button"
+            >
+              Cancel
+            </Button>
+            <Button class="btn-primary" type="submit">
+              Post
+            </Button>
+          </div>
+        </form>
       </div>
-      <Button class="btn-primary" onClick={() => refObject.current?.close()}>
-        Close
-      </Button>
     </dialog>
   );
 }
