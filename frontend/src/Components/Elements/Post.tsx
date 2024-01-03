@@ -7,6 +7,7 @@ import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
 import { ProfilePicture } from "./ProfilePicture";
 import UsernameRepost from "./UsernameRepost";
+import PostContextMenu from "./PostContextMenu";
 
 type PostProps = {
   profileName: string;
@@ -19,6 +20,7 @@ type PostProps = {
   reactions: number;
   tags: string[];
   time: Date;
+  showContextMenu?: boolean;
 };
 
 function Post({
@@ -32,6 +34,7 @@ function Post({
   media,
   reposter,
   replyingTo,
+  showContextMenu,
 }: PostProps) {
   return (
     <div className="timeline-box flex flex-col overflow-clip">
@@ -46,6 +49,7 @@ function Post({
         <h5>{profileName}</h5>
         <p className="text-black50">{postOwner}</p>
         <p className="ml-auto mr-3 self-start">{time.toLocaleString()}</p>
+        {showContextMenu && <PostContextMenu class="self-start" />}
       </div>
 
       {replyingTo ? (
