@@ -41,7 +41,7 @@ function Post({
       </div>
 
       {/* Add conditional rendering for InReplyTo */}
-      <div className="-mx-3 mt-4 flex flex-row justify-start border-y border-gray-500 px-4 py-4">
+      <div className="-mx-3 mt-4 flex flex-row justify-start border-y border-black25 px-4 py-4 dark:border-white25">
         <InReplyTo username={username} />
       </div>
 
