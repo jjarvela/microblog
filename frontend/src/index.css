@@ -92,6 +92,18 @@
       0px 0px 2px #ef6140,
       0px 0px 2px #ef6140;
   }
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    @apply w-2 bg-transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-black50;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply m-3;
+  }
 }
 
 @layer components {
