@@ -150,10 +150,10 @@ const UserTimeline = () => {
       </div>
       <div className="flex flex-col gap-4">
         <PostCommentForm
-          profileName="UserPerson ^__^"
+          profileName="Fancy User"
           username="@dickerson99"
-          text="Hi mom! I'm in Internet!!"
-          tags={[]}
+          text="Awww SUCH A CUTIE!!! ^_____^;"
+          tags={["awwww", "cute", "meoww"]}
         />
       </div>
     </>
