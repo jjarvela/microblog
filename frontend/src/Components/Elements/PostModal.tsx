@@ -48,6 +48,7 @@ function PostModal({
             placeholder="Post text..."
             showCount
             maxLength={500}
+            class="min-h-[20rem] w-full"
           />
           <Button
             type="button"
@@ -64,6 +65,7 @@ function PostModal({
             maxTagLength={20}
             maxTags={20}
             showCount
+            class="w-full max-w-[32rem]"
           />
           <div className="flex flex-row gap-4">
             <h5 className="ml-2">Add to group</h5>
