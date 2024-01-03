@@ -153,6 +153,7 @@ const UserTimeline = () => {
           profileName="UserPerson ^__^"
           username="@dickerson99"
           text="Hi mom! I'm in Internet!!"
+          tags={[]}
         />
       </div>
     </>
