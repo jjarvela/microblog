@@ -1,6 +1,6 @@
 "use strict";
 import express from "express";
-import blogRouter from ".prisma/blogRouter";
+import blogRouter from "./src/controllers/blogRouter";
 
 const app = express();
 const port = 8080;

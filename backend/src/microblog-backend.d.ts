@@ -15,23 +15,63 @@ declare namespace Components {
         /**
          * Blog entry that hasn't assigned an id.
          */
-        export interface Entry {
+        export interface BlogEntry {
             date?: string; // date
             /**
              * example:
-             * Blog entry header
+             * Blog entry title
              */
-            header?: string;
+            title?: string;
             /**
              * example:
              * Blog entry main text
              */
             text?: string;
+            hashtags?: string[];
         }
+        export type Date = string; // date
+        export type MediaRes = {
+            /**
+             * URL to access the media file.
+             */
+            fileUrl?: string;
+            /**
+             * Mime type string for the media file.
+             */
+            mimeType?: string;
+            /**
+             * Unique id for media file.
+             */
+            mediaId?: string;
+            /**
+             * The folder media file is related to.
+             */
+            folderId?: string;
+        }[];
+        export type MultipleFiles = {
+            imagefile?: string; // base64
+        }[];
+        /**
+         * Schema to create new user.
+         */
+        export interface NewUserObject {
+            screenName: string;
+            userName: string;
+            email: string;
+            location?: string;
+            birthday: string; // date
+        }
+        export type PortfolioRes = {
+            /**
+             * User uuid
+             */
+            userId?: string;
+        }[];
+        export type QueryEntries = number[];
         /**
          * Blog entry that can be referred with an id.
          */
-        export interface KnownEntry {
+        export interface RefEntry {
             /**
              * Blog entry id.
              */
@@ -47,40 +87,38 @@ declare namespace Components {
              * Blog entry main text
              */
             text?: string;
+            hashtags?: string[];
         }
-        export type MediaRes = {
+        /**
+         * User authentication object.
+         */
+        export interface UserAuth {
             /**
-             * URL to access the media file.
+             * User id
              */
-            fileUrl?: string;
+            userId?: string;
+            password?: string;
             /**
-             * Mime type string for the media file.
+             * Optional serialized authorization data for client.
              */
-            mimeType?: string;
-            /**
-             * Uniqe id for media file.
-             */
-            mediaId?: string;
-            /**
-             * The context media file is related to.
-             */
-            contextId?: string;
-        }[];
-        export type MultipleFiles = {
-            imagefile?: string; // base64
-        }[];
-        export type QueryEntries = number[];
+            jwt?: string;
+        }
+        export interface UserObject {
+            screenName?: string;
+            userName: string;
+            email: string;
+            location?: string;
+            birthday?: string; // date
+        }
         export interface UserProfile {
             /**
              * User uuid
              */
             userId: string;
             /**
-             * Profile attribute object.
+             * Is profile visible to all.
              */
-            atrObj: {
-                [key: string]: any;
-            };
+            published?: boolean;
         }
     }
 }
@@ -92,10 +130,36 @@ declare namespace Paths {
         export interface PathParameters {
             userId: Parameters.UserId;
         }
-        export type RequestBody = /* Blog entry that hasn't assigned an id. */ Components.Schemas.Entry;
+        export type RequestBody = /* Blog entry that hasn't assigned an id. */ Components.Schemas.BlogEntry;
         namespace Responses {
             export interface $200 {
             }
+        }
+    }
+    namespace AddUserMedia {
+        namespace Parameters {
+            export type FolderId = string;
+            export type UserId = string;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+            folderId: Parameters.FolderId;
+        }
+        namespace Responses {
+            export type $200 = Components.Responses.OK;
+        }
+    }
+    namespace DelUserMedia {
+        namespace Parameters {
+            export type MediaId = string;
+            export type UserId = string;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+            mediaId: Parameters.MediaId;
+        }
+        namespace Responses {
+            export type $200 = Components.Responses.OK;
         }
     }
     namespace DeleteBlogEntry {
@@ -115,20 +179,50 @@ declare namespace Paths {
     }
     namespace GetBlogEntry {
         namespace Parameters {
-            export type SearchString = string;
+            export type EndDate = Components.Schemas.Date /* date */;
+            export type StartDate = Components.Schemas.Date /* date */;
             export type UserId = string;
         }
         export interface PathParameters {
             userId: Parameters.UserId;
         }
         export interface QueryParameters {
-            searchString?: Parameters.SearchString;
+            startDate?: Parameters.StartDate;
+            endDate?: Parameters.EndDate;
         }
         namespace Responses {
-            export type $200 = /* Blog entry that can be referred with an id. */ Components.Schemas.KnownEntry[];
+            export type $200 = /* Blog entry that can be referred with an id. */ Components.Schemas.RefEntry[];
         }
     }
-    namespace Media$UserId {
+    namespace GetProfile {
+        namespace Parameters {
+            export type UserId = string;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+        }
+        namespace Responses {
+            export type $200 = Components.Responses.OK;
+        }
+    }
+    namespace GetUserMedia {
+        namespace Parameters {
+            export type UserId = string;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.MediaRes;
+        }
+    }
+    namespace LoginUser {
+        export type RequestBody = /* User authentication object. */ Components.Schemas.UserAuth;
+        namespace Responses {
+            export type $200 = Components.Responses.OK;
+        }
+    }
+    namespace Portfolio$UserIdPublic {
         namespace Get {
             namespace Parameters {
                 export type UserId = string;
@@ -137,37 +231,7 @@ declare namespace Paths {
                 userId: Parameters.UserId;
             }
             namespace Responses {
-                export type $200 = Components.Schemas.MediaRes;
-            }
-        }
-    }
-    namespace Media$UserId$ContextId {
-        namespace Post {
-            namespace Parameters {
-                export type ContextId = string;
-                export type UserId = string;
-            }
-            export interface PathParameters {
-                userId: Parameters.UserId;
-                contextId: Parameters.ContextId;
-            }
-            namespace Responses {
-                export type $200 = Components.Responses.OK;
-            }
-        }
-    }
-    namespace Media$UserId$MediaId {
-        namespace Delete {
-            namespace Parameters {
-                export type MediaId = string;
-                export type UserId = string;
-            }
-            export interface PathParameters {
-                userId: Parameters.UserId;
-                mediaId: Parameters.MediaId;
-            }
-            namespace Responses {
-                export type $200 = Components.Responses.OK;
+                export type $200 = Components.Schemas.PortfolioRes;
             }
         }
     }
@@ -180,23 +244,12 @@ declare namespace Paths {
             userId: Parameters.UserId;
             postId: Parameters.PostId;
         }
-        export type RequestBody = /* Blog entry that can be referred with an id. */ Components.Schemas.KnownEntry;
+        export type RequestBody = /* Blog entry that can be referred with an id. */ Components.Schemas.RefEntry;
         namespace Responses {
             export type $200 = Components.Responses.OK;
         }
     }
     namespace User$UserIdProfile {
-        namespace Get {
-            namespace Parameters {
-                export type UserId = string;
-            }
-            export interface PathParameters {
-                userId: Parameters.UserId;
-            }
-            namespace Responses {
-                export type $200 = Components.Responses.OK;
-            }
-        }
         namespace Patch {
             namespace Parameters {
                 export type UserId = string;
@@ -205,6 +258,14 @@ declare namespace Paths {
                 userId: Parameters.UserId;
             }
             export type RequestBody = Components.Schemas.UserProfile;
+            namespace Responses {
+                export type $200 = Components.Responses.OK;
+            }
+        }
+    }
+    namespace UserRegister {
+        namespace Post {
+            export type RequestBody = /* Schema to create new user. */ Components.Schemas.NewUserObject;
             namespace Responses {
                 export type $200 = Components.Responses.OK;
             }
@@ -245,6 +306,46 @@ export interface OperationMethods {
     data?: Paths.UpdateBlogEntry.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateBlogEntry.Responses.$200>
+  /**
+   * addUserMedia - Upload a media files to selected folder.
+   */
+  'addUserMedia'(
+    parameters?: Parameters<Paths.AddUserMedia.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AddUserMedia.Responses.$200>
+  /**
+   * getUserMedia - Get list of media files and their location.
+   */
+  'getUserMedia'(
+    parameters?: Parameters<Paths.GetUserMedia.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetUserMedia.Responses.$200>
+  /**
+   * delUserMedia - Delete refered media file.
+   */
+  'delUserMedia'(
+    parameters?: Parameters<Paths.DelUserMedia.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DelUserMedia.Responses.$200>
+  /**
+   * getProfile - Get user profile atributes.
+   */
+  'getProfile'(
+    parameters?: Parameters<Paths.GetProfile.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetProfile.Responses.$200>
+  /**
+   * loginUser - Login using user's credentials.
+   */
+  'loginUser'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.LoginUser.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.LoginUser.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -284,13 +385,59 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateBlogEntry.Responses.$200>
   }
-  ['/media/{userId}/{contextId}']: {
+  ['/media/{userId}/{folderId}']: {
+    /**
+     * addUserMedia - Upload a media files to selected folder.
+     */
+    'post'(
+      parameters?: Parameters<Paths.AddUserMedia.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AddUserMedia.Responses.$200>
   }
   ['/media/{userId}']: {
+    /**
+     * getUserMedia - Get list of media files and their location.
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetUserMedia.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetUserMedia.Responses.$200>
   }
   ['/media/{userId}/{mediaId}']: {
+    /**
+     * delUserMedia - Delete refered media file.
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DelUserMedia.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DelUserMedia.Responses.$200>
+  }
+  ['/portfolio/{userId}/public']: {
   }
   ['/user/{userId}/profile']: {
+    /**
+     * getProfile - Get user profile atributes.
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetProfile.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetProfile.Responses.$200>
+  }
+  ['/user/register']: {
+  }
+  ['/login']: {
+    /**
+     * loginUser - Login using user's credentials.
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.LoginUser.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.LoginUser.Responses.$200>
   }
 }
 
