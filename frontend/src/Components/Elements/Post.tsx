@@ -29,7 +29,7 @@ function Post({
   return (
     <div className="timeline-box flex flex-col overflow-clip">
       {/* Add conditional rendering for UsernameRepost */}
-      <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-gray-500 px-6 pb-1">
+      <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 px-6 pb-1 dark:border-white25">
         <UsernameRepost username={username} />
       </div>
 
