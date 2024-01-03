@@ -1,4 +1,5 @@
 import Post from "./Elements/Post";
+import PostCommentForm from "./PostCommentForm";
 
 const UserTimeline = () => {
   return (
@@ -20,6 +21,13 @@ const UserTimeline = () => {
           reactions={3}
           tags={["#help", "#me", "#thanks"]}
           time={new Date()}
+        />
+      </div>
+      <div className="flex flex-col gap-4">
+        <PostCommentForm
+          profileName="UserPerson ^__^"
+          username="@dickerson99"
+          text="Hi mom! I'm in Internet!!"
         />
       </div>
     </>
