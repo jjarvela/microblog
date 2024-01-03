@@ -1,8 +1,8 @@
 import Button from "./Elements/Button";
 import GroupThumbnail from "./Elements/GroupThumbnail";
-import { ImageThumb } from "./Elements/ImageThumb";
 import UserThumbnail from "./Elements/UserThumbnail";
-import { VideoThumb } from "./Elements/VideoThumb";
+import ImageThumb from "./Elements/ImageThumb";
+import VideoThumb from "./Elements/VideoThumb";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
 import { MaterialSymbolsPhotoCameraRounded } from "./Icons/MaterialSymbolsPhotoCameraRounded";
