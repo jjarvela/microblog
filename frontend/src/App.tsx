@@ -18,9 +18,9 @@ const UserLayout = () => {
   return (
     <>
       <Header />
-      <div className="flex h-full flex-row">
+      <div className="static flex h-full flex-row">
         <LeftSidebar />
-        <main className="flex-grow">
+        <main className="mb-3 flex-grow overflow-y-scroll">
           <Outlet />
         </main>
         <RightSidebar />
