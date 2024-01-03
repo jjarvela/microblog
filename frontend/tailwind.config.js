@@ -17,6 +17,12 @@ export default {
         "2xl": "2.074rem",
         "3xl": "2.488rem",
         "4xl": "2.986rem",
+
+        "md-lg": "1.266rem",
+        "md-xl": "1.424rem",
+        "md-2xl": "1.602rem",
+        "md-3xl": "1.802",
+        "md-4xl": "2.027",
       },
 
       colors: {
