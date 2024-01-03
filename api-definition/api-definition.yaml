@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
-  title: Microblog API
-  version: "0.5"
+  title: Microblog
+  version: "0.6"
 servers:
   - url: https://api.microblog.fi
     description: Microblogi palvelun rajapintakuvaus
@@ -12,21 +12,25 @@ components:
       description: OK
 
   schemas:
-    Entry:
+    blogEntry:
       description: Blog entry that hasn't assigned an id.
       type: object
       properties:
         date:
           type: string
           format: date
-        header:
+        title:
           type: string
-          example: Blog entry header
+          example: Blog entry title
         text:
           type: string
           example: Blog entry main text
+        hashtags:
+          type: array
+          items:
+            type: string
 
-    knownEntry:
+    refEntry:
       description: Blog entry that can be referred with an id.
       type: object
       properties:
@@ -42,6 +46,27 @@ components:
         text:
           type: string
           example: Blog entry main text
+        hashtags:
+          type: array
+          items:
+            type: string
+
+    userAuth:
+      description: User authentication object.
+      type: object
+      properties:
+        userId:
+          description: User id
+          type: string
+        password:
+          type: string
+        jwt:
+          description: Optional serialized authorization data for client.
+          type: string
+
+    date:
+      type: string
+      format: date
 
     queryEntries:
       type: array
@@ -58,6 +83,47 @@ components:
             type: string
             format: base64
 
+    newUserObject:
+      type: object
+      description: Schema to create new user.
+      required:
+        - userName
+        - screenName
+        - email
+        - birthday
+
+      properties:
+        screenName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        location:
+          type: string
+        birthday:
+          type: string
+          format: date
+
+    userObject:
+      type: object
+      required:
+        - userName
+        - email
+
+      properties:
+        screenName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        location:
+          type: string
+        birthday:
+          type: string
+          format: date
+
     mediaRes:
       type: array
       items:
@@ -71,10 +137,20 @@ components:
             description: Mime type string for the media file.
           mediaId:
             type: string
-            description: Uniqe id for media file.
-          contextId:
+            description: Unique id for media file.
+          folderId:
             type: string
-            description: The context media file is related to.
+            description: The folder media file is related to.
+
+    portfolioRes:
+      type: array
+      items:
+        type: object
+        properties:
+          userId:
+            type: string
+            description: User uuid
+
     userProfile:
       type: object
       required:
@@ -84,9 +160,9 @@ components:
         userId:
           type: string
           description: User uuid
-        atrObj:
-          type: object
-          description: Profile attribute object.
+        published:
+          type: boolean
+          description: Is profile visible to all.
 
 tags:
   - name: blog
@@ -101,8 +177,11 @@ tags:
     description: Content searching related functions.
   - name: login
     description: User authentication related functions.
+  - name: group
+    description: Groups related functions.
   - name: user
     description: User profile related functions.
+
 paths:
   /blog/{userId}:
     x-router-controller: BlogController
@@ -117,11 +196,15 @@ paths:
           schema:
             type: string
           required: true
-
-        - in: query
-          name: searchString
+        - name: startDate
+          in: query
           schema:
-            type: string
+            $ref: "#/components/schemas/date"
+        - name: endDate
+          in: query
+          schema:
+            $ref: "#/components/schemas/date"
+
       responses:
         "200":
           description: successfull operation
@@ -130,7 +213,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/knownEntry"
+                  $ref: "#/components/schemas/refEntry"
 
     post:
       operationId: addBlogEntry
@@ -150,7 +233,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Entry"
+              $ref: "#/components/schemas/blogEntry"
     delete:
       operationId: deleteBlogEntry
       responses:
@@ -196,9 +279,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/knownEntry"
+              $ref: "#/components/schemas/refEntry"
 
-  /media/{userId}/{contextId}:
+  /media/{userId}/{folderId}:
     x-router-controller: mediaController
     post:
       operationId: addUserMedia
@@ -207,7 +290,7 @@ paths:
           $ref: "#/components/responses/OK"
       tags:
         - media
-      summary: Upload a media files to selected context.
+      summary: Upload a media files to selected folder.
       parameters:
         - name: userId
           required: true
@@ -215,7 +298,7 @@ paths:
           schema:
             type: string
 
-        - name: contextId
+        - name: folderId
           in: path
           required: true
           schema:
@@ -233,7 +316,7 @@ paths:
   /media/{userId}:
     get:
       operationId: getUserMedia
-      summary: Get list of media files and their contexts.
+      summary: Get list of media files and their location.
       responses:
         "200":
           description: Response including user's media files.
@@ -271,9 +354,30 @@ paths:
           schema:
             type: string
 
+  /portfolio/{userId}/public:
+    get:
+      summary: List public portfolio items.
+      tags:
+        - portfolio
+      responses:
+        "200":
+          description: Response contains user's portfolio items and their location.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/portfolioRes"
+
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
   /user/{userId}/profile:
     get:
       summary: Get user profile atributes.
+      operationId: getProfile
       tags:
         - user
       responses:
@@ -303,3 +407,32 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/userProfile"
+
+  /user/register:
+    post:
+      summary: Send user's registration data.
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newUserObject"
+
+  /login:
+    post:
+      summary: Login using user's credentials.
+      operationId: "loginUser"
+      tags:
+        - login
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userAuth"

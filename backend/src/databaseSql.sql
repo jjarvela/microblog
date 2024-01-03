@@ -101,6 +101,7 @@ CREATE TABLE "blog_posts" (
 );
 
 CREATE TABLE "post_medias" (
+  "id" serial PRIMARY KEY,
   "blogpost_id" integer,
   "media_id" integer
 );
