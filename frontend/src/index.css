@@ -29,27 +29,27 @@
   }
 
   h1 {
-    @apply font-heading text-4xl;
+    @apply text-md-4xl font-heading xl:text-4xl;
     font-weight: 600;
   }
 
   h2 {
-    @apply font-heading text-3xl;
+    @apply text-md-3xl font-heading xl:text-3xl;
     font-weight: 600;
   }
 
   h3 {
-    @apply font-heading text-2xl;
+    @apply text-md-2xl font-heading xl:text-2xl;
     font-weight: 400;
   }
 
   h4 {
-    @apply font-heading text-xl;
+    @apply text-md-xl font-heading xl:text-xl;
     font-weight: 300;
   }
 
   h5 {
-    @apply font-heading text-lg;
+    @apply text-md-lg font-heading xl:text-lg;
     font-weight: 300;
   }
 
@@ -101,7 +101,7 @@
   .scrollbar-thin::-webkit-scrollbar-thumb {
     @apply rounded-full bg-black50;
   }
-  .scrollbar-thin::-webkit-scrollbar-track {
+  .scrollbar-extra-margin::-webkit-scrollbar-track {
     @apply m-3;
   }
 }
