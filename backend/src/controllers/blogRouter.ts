@@ -1,15 +1,25 @@
+
+import OpenAPIBackend from 'openapi-backend';
 import { Request, Response} from "express";
-import { Router } from "express";
 import queries from "../services/prismaqueries";
+import { Context } from "openapi-backend";
+import type {
+BlogAddReqBody,
+BlogAddReqParams,
+BlogAddResponse
+} from "./types"
 
-
-const router = Router();
-
-router.post("/:userId", async (req: Request, res: Response) => {
-    const userid = req.params.userId;
-    const {blog_text} = req.body;
-    const post = {user_uuid: userid, text: blog_text, timestamp: Date.now()};
+async function addBlogEntryHandler(
+    c: Context<BlogAddReqBody,BlogAddReqParams>,
+    _req: Request,
+    res: Response
+) {
+    const userId = c.request.params.userId;
+    const blogObj = c.request.requestBody;
+    const post = {user_uuid: userId, text: blogObj.text, timestamp: Date.now()};
     const result = await queries.insertPost(post);
-    res.json(result);
-});
+    res.json(result);    
+}
+
+
 

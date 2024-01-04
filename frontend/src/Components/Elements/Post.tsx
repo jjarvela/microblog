@@ -3,13 +3,19 @@ import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavor
 import MaterialSymbolsFlagRounded from "../Icons/MaterialSymbolsFlagRounded";
 import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
 import PhFireSimpleBold from "../Icons/PhFireSimpleBold";
+import PostMediaLayout from "./PostMediaLayout";
+import InReplyTo from "./InReplyTo";
 import { ProfilePicture } from "./ProfilePicture";
+import UsernameRepost from "./UsernameRepost";
 
 type PostProps = {
   profileName: string;
   profileImage?: string;
-  username: string;
+  postOwner: string;
+  reposter?: string | undefined;
+  replyingTo?: string | undefined;
   text: string;
+  media?: Array<{ id: string; source: string; type: string }> | undefined;
   reactions: number;
   tags: string[];
   time: Date;
@@ -18,22 +24,41 @@ type PostProps = {
 function Post({
   profileName,
   profileImage,
-  username,
+  postOwner,
   text,
   reactions,
   tags,
   time,
+  media,
+  reposter,
+  replyingTo,
 }: PostProps) {
   return (
     <div className="timeline-box flex flex-col overflow-clip">
+      {reposter ? (
+        <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 px-6 pb-1 dark:border-white25">
+          <UsernameRepost username={reposter} />
+        </div>
+      ) : null}
+
       <div className="flex flex-row items-center gap-4">
         <ProfilePicture width={80} image={profileImage} />
         <h5>{profileName}</h5>
-        <p className="text-black50">{username}</p>
+        <p className="text-black50">{postOwner}</p>
         <p className="ml-auto mr-3 self-start">{time.toLocaleString()}</p>
       </div>
+
+      {replyingTo ? (
+        <div>
+          <InReplyTo username={replyingTo} />
+        </div>
+      ) : null}
+
       <div className="m-6 flex flex-col gap-2">
         <div>{text}</div>
+
+        {media ? <PostMediaLayout media={media} /> : null}
+
         <p className="flex flex-row gap-4">
           {tags.map((val, i) => (
             <a key={i}>{val}</a>
