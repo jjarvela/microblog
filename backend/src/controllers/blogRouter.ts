@@ -1,6 +1,6 @@
 import { Request, Response} from "express";
 import { Router } from "express";
-import queries from "./prismaqueries";
+import queries from "../services/prismaqueries";
 
 
 const router = Router();
