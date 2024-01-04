@@ -32,7 +32,7 @@ function PostContextMenu({
         </button>
         {showMenu && (
           <div className="context-dropdown" tabIndex={-1}>
-            <div className="absolute z-10 flex -translate-x-[30%] flex-col rounded-md border border-black50 bg-white dark:bg-black">
+            <div className="absolute z-10 flex -translate-x-[60%] flex-col rounded-md border border-black50 bg-white dark:bg-black">
               {ownerOptions && (
                 <>
                   {/* TODO: Once clicked, buttons should hide the dropdown menu and do their functionality. */}
