@@ -1,7 +1,15 @@
 "use strict";
-const express = require('express');
+import express from "express";
+import blogRouter from "./src/controllers/blogRouter";
+
 const app = express();
 const port = 8080;
+
+server.use(express.json());
+server.use(express.urlencoded({extended: false}));
+
+server.use("/blog", blogRouter);
+
 app.get('/', (req, res) => {
     res.send(`
   <!doctype HTML>
