@@ -16,7 +16,7 @@ function LeftSidebar() {
   const postModal = useRef<HTMLDialogElement>(null);
 
   return (
-    <div className="col flex h-full w-full max-w-[16rem] flex-col border-r border-black50 dark:to-black75">
+    <div className="col short:overflow-hidden scrollbar-thin flex h-full w-full max-w-[16rem] flex-col overflow-scroll border-r border-black50 dark:to-black75">
       <nav>
         <SidebarLink
           to="/home"
@@ -59,7 +59,10 @@ function LeftSidebar() {
           icon={<PhHashStraightBold />}
         />
       </nav>
-      <div id="newPostButton" className="flex items-center justify-center p-12">
+      <div
+        id="newPostButton"
+        className="mid:p-12 flex items-center justify-center p-10"
+      >
         <Button
           class="btn-primary flex h-16 w-16 items-center justify-center p-0 text-2xl"
           onClick={() => postModal.current?.showModal()}
