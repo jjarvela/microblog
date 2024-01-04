@@ -18,9 +18,9 @@ const UserLayout = () => {
   return (
     <>
       <Header />
-      <div className="flex h-full flex-row">
+      <div className="flex h-full w-full flex-row overflow-hidden">
         <LeftSidebar />
-        <main className="mb-3 overflow-y-scroll">
+        <main className="scrollbar-thin h-full w-full overflow-y-scroll pb-4">
           <Outlet />
         </main>
         <RightSidebar />
@@ -44,7 +44,7 @@ const VisitorLayout = () => {
 
 function App() {
   return (
-    <div className="app static flex h-screen flex-col">
+    <div className="app flex h-screen flex-col">
       <Routes>
         {/*Not logged routes*/}
         <Route element={<VisitorLayout />}>
