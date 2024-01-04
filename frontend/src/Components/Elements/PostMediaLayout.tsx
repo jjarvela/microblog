@@ -10,15 +10,15 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
   ) => {
     switch (items.length) {
       case 1:
-        return <PostMedia type={items[0].type} source={items[0].source} />;
+        return <PostMedia media={items[0]} />;
       case 2:
         return (
           <div className="flex h-[100%] flex-row gap-1">
             <div className="flex w-[50%] flex-col">
-              <PostMedia type={items[0].type} source={items[0].source} />
+              <PostMedia media={items[0]} />
             </div>
             <div className="flex w-[50%] flex-col">
-              <PostMedia type={items[1].type} source={items[1].source} />
+              <PostMedia media={items[1]} />
             </div>
           </div>
         );
@@ -26,14 +26,14 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
         return (
           <div className="flex h-[100%] gap-1">
             <div className="flex w-[50%] flex-col">
-              <PostMedia type={items[0].type} source={items[0].source} />
+              <PostMedia media={items[0]} />
             </div>
             <div className="flex w-[50%] flex-col">
               <div className="mb-0.5 h-[50%]">
-                <PostMedia type={items[1].type} source={items[1].source} />
+                <PostMedia media={items[1]} />
               </div>
               <div className="mt-0.5 h-[50%]">
-                <PostMedia type={items[2].type} source={items[2].source} />
+                <PostMedia media={items[2]} />
               </div>
             </div>
           </div>
@@ -43,18 +43,18 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
           <>
             <div className="mb-1 flex h-[50%] flex-row gap-1">
               <div className=" flex w-[50%] flex-col">
-                <PostMedia type={items[0].type} source={items[0].source} />
+                <PostMedia media={items[0]} />
               </div>
               <div className="flex w-[50%] flex-col">
-                <PostMedia type={items[1].type} source={items[1].source} />
+                <PostMedia media={items[1]} />
               </div>
             </div>
             <div className="mt-1 flex h-[50%] flex-row gap-1">
               <div className="flex w-[50%] flex-col">
-                <PostMedia type={items[2].type} source={items[2].source} />
+                <PostMedia media={items[2]} />
               </div>
               <div className="flex w-[50%] flex-col">
-                <PostMedia type={items[3].type} source={items[3].source} />
+                <PostMedia media={items[3]} />
               </div>
             </div>
           </>

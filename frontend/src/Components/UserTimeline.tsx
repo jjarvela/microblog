@@ -1,8 +1,13 @@
 import Post from "./Elements/Post";
+import TimelineTopMenu from "./Elements/TimelineTopMenu";
+import PostCommentForm from "./PostCommentForm";
 
 const UserTimeline = () => {
   return (
     <>
+      <div className="flex basis-4/12 justify-center">
+        <TimelineTopMenu />
+      </div>
       <h2 className="my-4 text-center">Timeline</h2>
       <div className="flex flex-col gap-4">
         <Post
@@ -67,7 +72,7 @@ const UserTimeline = () => {
             {
               id: "32j423j4",
               source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg?auto=compress&cs=tinysrgb",
               type: "img",
             },
             {
@@ -96,7 +101,7 @@ const UserTimeline = () => {
             {
               id: "1434j4",
               source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg?auto=compress&cs=tinysrgb",
               type: "img",
             },
             {
@@ -132,11 +137,11 @@ const UserTimeline = () => {
             {
               id: "1434j4",
               source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "https://images.pexels.com/photos/1008737/pexels-photo-1008737.jpeg",
               type: "img",
             },
             {
-              id: "5rttryrt",
+              id: "5r3243",
               source:
                 "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
               type: "vid",
@@ -145,6 +150,14 @@ const UserTimeline = () => {
           reactions={1}
           tags={["#fourpics"]}
           time={new Date()}
+        />
+      </div>
+      <div className="flex flex-col gap-4">
+        <PostCommentForm
+          profileName="Fancy User"
+          username="@dickerson99"
+          text="Awww SUCH A CUTIE!!! ^_____^;"
+          tags={["awwww", "cute", "meoww"]}
         />
       </div>
     </>
