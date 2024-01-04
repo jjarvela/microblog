@@ -22,19 +22,23 @@ function PostContextMenu({
         <button
           className="rounded-xl border border-black25 px-2 py-1 text-lg hover:border-black50 hover:bg-black25 dark:border-white25 dark:hover:bg-white25"
           onClick={() => setShowMenu(!showMenu)}
-          onBlur={() => setShowMenu(false)}
+          onBlur={(e) => {
+            if (!e.relatedTarget) setShowMenu(false);
+            else e.target.focus(); // Recapture focus to keep this onBlur working.
+          }}
           tabIndex={0}
         >
           <MdiDotsHorizontal />
         </button>
         {showMenu && (
-          <div className="">
+          <div className="context-dropdown" tabIndex={-1}>
             <div className="absolute z-10 flex -translate-x-[30%] flex-col rounded-md border border-black50 bg-white dark:bg-black">
               {ownerOptions && (
                 <>
+                  {/* TODO: Once clicked, buttons should hide the dropdown menu and do their functionality. */}
                   <Link
-                    to={""}
-                    className="flex flex-row items-center gap-1 border-b border-black50 px-3 py-2 last:border-0 hover:bg-black25 dark:hover:bg-white25"
+                    to={"./edit"}
+                    className="context-dropdown flex flex-row items-center gap-1 border-b border-black50 px-3 py-2 last:border-0 hover:bg-black25 dark:hover:bg-white25"
                   >
                     <MaterialSymbolsEditOutlineRounded />
                     Edit
