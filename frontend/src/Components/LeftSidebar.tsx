@@ -59,7 +59,10 @@ function LeftSidebar() {
           icon={<PhHashStraightBold />}
         />
       </nav>
-      <div id="newPostButton" className="flex items-center justify-center p-12">
+      <div
+        id="newPostButton"
+        className="mid:p-10 flex items-center justify-center p-12"
+      >
         <Button
           class="btn-primary flex h-16 w-16 items-center justify-center p-0 text-2xl"
           onClick={() => postModal.current?.showModal()}
