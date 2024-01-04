@@ -7,7 +7,7 @@ function SidebarLink(props: { to: string; text: string; icon?: ReactNode }) {
       to={props.to}
       // The aria-[current=page] selector is standing in for the active class feature of NavLink.
       className="aria-[current=page]:bg-primary-gradient 
-                mid:p-3 
+                mid:p-4 
                 flex 
                 w-full 
                 flex-row 
@@ -15,7 +15,7 @@ function SidebarLink(props: { to: string; text: string; icon?: ReactNode }) {
                 gap-4 
                border-b-2 
                border-black50
-               p-4
+               p-3
                text-black75
                hover:bg-black25
               aria-[current=page]:text-white 
