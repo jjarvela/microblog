@@ -1,9 +1,13 @@
 import Post from "./Elements/Post";
+import TimelineTopMenu from "./Elements/TimelineTopMenu";
 import PostCommentForm from "./PostCommentForm";
 
 const UserTimeline = () => {
   return (
     <>
+      <div className="flex basis-4/12 justify-center">
+        <TimelineTopMenu />
+      </div>
       <h2 className="my-4 text-center">Timeline</h2>
       <div className="flex flex-col gap-4">
         <Post
