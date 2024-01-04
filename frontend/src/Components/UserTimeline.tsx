@@ -12,7 +12,7 @@ const UserTimeline = () => {
           reactions={42}
           tags={["#hashtag", "#longerhashtag", "#tag"]}
           time={new Date()}
-          showContextMenu
+          ownerOptions
         />
         <Post
           profileName="Another User 🙂"
@@ -21,7 +21,6 @@ const UserTimeline = () => {
           reactions={3}
           tags={["#help", "#me", "#thanks"]}
           time={new Date()}
-          showContextMenu
         />
 
         <Post
@@ -42,6 +41,7 @@ const UserTimeline = () => {
           reactions={3}
           tags={["#nice"]}
           time={new Date()}
+          ownerOptions
         />
 
         <Post
