@@ -1,16 +1,14 @@
 
-import OpenAPIBackend from 'openapi-backend';
 import { Request, Response} from "express";
 import queries from "../services/prismaqueries";
 import { Context } from "openapi-backend";
 import type {
-BlogAddReqBody,
-BlogAddReqParams,
-BlogAddResponse
+BlogEntry,
+BlogAddReqParams
 } from "./types"
 
-async function addBlogEntryHandler(
-    c: Context<BlogAddReqBody,BlogAddReqParams>,
+export async function addBlogEntryHandler(
+    c: Context,
     _req: Request,
     res: Response
 ) {
@@ -20,6 +18,7 @@ async function addBlogEntryHandler(
     const result = await queries.insertPost(post);
     res.json(result);    
 }
+
 
 
 

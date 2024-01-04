@@ -15,13 +15,12 @@ components:
     blogEntry:
       description: Blog entry that hasn't assigned an id.
       type: object
+      required:
+        - "text"
       properties:
         date:
           type: string
           format: date
-        title:
-          type: string
-          example: Blog entry title
         text:
           type: string
           example: Blog entry main text
@@ -40,9 +39,6 @@ components:
         date:
           type: string
           format: date
-        header:
-          type: string
-          example: Blog entry header
         text:
           type: string
           example: Blog entry main text
