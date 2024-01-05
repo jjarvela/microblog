@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import MediaViewer from "./MediaViewer";
 
 type PostMediaProps = {
@@ -6,15 +6,19 @@ type PostMediaProps = {
   media: Media;
 };
 
-export default function PostMedia({ index, media }: PostMediaProps) {
+export default function PostMedia({ media }: PostMediaProps) {
   const mediaViewer = useRef<HTMLDialogElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="relative h-[100%] overflow-hidden bg-white75 dark:bg-[#000]">
       {media.type === "img" ? (
         <a
           className="cursor-pointer"
-          onClick={() => mediaViewer.current?.showModal()}
+          onClick={() => {
+            setIsOpen(true);
+            mediaViewer.current?.showModal();
+          }}
         >
           <img
             id={media.id}
@@ -48,9 +52,10 @@ export default function PostMedia({ index, media }: PostMediaProps) {
         </>
       )}
       <MediaViewer
-        index={index}
-        active={{ id: media.id, type: media.type, source: media.source }}
+        active={media}
         refObject={mediaViewer}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
       />
     </div>
   );
