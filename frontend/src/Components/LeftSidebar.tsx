@@ -11,12 +11,14 @@ import MaterialSymbolsNotificationsRounded from "./Icons/MaterialSymbolsNotifica
 import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
 import MaterialSymbolsSettingsRounded from "./Icons/MaterialSymbolsSettingsRounded";
 import PhHashStraightBold from "./Icons/PhHashStraightBold";
+import { useBreakpoint } from "../Hooks/BreakpointHook";
 
 function LeftSidebar() {
   const postModal = useRef<HTMLDialogElement>(null);
+  const { isMd } = useBreakpoint("md");
 
   return (
-    <div className="col short:overflow-hidden scrollbar-thin flex h-full w-full max-w-[16rem] flex-col overflow-scroll border-r border-black50 dark:to-black75">
+    <div className="col scrollbar-thin flex h-full w-16 flex-shrink-0 flex-col overflow-auto border-r border-black50 dark:to-black75 md:w-full md:max-w-[16rem] short:overflow-hidden">
       <nav>
         <SidebarLink
           to="/home"
@@ -61,10 +63,10 @@ function LeftSidebar() {
       </nav>
       <div
         id="newPostButton"
-        className="mid:p-12 flex items-center justify-center p-10"
+        className="flex items-center justify-center px-1 py-4 md:px-10 mid:py-10"
       >
         <Button
-          class="btn-primary flex h-16 w-16 items-center justify-center p-0 text-2xl"
+          class="btn-primary flex h-12 w-12 items-center justify-center p-0 text-xl md:h-16 md:w-16 md:text-2xl"
           onClick={() => postModal.current?.showModal()}
           type="button"
         >
@@ -72,7 +74,7 @@ function LeftSidebar() {
         </Button>
       </div>
       <div className="mb-4 flex h-full flex-col items-center justify-end">
-        <p>© 2023 Team Yellow</p>
+        {isMd ? <p>© 2024 Team Yellow</p> : <p>©</p>}
       </div>
       <PostModal
         profileName="Temp Poster"
