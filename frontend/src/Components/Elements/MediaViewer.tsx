@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ProfilePicture } from "./ProfilePicture";
 import InReplyTo from "./InReplyTo";
 import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavoriteOutlineRounded";
@@ -11,19 +11,21 @@ import { MaterialSymbolsChevronRightRounded } from "../Icons/MaterialSymbolsChev
 import { PostContext } from "./Post";
 
 type MediaViewerProps = {
+  index: number;
   active: Media;
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
 };
 
-export default function MediaViewer({ active, refObject }: MediaViewerProps) {
+export default function MediaViewer({
+  index,
+  active,
+  refObject,
+}: MediaViewerProps) {
   const post = useContext(PostContext);
   const [activeMedia, setActiveMedia] = useState(active);
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const [activeIndex, setActiveIndex] = useState(index);
 
-  useEffect(() => {
-    post.media &&
-      setActiveIndex(post.media.map((item) => item.id).indexOf(active.id));
-  }, []);
+  console.log(activeIndex);
 
   function togglePreviousMedia() {
     if (post.media && activeIndex > 0) {

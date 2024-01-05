@@ -2,10 +2,11 @@ import { useRef } from "react";
 import MediaViewer from "./MediaViewer";
 
 type PostMediaProps = {
+  index: number;
   media: Media;
 };
 
-export default function PostMedia({ media }: PostMediaProps) {
+export default function PostMedia({ index, media }: PostMediaProps) {
   const mediaViewer = useRef<HTMLDialogElement>(null);
 
   return (
@@ -47,6 +48,7 @@ export default function PostMedia({ media }: PostMediaProps) {
         </>
       )}
       <MediaViewer
+        index={index}
         active={{ id: media.id, type: media.type, source: media.source }}
         refObject={mediaViewer}
       />
