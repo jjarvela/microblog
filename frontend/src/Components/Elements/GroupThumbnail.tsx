@@ -1,5 +1,6 @@
 import Button from "./Button";
 import { ProfilePicture } from "./ProfilePicture";
+import { useNavigate } from "react-router";
 
 type GroupThumbnailProps = {
   groupName: string;
@@ -18,6 +19,7 @@ function GroupThumbnail({
   activity,
   rule,
 }: GroupThumbnailProps) {
+  const navigate = useNavigate();
   return (
     <div className="timeline-box">
       <div className="flex justify-start gap-4">
@@ -59,7 +61,7 @@ function GroupThumbnail({
             <Button class="btn-primary">
               <small>Follow</small>
             </Button>
-            <Button class="btn-primary">
+            <Button class="btn-primary" onClick={() => navigate("/groups/:id")}>
               <small>Join</small>
             </Button>
           </div>

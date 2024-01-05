@@ -1,7 +1,12 @@
+import GroupProfileBanner from "./Elements/GroupProfileBanner";
+
 const GroupProfile = () => {
-    return(
-        <h2>This is the profile of a group</h2>
-    );
+  return (
+    <div className="flex flex-col">
+      <GroupProfileBanner />
+      <h2 className="text-center">This is the profile of a group</h2>
+    </div>
+  );
 };
 
 export default GroupProfile;
