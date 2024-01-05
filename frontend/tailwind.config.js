@@ -21,8 +21,8 @@ export default {
         "md-lg": "1.266rem",
         "md-xl": "1.424rem",
         "md-2xl": "1.602rem",
-        "md-3xl": "1.802",
-        "md-4xl": "2.027",
+        "md-3xl": "1.802rem",
+        "md-4xl": "2.027rem",
       },
 
       colors: {
@@ -45,16 +45,16 @@ export default {
         warningBgDark: "#332424",
       },
       screens: {
-        'sm': '640px',
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
-        '2xl': '1536px',
-        'short': { raw: '(min-height: 720px)'},
-        'mid': { raw: '(min-height: 800px)'},
-        'tall': { raw: '(min-height: 1080px)' },
-      }
-    }
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
+        short: { raw: "(min-height: 720px)" },
+        mid: { raw: "(min-height: 800px)" },
+        tall: { raw: "(min-height: 1080px)" },
+      },
+    },
   },
   plugins: [],
 };
