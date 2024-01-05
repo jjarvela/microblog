@@ -1,8 +1,8 @@
 type Media = {
-  id: string; 
+  id: string;
   source: string;
   type: string;
-}
+};
 
 type Post = {
   profileName: string;
@@ -15,4 +15,4 @@ type Post = {
   reactions: number;
   tags: string[];
   time: Date;
-}
+};

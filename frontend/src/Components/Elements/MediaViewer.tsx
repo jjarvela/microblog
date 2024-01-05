@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProfilePicture } from "./ProfilePicture";
 import InReplyTo from "./InReplyTo";
 import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavoriteOutlineRounded";
@@ -18,21 +18,26 @@ type MediaViewerProps = {
 export default function MediaViewer({ active, refObject }: MediaViewerProps) {
   const post = useContext(PostContext);
   const [activeMedia, setActiveMedia] = useState(active);
-  const [activeIndex, setActiveIndex] = useState(
-    post.media?.map((item) => item.id).indexOf(active.id) || -1,
-  );
+  const [activeIndex, setActiveIndex] = useState(-1);
+
+  useEffect(() => {
+    post.media &&
+      setActiveIndex(post.media.map((item) => item.id).indexOf(active.id));
+  }, []);
 
   function togglePreviousMedia() {
     if (post.media && activeIndex > 0) {
-      setActiveMedia(post.media[activeIndex - 1]);
-      setActiveIndex(activeIndex - 1);
+      const current = activeIndex;
+      setActiveMedia(post.media[current - 1]);
+      setActiveIndex(current - 1);
     }
   }
 
   function toggleNextMedia() {
     if (post.media && activeIndex < post.media.length - 1) {
-      setActiveMedia(post.media[activeIndex + 1]);
-      setActiveIndex(activeIndex + 1);
+      const current = activeIndex;
+      setActiveMedia(post.media[current + 1]);
+      setActiveIndex(current + 1);
     }
   }
 
@@ -49,13 +54,13 @@ export default function MediaViewer({ active, refObject }: MediaViewerProps) {
               <div className="absolute left-0 flex h-full w-full justify-between text-4xl">
                 <a
                   className="z-50 cursor-pointer self-center opacity-25  hover:opacity-70"
-                  onClick={togglePreviousMedia}
+                  onClick={() => togglePreviousMedia()}
                 >
                   {activeIndex > 0 && <MaterialSymbolsChevronLeftRounded />}
                 </a>
                 <a
                   className="z-50 cursor-pointer self-center opacity-25  hover:opacity-70"
-                  onClick={toggleNextMedia}
+                  onClick={() => toggleNextMedia()}
                 >
                   {activeIndex < post.media.length - 1 && (
                     <MaterialSymbolsChevronRightRounded />
