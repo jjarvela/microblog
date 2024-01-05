@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProfilePicture } from "./ProfilePicture";
 import InReplyTo from "./InReplyTo";
 import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavoriteOutlineRounded";
@@ -11,35 +11,37 @@ import { MaterialSymbolsChevronRightRounded } from "../Icons/MaterialSymbolsChev
 import { PostContext } from "./Post";
 
 type MediaViewerProps = {
-  index: number;
   active: Media;
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MediaViewer({
-  index,
   active,
   refObject,
+  isOpen,
+  setIsOpen,
 }: MediaViewerProps) {
   const post = useContext(PostContext);
+  const ids = post.media.map((item) => item.id);
   const [activeMedia, setActiveMedia] = useState(active);
-  const [activeIndex, setActiveIndex] = useState(index);
 
-  console.log(activeIndex);
+  useEffect(() => {
+    isOpen && setActiveMedia(active);
+  }, [isOpen]);
 
   function togglePreviousMedia() {
-    if (post.media && activeIndex > 0) {
-      const current = activeIndex;
+    if (post.media && post.media.indexOf(active) > 0) {
+      const current = ids.indexOf(active.id);
       setActiveMedia(post.media[current - 1]);
-      setActiveIndex(current - 1);
     }
   }
 
   function toggleNextMedia() {
-    if (post.media && activeIndex < post.media.length - 1) {
-      const current = activeIndex;
+    if (post.media && ids.indexOf(active.id) < post.media.length - 1) {
+      const current = ids.indexOf(active.id);
       setActiveMedia(post.media[current + 1]);
-      setActiveIndex(current + 1);
     }
   }
 
@@ -58,13 +60,15 @@ export default function MediaViewer({
                   className="z-50 cursor-pointer self-center opacity-25  hover:opacity-70"
                   onClick={() => togglePreviousMedia()}
                 >
-                  {activeIndex > 0 && <MaterialSymbolsChevronLeftRounded />}
+                  {ids.indexOf(activeMedia.id) > 0 && (
+                    <MaterialSymbolsChevronLeftRounded />
+                  )}
                 </a>
                 <a
                   className="z-50 cursor-pointer self-center opacity-25  hover:opacity-70"
                   onClick={() => toggleNextMedia()}
                 >
-                  {activeIndex < post.media.length - 1 && (
+                  {ids.indexOf(activeMedia.id) < post.media.length - 1 && (
                     <MaterialSymbolsChevronRightRounded />
                   )}
                 </a>
@@ -99,7 +103,10 @@ export default function MediaViewer({
           <Button
             class="btn-primary my-1 w-fit self-end"
             type="button"
-            onClick={() => refObject.current?.close()}
+            onClick={() => {
+              setIsOpen(false);
+              refObject.current?.close();
+            }}
           >
             <p>Close</p>
           </Button>
