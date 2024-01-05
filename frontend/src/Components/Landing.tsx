@@ -16,7 +16,7 @@ function Landing() {
         <h2 className="m-auto hidden break-words text-center md:block">
           Welcome to Microblog
         </h2>
-        <div className="m-auto flex h-full w-full flex-col items-center justify-center border-x border-black25 bg-white dark:border-black75 dark:bg-black min-[512px]:w-[32rem] md:m-0 md:mx-0">
+        <div className="m-auto flex h-full w-full flex-col items-center justify-center border-x border-black25 bg-white dark:border-black75 dark:bg-black md:m-0 [@media(min-width:512px)]:w-[32rem]  ">
           <form className="flex flex-col justify-center gap-4 text-center md:min-w-[20rem]">
             <h3>{register ? "Sign up today!" : "Welcome back!"}</h3>
             <TextInput placeholder="Username" />

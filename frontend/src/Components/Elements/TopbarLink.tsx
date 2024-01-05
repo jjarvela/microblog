@@ -1,23 +1,22 @@
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
-function SidebarLink(props: { to: string; text: string; icon?: ReactNode }) {
+function TopbarLink(props: { to: string; text: string; icon?: ReactNode }) {
   return (
     <NavLink
       to={props.to}
       // The aria-[current=page] selector is standing in for the active class feature of NavLink.
-      className="aria-[current=page]:bg-primary-gradient 
-                mid:p-4 
+      className="border-b-1 
                 flex 
                 w-full 
                 flex-row 
-                items-center
-                gap-4 
-               border-b-2 
-               border-black50
-               p-3
+                items-center 
+                gap-2
+                border-black50 
+               p-4 
                text-black75
                hover:bg-black25
+               aria-[current=page]:bg-black25
               aria-[current=page]:text-white 
               dark:border-white50
               dark:text-white 
@@ -31,4 +30,4 @@ function SidebarLink(props: { to: string; text: string; icon?: ReactNode }) {
   );
 }
 
-export default SidebarLink;
+export default TopbarLink;

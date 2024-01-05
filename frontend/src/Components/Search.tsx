@@ -1,8 +1,8 @@
 import Button from "./Elements/Button";
 import GroupThumbnail from "./Elements/GroupThumbnail";
-import { ImageThumb } from "./Elements/ImageThumb";
 import UserThumbnail from "./Elements/UserThumbnail";
-import { VideoThumb } from "./Elements/VideoThumb";
+import ImageThumb from "./Elements/ImageThumb";
+import VideoThumb from "./Elements/VideoThumb";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
 import { MaterialSymbolsPhotoCameraRounded } from "./Icons/MaterialSymbolsPhotoCameraRounded";
@@ -13,7 +13,7 @@ const Search = () => {
     <div className="my-1 flex flex-col gap-4">
       <h2 className="mx-2">This is the main hub for search</h2>
       <div className="my-2 text-center">
-        <input id="search" type="text"></input>{" "}
+        <input id="search" type="text"></input>
         <label htmlFor="search">
           <Button class="btn-primary text-lg">
             <MaterialSymbolsSearchRounded />
@@ -65,73 +65,129 @@ const Search = () => {
 
       <div className="mx-2 my-2 flex flex-wrap gap-2">
         <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          image={{
+            id: "djgjkdfkjghj123",
+            type: "img",
+            source:
+              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          }}
           width={150}
           height={150}
         />
 
         <VideoThumb
-          video="https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4"
+          video={{
+            id: "dsu123214o2",
+            type: "vid",
+            source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+          }}
           width={150}
           height={150}
         />
 
         <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          image={{
+            id: "djgasrser324",
+            type: "img",
+            source:
+              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          }}
           width={150}
           height={150}
         />
 
         <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          image={{
+            id: "djret4323234",
+            type: "img",
+            source:
+              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          }}
           width={150}
           height={150}
         />
 
         <VideoThumb
-          video="https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4"
+          video={{
+            id: "dsu234drwr",
+            type: "vid",
+            source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+          }}
           width={150}
           height={150}
         />
 
         <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          image={{
+            id: "dj3234fetert",
+            type: "img",
+            source:
+              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          }}
           width={150}
           height={150}
         />
 
         <VideoThumb
-          video="https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4"
+          video={{
+            id: "ds23534123214o2",
+            type: "vid",
+            source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+          }}
           width={150}
           height={150}
         />
 
         <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          image={{
+            id: "124234rete",
+            type: "img",
+            source:
+              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          }}
           width={150}
           height={150}
         />
 
         <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          image={{
+            id: "d1223423qweqw",
+            type: "img",
+            source:
+              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          }}
           width={150}
           height={150}
         />
 
         <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          image={{
+            id: "djgj422342sdsd123",
+            type: "img",
+            source:
+              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          }}
           width={150}
           height={150}
         />
 
         <ImageThumb
-          image="https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          image={{
+            id: "djgj42kjghj123",
+            type: "img",
+            source:
+              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+          }}
           width={150}
           height={150}
         />
 
         <VideoThumb
-          video="https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4"
+          video={{
+            id: "ds2432sfegreg2",
+            type: "vid",
+            source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+          }}
           width={150}
           height={150}
         />
