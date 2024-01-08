@@ -67,6 +67,10 @@ components:
       type: string
       format: date
 
+    entryId:
+      type: string
+      format: uuid
+
     queryEntries:
       type: array
       items:
@@ -222,7 +226,11 @@ paths:
       operationId: addBlogEntry
       responses:
         "200":
-          description: OK
+          description: Entry added and entry id returned.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/entryId"
       tags:
         - blog
       summary: Post new entry to the user's blog.
@@ -238,6 +246,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/blogEntry"
+
     delete:
       operationId: deleteBlogEntry
       responses:

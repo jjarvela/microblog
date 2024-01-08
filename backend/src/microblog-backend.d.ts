@@ -19,15 +19,10 @@ declare namespace Components {
             date?: string; // date
             /**
              * example:
-             * Blog entry title
-             */
-            title?: string;
-            /**
-             * example:
              * Blog entry main text
              */
-            text?: string;
-            hashtags?: string[];
+            text: string;
+            hashtags: string[];
         }
         export type Date = string; // date
         export type MediaRes = {
@@ -77,11 +72,6 @@ declare namespace Components {
              */
             id?: number;
             date?: string; // date
-            /**
-             * example:
-             * Blog entry header
-             */
-            header?: string;
             /**
              * example:
              * Blog entry main text
@@ -180,6 +170,7 @@ declare namespace Paths {
     namespace GetBlogEntry {
         namespace Parameters {
             export type EndDate = Components.Schemas.Date /* date */;
+            export type PostId = number;
             export type StartDate = Components.Schemas.Date /* date */;
             export type UserId = string;
         }
@@ -189,6 +180,7 @@ declare namespace Paths {
         export interface QueryParameters {
             startDate?: Parameters.StartDate;
             endDate?: Parameters.EndDate;
+            postId?: Parameters.PostId;
         }
         namespace Responses {
             export type $200 = /* Blog entry that can be referred with an id. */ Components.Schemas.RefEntry[];
@@ -275,7 +267,7 @@ declare namespace Paths {
 
 export interface OperationMethods {
   /**
-   * getBlogEntry - Get entries filtered by userId and optionally by date
+   * getBlogEntry - Get entries filtered by userId and optionally by date or postId
    */
   'getBlogEntry'(
     parameters?: Parameters<Paths.GetBlogEntry.PathParameters & Paths.GetBlogEntry.QueryParameters> | null,
@@ -351,7 +343,7 @@ export interface OperationMethods {
 export interface PathsDictionary {
   ['/blog/{userId}']: {
     /**
-     * getBlogEntry - Get entries filtered by userId and optionally by date
+     * getBlogEntry - Get entries filtered by userId and optionally by date or postId
      */
     'get'(
       parameters?: Parameters<Paths.GetBlogEntry.PathParameters & Paths.GetBlogEntry.QueryParameters> | null,

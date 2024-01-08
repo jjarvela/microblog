@@ -1,4 +1,7 @@
-POST http://localhost:9000/blog/300
+POST http://localhost:9000/blog/f8befd0d-8832-4a2f-9707-7c14367fa469
 Content-Type: application/json
 
 < ./addPost.json
+###
+// Get list of posts
+GET http://localhost:9000/blog/300?postId=123321

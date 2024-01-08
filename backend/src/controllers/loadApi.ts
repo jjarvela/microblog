@@ -2,9 +2,18 @@ import OpenAPIBackend from 'openapi-backend';
 import { Request, Response} from "express";
 import { Context } from 'openapi-backend';
 import * as handlers from "./routeHandlers";
+import Ajv from "ajv"
+import addFormats from "ajv-formats"
 
+// Init custom configuration for ajv validator.
+const ajv = new Ajv()
+ajv.addVocabulary(["example"]);
+addFormats(ajv)
+
+// Load Api definition and init OpenAPI with customized ajv configuration.
 export const api = new OpenAPIBackend({
-  definition: "../../api-definition/api-definition.yaml"
+  definition: "../../api-definition/api-definition.yaml",
+  customizeAjv: () => ajv,
 });
 
 
@@ -28,6 +37,9 @@ api.register("notImplemented", notImplementedHandler);
 api.register("notFound", notFound);
 api.register("validationFail", validationFailHandler);
 
-api.register("addBlogEntry",handlers.addBlogEntryHandler);
+// Blog entry handlers
+api.register("addBlogEntry",handlers.addBlogEntry);
+api.register("getBlogEntry",handlers.getBlogEntry);
+
 
 export default api
