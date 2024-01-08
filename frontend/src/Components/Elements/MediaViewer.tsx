@@ -25,23 +25,32 @@ export default function MediaViewer({
 }: MediaViewerProps) {
   const post = useContext(PostContext);
   const ids = post.media.map((item) => item.id);
+  const [activeIndex, setActiveIndex] = useState(ids.indexOf(active.id));
   const [activeMedia, setActiveMedia] = useState(active);
 
   useEffect(() => {
     isOpen && setActiveMedia(active);
+    isOpen && setActiveIndex(ids.indexOf(active.id));
+    console.log(post.media.indexOf(activeMedia));
   }, [isOpen]);
 
   function togglePreviousMedia() {
-    if (post.media && post.media.indexOf(active) > 0) {
-      const current = ids.indexOf(active.id);
-      setActiveMedia(post.media[current - 1]);
+    if (activeIndex > 0) {
+      const newIndex = activeIndex - 1;
+      console.log(newIndex);
+      setActiveIndex(newIndex);
+      setActiveMedia(post.media[newIndex]);
+      console.log(post.media.indexOf(activeMedia));
     }
   }
 
   function toggleNextMedia() {
-    if (post.media && ids.indexOf(active.id) < post.media.length - 1) {
-      const current = ids.indexOf(active.id);
-      setActiveMedia(post.media[current + 1]);
+    if (activeIndex < post.media.length - 1) {
+      const newIndex = activeIndex + 1;
+      console.log(newIndex);
+      setActiveIndex(newIndex);
+      setActiveMedia(post.media[newIndex]);
+      console.log(post.media.indexOf(activeMedia));
     }
   }
 
