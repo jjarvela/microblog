@@ -1,8 +1,8 @@
 type Media = {
-  id: string; 
+  id: string;
   source: string;
   type: string;
-}
+};
 
 type Post = {
   profileName: string;
@@ -11,8 +11,8 @@ type Post = {
   reposter?: string | undefined;
   replyingTo?: string | undefined;
   text: string;
-  media?: Array<Media> | undefined;
+  media: Array<Media>;
   reactions: number;
   tags: string[];
   time: Date;
-}
+};

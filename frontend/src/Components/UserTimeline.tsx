@@ -17,6 +17,7 @@ const UserTimeline = () => {
           reactions={42}
           tags={["#hashtag", "#longerhashtag", "#tag"]}
           time={new Date()}
+          media={[]}
           ownerOptions
         />
         <Post
@@ -25,6 +26,7 @@ const UserTimeline = () => {
           text="Hello this is my very cool post!"
           reactions={3}
           tags={["#help", "#me", "#thanks"]}
+          media={[]}
           time={new Date()}
         />
 
@@ -35,6 +37,7 @@ const UserTimeline = () => {
           text="Hello this is my very cool post!"
           reactions={3}
           tags={["#help", "#me", "#thanks"]}
+          media={[]}
           time={new Date()}
         />
 
@@ -46,6 +49,7 @@ const UserTimeline = () => {
           reactions={3}
           tags={["#nice"]}
           time={new Date()}
+          media={[]}
           ownerOptions
         />
 

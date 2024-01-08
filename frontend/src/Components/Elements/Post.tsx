@@ -9,6 +9,7 @@ import { ProfilePicture } from "./ProfilePicture";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
 import { createContext } from "react";
+import PostPin from "./PostPin";
 import { useBreakpoint } from "../../Hooks/BreakpointHook";
 
 export const PostContext = createContext<Post>({
@@ -19,7 +20,7 @@ export const PostContext = createContext<Post>({
   reactions: 0,
   tags: [],
   time: new Date(),
-  media: undefined,
+  media: [],
   reposter: undefined,
   replyingTo: undefined,
 });
@@ -31,11 +32,12 @@ type PostProps = {
   reposter?: string | undefined;
   replyingTo?: string | undefined;
   text: string;
-  media?: Array<Media> | undefined;
+  media: Array<Media>;
   reactions: number;
   tags: string[];
   time: Date;
   ownerOptions?: boolean;
+  pinnedPost?: boolean;
 };
 
 function Post({
@@ -50,6 +52,7 @@ function Post({
   reposter,
   replyingTo,
   ownerOptions,
+  pinnedPost,
 }: PostProps) {
   const { isSm } = useBreakpoint("sm");
   return (
@@ -69,6 +72,12 @@ function Post({
     >
       <div className="relative">
         <div className="timeline-box flex flex-col overflow-hidden">
+          {pinnedPost ? (
+            <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 p-2 px-6 pb-1 dark:border-white25">
+              <PostPin />
+            </div>
+          ) : null}
+
           {reposter ? (
             <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 px-6 pb-1 dark:border-white25">
               <UsernameRepost username={reposter} />
@@ -98,7 +107,7 @@ function Post({
           <div className={`flex flex-col gap-3 ${isSm ? "m-6" : "m-3"}`}>
             <div>{text}</div>
 
-            {media ? <PostMediaLayout media={media} /> : null}
+            {media.length > 0 && <PostMediaLayout media={media} />}
 
             <p className="flex flex-row flex-wrap gap-4">
               {tags.map((val, i) => (

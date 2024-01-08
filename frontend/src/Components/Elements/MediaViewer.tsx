@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProfilePicture } from "./ProfilePicture";
 import InReplyTo from "./InReplyTo";
 import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavoriteOutlineRounded";
@@ -13,26 +13,44 @@ import { PostContext } from "./Post";
 type MediaViewerProps = {
   active: Media;
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function MediaViewer({ active, refObject }: MediaViewerProps) {
+export default function MediaViewer({
+  active,
+  refObject,
+  isOpen,
+  setIsOpen,
+}: MediaViewerProps) {
   const post = useContext(PostContext);
+  const ids = post.media.map((item) => item.id);
+  const [activeIndex, setActiveIndex] = useState(ids.indexOf(active.id));
   const [activeMedia, setActiveMedia] = useState(active);
-  const [activeIndex, setActiveIndex] = useState(
-    post.media?.map((item) => item.id).indexOf(active.id) || -1,
-  );
+
+  useEffect(() => {
+    isOpen && setActiveMedia(active);
+    isOpen && setActiveIndex(ids.indexOf(active.id));
+    console.log(post.media.indexOf(activeMedia));
+  }, [isOpen]);
 
   function togglePreviousMedia() {
-    if (post.media && activeIndex > 0) {
-      setActiveMedia(post.media[activeIndex - 1]);
-      setActiveIndex(activeIndex - 1);
+    if (activeIndex > 0) {
+      const newIndex = activeIndex - 1;
+      console.log(newIndex);
+      setActiveIndex(newIndex);
+      setActiveMedia(post.media[newIndex]);
+      console.log(post.media.indexOf(activeMedia));
     }
   }
 
   function toggleNextMedia() {
-    if (post.media && activeIndex < post.media.length - 1) {
-      setActiveMedia(post.media[activeIndex + 1]);
-      setActiveIndex(activeIndex + 1);
+    if (activeIndex < post.media.length - 1) {
+      const newIndex = activeIndex + 1;
+      console.log(newIndex);
+      setActiveIndex(newIndex);
+      setActiveMedia(post.media[newIndex]);
+      console.log(post.media.indexOf(activeMedia));
     }
   }
 
@@ -49,15 +67,17 @@ export default function MediaViewer({ active, refObject }: MediaViewerProps) {
               <div className="absolute left-0 flex h-full w-full justify-between text-4xl">
                 <a
                   className="z-50 cursor-pointer self-center opacity-25  hover:opacity-70"
-                  onClick={togglePreviousMedia}
+                  onClick={() => togglePreviousMedia()}
                 >
-                  {activeIndex > 0 && <MaterialSymbolsChevronLeftRounded />}
+                  {ids.indexOf(activeMedia.id) > 0 && (
+                    <MaterialSymbolsChevronLeftRounded />
+                  )}
                 </a>
                 <a
                   className="z-50 cursor-pointer self-center opacity-25  hover:opacity-70"
-                  onClick={toggleNextMedia}
+                  onClick={() => toggleNextMedia()}
                 >
-                  {activeIndex < post.media.length - 1 && (
+                  {ids.indexOf(activeMedia.id) < post.media.length - 1 && (
                     <MaterialSymbolsChevronRightRounded />
                   )}
                 </a>
@@ -92,7 +112,10 @@ export default function MediaViewer({ active, refObject }: MediaViewerProps) {
           <Button
             class="btn-primary my-1 w-fit self-end"
             type="button"
-            onClick={() => refObject.current?.close()}
+            onClick={() => {
+              setIsOpen(false);
+              refObject.current?.close();
+            }}
           >
             <p>Close</p>
           </Button>
