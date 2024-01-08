@@ -1,6 +1,6 @@
 import Button from "./Button";
 import { ProfilePicture } from "./ProfilePicture";
-import CatBanner from "./cat-banner.jpg";
+import CatBanner from "../../../public/temp/cat-banner.jpg";
 
 type GroupProfileBannerProps = {
   groupName?: string;
