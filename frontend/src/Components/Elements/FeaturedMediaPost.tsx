@@ -8,7 +8,7 @@ export const PostContext = createContext<Post>({
   postOwner: "",
   tags: [],
   time: new Date(),
-  media: undefined,
+  media: [],
   text: "",
   reactions: 0,
 });
@@ -36,12 +36,10 @@ function FeaturedMediaPost({
     <PostContext.Provider
       value={{
         profileName,
-
         postOwner,
-
         tags,
         time,
-        media,
+        media: media || [],
         text: "", // Add a default value for text
         reactions: 0, // Add a default value for reactions
       }}

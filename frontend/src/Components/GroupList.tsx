@@ -57,7 +57,7 @@ const GroupList = () => {
           groupDescription="Jarkon ja Petrin maja"
           members={2}
           activity="-"
-          rule="1st rule: You don't speak about Buuttibois"
+          rule="1st rule: You don't speak about BuuttiBois"
         />
       </div>
     </div>
