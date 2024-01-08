@@ -16,7 +16,7 @@ const GroupList = () => {
       </div>
       <div className="flex flex-col gap-6">
         <GroupThumbnail
-          groupName="Cat lovers"
+          groupName="CatLovers"
           groupAdmin="@test"
           groupDescription="This is a test"
           members={84}

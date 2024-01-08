@@ -20,6 +20,11 @@ function GroupThumbnail({
   rule,
 }: GroupThumbnailProps) {
   const navigate = useNavigate();
+
+  function handleJoinClick() {
+    navigate(`/groups/${groupName}`, { state: { groupName } });
+  }
+
   return (
     <div className="timeline-box">
       <div className="flex justify-start gap-4">
@@ -61,7 +66,7 @@ function GroupThumbnail({
             <Button class="btn-primary">
               <small>Follow</small>
             </Button>
-            <Button class="btn-primary" onClick={() => navigate("/groups/:id")}>
+            <Button class="btn-primary" onClick={handleJoinClick}>
               <small>Join</small>
             </Button>
           </div>

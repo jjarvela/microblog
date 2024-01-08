@@ -9,6 +9,7 @@ import { ProfilePicture } from "./ProfilePicture";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
 import { createContext } from "react";
+import PostPin from "./PostPin";
 
 export const PostContext = createContext<Post>({
   profileName: "",
@@ -35,6 +36,7 @@ type PostProps = {
   tags: string[];
   time: Date;
   ownerOptions?: boolean;
+  pinnedPost?: boolean;
 };
 
 function Post({
@@ -49,6 +51,7 @@ function Post({
   reposter,
   replyingTo,
   ownerOptions,
+  pinnedPost,
 }: PostProps) {
   return (
     <PostContext.Provider
@@ -67,6 +70,12 @@ function Post({
     >
       <div className="relative">
         <div className="timeline-box flex flex-col overflow-hidden">
+          {pinnedPost ? (
+            <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 p-2 px-6 pb-1 dark:border-white25">
+              <PostPin />
+            </div>
+          ) : null}
+
           {reposter ? (
             <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 px-6 pb-1 dark:border-white25">
               <UsernameRepost username={reposter} />
