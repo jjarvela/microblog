@@ -19,7 +19,7 @@ export const PostContext = createContext<Post>({
   reactions: 0,
   tags: [],
   time: new Date(),
-  media: undefined,
+  media: [],
   reposter: undefined,
   replyingTo: undefined,
 });
@@ -31,7 +31,7 @@ type PostProps = {
   reposter?: string | undefined;
   replyingTo?: string | undefined;
   text: string;
-  media?: Array<Media> | undefined;
+  media: Array<Media>;
   reactions: number;
   tags: string[];
   time: Date;
@@ -99,7 +99,7 @@ function Post({
           <div className="m-6 flex flex-col gap-2">
             <div>{text}</div>
 
-            {media ? <PostMediaLayout media={media} /> : null}
+            {media.length > 0 && <PostMediaLayout media={media} />}
 
             <p className="flex flex-row gap-4">
               {tags.map((val, i) => (
