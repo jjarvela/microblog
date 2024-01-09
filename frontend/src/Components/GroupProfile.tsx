@@ -18,7 +18,7 @@ function GroupProfile() {
           postOwner="@testuser"
           text="That IS indeed a very cool post!"
           reactions={3}
-          tags={["#nice"]}
+          tags={["nice"]}
           time={new Date()}
           ownerOptions
           pinnedPost
@@ -36,7 +36,7 @@ function GroupProfile() {
               type: "img",
             },
           ]}
-          tags={["#twopics"]}
+          tags={["twopics"]}
           time={new Date()}
         />
 
@@ -59,7 +59,7 @@ function GroupProfile() {
             },
           ]}
           reactions={1}
-          tags={["#twopics"]}
+          tags={["twopics"]}
           time={new Date()}
         />
 
@@ -76,7 +76,7 @@ function GroupProfile() {
             },
           ]}
           reactions={1}
-          tags={["#catvid"]}
+          tags={["catvid"]}
           time={new Date()}
         />
 
@@ -105,7 +105,7 @@ function GroupProfile() {
             },
           ]}
           reactions={1}
-          tags={["#coolpics", "#myphotos"]}
+          tags={["coolpics", "myphotos"]}
           time={new Date()}
         />
       </div>

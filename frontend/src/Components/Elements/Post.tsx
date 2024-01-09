@@ -13,6 +13,7 @@ import { useBreakpoint } from "../../Hooks/BreakpointHook";
 import UserProfileInfo from "./UserProfileInfo";
 import PostModal from "./PostModal";
 import ConfirmModal from "./ConfirmModal";
+import TagList from "./TagList";
 
 export const PostContext = createContext<Post>({
   profileName: "",
@@ -114,11 +115,7 @@ function Post({
 
             {media.length > 0 && <PostMediaLayout media={media} />}
 
-            <p className="flex flex-row flex-wrap gap-4">
-              {tags.map((val, i) => (
-                <a key={i}>{val}</a>
-              ))}
-            </p>
+            <TagList tags={tags} />
             <div className="mb-3 flex flex-row justify-center gap-4 text-2xl">
               <MaterialSymbolsFavoriteOutlineRounded />
               <MaterialSymbolsShareOutline />
