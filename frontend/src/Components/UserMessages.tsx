@@ -1,70 +1,54 @@
+import React from "react";
 import ConversationThumb from "./Elements/ConversationThumb";
-import MessageBubble from "./Elements/MessageBubble";
 import TextAreaInput from "./Elements/TextAreaInput";
+import Conversation from "./Elements/Conversation";
+import MaterialSymbolsSentimentSatisfiedOutline from "./Icons/MaterialSymbolsSentimentSatisfiedOutline";
+import MaterialSymbolsAddPhotoAlternateOutlineRounded from "./Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
+import MaterialSymbolsSendRounded from "./Icons/MaterialSymbolsSendRounded";
+import Button from "./Elements/Button.tsx";
 
 const UserMessages = () => {
   return (
     <div className="mx-1 h-[94%]">
       <h2>This is the user's messaging hub</h2>
-      <div className="flex h-full w-full  flex-col lg:flex-row">
-        <div className="scrollbar-thin w-full border-b-[1px] border-solid border-black50 lg:w-[50%] lg:overflow-y-scroll lg:border-b-0 lg:border-r-[1px]">
+      <div className="flex h-full w-full  flex-col xl:flex-row">
+        <div className="scrollbar-thin w-full border-b-[1px] border-solid border-black50 xl:w-[50%] xl:overflow-y-scroll xl:border-b-0 xl:border-r-[1px]">
           <ConversationThumb
             recipientName="Test User ✨"
-            recipient="@testuser"
+            recipientHandle="@testuser"
+            readStatus={true}
           />
           <ConversationThumb
             recipientName="Fancy User"
-            recipient="@fancyuser"
+            recipientHandle="@fancyuser"
+            readStatus={false}
           />
           <ConversationThumb
             recipientName="Dickerson"
-            recipient="@dickerson99"
+            recipientHandle="@dickerson99"
+            readStatus={true}
           />
           <ConversationThumb
             recipientName="Spammer McSpamface"
-            recipient="@spamlord"
+            recipientHandle="@spamlord"
+            readStatus={true}
           />
         </div>
         <div className="flex flex-grow flex-col">
-          <div className="scrollbar-thin flex flex-grow flex-col overflow-y-scroll p-2">
-            <MessageBubble
-              text="Lorem ipsum yaddayaddayadda yy kaa koo fdkjglkdjghlkfgjhklgfjlkghjlkghfdkgjkfdlgjhlkfgjhlk"
-              time={new Date()}
-              sender={false}
-            />
-            <MessageBubble
-              text="test message"
-              time={new Date()}
-              sender={false}
-            />
-            <MessageBubble
-              text="test message"
-              time={new Date()}
-              sender={true}
-            />
-            <MessageBubble
-              text="test message"
-              time={new Date()}
-              sender={true}
-            />
-            <MessageBubble
-              text="test message"
-              time={new Date()}
-              sender={false}
-            />
-            <MessageBubble
-              text="test message"
-              time={new Date()}
-              sender={false}
-            />
-            <MessageBubble
-              text="test message"
-              time={new Date()}
-              sender={true}
-            />
-          </div>
-          <div className="border-t-[1px] border-solid border-black50 p-2 text-center">
-            <TextAreaInput class="w-[80%] " />
+          <Conversation />
+          <div className="flex flex-row justify-center gap-2 border-t-[1px] border-solid border-black50 p-2 text-center">
+            <span className="px-auto flex flex-row justify-center self-center text-xl text-black50">
+              <MaterialSymbolsSentimentSatisfiedOutline />
+              <MaterialSymbolsAddPhotoAlternateOutlineRounded />
+            </span>
+            <span className="flex-grow">
+              <TextAreaInput class="w-full" />
+            </span>
+            <span className="self-center">
+              <Button class="btn-primary aspect-square p-[0.5em] text-lg">
+                <MaterialSymbolsSendRounded />
+              </Button>
+            </span>
           </div>
         </div>
       </div>
