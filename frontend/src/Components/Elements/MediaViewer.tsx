@@ -32,26 +32,21 @@ export default function MediaViewer({
   useEffect(() => {
     isOpen && setActiveMedia(active);
     isOpen && setActiveIndex(ids.indexOf(active.id));
-    console.log(post.media.indexOf(activeMedia));
   }, [isOpen]);
 
   function togglePreviousMedia() {
     if (activeIndex > 0) {
       const newIndex = activeIndex - 1;
-      console.log(newIndex);
       setActiveIndex(newIndex);
       setActiveMedia(post.media[newIndex]);
-      console.log(post.media.indexOf(activeMedia));
     }
   }
 
   function toggleNextMedia() {
     if (activeIndex < post.media.length - 1) {
       const newIndex = activeIndex + 1;
-      console.log(newIndex);
       setActiveIndex(newIndex);
       setActiveMedia(post.media[newIndex]);
-      console.log(post.media.indexOf(activeMedia));
     }
   }
 
