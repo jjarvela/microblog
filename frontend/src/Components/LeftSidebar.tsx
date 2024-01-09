@@ -119,6 +119,7 @@ function LeftSidebar() {
           text=""
           tags={[]}
           refObject={postModal}
+          mode="post"
         />
       </div>
     </>

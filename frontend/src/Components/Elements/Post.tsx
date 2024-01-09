@@ -7,10 +7,12 @@ import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
-import { createContext } from "react";
+import { createContext, useRef } from "react";
 import PostPin from "./PostPin";
 import { useBreakpoint } from "../../Hooks/BreakpointHook";
 import UserProfileInfo from "./UserProfileInfo";
+import PostModal from "./PostModal";
+import ConfirmModal from "./ConfirmModal";
 
 export const PostContext = createContext<Post>({
   profileName: "",
@@ -55,6 +57,8 @@ function Post({
   pinnedPost,
 }: PostProps) {
   const { isSm } = useBreakpoint("sm");
+  const editModal = useRef<HTMLDialogElement>(null);
+  const deleteConfirm = useRef<HTMLDialogElement>(null);
   return (
     <PostContext.Provider
       value={{
@@ -85,7 +89,12 @@ function Post({
           ) : null}
 
           <div className="flex flex-row-reverse flex-wrap items-center gap-4">
-            <PostContextMenu class="self-start" ownerOptions={ownerOptions} />
+            <PostContextMenu
+              class="self-start"
+              ownerOptions={ownerOptions}
+              editPostCallback={() => editModal.current?.showModal()}
+              deletePostCallback={() => deleteConfirm.current?.showModal()}
+            />
             <p className="mr-3 self-start">{time.toLocaleString()}</p>
             <UserProfileInfo
               profileImage={profileImage}
@@ -125,6 +134,22 @@ function Post({
           </div>
         </div>
       </div>
+      <PostModal
+        text={text}
+        tags={tags}
+        profileName={profileName}
+        username={postOwner}
+        profileImage={profileImage}
+        refObject={editModal}
+        mode="edit"
+      />
+      <ConfirmModal
+        message="Are you sure you want to delete this post?"
+        cancelText="Cancel"
+        confirmText="Delete"
+        confirmCallback={() => console.log("Post delete triggered")}
+        refObject={deleteConfirm}
+      />
     </PostContext.Provider>
   );
 }

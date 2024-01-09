@@ -13,6 +13,7 @@ type NewPostProps = {
   text: string;
   tags: string[];
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
+  mode: "post" | "edit";
 };
 
 function PostModal({
@@ -22,6 +23,7 @@ function PostModal({
   text,
   tags,
   refObject,
+  mode,
 }: NewPostProps) {
   const [newTags, setNewTags] = useState<string[]>(tags);
   return (
@@ -82,7 +84,8 @@ function PostModal({
               Cancel
             </Button>
             <Button class="btn-primary" type="submit">
-              Post
+              {mode === "post" && "Post"}
+              {mode === "edit" && "Edit"}
             </Button>
           </div>
         </form>
