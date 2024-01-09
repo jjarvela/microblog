@@ -85,26 +85,24 @@ export default function MediaViewer({
             )
           }
           {activeMedia.type === "img" ? (
-            <img
-              id={activeMedia.id}
-              src={activeMedia.source}
-              style={{
-                maxHeight: "100%",
-                maxWidth: "100%",
-                margin: "auto",
-              }}
-            />
+            <>
+              <div
+                className="pointer-events-none absolute h-full w-full bg-cover bg-center opacity-50"
+                style={{ backgroundImage: `url(${activeMedia.source})` }}
+              />
+              <img
+                id={activeMedia.id}
+                src={activeMedia.source}
+                className="relative left-0 top-0 z-10 h-full w-full object-contain backdrop-blur-2xl"
+              />
+            </>
           ) : (
             <video
               id={activeMedia.id}
               src={activeMedia.source}
               controls
               muted
-              style={{
-                maxHeight: "100%",
-                maxWidth: "100%",
-                margin: "auto",
-              }}
+              className="h-full w-full object-contain"
             />
           )}
         </div>

@@ -65,7 +65,7 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
   };
 
   return (
-    <div className=" m-auto h-[25rem] w-[95%] overflow-hidden rounded-lg border-[1px] border-solid border-black25 dark:border-black75">
+    <div className=" m-auto h-[15rem] w-[95%] overflow-hidden rounded-lg border-[1px] border-solid border-black25 dark:border-black75 mid:h-[25rem]">
       {renderLayout(media)}
     </div>
   );
