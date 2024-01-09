@@ -1,7 +1,9 @@
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
+import { useBreakpoint } from "../../Hooks/BreakpointHook";
 
 function TopbarLink(props: { to: string; text: string; icon?: ReactNode }) {
+  const { isSm } = useBreakpoint("sm");
   return (
     <NavLink
       to={props.to}
@@ -25,7 +27,7 @@ function TopbarLink(props: { to: string; text: string; icon?: ReactNode }) {
               "
     >
       <span className="text-xl">{props.icon}</span>
-      <h5>{props.text}</h5>
+      {isSm && <h5>{props.text}</h5>}
     </NavLink>
   );
 }

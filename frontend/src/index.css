@@ -96,10 +96,13 @@
     scrollbar-width: thin;
   }
   .scrollbar-thin::-webkit-scrollbar {
-    @apply w-2 bg-transparent;
+    @apply h-2 w-2 bg-transparent;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
     @apply rounded-full bg-black50;
+  }
+  .scrollbar-thin::-webkit-scrollbar-corner {
+    @apply bg-transparent;
   }
   .scrollbar-extra-margin::-webkit-scrollbar-track {
     @apply m-3;

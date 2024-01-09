@@ -5,11 +5,12 @@ import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
 import PhFireSimpleBold from "../Icons/PhFireSimpleBold";
 import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
-import { ProfilePicture } from "./ProfilePicture";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
 import { createContext } from "react";
 import PostPin from "./PostPin";
+import { useBreakpoint } from "../../Hooks/BreakpointHook";
+import UserProfileInfo from "./UserProfileInfo";
 
 export const PostContext = createContext<Post>({
   profileName: "",
@@ -53,6 +54,7 @@ function Post({
   ownerOptions,
   pinnedPost,
 }: PostProps) {
+  const { isSm } = useBreakpoint("sm");
   return (
     <PostContext.Provider
       value={{
@@ -82,12 +84,14 @@ function Post({
             </div>
           ) : null}
 
-          <div className="flex flex-row items-center gap-4">
-            <ProfilePicture width={80} image={profileImage} />
-            <h5>{profileName}</h5>
-            <p className="text-black50">{postOwner}</p>
-            <p className="ml-auto mr-3 self-start">{time.toLocaleString()}</p>
+          <div className="flex flex-row-reverse flex-wrap items-center gap-4">
             <PostContextMenu class="self-start" ownerOptions={ownerOptions} />
+            <p className="mr-3 self-start">{time.toLocaleString()}</p>
+            <UserProfileInfo
+              profileImage={profileImage}
+              profileName={profileName}
+              profileHandle={postOwner}
+            />
           </div>
 
           {replyingTo ? (
@@ -96,17 +100,17 @@ function Post({
             </div>
           ) : null}
 
-          <div className="m-6 flex flex-col gap-2">
+          <div className={`flex flex-col gap-3 ${isSm ? "m-6" : "m-3"}`}>
             <div>{text}</div>
 
             {media.length > 0 && <PostMediaLayout media={media} />}
 
-            <p className="flex flex-row gap-4">
+            <p className="flex flex-row flex-wrap gap-4">
               {tags.map((val, i) => (
                 <a key={i}>{val}</a>
               ))}
             </p>
-            <div className="flex flex-row justify-center gap-4 text-2xl">
+            <div className="mb-3 flex flex-row justify-center gap-4 text-2xl">
               <MaterialSymbolsFavoriteOutlineRounded />
               <MaterialSymbolsShareOutline />
               <MaterialSymbolsChatOutlineRounded />
