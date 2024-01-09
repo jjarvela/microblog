@@ -5,6 +5,8 @@ info:
 servers:
   - url: https://api.microblog.fi
     description: Microblogi palvelun rajapintakuvaus
+  - url: http://localhost:9000
+    description: Microblogi testiympäristö
 
 components:
   responses:
@@ -15,13 +17,13 @@ components:
     blogEntry:
       description: Blog entry that hasn't assigned an id.
       type: object
+      required:
+        - text
+        - hashtags
       properties:
         date:
           type: string
           format: date
-        title:
-          type: string
-          example: Blog entry title
         text:
           type: string
           example: Blog entry main text
@@ -40,9 +42,6 @@ components:
         date:
           type: string
           format: date
-        header:
-          type: string
-          example: Blog entry header
         text:
           type: string
           example: Blog entry main text
@@ -189,7 +188,7 @@ paths:
       operationId: getBlogEntry
       tags:
         - blog
-      summary: Get entries filtered by userId and optionally by date
+      summary: Get entries filtered by userId and optionally by date or postId
       parameters:
         - in: path
           name: userId
@@ -204,6 +203,10 @@ paths:
           in: query
           schema:
             $ref: "#/components/schemas/date"
+        - name: postId
+          in: query
+          schema:
+            type: integer
 
       responses:
         "200":
@@ -228,6 +231,7 @@ paths:
           in: path
           schema:
             type: string
+            format: uuid
           required: true
       requestBody:
         content:
