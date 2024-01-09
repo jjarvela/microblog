@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 
 const tempTags = [
-  "#trending-tag1",
-  "#trending-tag2",
-  "#trending-tag3",
-  "#trending-tag4",
-  "#trending-tag5",
-  "#trending-tag6",
-  "#trending-tag7",
-  "#trending-tag8",
-  "#trending-tag9",
+  "trending-tag1",
+  "trending-tag2",
+  "trending-tag3",
+  "trending-tag4",
+  "trending-tag5",
+  "trending-tag6",
+  "trending-tag7",
+  "trending-tag8",
+  "trending-tag9",
 ];
 
 function RightSidebar() {
@@ -20,7 +20,7 @@ function RightSidebar() {
         {tempTags.map((val, i) => (
           <li key={i} className="border-b py-2 last:border-b-0">
             <Link className="link" to={""}>
-              {val}
+              #{val}
             </Link>
           </li>
         ))}

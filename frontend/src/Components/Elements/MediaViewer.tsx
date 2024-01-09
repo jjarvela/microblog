@@ -9,6 +9,7 @@ import { MaterialSymbolsChevronLeftRounded } from "../Icons/MaterialSymbolsChevr
 import { MaterialSymbolsChevronRightRounded } from "../Icons/MaterialSymbolsChevronRightRounded";
 import { PostContext } from "./Post";
 import UserProfileInfo from "./UserProfileInfo";
+import TagList from "./TagList";
 
 type MediaViewerProps = {
   active: Media;
@@ -31,26 +32,21 @@ export default function MediaViewer({
   useEffect(() => {
     isOpen && setActiveMedia(active);
     isOpen && setActiveIndex(ids.indexOf(active.id));
-    console.log(post.media.indexOf(activeMedia));
   }, [isOpen]);
 
   function togglePreviousMedia() {
     if (activeIndex > 0) {
       const newIndex = activeIndex - 1;
-      console.log(newIndex);
       setActiveIndex(newIndex);
       setActiveMedia(post.media[newIndex]);
-      console.log(post.media.indexOf(activeMedia));
     }
   }
 
   function toggleNextMedia() {
     if (activeIndex < post.media.length - 1) {
       const newIndex = activeIndex + 1;
-      console.log(newIndex);
       setActiveIndex(newIndex);
       setActiveMedia(post.media[newIndex]);
-      console.log(post.media.indexOf(activeMedia));
     }
   }
 
@@ -137,11 +133,7 @@ export default function MediaViewer({
             <div className="m-6 flex flex-col gap-2">
               <div>{post.text}</div>
 
-              <p className="flex flex-row gap-4">
-                {post.tags.map((val, i) => (
-                  <a key={i}>{val}</a>
-                ))}
-              </p>
+              <TagList tags={post.tags} />
               <div className="flex flex-row justify-center gap-4 text-2xl">
                 <MaterialSymbolsFavoriteOutlineRounded />
                 <MaterialSymbolsShareOutline />

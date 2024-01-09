@@ -15,7 +15,7 @@ const UserTimeline = () => {
           postOwner="@testuser"
           text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus accusantium, repellendus tempore minima sit quam cum architecto dolores excepturi iure recusandae! Voluptatibus suscipit cupiditate tenetur eveniet deserunt consequatur tempore distinctio."
           reactions={42}
-          tags={["#hashtag", "#longerhashtag", "#tag"]}
+          tags={["hashtag", "longerhashtag", "tag"]}
           time={new Date()}
           media={[]}
           ownerOptions
@@ -25,7 +25,7 @@ const UserTimeline = () => {
           postOwner="@anotheruser"
           text="Hello this is my very cool post!"
           reactions={3}
-          tags={["#help", "#me", "#thanks"]}
+          tags={["help", "me", "thanks"]}
           media={[]}
           time={new Date()}
         />
@@ -36,7 +36,7 @@ const UserTimeline = () => {
           reposter="@testuser"
           text="Hello this is my very cool post!"
           reactions={3}
-          tags={["#help", "#me", "#thanks"]}
+          tags={["help", "me", "thanks"]}
           media={[]}
           time={new Date()}
         />
@@ -47,7 +47,7 @@ const UserTimeline = () => {
           replyingTo="@anotheruser"
           text="That IS indeed a very cool post!"
           reactions={3}
-          tags={["#nice"]}
+          tags={["nice"]}
           time={new Date()}
           media={[]}
           ownerOptions
@@ -66,7 +66,7 @@ const UserTimeline = () => {
             },
           ]}
           reactions={1}
-          tags={["#catvid"]}
+          tags={["catvid"]}
           time={new Date()}
         />
 
@@ -89,7 +89,7 @@ const UserTimeline = () => {
             },
           ]}
           reactions={1}
-          tags={["#twopics"]}
+          tags={["twopics"]}
           time={new Date()}
         />
 
@@ -118,7 +118,7 @@ const UserTimeline = () => {
             },
           ]}
           reactions={1}
-          tags={["#coolpics", "#myphotos"]}
+          tags={["coolpics", "myphotos"]}
           time={new Date()}
         />
 
@@ -154,7 +154,7 @@ const UserTimeline = () => {
             },
           ]}
           reactions={1}
-          tags={["#fourpics"]}
+          tags={["fourpics"]}
           time={new Date()}
         />
       </div>
