@@ -2,6 +2,7 @@ import PostMediaLayout from "./PostMediaLayout";
 import PostContextMenu from "./PostContextMenu";
 import { createContext } from "react";
 import PostPin from "./PostPin";
+import TagList from "./TagList";
 
 export const PostContext = createContext<Post>({
   profileName: "",
@@ -62,11 +63,7 @@ function FeaturedMediaPost({
 
         {media ? <PostMediaLayout media={media} /> : null}
 
-        <p className="flex flex-row gap-4">
-          {tags.map((val, i) => (
-            <a key={i}>{val}</a>
-          ))}
-        </p>
+        <TagList tags={tags} />
       </div>
     </PostContext.Provider>
   );

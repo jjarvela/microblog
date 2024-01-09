@@ -9,11 +9,15 @@ import MaterialSymbolsMenuRounded from "../Icons/MaterialSymbolsMenuRounded";
 type PostContextMenuProps = {
   class?: string;
   ownerOptions?: boolean;
+  editPostCallback?: () => void;
+  deletePostCallback?: () => void;
 };
 
 function PostContextMenu({
   class: classAdd,
   ownerOptions,
+  editPostCallback,
+  deletePostCallback,
 }: PostContextMenuProps) {
   const [showMenu, setShowMenu] = useState(false);
   return (
@@ -24,7 +28,8 @@ function PostContextMenu({
           onClick={() => setShowMenu(!showMenu)}
           onBlur={(e) => {
             if (!e.relatedTarget) setShowMenu(false);
-            else e.target.focus(); // Recapture focus to keep this onBlur working.
+            else if (document.activeElement === e.target)
+              e.target.focus({ preventScroll: true }); // Recapture focus to keep this onBlur working.
           }}
           tabIndex={0}
         >
@@ -37,8 +42,12 @@ function PostContextMenu({
                 <>
                   {/* TODO: Once clicked, buttons should hide the dropdown menu and do their functionality. */}
                   <Link
-                    to={"./edit"}
+                    to={""}
                     className="context-dropdown flex flex-row items-center gap-1 border-b border-black50 px-3 py-2 last:border-0 hover:bg-black25 dark:hover:bg-white25"
+                    onClick={() => {
+                      if (editPostCallback) editPostCallback();
+                      setShowMenu(false);
+                    }}
                   >
                     <MaterialSymbolsEditOutlineRounded />
                     Edit
@@ -46,6 +55,10 @@ function PostContextMenu({
                   <Link
                     to={""}
                     className="flex flex-row items-center gap-1 border-b border-black50 px-3 py-2 last:border-0 hover:bg-black25 dark:hover:bg-white25"
+                    onClick={() => {
+                      if (deletePostCallback) deletePostCallback();
+                      setShowMenu(false);
+                    }}
                   >
                     <MaterialSymbolsDeleteForeverOutlineRounded />
                     Delete
