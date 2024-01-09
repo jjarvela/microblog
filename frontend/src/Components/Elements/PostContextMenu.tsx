@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { MdiDotsHorizontal } from "../Icons/MdiThreeDots";
 import { useState } from "react";
 import MaterialSymbolsEditOutlineRounded from "../Icons/MaterialSymbolsEditOutlineRounded";
 import MaterialSymbolsDeleteForeverOutlineRounded from "../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
 import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
 import MaterialSymbolsFlagRounded from "../Icons/MaterialSymbolsFlagRounded";
+import MaterialSymbolsMenuRounded from "../Icons/MaterialSymbolsMenuRounded";
 
 type PostContextMenuProps = {
   class?: string;
@@ -28,11 +28,11 @@ function PostContextMenu({
           }}
           tabIndex={0}
         >
-          <MdiDotsHorizontal />
+          <MaterialSymbolsMenuRounded />
         </button>
         {showMenu && (
           <div className="context-dropdown" tabIndex={-1}>
-            <div className="absolute z-10 flex -translate-x-[60%] flex-col rounded-md border border-black50 bg-white dark:bg-black">
+            <div className="absolute z-10 flex -translate-x-[60%] flex-col rounded-md border border-black50 bg-white drop-shadow-md dark:bg-black">
               {ownerOptions && (
                 <>
                   {/* TODO: Once clicked, buttons should hide the dropdown menu and do their functionality. */}

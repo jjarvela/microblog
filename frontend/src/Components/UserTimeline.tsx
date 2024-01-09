@@ -78,13 +78,13 @@ const UserTimeline = () => {
             {
               id: "32j423j4",
               source:
-                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg?auto=compress&cs=tinysrgb",
+                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
               type: "img",
             },
             {
               id: "1434j4",
               source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
               type: "img",
             },
           ]}
@@ -101,13 +101,13 @@ const UserTimeline = () => {
             {
               id: "32j423j4",
               source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
               type: "img",
             },
             {
               id: "1434j4",
               source:
-                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg?auto=compress&cs=tinysrgb",
+                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
               type: "img",
             },
             {
@@ -137,7 +137,7 @@ const UserTimeline = () => {
             {
               id: "32j423j4",
               source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
               type: "img",
             },
             {
