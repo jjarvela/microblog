@@ -146,7 +146,21 @@ function Post({
         confirmText="Delete"
         confirmCallback={() => console.log("Post delete triggered")}
         refObject={deleteConfirm}
-      />
+      >
+        <div className="flex flex-col gap-4">
+          <p
+            className="overflow-hidden italic opacity-75"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 4,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            {text}
+          </p>
+          <TagList tags={tags} class="italic" />
+        </div>
+      </ConfirmModal>
     </PostContext.Provider>
   );
 }

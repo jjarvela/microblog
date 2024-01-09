@@ -32,14 +32,16 @@ function PostModal({
       className="rounded-xl border border-black50 bg-white p-8 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50 dark:bg-black dark:text-white"
     >
       <div className="flex flex-col gap-6">
-        <div className="flex flex-row items-center gap-4">
-          <h3>Post to</h3>
-          <UserProfileInfo
-            profileImage={profileImage}
-            profileName={profileName}
-            profileHandle={username}
-          />
-        </div>
+        {mode === "post" && (
+          <div className="flex flex-row items-center gap-4">
+            <h3>Post to</h3>
+            <UserProfileInfo
+              profileImage={profileImage}
+              profileName={profileName}
+              profileHandle={username}
+            />
+          </div>
+        )}
         <form
           className="flex flex-col gap-6"
           onSubmit={(e) => {

@@ -1,6 +1,4 @@
-import { useContext } from "react";
 import Button from "./Button";
-import { PostContext } from "./Post";
 
 type ConfirmModalProps = {
   message: string;
@@ -8,6 +6,7 @@ type ConfirmModalProps = {
   cancelText: string;
   confirmCallback: (parameter?: unknown) => void;
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
+  children?: React.ReactNode;
 };
 
 function ConfirmModal({
@@ -16,8 +15,8 @@ function ConfirmModal({
   cancelText,
   confirmCallback,
   refObject,
+  children,
 }: ConfirmModalProps) {
-  const post = useContext(PostContext);
   return (
     <dialog
       ref={refObject}
@@ -25,16 +24,7 @@ function ConfirmModal({
     >
       <div className="flex max-w-md flex-col gap-8">
         <h4 className="text-center">{message}</h4>
-        <p
-          className="overflow-hidden italic opacity-75"
-          style={{
-            display: "-webkit-box",
-            WebkitLineClamp: 4,
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {post.text}
-        </p>
+        {children}
         <div className="flex h-full flex-row justify-around gap-4">
           <Button
             onClick={() => refObject.current?.close()}
@@ -42,7 +32,13 @@ function ConfirmModal({
           >
             {cancelText}
           </Button>
-          <Button onClick={() => confirmCallback()} class="btn-primary">
+          <Button
+            onClick={() => {
+              confirmCallback();
+              refObject.current?.close();
+            }}
+            class="btn-primary"
+          >
             {confirmText}
           </Button>
         </div>

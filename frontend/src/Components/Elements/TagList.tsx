@@ -1,11 +1,11 @@
 type TagListProps = {
   tags: string[];
-  style?: string;
+  class?: string;
 };
 
-function TagList({ tags, style }: TagListProps) {
+function TagList({ tags, class: classList }: TagListProps) {
   return (
-    <p className={"flex flex-row flex-wrap gap-x-4 gap-y-2" + " " + style}>
+    <p className={"flex flex-row flex-wrap gap-x-4 gap-y-2" + " " + classList}>
       {tags.map((val, i) => (
         <a key={i}>#{val}</a>
       ))}
