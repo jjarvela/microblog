@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Button from "./Button";
-import { ProfilePicture } from "./ProfilePicture";
 import TagInput from "./TagInput";
 import TextAreaInput from "./TextAreaInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
 import TextInput from "./TextInput";
+import UserProfileInfo from "./UserProfileInfo";
 
 type NewPostProps = {
   profileName: string;
@@ -32,9 +32,11 @@ function PostModal({
       <div className="flex flex-col gap-6">
         <div className="flex flex-row items-center gap-4">
           <h3>Post to</h3>
-          <ProfilePicture width={80} image={profileImage} />
-          <h5>{profileName}</h5>
-          <p className="text-black50">{username}</p>
+          <UserProfileInfo
+            profileImage={profileImage}
+            profileName={profileName}
+            profileHandle={username}
+          />
         </div>
         <form
           className="flex flex-col gap-6"

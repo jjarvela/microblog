@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { ProfilePicture } from "./Elements/ProfilePicture";
 import Button from "./Elements/Button";
 import TextAreaInput from "./Elements/TextAreaInput";
 import TagInput from "./Elements/TagInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "./Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
 import InReplyTo from "./Elements/InReplyTo";
+import UserProfileInfo from "./Elements/UserProfileInfo";
 
 type PostCommentFormProps = {
   profileName: string;
@@ -25,9 +25,12 @@ function PostCommentForm({
   return (
     <div className="timeline-box mt-4 flex flex-col">
       <div className="mb-4 flex flex-row items-center gap-4">
-        <ProfilePicture width={80} image={profileImage} />
         <h5>Commenting as</h5>
-        <p className="text-black50">{username}</p>
+        <UserProfileInfo
+          profileImage={profileImage}
+          profileName={profileName}
+          profileHandle={username}
+        />
       </div>
       <InReplyTo username={profileName} />
       <form className="mt-4 flex flex-col gap-4">

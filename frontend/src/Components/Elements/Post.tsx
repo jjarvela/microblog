@@ -5,12 +5,12 @@ import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
 import PhFireSimpleBold from "../Icons/PhFireSimpleBold";
 import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
-import { ProfilePicture } from "./ProfilePicture";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
 import { createContext } from "react";
 import PostPin from "./PostPin";
 import { useBreakpoint } from "../../Hooks/BreakpointHook";
+import UserProfileInfo from "./UserProfileInfo";
 
 export const PostContext = createContext<Post>({
   profileName: "",
@@ -87,15 +87,11 @@ function Post({
           <div className="flex flex-row-reverse flex-wrap items-center gap-4">
             <PostContextMenu class="self-start" ownerOptions={ownerOptions} />
             <p className="mr-3 self-start">{time.toLocaleString()}</p>
-            <div className="mr-auto flex flex-row flex-wrap items-center gap-4">
-              <div className="mx-auto">
-                <ProfilePicture width={80} image={profileImage} />
-              </div>
-              <div className={"mx-auto flex flex-col"}>
-                <h5>{profileName}</h5>
-                <p className="text-black50">{postOwner}</p>
-              </div>
-            </div>
+            <UserProfileInfo
+              profileImage={profileImage}
+              profileName={profileName}
+              profileHandle={postOwner}
+            />
           </div>
 
           {replyingTo ? (
