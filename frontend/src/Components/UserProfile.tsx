@@ -19,8 +19,8 @@ export const UserContext = createContext<UserWithFollows>({
 });
 
 const mockUserData: UserWithFollows = {
-  userName: "Avid Microblogger",
-  screenName: "@theblogger",
+  userName: "@theblogger",
+  screenName: "Avid Microblogger",
   profileImage: "",
   location: "Finland",
   email: "theblogger@email.com",
@@ -33,7 +33,9 @@ const mockUserData: UserWithFollows = {
 function UserProfile() {
   return (
     <UserContext.Provider value={mockUserData}>
-      <UserProfileBanner />
+      <div>
+        <UserProfileBanner bannerImage="https://images.pexels.com/photos/38326/pexels-photo-38326.jpeg" />
+      </div>
     </UserContext.Provider>
   );
 }
