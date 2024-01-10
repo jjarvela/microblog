@@ -4,17 +4,28 @@ type UserProfileInfoProps = {
   profileImage?: string;
   profileName: string;
   profileHandle: string;
+  profileImageSize?: number;
+  class?: string;
 };
 
 function UserProfileInfo({
   profileImage,
   profileName,
   profileHandle,
+  profileImageSize,
+  class: classAdd,
 }: UserProfileInfoProps) {
   return (
-    <div className="mr-auto flex flex-row flex-wrap items-center gap-4">
+    <div
+      className={
+        "mr-auto flex flex-row flex-wrap items-center gap-4" + " " + classAdd
+      }
+    >
       <div className="mx-auto">
-        <ProfilePicture width={80} image={profileImage} />
+        <ProfilePicture
+          width={profileImageSize ? profileImageSize : 80}
+          image={profileImage}
+        />
       </div>
       <div className={"mx-auto flex flex-col"}>
         <h5>{profileName}</h5>
