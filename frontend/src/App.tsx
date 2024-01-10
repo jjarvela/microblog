@@ -20,7 +20,7 @@ const UserLayout = () => {
       <Header />
       <div className="flex h-full w-full flex-row overflow-hidden">
         <LeftSidebar />
-        <main className="scrollbar-thin h-full w-full overflow-y-scroll pb-4">
+        <main className="scrollbar-thin h-full w-full overflow-y-auto pb-4">
           <Outlet />
         </main>
         <RightSidebar />
