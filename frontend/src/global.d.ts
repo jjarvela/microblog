@@ -16,3 +16,13 @@ type Post = {
   tags: string[];
   time: Date;
 };
+
+type User = {
+  userName: string;
+  screenName: string;
+  profileImage?: string;
+  location?: string;
+  email?: string;
+  joinDate?: Date;
+  birthDate?: Date;
+};
