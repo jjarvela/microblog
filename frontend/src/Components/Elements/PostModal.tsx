@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Button from "./Button";
-import { ProfilePicture } from "./ProfilePicture";
 import TagInput from "./TagInput";
 import TextAreaInput from "./TextAreaInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
 import TextInput from "./TextInput";
+import UserProfileInfo from "./UserProfileInfo";
 
 type NewPostProps = {
   profileName: string;
@@ -13,6 +13,7 @@ type NewPostProps = {
   text: string;
   tags: string[];
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
+  mode: "post" | "edit";
 };
 
 function PostModal({
@@ -22,6 +23,7 @@ function PostModal({
   text,
   tags,
   refObject,
+  mode,
 }: NewPostProps) {
   const [newTags, setNewTags] = useState<string[]>(tags);
   return (
@@ -30,12 +32,16 @@ function PostModal({
       className="rounded-xl border border-black50 bg-white p-8 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50 dark:bg-black dark:text-white"
     >
       <div className="flex flex-col gap-6">
-        <div className="flex flex-row items-center gap-4">
-          <h3>Post to</h3>
-          <ProfilePicture width={80} image={profileImage} />
-          <h5>{profileName}</h5>
-          <p className="text-black50">{username}</p>
-        </div>
+        {mode === "post" && (
+          <div className="flex flex-row items-center gap-4">
+            <h3>Post to</h3>
+            <UserProfileInfo
+              profileImage={profileImage}
+              profileName={profileName}
+              profileHandle={username}
+            />
+          </div>
+        )}
         <form
           className="flex flex-col gap-6"
           onSubmit={(e) => {
@@ -80,7 +86,8 @@ function PostModal({
               Cancel
             </Button>
             <Button class="btn-primary" type="submit">
-              Post
+              {mode === "post" && "Post"}
+              {mode === "edit" && "Edit"}
             </Button>
           </div>
         </form>

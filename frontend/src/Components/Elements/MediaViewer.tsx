@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import { ProfilePicture } from "./ProfilePicture";
+import { useContext, useEffect, useState } from "react";
 import InReplyTo from "./InReplyTo";
 import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavoriteOutlineRounded";
 import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
@@ -9,30 +8,45 @@ import Button from "./Button";
 import { MaterialSymbolsChevronLeftRounded } from "../Icons/MaterialSymbolsChevronLeftRounded";
 import { MaterialSymbolsChevronRightRounded } from "../Icons/MaterialSymbolsChevronRightRounded";
 import { PostContext } from "./Post";
+import UserProfileInfo from "./UserProfileInfo";
+import TagList from "./TagList";
 
 type MediaViewerProps = {
   active: Media;
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function MediaViewer({ active, refObject }: MediaViewerProps) {
+export default function MediaViewer({
+  active,
+  refObject,
+  isOpen,
+  setIsOpen,
+}: MediaViewerProps) {
   const post = useContext(PostContext);
+  const ids = post.media.map((item) => item.id);
+  const [activeIndex, setActiveIndex] = useState(ids.indexOf(active.id));
   const [activeMedia, setActiveMedia] = useState(active);
-  const [activeIndex, setActiveIndex] = useState(
-    post.media?.map((item) => item.id).indexOf(active.id) || -1,
-  );
+
+  useEffect(() => {
+    isOpen && setActiveMedia(active);
+    isOpen && setActiveIndex(ids.indexOf(active.id));
+  }, [isOpen]);
 
   function togglePreviousMedia() {
-    if (post.media && activeIndex > 0) {
-      setActiveMedia(post.media[activeIndex - 1]);
-      setActiveIndex(activeIndex - 1);
+    if (activeIndex > 0) {
+      const newIndex = activeIndex - 1;
+      setActiveIndex(newIndex);
+      setActiveMedia(post.media[newIndex]);
     }
   }
 
   function toggleNextMedia() {
-    if (post.media && activeIndex < post.media.length - 1) {
-      setActiveMedia(post.media[activeIndex + 1]);
-      setActiveIndex(activeIndex + 1);
+    if (activeIndex < post.media.length - 1) {
+      const newIndex = activeIndex + 1;
+      setActiveIndex(newIndex);
+      setActiveMedia(post.media[newIndex]);
     }
   }
 
@@ -49,15 +63,17 @@ export default function MediaViewer({ active, refObject }: MediaViewerProps) {
               <div className="absolute left-0 flex h-full w-full justify-between text-4xl">
                 <a
                   className="z-50 cursor-pointer self-center opacity-25  hover:opacity-70"
-                  onClick={togglePreviousMedia}
+                  onClick={() => togglePreviousMedia()}
                 >
-                  {activeIndex > 0 && <MaterialSymbolsChevronLeftRounded />}
+                  {ids.indexOf(activeMedia.id) > 0 && (
+                    <MaterialSymbolsChevronLeftRounded />
+                  )}
                 </a>
                 <a
                   className="z-50 cursor-pointer self-center opacity-25  hover:opacity-70"
-                  onClick={toggleNextMedia}
+                  onClick={() => toggleNextMedia()}
                 >
-                  {activeIndex < post.media.length - 1 && (
+                  {ids.indexOf(activeMedia.id) < post.media.length - 1 && (
                     <MaterialSymbolsChevronRightRounded />
                   )}
                 </a>
@@ -65,45 +81,48 @@ export default function MediaViewer({ active, refObject }: MediaViewerProps) {
             )
           }
           {activeMedia.type === "img" ? (
-            <img
-              id={activeMedia.id}
-              src={activeMedia.source}
-              style={{
-                maxHeight: "100%",
-                maxWidth: "100%",
-                margin: "auto",
-              }}
-            />
+            <>
+              <div
+                className="pointer-events-none absolute h-full w-full bg-cover bg-center opacity-50"
+                style={{ backgroundImage: `url(${activeMedia.source})` }}
+              />
+              <img
+                id={activeMedia.id}
+                src={activeMedia.source}
+                className="relative left-0 top-0 z-10 h-full w-full object-contain backdrop-blur-2xl"
+              />
+            </>
           ) : (
             <video
               id={activeMedia.id}
               src={activeMedia.source}
               controls
               muted
-              style={{
-                maxHeight: "100%",
-                maxWidth: "100%",
-                margin: "auto",
-              }}
+              className="h-full w-full object-contain"
             />
           )}
         </div>
-        <div className="flex h-full flex-col bg-white px-3 py-1 dark:bg-black">
+        <div className="flex h-full flex-col gap-4 bg-white px-3 py-1 dark:bg-black">
           <Button
             class="btn-primary my-1 w-fit self-end"
             type="button"
-            onClick={() => refObject.current?.close()}
+            onClick={() => {
+              setIsOpen(false);
+              refObject.current?.close();
+            }}
           >
             <p>Close</p>
           </Button>
           <div className="mx-1 border-b-2 border-black25 dark:border-white25">
-            <div className="flex flex-row items-center gap-4">
-              <ProfilePicture width={80} image={post.profileImage} />
-              <h5>{post.profileName}</h5>
-              <p className="text-black50">{post.postOwner}</p>
-              <small className="ml-auto mr-3 self-start">
+            <div className="flex flex-col items-center gap-4">
+              <small className="text-center">
                 {post.time.toLocaleString()}
               </small>
+              <UserProfileInfo
+                profileImage={post.profileImage}
+                profileName={post.profileName}
+                profileHandle={post.postOwner}
+              />
             </div>
             {post.replyingTo ? (
               <div className="-mx-3 mt-4 flex flex-row justify-start border-y border-black25 px-4 py-4 dark:border-white25">
@@ -114,11 +133,7 @@ export default function MediaViewer({ active, refObject }: MediaViewerProps) {
             <div className="m-6 flex flex-col gap-2">
               <div>{post.text}</div>
 
-              <p className="flex flex-row gap-4">
-                {post.tags.map((val, i) => (
-                  <a key={i}>{val}</a>
-                ))}
-              </p>
+              <TagList tags={post.tags} />
               <div className="flex flex-row justify-center gap-4 text-2xl">
                 <MaterialSymbolsFavoriteOutlineRounded />
                 <MaterialSymbolsShareOutline />

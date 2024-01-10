@@ -41,7 +41,7 @@ function TagInput({
   return (
     <div
       className={
-        "relative flex cursor-text resize-none flex-row flex-wrap items-baseline gap-1 rounded-xl border border-black50 bg-white p-2 outline-1 focus-within:border-primary focus-within:shadow-[0px_0px_5px_2px_var()] focus-within:shadow-primary focus-within:outline-none hover:border-black75 focus-within:hover:border-primary dark:bg-black dark:hover:border-black25" +
+        "relative flex cursor-text resize-none flex-row flex-wrap items-baseline gap-1 rounded-xl border border-black50 bg-white p-2 outline-1 focus-within:border-primary focus-within:shadow-[0px_0px_5px_2px_var()] focus-within:shadow-primary focus-within:outline-none hover:border-black75 focus-within:hover:border-primary hover:focus-within:border-black75 dark:bg-black dark:hover:border-black25 dark:hover:focus-within:border-black25" +
         " " +
         classAdd
       }

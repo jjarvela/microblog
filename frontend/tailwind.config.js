@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from 'tailwindcss/defaultTheme'
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -54,6 +56,11 @@ export default {
         'mid': { raw: '(min-height: 800px)'},
         'tall': { raw: '(min-height: 1080px)' },
       }
+    },
+    // Adding smaller breakpoints has to be done this way. https://tailwindcss.com/docs/screens#adding-smaller-breakpoints
+    screens: {
+      'xs': '400px',
+      ...defaultTheme.screens,
     }
   },
   plugins: [],
