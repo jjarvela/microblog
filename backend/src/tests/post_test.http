@@ -1,0 +1,4 @@
+POST http://localhost:9000/blog/300
+Content-Type: application/json
+
+< ./addPost.json
