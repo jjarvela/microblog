@@ -7,6 +7,7 @@ import MaterialSymbolsArticleOutlineRounded from "../Icons/MaterialSymbolsArticl
 import MaterialSymbolsImageOutlineRounded from "../Icons/MaterialSymbolsImageOutlineRounded";
 import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavoriteOutlineRounded";
 import { useBreakpoint } from "../../Hooks/BreakpointHook";
+import Button from "./Button";
 
 type UserProfileBannerProps = {
   bannerImage?: string;
@@ -18,6 +19,9 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
   return (
     <div>
       <div className="relative h-80 sm:h-60">
+        <div className="absolute right-7 top-7 z-10">
+          <Button class="btn-primary">Follow</Button>
+        </div>
         <div
           className="h-full w-full bg-cover bg-center"
           style={{
