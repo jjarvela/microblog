@@ -10,7 +10,7 @@ function ProfileButton({ class: classAdd, children, to }: ProfileButtonProps) {
   return (
     <NavLink
       className={
-        "aria-[current=page]:bg-primary-gradient flex h-full items-center border-b border-black25 p-4 last:border-b-0 dark:border-white25" +
+        "aria-[current=page]:bg-primary-gradient flex h-full w-full items-center border-b border-black25 p-4 hover:bg-black25 aria-[current=page]:text-white dark:border-white25 dark:hover:bg-white25 aria-[current=page]:dark:text-black" +
         " " +
         classAdd
       }

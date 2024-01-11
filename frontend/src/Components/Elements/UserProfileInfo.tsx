@@ -6,6 +6,8 @@ type UserProfileInfoProps = {
   profileHandle: string;
   profileImageSize?: number;
   class?: string;
+  nameClass?: string;
+  handleClass?: string;
 };
 
 function UserProfileInfo({
@@ -14,6 +16,8 @@ function UserProfileInfo({
   profileHandle,
   profileImageSize,
   class: classAdd,
+  nameClass,
+  handleClass,
 }: UserProfileInfoProps) {
   return (
     <div
@@ -28,8 +32,8 @@ function UserProfileInfo({
         />
       </div>
       <div className={"mx-auto flex flex-col"}>
-        <h5>{profileName}</h5>
-        <p className="text-black50">{profileHandle}</p>
+        <h5 className={nameClass}>{profileName}</h5>
+        <p className={"text-black50" + " " + handleClass}>{profileHandle}</p>
       </div>
     </div>
   );
