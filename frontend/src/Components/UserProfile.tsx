@@ -23,6 +23,7 @@ function UserProfile() {
             text={user.featuredPost?.text}
             reactions={user.featuredPost?.reactions}
             class="mx-0"
+            ownerOptions
           />
         </div>
         <LinksBox
