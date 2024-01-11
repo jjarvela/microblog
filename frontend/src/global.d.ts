@@ -1,7 +1,7 @@
 type Media = {
   id: string;
   source: string;
-  type: string;
+  type: "img" | "vid";
 };
 
 type Post = {
