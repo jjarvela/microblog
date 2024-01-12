@@ -6,6 +6,18 @@ import { contextdata } from './data/contexts';
 const prisma = new PrismaClient();
 
 async function runSeeders() {
+
+// contexts
+await Promise.all(
+    contextdata.map(async (context) =>
+      prisma.contexts.upsert({
+        where: { id: context.id },
+        update: {},
+        create: context,
+      })
+    )
+  );
+  
   // users
   await Promise.all(
     userdata.map(async (user) =>
@@ -28,16 +40,7 @@ async function runSeeders() {
     )
   );
 
-  // contexts
-  await Promise.all(
-    contextdata.map(async (context) =>
-      prisma.contexts.upsert({
-        where: { id: context.id },
-        update: {},
-        create: context,
-      })
-    )
-  );
+  
 }
 
 runSeeders()
