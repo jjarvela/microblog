@@ -1,5 +1,5 @@
 import Button from "./Elements/Button";
-import DropdownInput from "./Elements/DropDownInput";
+import DropdownInput from "./Elements/DropdownInput";
 import SettingsPanel from "./Elements/SettingsPanel";
 import SettingsSlot from "./Elements/SettingsSlot";
 import TextInput from "./Elements/TextInput";

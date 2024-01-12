@@ -14,7 +14,6 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
       className={
         "relative flex select-none flex-col rounded-[1.33rem]" + " " + classAdd
       }
-      onClick={() => setIsOpen(!isOpen)}
     >
       <input
         type="button"
@@ -24,6 +23,13 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
           (isOpen && "rounded-b-none")
         }
         value={selected}
+        onClick={() => setIsOpen(!isOpen)}
+        onBlur={(e) => {
+          if (!e.relatedTarget) setIsOpen(false);
+          else if (document.activeElement === e.target)
+            e.target.focus({ preventScroll: true }); // Recapture focus to keep this onBlur working.
+        }}
+        tabIndex={0}
       />
       <div
         className="absolute z-10 hidden translate-y-10 overflow-hidden rounded-b-[1.33rem] border border-t-0 border-black50 bg-white dark:bg-black"
@@ -34,9 +40,12 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
           .map((item, i) => {
             return (
               <button
-                className="w-full border-b border-black25 px-4 py-2 first:border-t last:border-b-0 hover:bg-black25 dark:border-white25 dark:hover:bg-white25"
+                className="w-full border-b border-black25 px-4 py-2 last:border-b-0 hover:bg-black25 dark:border-white25 dark:hover:bg-white25"
                 key={i}
-                onClick={() => setSelected(item)}
+                onClick={() => {
+                  setSelected(item);
+                  setIsOpen(false);
+                }}
               >
                 {item}
               </button>
