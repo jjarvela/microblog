@@ -1,6 +1,6 @@
 import { Routes, Route, Outlet } from "react-router-dom";
 import UserTimeline from "./Components/UserTimeline";
-import UserProfile from "./Components/UserProfile";
+import UserPage from "./Components/UserPage";
 import UserSettings from "./Components/UserSettings";
 import UserNotifications from "./Components/UserNotifications";
 import UserMessages from "./Components/UserMessages";
@@ -20,7 +20,7 @@ const UserLayout = () => {
       <Header />
       <div className="flex h-full w-full flex-row overflow-hidden">
         <LeftSidebar />
-        <main className="scrollbar-thin h-full w-full overflow-y-scroll pb-4">
+        <main className="scrollbar-thin h-full w-full overflow-y-auto pb-4">
           <Outlet />
         </main>
         <RightSidebar />
@@ -57,7 +57,7 @@ function App() {
 
           {/*User routes*/}
           <Route path="/home" element={<UserTimeline />} />
-          <Route path="/user/:username" element={<UserProfile />} />
+          <Route path="/user/:username/*" element={<UserPage />} />
           <Route path="/settings" element={<UserSettings />} />
           <Route path="/notifications" element={<UserNotifications />} />
           <Route path="/messages" element={<UserMessages />} />

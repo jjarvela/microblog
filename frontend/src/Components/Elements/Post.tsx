@@ -41,6 +41,7 @@ type PostProps = {
   time: Date;
   ownerOptions?: boolean;
   pinnedPost?: boolean;
+  topInfo?: string; // This can be used instead of "reposter" for a customized message.
 };
 
 function Post({
@@ -56,6 +57,7 @@ function Post({
   replyingTo,
   ownerOptions,
   pinnedPost,
+  topInfo,
 }: PostProps) {
   const { isSm } = useBreakpoint("sm");
   const editModal = useRef<HTMLDialogElement>(null);
@@ -83,11 +85,16 @@ function Post({
             </div>
           ) : null}
 
-          {reposter ? (
+          {reposter && (
             <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 px-6 pb-1 dark:border-white25">
               <UsernameRepost username={reposter} />
             </div>
-          ) : null}
+          )}
+          {topInfo && (
+            <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 px-6 pb-1 dark:border-white25">
+              <p className="mb-2 text-black50">{topInfo}</p>
+            </div>
+          )}
 
           <div className="flex flex-row-reverse flex-wrap items-center gap-4">
             <PostContextMenu
