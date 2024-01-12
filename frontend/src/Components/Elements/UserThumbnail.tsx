@@ -37,11 +37,11 @@ function UserThumbnail({
                 </small>
               </div>
             </div>
-            <div className="flex h-fit justify-end gap-4 self-center">
+            <div className="flex h-fit flex-col justify-end gap-4 self-center lg:flex-row">
               <Button class="btn-primary">
                 <small>Follow</small>
               </Button>
-              <Button class="btn-primary px-3 py-0">
+              <Button class="btn-primary w-fit self-center py-3 lg:px-3 lg:py-3">
                 <p>
                   <MdiDotsHorizontal />
                 </p>
