@@ -10,7 +10,7 @@ import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
 
 const UserFollowing = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex h-full flex-col">
       <nav className="flex flex-row justify-center gap-0 border-b-[1px] border-primary">
         <NavLink
           to="people"
@@ -85,7 +85,7 @@ const UserFollowing = () => {
           <MaterialSymbolsSearchRounded />
         </Button>
       </div>
-      <div className="content">
+      <div className="scrollbar-thin overflow-y-auto">
         <Routes>
           <Route index element={<Navigate to={"people"} />} />
           <Route path="people" element={<FollowedUsers />} />
