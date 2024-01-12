@@ -1,7 +1,7 @@
 type Media = {
   id: string;
   source: string;
-  type: string;
+  type: "img" | "vid";
 };
 
 type Post = {
@@ -15,4 +15,14 @@ type Post = {
   reactions: number;
   tags: string[];
   time: Date;
+};
+
+type User = {
+  userName: string;
+  screenName: string;
+  profileImage?: string;
+  location?: string;
+  email?: string;
+  joinDate?: Date;
+  birthDate?: Date;
 };

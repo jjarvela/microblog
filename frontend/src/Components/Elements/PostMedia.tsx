@@ -4,14 +4,21 @@ import MediaViewer from "./MediaViewer";
 type PostMediaProps = {
   index: number;
   media: Media;
+  class?: string;
 };
 
-export default function PostMedia({ media }: PostMediaProps) {
+export default function PostMedia({ media, class: classAdd }: PostMediaProps) {
   const mediaViewer = useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative h-[100%] overflow-hidden bg-white75 dark:bg-[#000]">
+    <div
+      className={
+        "relative h-[100%] overflow-hidden bg-white75 dark:bg-[#000]" +
+        " " +
+        classAdd
+      }
+    >
       {media.type === "img" ? (
         <a
           className="cursor-pointer"

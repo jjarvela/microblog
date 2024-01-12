@@ -1,12 +1,12 @@
 import PostMedia from "./PostMedia";
 
 type PostMediaProps = {
-  media: Array<{ id: string; source: string; type: string }>;
+  media: Array<{ id: string; source: string; type: "img" | "vid" }>;
 };
 
 export default function PostMediaLayout({ media }: PostMediaProps) {
   const renderLayout = (
-    items: Array<{ id: string; source: string; type: string }>,
+    items: Array<{ id: string; source: string; type: "img" | "vid" }>,
   ) => {
     switch (items.length) {
       case 1:
