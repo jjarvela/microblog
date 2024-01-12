@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from "react-router";
-import TopbarLink from "./Elements/TopbarLink";
+import { NavLink } from "react-router-dom";
 import FollowedUsers from "./Elements/FollowedUsers";
 import FollowedHashtags from "./Elements/FollowedHashtags";
 import FollowedGroups from "./Elements/FollowedGroups";
@@ -11,21 +11,77 @@ import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
 const UserFollowing = () => {
   return (
     <div className="flex flex-col">
-      <nav className="flex flex-row">
-        <div className="w-1/3">
-          <TopbarLink to="people" text="People" />
-        </div>
-        <div className="w-1/3">
-          <TopbarLink to="groups" text="Groups" />
-        </div>
-        <div className="w-1/3">
-          <TopbarLink to="hashtags" text="Hashtags" />
-        </div>
+      <nav className="flex flex-row justify-center gap-0 border-b-[1px] border-primary">
+        <NavLink
+          to="people"
+          // The aria-[current=page] selector is standing in for the active class feature of NavLink.
+          className="
+                aria-[current=page]:bg-primary-gradient
+                w-[15%]
+                min-w-max
+                border-x-[1px] 
+               border-black50 
+               p-2
+               text-center
+               text-black75
+              hover:bg-black25
+              aria-[current=page]:text-white 
+              dark:text-white
+              dark:hover:bg-black75
+              dark:aria-[current=page]:text-black
+              "
+        >
+          <h5>People</h5>
+        </NavLink>
+        <NavLink
+          to="groups"
+          // The aria-[current=page] selector is standing in for the active class feature of NavLink.
+          className="
+                aria-[current=page]:bg-primary-gradient
+                w-[15%]
+                min-w-max
+                border-x-[1px] 
+               border-black50 
+               p-2
+               text-center
+               text-black75
+              hover:bg-black25
+              aria-[current=page]:text-white 
+              dark:text-white
+              dark:hover:bg-black75
+              dark:aria-[current=page]:text-black
+              "
+        >
+          <h5>Groups</h5>
+        </NavLink>
+        <NavLink
+          to="hashtags"
+          // The aria-[current=page] selector is standing in for the active class feature of NavLink.
+          className="
+                aria-[current=page]:bg-primary-gradient
+                w-[15%]
+                min-w-max
+                border-x-[1px] 
+               border-black50 
+               p-2
+               text-center
+               text-black75
+              hover:bg-black25
+              aria-[current=page]:text-white 
+              dark:text-white
+              dark:hover:bg-black75
+              dark:aria-[current=page]:text-black
+              "
+        >
+          <h5>Hashtags</h5>
+        </NavLink>
       </nav>
-      <h2 className="text-center">Search</h2>
+      <label htmlFor="search">
+        <h4 className="text-center">Search</h4>
+      </label>
       <div className="flex w-full flex-row justify-center gap-2">
-        <TextInput />
-        <Button class="btn-primary aspect-square text-2xl">
+        <TextInput id="search" class="max-h-min" />
+        <Button class="btn-primary px-2 text-lg">
           <MaterialSymbolsSearchRounded />
         </Button>
       </div>
