@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 
 const insertPost = async (param: { user_uuid: string; text: string; timestamp: Date; hashtags: string[] }) => {  
-    console.log("insert blog post");
 
     let createdObjects = [];  // contains each item_property
 
@@ -116,7 +115,71 @@ const deletePost = async (param: { id: number; }) => {
     return result;
 };
 
-export default {insertPost, selectOnePost, selectPosts, updatePost, deletePost};
+
+const insertUser = async (param: { uid: string; username: string; email: string; passwordHash: string; joined: Date}) => {  
+    //register: username, email and password from user
+    const result = await prisma.users.create({
+        data: {
+            uid: param.uid,
+            username: param.username,
+            email: param.email,
+            password: param.passwordHash,
+            joined: param.joined,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+
+const selectUser = async (param: { username: string; }) => {  
+    const result: object | null = await prisma.users.findUnique({
+        where: {
+            username: param.username, 
+        },
+        select: {
+            uid: true,
+            username: true,
+            password: true,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+const deleteUser = async (param: { uid: string; }) => {  
+    const result: object = await prisma.users.delete({
+        where: {
+            uid: param.uid,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+const updateUser = async (param: { uid: string; password: string; email: string; admin: boolean; 
+    location: string; birthday: Date; joined: Date; timezone: string; last_login: Date}) => {  
+    const result: object = await prisma.users.update({
+        where: {
+            uid: param.uid,
+        },
+        data: {
+            password: param.password || undefined, 
+            email: param.email || undefined, 
+            admin: param.admin || undefined,
+            location: param.location || undefined, 
+            birthday: param.birthday || undefined, 
+            joined: param.joined || undefined, 
+            timezone: param.timezone || undefined, 
+            last_login: param.last_login || undefined,
+          },
+    });
+    console.log(result);
+    return result;
+};
+
+export default {insertPost, selectOnePost, selectPosts, updatePost, deletePost, 
+    insertUser, selectUser, deleteUser, updateUser};
 
 // const postdata = {
 //     user_uuid: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed', 

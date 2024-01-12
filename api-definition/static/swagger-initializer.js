@@ -1,4 +1,4 @@
-const config = JSON.parse(`{"layout":"StandaloneLayout","deepLinking":true,"displayOperationId":true,"displayRequestDuration":true,"showExtensions":true,"showCommonExtensions":true,"withCredentials":true,"filter":true,"url":"./openapi.json"}`);
+const config = JSON.parse(`{"layout":"StandaloneLayout","deepLinking":true,"displayOperationId":true,"displayRequestDuration":true,"showExtensions":true,"showCommonExtensions":true,"withCredentials":true,"filter":true}`);
 
 window.onload = function() {
   //<editor-fold desc="Changeable Configuration Block">
