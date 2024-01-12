@@ -1,17 +1,46 @@
-openapi: "3.0.2"
+openapi: 3.0.2
+
 info:
-  title: Microblog
+  title: Microblog API definition.
   version: "0.6"
+
 servers:
   - url: https://api.microblog.fi
     description: Microblogi palvelun rajapintakuvaus
   - url: http://localhost:9000
     description: Microblogi testiympäristö
 
+security:
+  - mbCookieAuth: []
+
 components:
   responses:
     OK:
       description: OK
+    entryId:
+      description: Uuid of the new blog entry.
+      content:
+        application/json:
+          schema:
+            $ref: "#components/schemas/uuid"
+    errorResponse:
+      description: Error object.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/errorResponse"
+    newUserId:
+      description: Reply to user query.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/uuid"
+
+  securitySchemes:
+    mbCookieAuth:
+      type: apiKey
+      in: cookie
+      name: MBSESSION
 
   schemas:
     blogEntry:
@@ -23,7 +52,8 @@ components:
       properties:
         date:
           type: string
-          format: date
+          format: date-time
+          example: Future date for publishing in ISO 8601 UTC datetime eg. 2024-01-10T10:32:00Z
         text:
           type: string
           example: Blog entry main text
@@ -35,6 +65,10 @@ components:
     refEntry:
       description: Blog entry that can be referred with an id.
       type: object
+      required:
+        - text
+        - hashtags
+        - id
       properties:
         id:
           description: Blog entry id.
@@ -69,7 +103,12 @@ components:
 
     entryId:
       type: string
+      format: number
+
+    uuid:
+      type: string
       format: uuid
+      example: d8a935c3-62dd-4315-b4a6-638579214891
 
     queryEntries:
       type: array
@@ -166,6 +205,26 @@ components:
         published:
           type: boolean
           description: Is profile visible to all.
+    errorResponse:
+      type: object
+      properties:
+        status:
+          type: number
+          enum:
+            - 400
+            - 500
+          description: Status of response.
+        err:
+          type: array
+          items:
+            type: object
+            properties:
+              keyword:
+                type: string
+                description: Class of error
+              message:
+                type: string
+                description: Description of error
 
 tags:
   - name: blog
@@ -176,8 +235,6 @@ tags:
     description: User portfolio related functions.
   - name: usertags
     description: Tag-management related functions.
-  - name: find
-    description: Content searching related functions.
   - name: login
     description: User authentication related functions.
   - name: group
@@ -221,6 +278,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/refEntry"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
 
     post:
       operationId: addBlogEntry
@@ -231,6 +294,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/entryId"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+
       tags:
         - blog
       summary: Post new entry to the user's blog.
@@ -251,7 +321,10 @@ paths:
       operationId: deleteBlogEntry
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          $ref: "#/components/responses/entryId"
+        "400":
+          $ref: "#/components/responses/errorResponse"
+
       tags:
         - blog
       summary: Delete one or several blog entries.
@@ -332,11 +405,8 @@ paths:
       summary: Get list of media files and their location.
       responses:
         "200":
-          description: Response including user's media files.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/mediaRes"
+          description: Return a list of available media resources for user.
+          $ref: "#/components/schemas/mediaRes"
       tags:
         - media
       parameters:
@@ -423,6 +493,7 @@ paths:
 
   /user/register:
     post:
+      operationId: registerUser
       summary: Send user's registration data.
       tags:
         - user
