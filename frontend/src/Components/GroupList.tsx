@@ -16,7 +16,7 @@ const GroupList = () => {
       </div>
       <div className="flex flex-col gap-6">
         <GroupThumbnail
-          groupName="Cat lovers"
+          groupName="CatLovers"
           groupAdmin="@test"
           groupDescription="This is a test"
           members={84}
@@ -57,7 +57,7 @@ const GroupList = () => {
           groupDescription="Jarkon ja Petrin maja"
           members={2}
           activity="-"
-          rule="1st rule: You don't speak about Buuttibois"
+          rule="1st rule: You don't speak about BuuttiBois"
         />
       </div>
     </div>

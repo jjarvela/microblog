@@ -1,32 +1,39 @@
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
+import { useBreakpoint } from "../../Hooks/BreakpointHook";
 
 function SidebarLink(props: { to: string; text: string; icon?: ReactNode }) {
+  const { isMd } = useBreakpoint("md");
   return (
     <NavLink
       to={props.to}
       // The aria-[current=page] selector is standing in for the active class feature of NavLink.
       className="aria-[current=page]:bg-primary-gradient 
-                mid:p-4 
                 flex 
-                w-full 
-                flex-row 
+                w-full
+                flex-row
                 items-center
-                gap-4 
-               border-b-2 
-               border-black50
-               p-3
+                justify-center
+                gap-4
+                border-b-2
+                border-black50
+                px-0 
+                py-3
                text-black75
                hover:bg-black25
-              aria-[current=page]:text-white 
-              dark:border-white50
+               aria-[current=page]:text-white
+               dark:border-white50
               dark:text-white 
               dark:hover:bg-black75
-              dark:aria-[current=page]:text-black
+              dark:aria-[current=page]:text-black 
+              md:w-full
+              md:justify-normal
+              md:px-4
+              mid:py-4
               "
     >
       <span className="text-xl">{props.icon}</span>
-      <h5>{props.text}</h5>
+      {isMd && <h5>{props.text}</h5>}
     </NavLink>
   );
 }
