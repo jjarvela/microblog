@@ -5,11 +5,9 @@ type Media = {
 };
 
 type Post = {
-  profileName: string;
-  profileImage?: string;
-  postOwner: string;
-  reposter?: string | undefined;
-  replyingTo?: string | undefined;
+  postOwner: User;
+  reposter?: string | undefined; //change to User when data starts coming in
+  replyingTo?: string | undefined; //change to User when data starts coming in
   text: string;
   media: Array<Media>;
   reactions: number;

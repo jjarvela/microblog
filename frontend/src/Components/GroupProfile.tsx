@@ -14,8 +14,12 @@ function GroupProfile() {
 
       <div className="grid grid-cols-1 gap-4">
         <Post
-          profileName="Test User ✨"
-          postOwner="@testuser"
+          postOwner={{
+            userName: "@testuser",
+            screenName: "Test User ✨",
+            followers: 5,
+            following: 23,
+          }}
           text="That IS indeed a very cool post!"
           reactions={3}
           tags={["nice"]}
@@ -26,8 +30,12 @@ function GroupProfile() {
         />
 
         <FeaturedMediaPost
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           media={[
             {
               id: "32j423j4",
@@ -41,8 +49,12 @@ function GroupProfile() {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {
@@ -64,8 +76,12 @@ function GroupProfile() {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has a video"
           media={[
             {
@@ -81,8 +97,12 @@ function GroupProfile() {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {
