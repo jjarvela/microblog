@@ -55,7 +55,7 @@ export default function SearchMedia({ results, limit }: SearchMediaProps) {
       </div>
 
       {limit && results.length > limit && (
-        <div className="justify-self-end text-end">
+        <div className="mx-4 justify-self-end text-end">
           <p>
             <a>See more</a>
           </p>

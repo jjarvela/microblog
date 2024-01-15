@@ -58,7 +58,7 @@ export default function SearchUsers({ results, limit }: SearchUserProps) {
           })}
 
       {limit && (
-        <div className="justify-self-end text-end">
+        <div className="mx-4 justify-self-end text-end">
           <p>
             <a>See more</a>
           </p>
