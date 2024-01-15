@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import MaterialSymbolsExpandMoreRounded from "../Icons/MaterialSymbolsExpandMoreRounded";
 
 type DropdownInputProps = {
@@ -9,6 +9,17 @@ type DropdownInputProps = {
 function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
   const [selected, setSelected] = useState(items[0]);
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownButton = useRef<HTMLInputElement>(null);
+
+  const handleSetIsOpen = (val: boolean) => {
+    // Make the transition have delay only when closing. Couldn't get it to work with just class names.
+    if (dropdownButton.current) {
+      if (isOpen) dropdownButton.current.style.transitionDelay = "200ms";
+      else dropdownButton.current.style.transitionDelay = "0s";
+    }
+    setIsOpen(val);
+  };
+
   return (
     <div
       className={
@@ -18,18 +29,21 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
       <input
         type="button"
         className={
-          "z-20 rounded-[1.33rem] px-4 py-2 transition-[border-radius] delay-200 duration-0 hover:bg-black25 motion-reduce:delay-0 dark:hover:bg-white25" +
+          "z-20 rounded-[1.33rem] px-4 py-2 transition-[border-radius] duration-0 hover:bg-black25 motion-reduce:delay-0 dark:hover:bg-white25" +
           " " +
-          (isOpen && "rounded-b-none delay-0")
+          (isOpen && "rounded-b-none")
         }
         value={selected}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          handleSetIsOpen(!isOpen);
+        }}
         onBlur={(e) => {
-          if (!e.relatedTarget) setIsOpen(false);
+          if (!e.relatedTarget) handleSetIsOpen(false);
           else if (document.activeElement === e.target)
             e.target.focus({ preventScroll: true }); // Recapture focus to keep this onBlur working.
         }}
         tabIndex={0}
+        ref={dropdownButton}
       />
       <div
         className="invisible absolute z-10 max-h-0 translate-y-10 overflow-hidden rounded-b-[1.33rem] border border-t-0 border-black50 bg-white transition-all duration-200 ease-in-out motion-reduce:duration-0 dark:bg-black"
@@ -48,7 +62,7 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
               key={i}
               onClick={() => {
                 setSelected(item);
-                setIsOpen(false);
+                handleSetIsOpen(false);
               }}
             >
               {item}
