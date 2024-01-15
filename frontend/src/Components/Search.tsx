@@ -1,4 +1,5 @@
 import Button from "./Elements/Button";
+import TextInput from "./Elements/TextInput";
 import GroupThumbnail from "./Elements/GroupThumbnail";
 import UserThumbnail from "./Elements/UserThumbnail";
 import ImageThumb from "./Elements/ImageThumb";
@@ -12,10 +13,10 @@ const Search = () => {
   return (
     <div className="my-1 flex flex-col gap-4">
       <h2 className="mx-2">This is the main hub for search</h2>
-      <div className="my-2 text-center">
-        <input id="search" type="text"></input>
+      <div className="flex w-full flex-row justify-center gap-2">
+        <TextInput id="search" class="max-h-min" />
         <label htmlFor="search">
-          <Button class="btn-primary text-lg">
+          <Button class="btn-primary px-2 text-lg">
             <MaterialSymbolsSearchRounded />
           </Button>
         </label>

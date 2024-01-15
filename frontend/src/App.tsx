@@ -61,7 +61,7 @@ function App() {
           <Route path="/settings" element={<UserSettings />} />
           <Route path="/notifications" element={<UserNotifications />} />
           <Route path="/messages" element={<UserMessages />} />
-          <Route path="/following" element={<UserFollowing />} />
+          <Route path="/following/*" element={<UserFollowing />} />
 
           {/*Group routes*/}
           <Route path="/groups" element={<GroupList />} />

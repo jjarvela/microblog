@@ -24,9 +24,9 @@ function UserThumbnail({
         <div className="flex-grow">
           <div className="flex justify-between">
             <div>
-              <div className="flex h-fit flex-grow justify-start px-3">
+              <div className="flex h-fit flex-grow flex-col justify-start px-3">
                 <h5 className="me-3 dark:text-white">{profileName}</h5>
-                <p className="pt-1.5 text-black50">{username}</p>
+                <p className="mb-2 text-black50">{username}</p>
               </div>
               <div className="flex h-fit flex-grow justify-start px-4">
                 <small className="me-3 font-semibold text-secondary">
@@ -37,11 +37,11 @@ function UserThumbnail({
                 </small>
               </div>
             </div>
-            <div className="flex content-start justify-end gap-4">
+            <div className="flex h-fit flex-col justify-end gap-4 self-center lg:flex-row">
               <Button class="btn-primary">
                 <small>Follow</small>
               </Button>
-              <Button class="btn-primary">
+              <Button class="btn-primary w-fit self-center py-3 lg:px-3 lg:py-3">
                 <p>
                   <MdiDotsHorizontal />
                 </p>
