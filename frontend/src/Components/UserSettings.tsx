@@ -3,6 +3,7 @@ import DropdownInput from "./Elements/DropdownInput";
 import SettingsPanel from "./Elements/SettingsPanel";
 import SettingsSlot from "./Elements/SettingsSlot";
 import TextInput from "./Elements/TextInput";
+import ToggleInput from "./Elements/ToggleInput";
 
 const mockListOfLocations = [
   "Finland",
@@ -15,6 +16,8 @@ const mockListOfLocations = [
   "Oceania",
   "Antarctica",
 ];
+
+const mockListOfLanguages = ["Finnish", "English", "Swedish"];
 
 const UserSettings = () => {
   return (
@@ -45,6 +48,27 @@ const UserSettings = () => {
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <DropdownInput items={mockListOfLocations} class="w-full" />
               <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+      </SettingsPanel>
+      <SettingsPanel header="Site">
+        <SettingsSlot
+          name="Language"
+          element={
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <DropdownInput items={mockListOfLanguages} class="w-full" />
+              <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+        <SettingsSlot
+          name="Dark Mode"
+          element={
+            <div className="flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
+              <p>Off</p>
+              <ToggleInput />
+              <p>On</p>
             </div>
           }
         />
