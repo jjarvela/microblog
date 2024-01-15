@@ -29,9 +29,9 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
       <input
         type="button"
         className={
-          "z-20 rounded-[1.33rem] px-4 py-2 transition-[border-radius] duration-0 hover:bg-black25 motion-reduce:delay-0 dark:hover:bg-white25" +
+          "rounded-[1.33rem] px-4 py-2 transition-[border-radius] duration-0 hover:bg-black25 motion-reduce:delay-0 dark:hover:bg-white25" +
           " " +
-          (isOpen && "rounded-b-none")
+          (isOpen && "z-20 rounded-b-none")
         }
         value={selected}
         onClick={() => {
@@ -46,7 +46,7 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
         ref={dropdownButton}
       />
       <div
-        className="invisible absolute z-10 max-h-0 translate-y-10 overflow-hidden rounded-b-[1.33rem] border border-t-0 border-black50 bg-white transition-all duration-200 ease-in-out motion-reduce:duration-0 dark:bg-black"
+        className="invisible absolute z-10 max-h-0 w-full translate-y-10 overflow-hidden rounded-b-[1.33rem] border border-t-0 border-black50 bg-white transition-all duration-200 ease-in-out motion-reduce:duration-0 dark:bg-black"
         style={
           (isOpen && {
             visibility: "visible",
@@ -74,9 +74,9 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
         width={"1.5rem"}
         height={"1.5rem"}
         className={
-          "absolute right-2 top-2 z-30 transition-transform duration-100" +
+          "absolute right-2 top-2 transition-transform duration-100" +
           " " +
-          (isOpen && "rotate-180")
+          (isOpen && "z-30 rotate-180")
         }
       />
     </div>
