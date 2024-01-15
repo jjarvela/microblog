@@ -18,9 +18,9 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
       <input
         type="button"
         className={
-          "z-20 rounded-[1.33rem] px-4 py-2 hover:bg-black25 dark:hover:bg-white25" +
+          "z-20 rounded-[1.33rem] px-4 py-2 transition-[border-radius] delay-200 duration-0 hover:bg-black25 motion-reduce:delay-0 dark:hover:bg-white25" +
           " " +
-          (isOpen && "rounded-b-none")
+          (isOpen && "rounded-b-none delay-0")
         }
         value={selected}
         onClick={() => setIsOpen(!isOpen)}
@@ -32,25 +32,29 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
         tabIndex={0}
       />
       <div
-        className="absolute z-10 hidden translate-y-10 overflow-hidden rounded-b-[1.33rem] border border-t-0 border-black50 bg-white dark:bg-black"
-        style={(isOpen && { display: "block" }) || {}}
+        className="invisible absolute z-10 max-h-0 translate-y-10 overflow-hidden rounded-b-[1.33rem] border border-t-0 border-black50 bg-white transition-all duration-200 ease-in-out motion-reduce:duration-0 dark:bg-black"
+        style={
+          (isOpen && {
+            visibility: "visible",
+            maxHeight: `calc(${items.length} * 3rem)`,
+          }) ||
+          {}
+        }
       >
-        {items
-          .filter((val) => val !== selected)
-          .map((item, i) => {
-            return (
-              <button
-                className="w-full border-b border-black25 px-4 py-2 last:border-b-0 hover:bg-black25 dark:border-white25 dark:hover:bg-white25"
-                key={i}
-                onClick={() => {
-                  setSelected(item);
-                  setIsOpen(false);
-                }}
-              >
-                {item}
-              </button>
-            );
-          })}
+        {items.map((item, i) => {
+          return (
+            <button
+              className="w-full border-b border-black25 px-4 py-2 last:border-b-0 hover:bg-black25 dark:border-white25 dark:hover:bg-white25"
+              key={i}
+              onClick={() => {
+                setSelected(item);
+                setIsOpen(false);
+              }}
+            >
+              {item}
+            </button>
+          );
+        })}
       </div>
       <MaterialSymbolsExpandMoreRounded
         width={"1.5rem"}
