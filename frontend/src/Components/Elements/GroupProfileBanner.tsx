@@ -1,12 +1,15 @@
+import { useRef } from "react";
 import Button from "./Button";
 import { ProfilePicture } from "./ProfilePicture";
 import CatBanner from "/temp/cat-banner.jpg";
+import GroupJoinRequest from "./GroupJoinRequest";
 
 type GroupProfileBannerProps = {
   groupName?: string;
 };
 
 function GroupProfileBanner({ groupName }: GroupProfileBannerProps) {
+  const joinRequest = useRef<HTMLDialogElement>(null);
   return (
     <div className="relative h-60 bg-cover bg-center">
       <img
@@ -20,8 +23,18 @@ function GroupProfileBanner({ groupName }: GroupProfileBannerProps) {
       </div>
       <div className="absolute right-7 top-7 flex gap-5 ">
         <Button class="btn-primary">Follow</Button>
-        <Button class="btn-primary">Request to Join</Button>
+        <Button
+          onClick={() => joinRequest.current?.showModal()}
+          class="btn-primary"
+        >
+          Request to Join
+        </Button>
       </div>
+      <GroupJoinRequest
+        groupName="Kissat"
+        groupAdmin="Erkki"
+        refObject={joinRequest}
+      />
     </div>
   );
 }
