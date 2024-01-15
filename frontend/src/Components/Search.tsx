@@ -1,5 +1,12 @@
 import Button from "./Elements/Button";
-
+import TextInput from "./Elements/TextInput";
+import GroupThumbnail from "./Elements/GroupThumbnail";
+import UserThumbnail from "./Elements/UserThumbnail";
+import ImageThumb from "./Elements/ImageThumb";
+import VideoThumb from "./Elements/VideoThumb";
+import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
+import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
+import { MaterialSymbolsPhotoCameraRounded } from "./Icons/MaterialSymbolsPhotoCameraRounded";
 import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
 import SearchGroups from "./SearchGroups";
 import SearchMedia from "./SearchMedia";
@@ -87,11 +94,11 @@ const Search = () => {
 
   return (
     <div className="my-1 flex flex-col gap-4">
-      <h2 className="text-center">Search</h2>
-      <div className="mx-auto my-2 text-center">
-        <input id="search" type="text"></input>
-        <label htmlFor="search" className="mx-2">
-          <Button class="btn-primary text-lg">
+      <h2 className="mx-2">This is the main hub for search</h2>
+      <div className="flex w-full flex-row justify-center gap-2">
+        <TextInput id="search" class="max-h-min" />
+        <label htmlFor="search">
+          <Button class="btn-primary px-2 text-lg">
             <MaterialSymbolsSearchRounded />
           </Button>
         </label>
