@@ -9,7 +9,7 @@ type SearchUserProps = {
 export default function SearchUsers({ results, limit }: SearchUserProps) {
   return (
     <div className="flex flex-col">
-      <div className="flex justify-start gap-2">
+      <div className="mx-4 flex justify-start gap-2">
         <h1>
           <MaterialSymbolsAccountCircle />
         </h1>

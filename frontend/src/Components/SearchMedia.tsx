@@ -9,7 +9,7 @@ type SearchMediaProps = {
 
 export default function SearchMedia({ results, limit }: SearchMediaProps) {
   return (
-    <div className="flex flex-col">
+    <div className="mx-4 flex flex-col">
       <div className="flex justify-start gap-2">
         <h1>
           <MaterialSymbolsPhotoCameraRounded />

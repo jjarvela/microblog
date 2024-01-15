@@ -86,8 +86,8 @@ const Search = () => {
   ];
 
   return (
-    <div className="mx-2 my-1 flex flex-col gap-4">
-      <h2 className="mx-2">This is the main hub for search</h2>
+    <div className="my-1 flex flex-col gap-4">
+      <h2 className="text-center">Search</h2>
       <div className="mx-auto my-2 text-center">
         <input id="search" type="text"></input>
         <label htmlFor="search" className="mx-2">

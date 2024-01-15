@@ -14,7 +14,7 @@ type SearchGroupProps = {
 export default function SearchGroups({ results, limit }: SearchGroupProps) {
   return (
     <div className="flex flex-col">
-      <div className="flex justify-start gap-2">
+      <div className="mx-4 flex justify-start gap-2">
         <h1>
           <MaterialSymbolsGroupsRounded />
         </h1>
