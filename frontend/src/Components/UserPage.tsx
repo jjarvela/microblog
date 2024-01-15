@@ -8,8 +8,6 @@ import UserMedia from "./UserMedia";
 import UserLikes from "./UserLikes";
 
 interface UserWithExtras extends User {
-  followers: number;
-  following: number;
   featuredPost?: Post;
 }
 

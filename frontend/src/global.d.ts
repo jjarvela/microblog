@@ -25,4 +25,6 @@ type User = {
   email?: string;
   joinDate?: Date;
   birthDate?: Date;
+  followers: number; //change to User[] when data starts coming in
+  following: number; //change to User[] when data starts coming in
 };

@@ -14,12 +14,42 @@ import SearchUsers from "./SearchUsers";
 
 const Search = () => {
   const userResults: User[] = [
-    { userName: "@testuser", screenName: "Test User ✨" },
-    { userName: "@dickerson99", screenName: "Dickerson" },
-    { userName: "@spamlord", screenName: "Spammer McSpamface" },
-    { userName: "@madasitgets", screenName: "Outraged user 951 😤" },
-    { userName: "@madasitgets", screenName: "Outraged user 951 😤" },
-    { userName: "@madasitgets", screenName: "Outraged user 951 😤" },
+    {
+      userName: "@testuser",
+      screenName: "Test User ✨",
+      followers: 5,
+      following: 23,
+    },
+    {
+      userName: "@dickerson99",
+      screenName: "Dickerson",
+      followers: 420,
+      following: 666,
+    },
+    {
+      userName: "@spamlord",
+      screenName: "Spammer McSpamface",
+      followers: 2,
+      following: 10678,
+    },
+    {
+      userName: "@madasitgets",
+      screenName: "Outraged user 951 😤",
+      followers: 487,
+      following: 794,
+    },
+    {
+      userName: "@madasitgets",
+      screenName: "Outraged user 951 😤",
+      followers: 487,
+      following: 794,
+    },
+    {
+      userName: "@madasitgets",
+      screenName: "Outraged user 951 😤",
+      followers: 487,
+      following: 794,
+    },
   ];
 
   const groupResults: Array<{
