@@ -1,3 +1,15 @@
+type User = {
+  userName: string;
+  screenName: string;
+  profileImage?: string;
+  location?: string;
+  email?: string;
+  joinDate?: Date;
+  birthDate?: Date;
+  followers: number; //change to User[] when data starts coming in
+  following: number; //change to User[] when data starts coming in
+};
+
 type Media = {
   id: string;
   source: string;
@@ -15,14 +27,12 @@ type Post = {
   time: Date;
 };
 
-type User = {
-  userName: string;
-  screenName: string;
-  profileImage?: string;
-  location?: string;
-  email?: string;
-  joinDate?: Date;
-  birthDate?: Date;
-  followers: number; //change to User[] when data starts coming in
-  following: number; //change to User[] when data starts coming in
+type Group = {
+  groupName: string;
+  groupAdmin: User;
+  groupDescription: string;
+  groupMembers: number; //change to User[] when data starts coming in
+  groupCreated: Date;
+  recentActivity: Date | "--";
+  joinRule: "everyone" | "permission" | "closed";
 };

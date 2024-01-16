@@ -3,26 +3,14 @@ import { ProfilePicture } from "./ProfilePicture";
 import { useNavigate } from "react-router";
 
 type GroupThumbnailProps = {
-  groupName: string;
-  groupAdmin: string;
-  groupDescription: string;
-  members: number;
-  activity: string;
-  rule: string;
+  group: Group;
 };
 
-function GroupThumbnail({
-  groupName,
-  groupAdmin,
-  groupDescription,
-  members,
-  activity,
-  rule,
-}: GroupThumbnailProps) {
+function GroupThumbnail({ group }: GroupThumbnailProps) {
   const navigate = useNavigate();
 
   function handleJoinClick() {
-    navigate(`/groups/${groupName}`, { state: { groupName } });
+    navigate(`/groups/${group.groupName}`, { state: group.groupName });
   }
 
   return (
@@ -32,10 +20,10 @@ function GroupThumbnail({
         <div className="flex-grow">
           <div className="flex justify-between">
             <div className="flex-grow px-3">
-              <h4 className="me-3 dark:text-white">{groupName}</h4>
-              <p>Admin: {groupAdmin}</p>
+              <h4 className="me-3 dark:text-white">{group.groupName}</h4>
+              <p>Admin: {group.groupAdmin.userName}</p>
               <p className="me-3 font-semibold text-secondary">
-                Members: {members}
+                Members: {group.groupMembers}
               </p>
             </div>
             <div className="flex content-start justify-end">
@@ -44,7 +32,11 @@ function GroupThumbnail({
                   <small>
                     Recent activity:{" "}
                     <span className="text-black50 dark:text-white75">
-                      {activity}
+                      {group.recentActivity instanceof Date ? (
+                        <time>{group.recentActivity.toLocaleString()}</time>
+                      ) : (
+                        group.recentActivity
+                      )}
                     </span>
                   </small>
                 </p>
@@ -52,7 +44,7 @@ function GroupThumbnail({
                   <small>
                     Join rules:{" "}
                     <span className="text-black50 dark:text-white75">
-                      {rule}
+                      {group.joinRule}
                     </span>
                   </small>
                 </p>
@@ -60,7 +52,9 @@ function GroupThumbnail({
             </div>
           </div>
           <div className="mx-4">
-            <p className="text-black75 dark:text-white">{groupDescription}</p>
+            <p className="text-black75 dark:text-white">
+              {group.groupDescription}
+            </p>
           </div>
           <div className="flex content-start justify-end gap-4">
             <Button class="btn-primary">
