@@ -1,5 +1,7 @@
+import { useRef } from "react";
 import Button from "./Button";
 import { ProfilePicture } from "./ProfilePicture";
+import GroupJoinRequest from "./GroupJoinRequest";
 import { useNavigate } from "react-router";
 
 type GroupThumbnailProps = {
@@ -8,7 +10,7 @@ type GroupThumbnailProps = {
 
 function GroupThumbnail({ group }: GroupThumbnailProps) {
   const navigate = useNavigate();
-
+  const joinRequest = useRef<HTMLDialogElement>(null);
   function handleJoinClick() {
     navigate(`/groups/${group.groupName}`, { state: group.groupName });
   }
@@ -44,7 +46,9 @@ function GroupThumbnail({ group }: GroupThumbnailProps) {
                   <small>
                     Join rules:{" "}
                     <span className="text-black50 dark:text-white75">
-                      {group.joinRule}
+                      {group.joinRule === "everyone" && "All accepted"}
+                      {group.joinRule === "permission" && "Request permission"}
+                      {group.joinRule === "closed" && "Closed"}
                     </span>
                   </small>
                 </p>
@@ -60,12 +64,32 @@ function GroupThumbnail({ group }: GroupThumbnailProps) {
             <Button class="btn-primary">
               <small>Follow</small>
             </Button>
-            <Button class="btn-primary" onClick={handleJoinClick}>
-              <small>Join</small>
-            </Button>
+            {group.joinRule === "everyone" && (
+              <Button class="btn-primary" onClick={handleJoinClick}>
+                <small>Join</small>
+              </Button>
+            )}
+            {group.joinRule === "permission" && (
+              <Button
+                class="btn-primary"
+                onClick={() => joinRequest.current?.showModal()}
+              >
+                <small>Request to Join</small>
+              </Button>
+            )}
+            {group.joinRule === "closed" && (
+              <Button class="btn-primary" isDisabled>
+                <small>Join</small>
+              </Button>
+            )}
           </div>
         </div>
       </div>
+      <GroupJoinRequest
+        groupName="Kissat"
+        groupAdmin="Erkki"
+        refObject={joinRequest}
+      />
     </div>
   );
 }
