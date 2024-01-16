@@ -63,7 +63,7 @@
   input {
     /* Normal decoration */
     @apply rounded-xl border bg-white px-1 py-1 outline-1 dark:border-black50 dark:bg-black;
-    @apply border-black50 hover:border-black75 focus:border-primary focus:shadow-[0px_0px_5px_2px_var()] focus:shadow-primary focus:outline-none dark:hover:border-black25;
+    @apply border-black50 hover:border-black75 focus:border-primary focus:shadow-[0px_0px_5px_2px] focus:shadow-primary focus:outline-none dark:hover:border-black25;
     /* Invalid decoration */
     @apply invalid:border-warning invalid:bg-warningBg invalid:hover:border-warningHover invalid:focus:border-warningHover invalid:focus:shadow-warning dark:invalid:bg-warningBgDark;
   }
