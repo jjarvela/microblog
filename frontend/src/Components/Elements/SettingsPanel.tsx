@@ -15,7 +15,6 @@ function SettingsPanel({ header, children }: SettingsPanelProps) {
     slotsTotalHeight.current = slotsParent.current
       ? `${slotsParent.current.childElementCount * 4}rem`
       : "9999px";
-    console.log(slotsTotalHeight.current);
   });
 
   const handleSetIsOpen = (val: boolean) => {
