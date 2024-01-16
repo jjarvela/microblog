@@ -65,10 +65,14 @@ const UserSettings = () => {
         <SettingsSlot
           name="Dark Mode"
           element={
-            <div className="flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
-              <p>Off</p>
-              <ToggleInput />
-              <p>On</p>
+            <div className="flex w-full flex-row items-center justify-center gap-3">
+              <p className="select-none">Off</p>
+              <ToggleInput
+                onToggle={(val) =>
+                  console.log("Dark mode toggled to state: " + String(val))
+                }
+              />
+              <p className="select-none">On</p>
             </div>
           }
         />

@@ -1,20 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import MaterialSymbolsExpandMoreRounded from "../Icons/MaterialSymbolsExpandMoreRounded";
+import { useBreakpoint } from "../../Hooks/BreakpointHook";
 
 type SettingsPanelProps = {
   header: string;
   children: React.ReactNode;
+  hSlotHeight?: number;
+  vSlotHeight?: number;
 };
 
-function SettingsPanel({ header, children }: SettingsPanelProps) {
+function SettingsPanel({
+  header,
+  children,
+  hSlotHeight,
+  vSlotHeight,
+}: SettingsPanelProps) {
   const [isOpen, setIsOpen] = useState(true);
   const parent = useRef<HTMLDivElement>(null);
   const slotsParent = useRef<HTMLDivElement>(null);
   const slotsTotalHeight = useRef("9999px");
+  const { isSm } = useBreakpoint("sm");
+
   useEffect(() => {
     slotsTotalHeight.current = slotsParent.current
-      ? `${slotsParent.current.childElementCount * 4}rem`
+      ? `${
+          slotsParent.current.childElementCount *
+          (isSm ? hSlotHeight || 4 : vSlotHeight || 9) // 4 and 9 are the default values.
+        }rem`
       : "9999px";
+    if (isOpen && slotsParent.current)
+      slotsParent.current.style.maxHeight = slotsTotalHeight.current;
   });
 
   const handleSetIsOpen = (val: boolean) => {
