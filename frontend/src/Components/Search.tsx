@@ -14,38 +14,87 @@ import SearchUsers from "./SearchUsers";
 
 const Search = () => {
   const userResults: User[] = [
-    { userName: "@testuser", screenName: "Test User ✨" },
-    { userName: "@dickerson99", screenName: "Dickerson" },
-    { userName: "@spamlord", screenName: "Spammer McSpamface" },
-    { userName: "@madasitgets", screenName: "Outraged user 951 😤" },
-    { userName: "@madasitgets", screenName: "Outraged user 951 😤" },
-    { userName: "@madasitgets", screenName: "Outraged user 951 😤" },
+    {
+      userName: "@testuser",
+      screenName: "Test User ✨",
+      followers: 5,
+      following: 23,
+    },
+    {
+      userName: "@dickerson99",
+      screenName: "Dickerson",
+      followers: 420,
+      following: 666,
+    },
+    {
+      userName: "@spamlord",
+      screenName: "Spammer McSpamface",
+      followers: 2,
+      following: 10678,
+    },
+    {
+      userName: "@madasitgets",
+      screenName: "Outraged user 951 😤",
+      followers: 487,
+      following: 794,
+    },
+    {
+      userName: "@madasitgets",
+      screenName: "Outraged user 951 😤",
+      followers: 487,
+      following: 794,
+    },
+    {
+      userName: "@madasitgets",
+      screenName: "Outraged user 951 😤",
+      followers: 487,
+      following: 794,
+    },
   ];
 
-  const groupResults: Array<{
-    groupName: string;
-    groupAdmin: string;
-    groupDescription: string;
-    groupMembers: number;
-  }> = [
+  const groupResults: Array<Group> = [
     {
       groupName: "CatLovers",
-      groupAdmin: "@test",
+      groupAdmin: {
+        userName: "@testuser",
+        screenName: "Test User ✨",
+        followers: 5,
+        following: 23,
+      },
       groupDescription: "This is a test",
       groupMembers: 84,
+      groupCreated: new Date(),
+      recentActivity: "--",
+      joinRule: "everyone",
     },
     {
       groupName: "Dog luv",
-      groupAdmin: "@test",
+      groupAdmin: {
+        userName: "@dickerson99",
+        screenName: "Dickerson",
+        followers: 420,
+        following: 666,
+      },
       groupDescription: "This is a test",
       groupMembers: 84,
+      groupCreated: new Date(),
+      recentActivity: "--",
+      joinRule: "everyone",
     },
 
     {
       groupName: "Haters",
-      groupAdmin: "@test",
+      groupAdmin: {
+        userName: "@madasitgets",
+        screenName: "Outraged user 951 😤",
+        followers: 487,
+        following: 794,
+      },
       groupDescription: "This is a test",
       groupMembers: 84,
+      groupCreated: new Date(),
+      recentActivity: "--",
+      joinRule: "everyone",
     },
   ];
 

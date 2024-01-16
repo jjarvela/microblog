@@ -29,8 +29,7 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
           }}
         />
         <UserProfileInfo
-          profileHandle={user.userName}
-          profileName={user.screenName}
+          user={user}
           profileImageSize={150}
           class="absolute bottom-5 left-[5%] text-white sm:-bottom-5"
           nameClass="text-xl font-bold md:text-2xl"

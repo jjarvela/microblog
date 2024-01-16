@@ -7,17 +7,15 @@ import InReplyTo from "./Elements/InReplyTo";
 import UserProfileInfo from "./Elements/UserProfileInfo";
 
 type PostCommentFormProps = {
-  profileName: string;
-  profileImage?: string;
-  username: string;
+  recipient: User;
+  commenter: User;
   text: string;
   tags: string[];
 };
 
 function PostCommentForm({
-  profileName,
-  profileImage,
-  username,
+  recipient,
+  commenter,
   text,
   tags,
 }: PostCommentFormProps) {
@@ -26,13 +24,9 @@ function PostCommentForm({
     <div className="timeline-box mt-4 flex flex-col">
       <div className="mb-4 flex flex-row items-center gap-4">
         <h5>Commenting as</h5>
-        <UserProfileInfo
-          profileImage={profileImage}
-          profileName={profileName}
-          profileHandle={username}
-        />
+        <UserProfileInfo user={commenter} />
       </div>
-      <InReplyTo username={profileName} />
+      <InReplyTo username={recipient.screenName} />
       <form className="mt-4 flex flex-col gap-4">
         <div className="flex flex-col">
           <TextAreaInput

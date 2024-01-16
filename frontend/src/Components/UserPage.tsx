@@ -8,8 +8,6 @@ import UserMedia from "./UserMedia";
 import UserLikes from "./UserLikes";
 
 interface UserWithExtras extends User {
-  followers: number;
-  following: number;
   featuredPost?: Post;
 }
 
@@ -24,8 +22,7 @@ export const UserContext = createContext<UserWithExtras>({
   followers: 0,
   following: 0,
   featuredPost: {
-    profileName: "",
-    postOwner: "",
+    postOwner: { userName: "", screenName: "", followers: 0, following: 0 },
     text: "",
     media: [],
     reactions: 0,
@@ -33,6 +30,18 @@ export const UserContext = createContext<UserWithExtras>({
     time: new Date(),
   },
 });
+
+const mockUser: User = {
+  userName: "@theblogger",
+  screenName: "Avid Microblogger",
+  profileImage: "",
+  location: "Finland",
+  email: "theblogger@email.com",
+  joinDate: new Date(),
+  birthDate: new Date(),
+  followers: 6513,
+  following: 134,
+};
 
 const mockUserData: UserWithExtras = {
   userName: "@theblogger",
@@ -45,8 +54,7 @@ const mockUserData: UserWithExtras = {
   followers: 6513,
   following: 134,
   featuredPost: {
-    profileName: "Avid Microblogger",
-    postOwner: "@theblogger",
+    postOwner: mockUser,
     text: "This is my very special post that tells a lot about me...",
     media: [
       {

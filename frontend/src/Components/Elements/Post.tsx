@@ -16,9 +16,7 @@ import ConfirmModal from "./ConfirmModal";
 import TagList from "./TagList";
 
 export const PostContext = createContext<Post>({
-  profileName: "",
-  profileImage: undefined,
-  postOwner: "",
+  postOwner: { userName: "", screenName: "", followers: 0, following: 0 },
   text: "",
   reactions: 0,
   tags: [],
@@ -29,9 +27,7 @@ export const PostContext = createContext<Post>({
 });
 
 type PostProps = {
-  profileName: string;
-  profileImage?: string;
-  postOwner: string;
+  postOwner: User;
   reposter?: string | undefined;
   replyingTo?: string | undefined;
   text: string;
@@ -45,8 +41,6 @@ type PostProps = {
 };
 
 function Post({
-  profileName,
-  profileImage,
   postOwner,
   text,
   reactions,
@@ -65,8 +59,6 @@ function Post({
   return (
     <PostContext.Provider
       value={{
-        profileName,
-        profileImage,
         postOwner,
         text,
         reactions,
@@ -104,11 +96,7 @@ function Post({
               deletePostCallback={() => deleteConfirm.current?.showModal()}
             />
             <p className="mr-3 self-start">{time.toLocaleString()}</p>
-            <UserProfileInfo
-              profileImage={profileImage}
-              profileName={profileName}
-              profileHandle={postOwner}
-            />
+            <UserProfileInfo user={postOwner} />
           </div>
 
           {replyingTo ? (
@@ -141,9 +129,7 @@ function Post({
       <PostModal
         text={text}
         tags={tags}
-        profileName={profileName}
-        username={postOwner}
-        profileImage={profileImage}
+        user={postOwner}
         refObject={editModal}
         mode="edit"
       />
