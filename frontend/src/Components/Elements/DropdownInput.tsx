@@ -4,10 +4,19 @@ import MaterialSymbolsExpandMoreRounded from "../Icons/MaterialSymbolsExpandMore
 type DropdownInputProps = {
   items: string[];
   class?: string;
+  onChanged?: (value: string, index: number) => void;
+  initialIndex?: number;
 };
 
-function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
-  const [selected, setSelected] = useState(items[0]);
+function DropdownInput({
+  items,
+  class: classAdd,
+  onChanged,
+  initialIndex,
+}: DropdownInputProps) {
+  const [selected, setSelected] = useState(
+    items[initialIndex ? initialIndex : 0],
+  );
   const [isOpen, setIsOpen] = useState(false);
   const dropdownButton = useRef<HTMLInputElement>(null);
 
@@ -44,6 +53,7 @@ function DropdownInput({ items, class: classAdd }: DropdownInputProps) {
               key={i}
               onClick={() => {
                 setSelected(item);
+                if (onChanged) onChanged(item, i);
                 handleSetIsOpen(false);
               }}
             >
