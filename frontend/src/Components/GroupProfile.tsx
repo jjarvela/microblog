@@ -1,15 +1,26 @@
-import { useLocation } from "react-router";
+import { Navigate, useLocation } from "react-router";
 import GroupProfileBanner from "./Elements/GroupProfileBanner";
 import Post from "./Elements/Post";
 import FeaturedMediaPost from "./Elements/FeaturedMediaPost";
+import { useEffect } from "react";
 
 function GroupProfile() {
-  const { state } = useLocation(); // Gets the groupName from the url
-  const groupName = state?.groupName;
+  const { state } = useLocation(); //gets the entire group object that group thumbnail passes to state
+  const group = state?.group;
+  //!!will result in 404 if navigation is not done from a group thumbnail
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <div className="mb-8">
-        <GroupProfileBanner groupName={groupName} />
+        {group ? (
+          <GroupProfileBanner group={group} />
+        ) : (
+          <Navigate to={"/groups"} replace={true} />
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-4">

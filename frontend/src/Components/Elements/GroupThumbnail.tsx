@@ -12,7 +12,7 @@ function GroupThumbnail({ group }: GroupThumbnailProps) {
   const navigate = useNavigate();
   const joinRequest = useRef<HTMLDialogElement>(null);
   function handleJoinClick() {
-    navigate(`/groups/${group.groupName}`, { state: group.groupName });
+    navigate(`/groups/${group.groupName}`, { state: { group } });
   }
 
   return (
@@ -86,8 +86,8 @@ function GroupThumbnail({ group }: GroupThumbnailProps) {
         </div>
       </div>
       <GroupJoinRequest
-        groupName="Kissat"
-        groupAdmin="Erkki"
+        groupName={group.groupName}
+        groupAdmin={group.groupAdmin.screenName}
         refObject={joinRequest}
       />
     </div>

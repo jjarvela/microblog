@@ -5,10 +5,10 @@ import CatBanner from "/temp/cat-banner.jpg";
 import GroupJoinRequest from "./GroupJoinRequest";
 
 type GroupProfileBannerProps = {
-  groupName?: string;
+  group: Group;
 };
 
-function GroupProfileBanner({ groupName }: GroupProfileBannerProps) {
+function GroupProfileBanner({ group }: GroupProfileBannerProps) {
   const joinRequest = useRef<HTMLDialogElement>(null);
   return (
     <div className="relative h-60 bg-cover bg-center">
@@ -19,20 +19,34 @@ function GroupProfileBanner({ groupName }: GroupProfileBannerProps) {
       />
       <div className="absolute -bottom-5 left-10 flex items-center gap-4 drop-shadow-md">
         <ProfilePicture width={150} />
-        {groupName && <h1>{groupName}</h1>}
+        {<h1>{group.groupName}</h1>}
       </div>
       <div className="absolute right-7 top-7 flex gap-5 ">
-        <Button class="btn-primary">Follow</Button>
-        <Button
-          onClick={() => joinRequest.current?.showModal()}
-          class="btn-primary"
-        >
-          Request to Join
+        <Button class="btn-primary">
+          <small>Follow</small>
         </Button>
+        {group.joinRule === "everyone" && (
+          <Button class="btn-primary">
+            <small>Join</small>
+          </Button>
+        )}
+        {group.joinRule === "permission" && (
+          <Button
+            class="btn-primary"
+            onClick={() => joinRequest.current?.showModal()}
+          >
+            <small>Request to Join</small>
+          </Button>
+        )}
+        {group.joinRule === "closed" && (
+          <Button class="btn-primary" isDisabled>
+            <small>Join</small>
+          </Button>
+        )}
       </div>
       <GroupJoinRequest
-        groupName="Kissat"
-        groupAdmin="Erkki"
+        groupName={group.groupName}
+        groupAdmin={group.groupAdmin.screenName}
         refObject={joinRequest}
       />
     </div>
