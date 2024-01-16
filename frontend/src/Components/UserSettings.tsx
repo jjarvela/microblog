@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Button from "./Elements/Button";
 import DropdownInput from "./Elements/DropdownInput";
 import SettingsPanel from "./Elements/SettingsPanel";
@@ -19,7 +20,10 @@ const mockListOfLocations = [
 
 const mockListOfLanguages = ["Finnish", "English", "Swedish"];
 
+const profilePrivacyOptions = ["Public", "Invite Only", "Private"];
+
 const UserSettings = () => {
+  const [privacyInviteOnly, setPrivacyInviteOnly] = useState(false);
   return (
     <div className="m-4 flex flex-col gap-4">
       <h2 className="my-4 text-center">Settings</h2>
@@ -44,6 +48,14 @@ const UserSettings = () => {
           }
         />
         <SettingsSlot
+          name="Password"
+          element={
+            <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
+              <Button class="btn-primary">Request Password Reset</Button>
+            </div>
+          }
+        />
+        <SettingsSlot
           name="Location"
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
@@ -52,6 +64,36 @@ const UserSettings = () => {
             </div>
           }
         />
+      </SettingsPanel>
+      <SettingsPanel header="Privacy">
+        <SettingsSlot
+          name="Profile Access"
+          element={
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <DropdownInput
+                items={profilePrivacyOptions}
+                class="w-full"
+                onChanged={(_val, i) => {
+                  // Option 1 = "Invite Only". Change based on implementation.
+                  if (i === 1) setPrivacyInviteOnly(true);
+                  else setPrivacyInviteOnly(false);
+                }}
+              />
+              <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+        {privacyInviteOnly && (
+          <SettingsSlot
+            name="Access Username List"
+            element={
+              <div className="flex w-full flex-col gap-2 sm:flex-row">
+                <TextInput class="w-full" />
+                <Button class="btn-primary">Update</Button>
+              </div>
+            }
+          />
+        )}
       </SettingsPanel>
       <SettingsPanel header="Site">
         <SettingsSlot
