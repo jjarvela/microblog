@@ -10,8 +10,7 @@ function UserPosts() {
       <h2 className="my-4 text-center">{user.screenName}'s Posts</h2>
       <div className="flex flex-col gap-4">
         <Post
-          profileName={user.screenName}
-          postOwner={user.userName}
+          postOwner={user}
           text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus accusantium, repellendus tempore minima sit quam cum architecto dolores excepturi iure recusandae! Voluptatibus suscipit cupiditate tenetur eveniet deserunt consequatur tempore distinctio."
           reactions={42}
           tags={["hashtag", "longerhashtag", "tag"]}
@@ -21,8 +20,7 @@ function UserPosts() {
         />
 
         <Post
-          profileName={user.screenName}
-          postOwner={user.userName}
+          postOwner={user}
           text="This past week was very exiting. I bought a coconut!"
           reactions={3}
           tags={["coconuts", "are", "cool"]}
@@ -32,8 +30,7 @@ function UserPosts() {
         />
 
         <Post
-          profileName={user.screenName}
-          postOwner={user.userName}
+          postOwner={user}
           text="Here are some pictures"
           media={[
             {
@@ -56,8 +53,7 @@ function UserPosts() {
         />
 
         <Post
-          profileName={user.screenName}
-          postOwner={user.userName}
+          postOwner={user}
           text={user.featuredPost?.text || ""}
           media={user.featuredPost?.media || []}
           reactions={user.featuredPost?.reactions || 0}

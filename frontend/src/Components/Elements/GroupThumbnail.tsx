@@ -1,28 +1,18 @@
+import { useRef } from "react";
 import Button from "./Button";
 import { ProfilePicture } from "./ProfilePicture";
+import GroupJoinRequest from "./GroupJoinRequest";
 import { useNavigate } from "react-router";
 
 type GroupThumbnailProps = {
-  groupName: string;
-  groupAdmin: string;
-  groupDescription: string;
-  members: number;
-  activity: string;
-  rule: string;
+  group: Group;
 };
 
-function GroupThumbnail({
-  groupName,
-  groupAdmin,
-  groupDescription,
-  members,
-  activity,
-  rule,
-}: GroupThumbnailProps) {
+function GroupThumbnail({ group }: GroupThumbnailProps) {
   const navigate = useNavigate();
-
+  const joinRequest = useRef<HTMLDialogElement>(null);
   function handleJoinClick() {
-    navigate(`/groups/${groupName}`, { state: { groupName } });
+    navigate(`/groups/${group.groupName}`, { state: group.groupName });
   }
 
   return (
@@ -32,10 +22,10 @@ function GroupThumbnail({
         <div className="flex-grow">
           <div className="flex justify-between">
             <div className="flex-grow px-3">
-              <h4 className="me-3 dark:text-white">{groupName}</h4>
-              <p>Admin: {groupAdmin}</p>
+              <h4 className="me-3 dark:text-white">{group.groupName}</h4>
+              <p>Admin: {group.groupAdmin.userName}</p>
               <p className="me-3 font-semibold text-secondary">
-                Members: {members}
+                Members: {group.groupMembers}
               </p>
             </div>
             <div className="flex content-start justify-end">
@@ -44,7 +34,11 @@ function GroupThumbnail({
                   <small>
                     Recent activity:{" "}
                     <span className="text-black50 dark:text-white75">
-                      {activity}
+                      {group.recentActivity instanceof Date ? (
+                        <time>{group.recentActivity.toLocaleString()}</time>
+                      ) : (
+                        group.recentActivity
+                      )}
                     </span>
                   </small>
                 </p>
@@ -52,7 +46,9 @@ function GroupThumbnail({
                   <small>
                     Join rules:{" "}
                     <span className="text-black50 dark:text-white75">
-                      {rule}
+                      {group.joinRule === "everyone" && "All accepted"}
+                      {group.joinRule === "permission" && "Request permission"}
+                      {group.joinRule === "closed" && "Closed"}
                     </span>
                   </small>
                 </p>
@@ -60,18 +56,40 @@ function GroupThumbnail({
             </div>
           </div>
           <div className="mx-4">
-            <p className="text-black75 dark:text-white">{groupDescription}</p>
+            <p className="text-black75 dark:text-white">
+              {group.groupDescription}
+            </p>
           </div>
           <div className="flex content-start justify-end gap-4">
             <Button class="btn-primary">
               <small>Follow</small>
             </Button>
-            <Button class="btn-primary" onClick={handleJoinClick}>
-              <small>Join</small>
-            </Button>
+            {group.joinRule === "everyone" && (
+              <Button class="btn-primary" onClick={handleJoinClick}>
+                <small>Join</small>
+              </Button>
+            )}
+            {group.joinRule === "permission" && (
+              <Button
+                class="btn-primary"
+                onClick={() => joinRequest.current?.showModal()}
+              >
+                <small>Request to Join</small>
+              </Button>
+            )}
+            {group.joinRule === "closed" && (
+              <Button class="btn-primary" isDisabled>
+                <small>Join</small>
+              </Button>
+            )}
           </div>
         </div>
       </div>
+      <GroupJoinRequest
+        groupName="Kissat"
+        groupAdmin="Erkki"
+        refObject={joinRequest}
+      />
     </div>
   );
 }

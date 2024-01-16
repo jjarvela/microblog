@@ -114,8 +114,12 @@ function LeftSidebar() {
           </div>
         )}
         <PostModal
-          profileName="Temp Poster"
-          username="@tempposter"
+          user={{
+            userName: "@dickerson99",
+            screenName: "Dickerson",
+            followers: 420,
+            following: 666,
+          }}
           text=""
           tags={[]}
           refObject={postModal}

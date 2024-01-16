@@ -11,8 +11,12 @@ const UserTimeline = () => {
       <h2 className="my-4 text-center">Timeline</h2>
       <div className="flex flex-col gap-4">
         <Post
-          profileName="Test User ✨"
-          postOwner="@testuser"
+          postOwner={{
+            userName: "@testuser",
+            screenName: "Test User ✨",
+            followers: 5,
+            following: 23,
+          }}
           text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus accusantium, repellendus tempore minima sit quam cum architecto dolores excepturi iure recusandae! Voluptatibus suscipit cupiditate tenetur eveniet deserunt consequatur tempore distinctio."
           reactions={42}
           tags={["hashtag", "longerhashtag", "tag"]}
@@ -21,8 +25,12 @@ const UserTimeline = () => {
           ownerOptions
         />
         <Post
-          profileName="Another User 🙂"
-          postOwner="@anotheruser"
+          postOwner={{
+            userName: "@anotheruser",
+            screenName: "Another User 🙂",
+            followers: 1,
+            following: 37,
+          }}
           text="Hello this is my very cool post!"
           reactions={3}
           tags={["help", "me", "thanks"]}
@@ -31,8 +39,12 @@ const UserTimeline = () => {
         />
 
         <Post
-          profileName="Another User 🙂"
-          postOwner="@anotheruser"
+          postOwner={{
+            userName: "@anotheruser",
+            screenName: "Another User 🙂",
+            followers: 1,
+            following: 37,
+          }}
           reposter="@testuser"
           text="Hello this is my very cool post!"
           reactions={3}
@@ -42,8 +54,12 @@ const UserTimeline = () => {
         />
 
         <Post
-          profileName="Test User ✨"
-          postOwner="@testuser"
+          postOwner={{
+            userName: "@testuser",
+            screenName: "Test User ✨",
+            followers: 5,
+            following: 23,
+          }}
           replyingTo="@anotheruser"
           text="That IS indeed a very cool post!"
           reactions={3}
@@ -54,8 +70,12 @@ const UserTimeline = () => {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has a video"
           media={[
             {
@@ -71,8 +91,12 @@ const UserTimeline = () => {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {
@@ -94,8 +118,12 @@ const UserTimeline = () => {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {
@@ -123,8 +151,12 @@ const UserTimeline = () => {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {
@@ -160,8 +192,18 @@ const UserTimeline = () => {
       </div>
       <div className="flex flex-col gap-4">
         <PostCommentForm
-          profileName="Fancy User"
-          username="@dickerson99"
+          recipient={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
+          commenter={{
+            userName: "@dickerson99",
+            screenName: "Dickerson",
+            followers: 420,
+            following: 666,
+          }}
           text="Awww SUCH A CUTIE!!! ^_____^;"
           tags={["awwww", "cute", "meoww"]}
         />

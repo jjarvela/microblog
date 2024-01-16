@@ -118,11 +118,7 @@ export default function MediaViewer({
               <small className="text-center">
                 {post.time.toLocaleString()}
               </small>
-              <UserProfileInfo
-                profileImage={post.profileImage}
-                profileName={post.profileName}
-                profileHandle={post.postOwner}
-              />
+              <UserProfileInfo user={post.postOwner} />
             </div>
             {post.replyingTo ? (
               <div className="-mx-3 mt-4 flex flex-row justify-start border-y border-black25 px-4 py-4 dark:border-white25">

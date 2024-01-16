@@ -29,9 +29,7 @@ function UserMedia() {
   return (
     <PostContext.Provider
       value={{
-        profileName: user.screenName,
-        profileImage: user.profileImage,
-        postOwner: user.userName,
+        postOwner: user,
         tags: [],
         time: new Date(),
         media: [],
