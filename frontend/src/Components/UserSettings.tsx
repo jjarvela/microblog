@@ -37,7 +37,8 @@ const UserSettings = () => {
           name="Email"
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
-              <TextInput class="w-full" />
+              <TextInput class="w-full" type="email" />
+
               <Button class="btn-primary">Update</Button>
             </div>
           }
