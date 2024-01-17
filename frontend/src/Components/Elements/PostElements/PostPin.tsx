@@ -1,4 +1,4 @@
-import AntDesignPushpinFilled from "../Icons/AntDesignPushpinFilled";
+import AntDesignPushpinFilled from "../../Icons/AntDesignPushpinFilled";
 
 function PostPin() {
   return (

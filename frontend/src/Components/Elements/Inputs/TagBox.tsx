@@ -1,4 +1,4 @@
-import MaterialSymbolsDeleteForeverOutlineRounded from "../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
+import MaterialSymbolsDeleteForeverOutlineRounded from "../../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
 
 type TagBoxProps = {
   text: string;

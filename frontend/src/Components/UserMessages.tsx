@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import ConversationThumb from "./Elements/ConversationThumb";
-import TextAreaInput from "./Elements/TextAreaInput";
-import Conversation from "./Elements/Conversation";
+import ConversationThumb from "./Elements/MessagingElements/ConversationThumb.tsx";
+import TextAreaInput from "./Elements/Inputs/TextAreaInput.tsx";
+import Conversation from "./Elements/MessagingElements/Conversation.tsx";
 import MaterialSymbolsSentimentSatisfiedOutline from "./Icons/MaterialSymbolsSentimentSatisfiedOutline";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "./Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
 import MaterialSymbolsSendRounded from "./Icons/MaterialSymbolsSendRounded";

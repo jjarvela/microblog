@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router";
-import GroupProfileBanner from "./Elements/GroupProfileBanner";
-import Post from "./Elements/Post";
-import FeaturedMediaPost from "./Elements/FeaturedMediaPost";
+import GroupProfileBanner from "./Elements/ProfileElements/GroupProfileBanner";
+import Post from "./Elements/PostElements/Post";
+import FeaturedMediaPost from "./Elements/ProfileElements/FeaturedMediaPost";
 import { useEffect } from "react";
 
 function GroupProfile() {

@@ -1,8 +1,8 @@
 import { useRef } from "react";
-import Button from "./Button";
-import { ProfilePicture } from "./ProfilePicture";
+import Button from "../Button";
+import { ProfilePicture } from "../ProfilePicture";
 import CatBanner from "/temp/cat-banner.jpg";
-import GroupJoinRequest from "./GroupJoinRequest";
+import GroupJoinRequest from "../Modals/GroupJoinRequest";
 
 type GroupProfileBannerProps = {
   group: Group;
