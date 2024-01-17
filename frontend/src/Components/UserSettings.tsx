@@ -1,10 +1,13 @@
-import { useState } from "react";
 import Button from "./Elements/Button";
 import DropdownInput from "./Elements/Inputs/DropdownInput";
-import SettingsPanel from "./Elements/SettingsPanel";
-import SettingsSlot from "./Elements/SettingsSlot";
+import InfoDot from "./Elements/InfoDot";
+import SettingsPanel from "./Elements/SettingsElements/SettingsPanel";
+import SettingsSlot from "./Elements/SettingsElements/SettingsSlot";
 import TextInput from "./Elements/Inputs/TextInput";
 import ToggleInput from "./Elements/Inputs/ToggleInput";
+import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
+import MaterialSymbolsPrivacyTipRounded from "./Icons/MaterialSymbolsPrivacyTipRounded";
+import MaterialSymbolsSettingsApplicationsRounded from "./Icons/MaterialSymbolsSettingsApplicationsRounded";
 
 const mockListOfLocations = [
   "Finland",
@@ -18,18 +21,18 @@ const mockListOfLocations = [
   "Antarctica",
 ];
 
-const mockListOfLanguages = ["Finnish", "English", "Swedish"];
+const mockListOfLanguages = ["English", "Finnish"];
 
-const profilePrivacyOptions = ["Public", "Invite Only", "Private"];
+const followingPermission = ["Anyone", "Ask Permission"];
+const postVisibility = ["Anyone", "Only Followers"];
 
 const UserSettings = () => {
-  const [privacyInviteOnly, setPrivacyInviteOnly] = useState(false);
   return (
     <div className="m-4 flex flex-col gap-4">
       <h2 className="my-4 text-center">Settings</h2>
-      <SettingsPanel header="User">
+      <SettingsPanel header="User" icon={<MaterialSymbolsAccountCircle />}>
         <SettingsSlot
-          name="Public Name"
+          nameElements={<p>Public Name</p>}
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <TextInput class="w-full" />
@@ -38,7 +41,7 @@ const UserSettings = () => {
           }
         />
         <SettingsSlot
-          name="Email"
+          nameElements={<p>Email</p>}
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <TextInput class="w-full" type="email" />
@@ -48,15 +51,16 @@ const UserSettings = () => {
           }
         />
         <SettingsSlot
-          name="Password"
+          nameElements={<p>Password</p>}
           element={
-            <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
+            <div className="flex w-full flex-col items-center justify-center gap-2 sm:flex-row">
               <Button class="btn-primary">Request Password Reset</Button>
+              <InfoDot text="Reset link will be sent to the current email address." />
             </div>
           }
         />
         <SettingsSlot
-          name="Location"
+          nameElements={<p>Location</p>}
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <DropdownInput items={mockListOfLocations} class="w-full" />
@@ -65,39 +69,45 @@ const UserSettings = () => {
           }
         />
       </SettingsPanel>
-      <SettingsPanel header="Privacy">
+      <SettingsPanel
+        header="Privacy"
+        icon={<MaterialSymbolsPrivacyTipRounded />}
+      >
         <SettingsSlot
-          name="Profile Access"
+          nameElements={
+            <>
+              <p>Allow Following</p>
+              <InfoDot text="Who can follow your profile?" />
+            </>
+          }
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
-              <DropdownInput
-                items={profilePrivacyOptions}
-                class="w-full"
-                onChanged={(_val, i) => {
-                  // Option 1 = "Invite Only". Change based on implementation.
-                  if (i === 1) setPrivacyInviteOnly(true);
-                  else setPrivacyInviteOnly(false);
-                }}
-              />
+              <DropdownInput items={followingPermission} class="w-full" />
               <Button class="btn-primary">Update</Button>
             </div>
           }
         />
-        {privacyInviteOnly && (
-          <SettingsSlot
-            name="Access Username List"
-            element={
-              <div className="flex w-full flex-col gap-2 sm:flex-row">
-                <TextInput class="w-full" />
-                <Button class="btn-primary">Update</Button>
-              </div>
-            }
-          />
-        )}
-      </SettingsPanel>
-      <SettingsPanel header="Site">
         <SettingsSlot
-          name="Language"
+          nameElements={
+            <>
+              <p>Post Visibility</p>
+              <InfoDot text="Who can view your posts?" />
+            </>
+          }
+          element={
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <DropdownInput items={postVisibility} class="w-full" />
+              <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+      </SettingsPanel>
+      <SettingsPanel
+        header="Site"
+        icon={<MaterialSymbolsSettingsApplicationsRounded />}
+      >
+        <SettingsSlot
+          nameElements={<p>Language</p>}
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <DropdownInput items={mockListOfLanguages} class="w-full" />
@@ -106,7 +116,7 @@ const UserSettings = () => {
           }
         />
         <SettingsSlot
-          name="Dark Mode"
+          nameElements={<p>Dark Mode</p>}
           element={
             <div className="flex w-full flex-row items-center justify-center gap-3">
               <p className="select-none">Off</p>
