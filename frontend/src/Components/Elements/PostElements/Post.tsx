@@ -15,6 +15,7 @@ import RepostButton from "./RepostButton";
 import CommentButton from "./CommentButton";
 import ReportButton from "./ReportButton";
 import PostCommentForm from "../../PostCommentForm";
+import ReportPostModal from "../Modals/ReportPostModal";
 
 export const PostContext = createContext<Post>({
   postOwner: { userName: "", screenName: "", followers: 0, following: 0 },
@@ -57,6 +58,7 @@ function Post({
   const { isSm } = useBreakpoint("sm");
   const editModal = useRef<HTMLDialogElement>(null);
   const deleteConfirm = useRef<HTMLDialogElement>(null);
+  const reportModal = useRef<HTMLDialogElement>(null);
   const [showCommentForm, setShowCommentForm] = useState(false);
   return (
     <PostContext.Provider
@@ -117,7 +119,7 @@ function Post({
               <LikeButton />
               <RepostButton />
               <CommentButton setShowCommentForm={setShowCommentForm} />
-              <ReportButton />
+              <ReportButton onClick={() => reportModal.current?.showModal()} />
             </div>
           </div>
           <div className="-m-3 flex flex-row items-center justify-end gap-1 bg-black25 px-6 py-3 dark:bg-black75">
@@ -168,6 +170,8 @@ function Post({
           <TagList tags={tags} class="italic" />
         </div>
       </ConfirmModal>
+
+      <ReportPostModal refObject={reportModal} />
     </PostContext.Provider>
   );
 }
