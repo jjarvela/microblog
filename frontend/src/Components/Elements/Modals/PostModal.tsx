@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Button from "./Button";
-import TagInput from "./TagInput";
-import TextAreaInput from "./TextAreaInput";
-import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
-import TextInput from "./TextInput";
-import UserProfileInfo from "./UserProfileInfo";
+import Button from "../Button";
+import TagInput from "../Inputs/TagInput";
+import TextAreaInput from "../Inputs/TextAreaInput";
+import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
+import TextInput from "../Inputs/TextInput";
+import UserProfileInfo from "../UserProfileInfo";
 
 type NewPostProps = {
   user: User;

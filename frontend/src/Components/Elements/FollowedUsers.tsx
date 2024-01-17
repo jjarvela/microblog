@@ -1,4 +1,4 @@
-import UserThumbnail from "./UserThumbnail";
+import UserThumbnail from "./SearchThumbnails/UserThumbnail";
 
 export default function FollowedUsers() {
   return (

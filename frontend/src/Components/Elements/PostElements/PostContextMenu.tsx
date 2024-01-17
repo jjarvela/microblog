@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import MaterialSymbolsEditOutlineRounded from "../Icons/MaterialSymbolsEditOutlineRounded";
-import MaterialSymbolsDeleteForeverOutlineRounded from "../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
-import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
-import MaterialSymbolsFlagRounded from "../Icons/MaterialSymbolsFlagRounded";
-import MaterialSymbolsMenuRounded from "../Icons/MaterialSymbolsMenuRounded";
+import MaterialSymbolsEditOutlineRounded from "../../Icons/MaterialSymbolsEditOutlineRounded";
+import MaterialSymbolsDeleteForeverOutlineRounded from "../../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
+import MaterialSymbolsShareOutline from "../../Icons/MaterialSymbolsShareOutline";
+import MaterialSymbolsFlagRounded from "../../Icons/MaterialSymbolsFlagRounded";
+import MaterialSymbolsMenuRounded from "../../Icons/MaterialSymbolsMenuRounded";
 
 type PostContextMenuProps = {
   class?: string;

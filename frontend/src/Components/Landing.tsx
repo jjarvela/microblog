@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "./Elements/Button";
-import TextInput from "./Elements/TextInput";
+import TextInput from "./Elements/Inputs/TextInput";
 import "./Landing.css";
 import { useNavigate } from "react-router";
 

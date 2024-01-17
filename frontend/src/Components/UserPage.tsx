@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import UserProfileBanner from "./Elements/UserProfileBanner";
+import UserProfileBanner from "./Elements/ProfileElements/UserProfileBanner";
 import { Navigate, Route, Routes } from "react-router-dom";
 import NotFound from "./NotFound";
 import UserProfile from "./UserProfile";

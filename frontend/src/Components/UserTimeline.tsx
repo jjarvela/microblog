@@ -1,4 +1,4 @@
-import Post from "./Elements/Post";
+import Post from "./Elements/PostElements/Post";
 import TimelineTopMenu from "./Elements/TimelineTopMenu";
 import PostCommentForm from "./PostCommentForm";
 

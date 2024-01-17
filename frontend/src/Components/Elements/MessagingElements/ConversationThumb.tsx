@@ -1,5 +1,5 @@
 import React from "react";
-import { ProfilePicture } from "./ProfilePicture";
+import { ProfilePicture } from "../ProfilePicture";
 
 type ConversationThumbProps = {
   recipientName: string;
