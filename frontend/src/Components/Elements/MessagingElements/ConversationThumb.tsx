@@ -1,5 +1,5 @@
 import React from "react";
-import { ProfilePicture } from "./ProfilePicture";
+import { ProfilePicture } from "../ProfilePicture";
 
 type ConversationThumbProps = {
   recipientName: string;
@@ -36,8 +36,8 @@ export default function ConversationThumb({
         setClosed(false);
       }}
     >
-      <div className="items-between flex flex-row gap-2">
-        <div className="flex flex-row items-center gap-2">
+      <div className="items-between flex w-full flex-row gap-2">
+        <div className="flex flex-row items-center gap-2 text-left">
           <div className="">
             <ProfilePicture width={50} />
           </div>
@@ -46,13 +46,15 @@ export default function ConversationThumb({
             <small className="text-black50">{recipientHandle}</small>
           </div>
         </div>
-        <div className="flex-grow self-start text-end">
+        <div className="flex-1 flex-grow self-start text-end">
           <p className="text-xs text-black50">{new Date().toLocaleString()}</p>
         </div>
       </div>
       <div className="max-h-[50%] max-w-[80%]">
         <small
-          className={`line-clamp-2 px-1 pt-2 ${readStatus && "text-black50"}`}
+          className={`line-clamp-2 px-1 pt-2 text-left ${
+            readStatus && "text-black50"
+          }`}
         >
           Here we have the latest message in the conversation
         </small>

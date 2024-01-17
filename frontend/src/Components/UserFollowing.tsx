@@ -4,7 +4,7 @@ import FollowedUsers from "./Elements/FollowedUsers";
 import FollowedHashtags from "./Elements/FollowedHashtags";
 import FollowedGroups from "./Elements/FollowedGroups";
 import NotFound from "./NotFound";
-import TextInput from "./Elements/TextInput";
+import TextInput from "./Elements/Inputs/TextInput";
 import Button from "./Elements/Button";
 import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
 

@@ -1,30 +1,20 @@
 import { useState } from "react";
-import Button from "./Button";
-import TagInput from "./TagInput";
-import TextAreaInput from "./TextAreaInput";
-import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
-import TextInput from "./TextInput";
-import UserProfileInfo from "./UserProfileInfo";
+import Button from "../Button";
+import TagInput from "../Inputs/TagInput";
+import TextAreaInput from "../Inputs/TextAreaInput";
+import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
+import TextInput from "../Inputs/TextInput";
+import UserProfileInfo from "../UserProfileInfo";
 
 type NewPostProps = {
-  profileName: string;
-  profileImage?: string;
-  username: string;
+  user: User;
   text: string;
   tags: string[];
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
   mode: "post" | "edit";
 };
 
-function PostModal({
-  profileName,
-  profileImage,
-  username,
-  text,
-  tags,
-  refObject,
-  mode,
-}: NewPostProps) {
+function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
   const [newTags, setNewTags] = useState<string[]>(tags);
   return (
     <dialog
@@ -35,11 +25,7 @@ function PostModal({
         {mode === "post" && (
           <div className="flex flex-row items-center gap-4">
             <h3>Post to</h3>
-            <UserProfileInfo
-              profileImage={profileImage}
-              profileName={profileName}
-              profileHandle={username}
-            />
+            <UserProfileInfo user={user} />
           </div>
         )}
         <form

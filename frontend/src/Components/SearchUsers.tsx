@@ -1,4 +1,4 @@
-import UserThumbnail from "./Elements/UserThumbnail";
+import UserThumbnail from "./Elements/SearchThumbnails/UserThumbnail";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 
 type SearchUserProps = {

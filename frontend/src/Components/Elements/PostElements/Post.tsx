@@ -1,24 +1,23 @@
-import MaterialSymbolsChatOutlineRounded from "../Icons/MaterialSymbolsChatOutlineRounded";
-import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavoriteOutlineRounded";
-import MaterialSymbolsFlagRounded from "../Icons/MaterialSymbolsFlagRounded";
-import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
-import PhFireSimpleBold from "../Icons/PhFireSimpleBold";
+import PhFireSimpleBold from "../../Icons/PhFireSimpleBold";
 import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
-import { createContext, useRef } from "react";
+import { createContext, useRef, useState } from "react";
 import PostPin from "./PostPin";
-import { useBreakpoint } from "../../Hooks/BreakpointHook";
-import UserProfileInfo from "./UserProfileInfo";
-import PostModal from "./PostModal";
-import ConfirmModal from "./ConfirmModal";
+import { useBreakpoint } from "../../../Hooks/BreakpointHook";
+import UserProfileInfo from "../UserProfileInfo";
+import PostModal from "../Modals/PostModal";
+import ConfirmModal from "../Modals/ConfirmModal";
 import TagList from "./TagList";
+import LikeButton from "./LikeButton";
+import RepostButton from "./RepostButton";
+import CommentButton from "./CommentButton";
+import ReportButton from "./ReportButton";
+import PostCommentForm from "../../PostCommentForm";
 
 export const PostContext = createContext<Post>({
-  profileName: "",
-  profileImage: undefined,
-  postOwner: "",
+  postOwner: { userName: "", screenName: "", followers: 0, following: 0 },
   text: "",
   reactions: 0,
   tags: [],
@@ -29,9 +28,7 @@ export const PostContext = createContext<Post>({
 });
 
 type PostProps = {
-  profileName: string;
-  profileImage?: string;
-  postOwner: string;
+  postOwner: User;
   reposter?: string | undefined;
   replyingTo?: string | undefined;
   text: string;
@@ -45,8 +42,6 @@ type PostProps = {
 };
 
 function Post({
-  profileName,
-  profileImage,
   postOwner,
   text,
   reactions,
@@ -62,11 +57,10 @@ function Post({
   const { isSm } = useBreakpoint("sm");
   const editModal = useRef<HTMLDialogElement>(null);
   const deleteConfirm = useRef<HTMLDialogElement>(null);
+  const [showCommentForm, setShowCommentForm] = useState(false);
   return (
     <PostContext.Provider
       value={{
-        profileName,
-        profileImage,
         postOwner,
         text,
         reactions,
@@ -104,11 +98,7 @@ function Post({
               deletePostCallback={() => deleteConfirm.current?.showModal()}
             />
             <p className="mr-3 self-start">{time.toLocaleString()}</p>
-            <UserProfileInfo
-              profileImage={profileImage}
-              profileName={profileName}
-              profileHandle={postOwner}
-            />
+            <UserProfileInfo user={postOwner} />
           </div>
 
           {replyingTo ? (
@@ -124,10 +114,10 @@ function Post({
 
             <TagList tags={tags} />
             <div className="mb-3 flex flex-row justify-center gap-4 text-2xl">
-              <MaterialSymbolsFavoriteOutlineRounded />
-              <MaterialSymbolsShareOutline />
-              <MaterialSymbolsChatOutlineRounded />
-              <MaterialSymbolsFlagRounded />
+              <LikeButton />
+              <RepostButton />
+              <CommentButton setShowCommentForm={setShowCommentForm} />
+              <ReportButton />
             </div>
           </div>
           <div className="-m-3 flex flex-row items-center justify-end gap-1 bg-black25 px-6 py-3 dark:bg-black75">
@@ -137,13 +127,23 @@ function Post({
             <p>{reactions} Reactions</p>
           </div>
         </div>
+        {showCommentForm && (
+          <PostCommentForm
+            recipient={postOwner}
+            commenter={{
+              userName: "@dickerson99",
+              screenName: "Dickerson",
+              followers: 420,
+              following: 666,
+            }}
+            setShowCommentForm={setShowCommentForm}
+          />
+        )}
       </div>
       <PostModal
         text={text}
         tags={tags}
-        profileName={profileName}
-        username={postOwner}
-        profileImage={profileImage}
+        user={postOwner}
         refObject={editModal}
         mode="edit"
       />

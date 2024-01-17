@@ -1,13 +1,13 @@
 import { useContext } from "react";
-import { UserContext } from "../UserPage";
-import UserProfileInfo from "./UserProfileInfo";
+import { UserContext } from "../../UserPage";
+import UserProfileInfo from "../UserProfileInfo";
 import ProfileButton from "./ProfileButton";
-import MaterialSymbolsAccountCircle from "../Icons/MaterialSymbolsAccountCircle";
-import MaterialSymbolsArticleOutlineRounded from "../Icons/MaterialSymbolsArticleOutlineRounded";
-import MaterialSymbolsImageOutlineRounded from "../Icons/MaterialSymbolsImageOutlineRounded";
-import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavoriteOutlineRounded";
-import { useBreakpoint } from "../../Hooks/BreakpointHook";
-import Button from "./Button";
+import MaterialSymbolsAccountCircle from "../../Icons/MaterialSymbolsAccountCircle";
+import MaterialSymbolsArticleOutlineRounded from "../../Icons/MaterialSymbolsArticleOutlineRounded";
+import MaterialSymbolsImageOutlineRounded from "../../Icons/MaterialSymbolsImageOutlineRounded";
+import MaterialSymbolsFavoriteOutlineRounded from "../../Icons/MaterialSymbolsFavoriteOutlineRounded";
+import { useBreakpoint } from "../../../Hooks/BreakpointHook";
+import Button from "../Button";
 
 type UserProfileBannerProps = {
   bannerImage?: string;
@@ -29,8 +29,7 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
           }}
         />
         <UserProfileInfo
-          profileHandle={user.userName}
-          profileName={user.screenName}
+          user={user}
           profileImageSize={150}
           class="absolute bottom-5 left-[5%] text-white sm:-bottom-5"
           nameClass="text-xl font-bold md:text-2xl"

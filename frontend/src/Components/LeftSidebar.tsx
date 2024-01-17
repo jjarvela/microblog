@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "./Elements/Button";
-import PostModal from "./Elements/PostModal";
+import PostModal from "./Elements/Modals/PostModal";
 import SidebarLink from "./Elements/SidebarLink";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsEditSquareOutlineRounded from "./Icons/MaterialSymbolsEditSquareOutlineRounded";
@@ -114,8 +114,12 @@ function LeftSidebar() {
           </div>
         )}
         <PostModal
-          profileName="Temp Poster"
-          username="@tempposter"
+          user={{
+            userName: "@dickerson99",
+            screenName: "Dickerson",
+            followers: 420,
+            following: 666,
+          }}
           text=""
           tags={[]}
           refObject={postModal}

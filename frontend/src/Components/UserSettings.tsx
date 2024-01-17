@@ -1,7 +1,137 @@
+import Button from "./Elements/Button";
+import DropdownInput from "./Elements/Inputs/DropdownInput";
+import InfoDot from "./Elements/InfoDot";
+import SettingsPanel from "./Elements/SettingsElements/SettingsPanel";
+import SettingsSlot from "./Elements/SettingsElements/SettingsSlot";
+import TextInput from "./Elements/Inputs/TextInput";
+import ToggleInput from "./Elements/Inputs/ToggleInput";
+import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
+import MaterialSymbolsPrivacyTipRounded from "./Icons/MaterialSymbolsPrivacyTipRounded";
+import MaterialSymbolsSettingsApplicationsRounded from "./Icons/MaterialSymbolsSettingsApplicationsRounded";
+
+const mockListOfLocations = [
+  "Finland",
+  "Europe",
+  "North America",
+  "South America",
+  "Middle East",
+  "Africa",
+  "Asia",
+  "Oceania",
+  "Antarctica",
+];
+
+const mockListOfLanguages = ["English", "Finnish"];
+
+const followingPermission = ["Anyone", "Ask Permission"];
+const postVisibility = ["Anyone", "Only Followers"];
+
 const UserSettings = () => {
-    return(
-        <h2>This is the user's settings page</h2>
-    );
+  return (
+    <div className="m-4 flex flex-col gap-4">
+      <h2 className="my-4 text-center">Settings</h2>
+      <SettingsPanel header="User" icon={<MaterialSymbolsAccountCircle />}>
+        <SettingsSlot
+          nameElements={<p>Public Name</p>}
+          element={
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <TextInput class="w-full" />
+              <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+        <SettingsSlot
+          nameElements={<p>Email</p>}
+          element={
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <TextInput class="w-full" type="email" />
+
+              <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+        <SettingsSlot
+          nameElements={<p>Password</p>}
+          element={
+            <div className="flex w-full flex-col items-center justify-center gap-2 sm:flex-row">
+              <Button class="btn-primary">Request Password Reset</Button>
+              <InfoDot text="Reset link will be sent to the current email address." />
+            </div>
+          }
+        />
+        <SettingsSlot
+          nameElements={<p>Location</p>}
+          element={
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <DropdownInput items={mockListOfLocations} class="w-full" />
+              <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+      </SettingsPanel>
+      <SettingsPanel
+        header="Privacy"
+        icon={<MaterialSymbolsPrivacyTipRounded />}
+      >
+        <SettingsSlot
+          nameElements={
+            <>
+              <p>Allow Following</p>
+              <InfoDot text="Who can follow your profile?" />
+            </>
+          }
+          element={
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <DropdownInput items={followingPermission} class="w-full" />
+              <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+        <SettingsSlot
+          nameElements={
+            <>
+              <p>Post Visibility</p>
+              <InfoDot text="Who can view your posts?" />
+            </>
+          }
+          element={
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <DropdownInput items={postVisibility} class="w-full" />
+              <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+      </SettingsPanel>
+      <SettingsPanel
+        header="Site"
+        icon={<MaterialSymbolsSettingsApplicationsRounded />}
+      >
+        <SettingsSlot
+          nameElements={<p>Language</p>}
+          element={
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <DropdownInput items={mockListOfLanguages} class="w-full" />
+              <Button class="btn-primary">Update</Button>
+            </div>
+          }
+        />
+        <SettingsSlot
+          nameElements={<p>Dark Mode</p>}
+          element={
+            <div className="flex w-full flex-row items-center justify-center gap-3">
+              <p className="select-none">Off</p>
+              <ToggleInput
+                onToggle={(val) =>
+                  console.log("Dark mode toggled to state: " + String(val))
+                }
+              />
+              <p className="select-none">On</p>
+            </div>
+          }
+        />
+      </SettingsPanel>
+    </div>
+  );
 };
 
 export default UserSettings;

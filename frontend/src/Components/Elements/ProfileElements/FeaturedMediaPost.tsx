@@ -1,13 +1,11 @@
-import PostMediaLayout from "./PostMediaLayout";
-import PostContextMenu from "./PostContextMenu";
-import PostPin from "./PostPin";
-import TagList from "./TagList";
-import { PostContext } from "./Post";
+import PostMediaLayout from "../PostElements/PostMediaLayout";
+import PostContextMenu from "../PostElements/PostContextMenu";
+import PostPin from "../PostElements/PostPin";
+import TagList from "../PostElements/TagList";
+import { PostContext } from "../PostElements/Post";
 
 type PostProps = {
-  profileName: string;
-  postOwner: string;
-  profileImage?: string;
+  postOwner: User;
   media?: Array<Media> | undefined;
   tags: string[];
   time: Date;
@@ -19,9 +17,7 @@ type PostProps = {
 };
 
 function FeaturedMediaPost({
-  profileName,
   postOwner,
-  profileImage,
   tags,
   time,
   media,
@@ -34,8 +30,6 @@ function FeaturedMediaPost({
   return (
     <PostContext.Provider
       value={{
-        profileName,
-        profileImage,
         postOwner,
         tags,
         time,
@@ -58,7 +52,7 @@ function FeaturedMediaPost({
           />
         </div>
         <h3 className="text-center">Featured Media</h3>
-        <h5 className="text-center">{profileName}</h5>
+        <h5 className="text-center">{postOwner.screenName}</h5>
         {pinnedPost ? (
           <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 p-2 px-6 pb-1 dark:border-white25">
             <PostPin />

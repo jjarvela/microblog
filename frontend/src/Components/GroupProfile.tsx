@@ -1,21 +1,36 @@
-import { useLocation } from "react-router";
-import GroupProfileBanner from "./Elements/GroupProfileBanner";
-import Post from "./Elements/Post";
-import FeaturedMediaPost from "./Elements/FeaturedMediaPost";
+import { Navigate, useLocation } from "react-router";
+import GroupProfileBanner from "./Elements/ProfileElements/GroupProfileBanner";
+import Post from "./Elements/PostElements/Post";
+import FeaturedMediaPost from "./Elements/ProfileElements/FeaturedMediaPost";
+import { useEffect } from "react";
 
 function GroupProfile() {
-  const { state } = useLocation(); // Gets the groupName from the url
-  const groupName = state?.groupName;
+  const { state } = useLocation(); //gets the entire group object that group thumbnail passes to state
+  const group = state?.group;
+  //!!will result in 404 if navigation is not done from a group thumbnail
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <div className="mb-8">
-        <GroupProfileBanner groupName={groupName} />
+        {group ? (
+          <GroupProfileBanner group={group} />
+        ) : (
+          <Navigate to={"/groups"} replace={true} />
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-4">
         <Post
-          profileName="Test User ✨"
-          postOwner="@testuser"
+          postOwner={{
+            userName: "@testuser",
+            screenName: "Test User ✨",
+            followers: 5,
+            following: 23,
+          }}
           text="That IS indeed a very cool post!"
           reactions={3}
           tags={["nice"]}
@@ -26,8 +41,12 @@ function GroupProfile() {
         />
 
         <FeaturedMediaPost
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           media={[
             {
               id: "32j423j4",
@@ -41,8 +60,12 @@ function GroupProfile() {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {
@@ -64,8 +87,12 @@ function GroupProfile() {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has a video"
           media={[
             {
@@ -81,8 +108,12 @@ function GroupProfile() {
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {

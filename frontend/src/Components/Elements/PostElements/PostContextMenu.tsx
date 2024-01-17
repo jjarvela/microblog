@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import MaterialSymbolsEditOutlineRounded from "../Icons/MaterialSymbolsEditOutlineRounded";
-import MaterialSymbolsDeleteForeverOutlineRounded from "../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
-import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
-import MaterialSymbolsFlagRounded from "../Icons/MaterialSymbolsFlagRounded";
-import MaterialSymbolsMenuRounded from "../Icons/MaterialSymbolsMenuRounded";
+import MaterialSymbolsEditOutlineRounded from "../../Icons/MaterialSymbolsEditOutlineRounded";
+import MaterialSymbolsDeleteForeverOutlineRounded from "../../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
+import MaterialSymbolsShareOutline from "../../Icons/MaterialSymbolsShareOutline";
+import MaterialSymbolsFlagRounded from "../../Icons/MaterialSymbolsFlagRounded";
+import MaterialSymbolsMenuRounded from "../../Icons/MaterialSymbolsMenuRounded";
 
 type PostContextMenuProps = {
   class?: string;
@@ -27,7 +27,8 @@ function PostContextMenu({
           className="rounded-xl border border-black25 px-2 py-1 text-lg hover:border-black50 hover:bg-black25 dark:border-white25 dark:hover:bg-white25"
           onClick={() => setShowMenu(!showMenu)}
           onBlur={(e) => {
-            if (!e.relatedTarget) setShowMenu(false);
+            if (!e.target.parentElement?.contains(e.relatedTarget))
+              setShowMenu(false);
             else if (document.activeElement === e.target)
               e.target.focus({ preventScroll: true }); // Recapture focus to keep this onBlur working.
           }}

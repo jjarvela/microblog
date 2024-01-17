@@ -1,13 +1,8 @@
 import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
-import GroupThumbnail from "./Elements/GroupThumbnail";
+import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
 
 type SearchGroupProps = {
-  results: Array<{
-    groupName: string;
-    groupAdmin: string;
-    groupDescription: string;
-    groupMembers: number;
-  }>;
+  results: Array<Group>;
   limit: number | undefined;
 };
 
@@ -31,14 +26,7 @@ export default function SearchGroups({ results, limit }: SearchGroupProps) {
                 }
                 className="my-2"
               >
-                <GroupThumbnail
-                  groupName={group.groupName}
-                  groupAdmin={group.groupAdmin}
-                  groupDescription={group.groupDescription}
-                  members={group.groupMembers}
-                  activity="-"
-                  rule="Anyone can join"
-                />
+                <GroupThumbnail group={group} />
               </div>
             );
           })
@@ -52,14 +40,7 @@ export default function SearchGroups({ results, limit }: SearchGroupProps) {
                 }
                 className="my-2"
               >
-                <GroupThumbnail
-                  groupName={group.groupName}
-                  groupAdmin={group.groupAdmin}
-                  groupDescription={group.groupDescription}
-                  members={group.groupMembers}
-                  activity="-"
-                  rule="Anyone can join"
-                />
+                <GroupThumbnail group={group} />
               </div>
             );
           })}

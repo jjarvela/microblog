@@ -1,42 +1,38 @@
 import { useState } from "react";
 import Button from "./Elements/Button";
-import TextAreaInput from "./Elements/TextAreaInput";
-import TagInput from "./Elements/TagInput";
+import TextAreaInput from "./Elements/Inputs/TextAreaInput";
+import TagInput from "./Elements/Inputs/TagInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "./Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
-import InReplyTo from "./Elements/InReplyTo";
+import InReplyTo from "./Elements/PostElements/InReplyTo";
 import UserProfileInfo from "./Elements/UserProfileInfo";
 
 type PostCommentFormProps = {
-  profileName: string;
-  profileImage?: string;
-  username: string;
-  text: string;
-  tags: string[];
+  recipient: User;
+  commenter: User;
+  setShowCommentForm: React.Dispatch<React.SetStateAction<boolean>>;
+  text?: string;
+  tags?: string[];
 };
 
 function PostCommentForm({
-  profileName,
-  profileImage,
-  username,
+  recipient,
+  commenter,
+  setShowCommentForm,
   text,
   tags,
 }: PostCommentFormProps) {
-  const [newTags, setNewTags] = useState<string[]>(tags);
+  const [newTags, setNewTags] = useState<string[]>(tags || [""]);
   return (
     <div className="timeline-box mt-4 flex flex-col">
       <div className="mb-4 flex flex-row items-center gap-4">
         <h5>Commenting as</h5>
-        <UserProfileInfo
-          profileImage={profileImage}
-          profileName={profileName}
-          profileHandle={username}
-        />
+        <UserProfileInfo user={commenter} />
       </div>
-      <InReplyTo username={profileName} />
+      <InReplyTo username={recipient.screenName} />
       <form className="mt-4 flex flex-col gap-4">
         <div className="flex flex-col">
           <TextAreaInput
-            text={text}
+            text={text || ""}
             placeholder="Post text..."
             showCount
             maxLength={500}
@@ -62,8 +58,19 @@ function PostCommentForm({
           />
         </div>
 
-        <div className="flex justify-end gap-4">
-          <Button type="submit" class="btn-primary m-3">
+        <div className="flex justify-between gap-4">
+          <Button
+            type="button"
+            class="btn-secondary m-3"
+            onClick={() => setShowCommentForm(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            class="btn-primary m-3"
+            onClick={() => setShowCommentForm(false)}
+          >
             Comment
           </Button>
         </div>

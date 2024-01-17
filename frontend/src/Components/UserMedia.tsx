@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "./UserPage";
-import PostMedia from "./Elements/PostMedia";
-import { PostContext } from "./Elements/Post";
+import PostMedia from "./Elements/PostElements/PostMedia";
+import { PostContext } from "./Elements/PostElements/Post";
 
 const mockMediaList: Media[] = [
   {
@@ -29,9 +29,7 @@ function UserMedia() {
   return (
     <PostContext.Provider
       value={{
-        profileName: user.screenName,
-        profileImage: user.profileImage,
-        postOwner: user.userName,
+        postOwner: user,
         tags: [],
         time: new Date(),
         media: [],
