@@ -1,5 +1,5 @@
 import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
-import GroupThumbnail from "./Elements/GroupThumbnail";
+import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
 
 type SearchGroupProps = {
   results: Array<Group>;

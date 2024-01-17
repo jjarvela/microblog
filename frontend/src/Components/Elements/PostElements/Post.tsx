@@ -1,18 +1,18 @@
-import MaterialSymbolsChatOutlineRounded from "../Icons/MaterialSymbolsChatOutlineRounded";
-import MaterialSymbolsFavoriteOutlineRounded from "../Icons/MaterialSymbolsFavoriteOutlineRounded";
-import MaterialSymbolsFlagRounded from "../Icons/MaterialSymbolsFlagRounded";
-import MaterialSymbolsShareOutline from "../Icons/MaterialSymbolsShareOutline";
-import PhFireSimpleBold from "../Icons/PhFireSimpleBold";
+import MaterialSymbolsChatOutlineRounded from "../../Icons/MaterialSymbolsChatOutlineRounded";
+import MaterialSymbolsFavoriteOutlineRounded from "../../Icons/MaterialSymbolsFavoriteOutlineRounded";
+import MaterialSymbolsFlagRounded from "../../Icons/MaterialSymbolsFlagRounded";
+import MaterialSymbolsShareOutline from "../../Icons/MaterialSymbolsShareOutline";
+import PhFireSimpleBold from "../../Icons/PhFireSimpleBold";
 import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
 import { createContext, useRef } from "react";
 import PostPin from "./PostPin";
-import { useBreakpoint } from "../../Hooks/BreakpointHook";
-import UserProfileInfo from "./UserProfileInfo";
-import PostModal from "./PostModal";
-import ConfirmModal from "./ConfirmModal";
+import { useBreakpoint } from "../../../Hooks/BreakpointHook";
+import UserProfileInfo from "../UserProfileInfo";
+import PostModal from "../Modals/PostModal";
+import ConfirmModal from "../Modals/ConfirmModal";
 import TagList from "./TagList";
 
 export const PostContext = createContext<Post>({

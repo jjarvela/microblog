@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import MaterialSymbolsExpandMoreRounded from "../Icons/MaterialSymbolsExpandMoreRounded";
+import MaterialSymbolsExpandMoreRounded from "../../Icons/MaterialSymbolsExpandMoreRounded";
 
 type DropdownInputProps = {
   items: string[];

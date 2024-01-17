@@ -1,6 +1,6 @@
 import { MaterialSymbolsPhotoCameraRounded } from "./Icons/MaterialSymbolsPhotoCameraRounded";
-import ImageThumb from "./Elements/ImageThumb";
-import VideoThumb from "./Elements/VideoThumb";
+import ImageThumb from "./Elements/SearchThumbnails/ImageThumb";
+import VideoThumb from "./Elements/SearchThumbnails/VideoThumb";
 
 type SearchMediaProps = {
   results: Array<Media>;

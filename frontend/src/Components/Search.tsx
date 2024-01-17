@@ -1,9 +1,9 @@
 import Button from "./Elements/Button";
-import TextInput from "./Elements/TextInput";
-import GroupThumbnail from "./Elements/GroupThumbnail";
-import UserThumbnail from "./Elements/UserThumbnail";
-import ImageThumb from "./Elements/ImageThumb";
-import VideoThumb from "./Elements/VideoThumb";
+import TextInput from "./Elements/Inputs/TextInput";
+import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
+import UserThumbnail from "./Elements/SearchThumbnails/UserThumbnail";
+import ImageThumb from "./Elements/SearchThumbnails/ImageThumb";
+import VideoThumb from "./Elements/SearchThumbnails/VideoThumb";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
 import { MaterialSymbolsPhotoCameraRounded } from "./Icons/MaterialSymbolsPhotoCameraRounded";

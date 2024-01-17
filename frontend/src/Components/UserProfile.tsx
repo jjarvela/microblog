@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import FeaturedMediaPost from "./Elements/FeaturedMediaPost";
-import LinksBox from "./Elements/LinksBox";
+import FeaturedMediaPost from "./Elements/ProfileElements/FeaturedMediaPost";
+import LinksBox from "./Elements/ProfileElements/LinksBox";
 import LogosFacebook from "./Icons/LogosFacebook";
 import LogosGithubIcon from "./Icons/LogosGithubIcon";
 import LogosTwitter from "./Icons/LogosTwitter";

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from "./Elements/Button";
-import TextAreaInput from "./Elements/TextAreaInput";
-import TagInput from "./Elements/TagInput";
+import TextAreaInput from "./Elements/Inputs/TextAreaInput";
+import TagInput from "./Elements/Inputs/TagInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "./Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
-import InReplyTo from "./Elements/InReplyTo";
+import InReplyTo from "./Elements/PostElements/InReplyTo";
 import UserProfileInfo from "./Elements/UserProfileInfo";
 
 type PostCommentFormProps = {
