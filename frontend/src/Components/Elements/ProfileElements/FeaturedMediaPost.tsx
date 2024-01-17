@@ -1,8 +1,8 @@
-import PostMediaLayout from "./PostMediaLayout";
-import PostContextMenu from "./PostContextMenu";
-import PostPin from "./PostPin";
-import TagList from "./TagList";
-import { PostContext } from "./Post";
+import PostMediaLayout from "../PostElements/PostMediaLayout";
+import PostContextMenu from "../PostElements/PostContextMenu";
+import PostPin from "../PostElements/PostPin";
+import TagList from "../PostElements/TagList";
+import { PostContext } from "../PostElements/Post";
 
 type PostProps = {
   postOwner: User;

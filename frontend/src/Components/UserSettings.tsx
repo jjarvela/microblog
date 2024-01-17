@@ -1,9 +1,9 @@
 import Button from "./Elements/Button";
-import DropdownInput from "./Elements/DropdownInput";
+import DropdownInput from "./Elements/Inputs/DropdownInput";
 import SettingsPanel from "./Elements/SettingsPanel";
 import SettingsSlot from "./Elements/SettingsSlot";
-import TextInput from "./Elements/TextInput";
-import ToggleInput from "./Elements/ToggleInput";
+import TextInput from "./Elements/Inputs/TextInput";
+import ToggleInput from "./Elements/Inputs/ToggleInput";
 
 const mockListOfLocations = [
   "Finland",

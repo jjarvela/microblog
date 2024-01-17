@@ -1,4 +1,4 @@
-import GroupThumbnail from "./GroupThumbnail";
+import GroupThumbnail from "./SearchThumbnails/GroupThumbnail";
 
 export default function FollowedGroups() {
   const placeholderGroups: Group[] = [

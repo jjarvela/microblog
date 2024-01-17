@@ -1,5 +1,5 @@
-import Button from "./Button";
-import TextAreaInput from "./TextAreaInput";
+import Button from "../Button";
+import TextAreaInput from "../Inputs/TextAreaInput";
 
 type GroupJoinRequestProps = {
   groupName: string;

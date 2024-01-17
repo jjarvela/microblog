@@ -1,5 +1,5 @@
 import Button from "./Elements/Button";
-import GroupThumbnail from "./Elements/GroupThumbnail";
+import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
 import GroupTopMenu from "./Elements/GroupTopMenu";
 
 const GroupList = () => {

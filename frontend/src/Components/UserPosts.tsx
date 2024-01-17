@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "./UserPage";
-import Post from "./Elements/Post";
+import Post from "./Elements/PostElements/Post";
 
 function UserPosts() {
   const user = useContext(UserContext);
