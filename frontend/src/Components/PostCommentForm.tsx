@@ -1,23 +1,21 @@
 import { useState } from "react";
-import { ProfilePicture } from "./Elements/ProfilePicture";
 import Button from "./Elements/Button";
-import TextAreaInput from "./Elements/TextAreaInput";
-import TagInput from "./Elements/TagInput";
+import TextAreaInput from "./Elements/Inputs/TextAreaInput";
+import TagInput from "./Elements/Inputs/TagInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "./Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
-import InReplyTo from "./Elements/InReplyTo";
+import InReplyTo from "./Elements/PostElements/InReplyTo";
+import UserProfileInfo from "./Elements/UserProfileInfo";
 
 type PostCommentFormProps = {
-  profileName: string;
-  profileImage?: string;
-  username: string;
+  recipient: User;
+  commenter: User;
   text: string;
   tags: string[];
 };
 
 function PostCommentForm({
-  profileName,
-  profileImage,
-  username,
+  recipient,
+  commenter,
   text,
   tags,
 }: PostCommentFormProps) {
@@ -25,11 +23,10 @@ function PostCommentForm({
   return (
     <div className="timeline-box mt-4 flex flex-col">
       <div className="mb-4 flex flex-row items-center gap-4">
-        <ProfilePicture width={80} image={profileImage} />
         <h5>Commenting as</h5>
-        <p className="text-black50">{username}</p>
+        <UserProfileInfo user={commenter} />
       </div>
-      <InReplyTo username={profileName} />
+      <InReplyTo username={recipient.screenName} />
       <form className="mt-4 flex flex-col gap-4">
         <div className="flex flex-col">
           <TextAreaInput

@@ -1,197 +1,161 @@
 import Button from "./Elements/Button";
-import GroupThumbnail from "./Elements/GroupThumbnail";
-import UserThumbnail from "./Elements/UserThumbnail";
-import ImageThumb from "./Elements/ImageThumb";
-import VideoThumb from "./Elements/VideoThumb";
+import TextInput from "./Elements/Inputs/TextInput";
+import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
+import UserThumbnail from "./Elements/SearchThumbnails/UserThumbnail";
+import ImageThumb from "./Elements/SearchThumbnails/ImageThumb";
+import VideoThumb from "./Elements/SearchThumbnails/VideoThumb";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
 import { MaterialSymbolsPhotoCameraRounded } from "./Icons/MaterialSymbolsPhotoCameraRounded";
 import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
+import SearchGroups from "./SearchGroups";
+import SearchMedia from "./SearchMedia";
+import SearchUsers from "./SearchUsers";
 
 const Search = () => {
+  const userResults: User[] = [
+    {
+      userName: "@testuser",
+      screenName: "Test User ✨",
+      followers: 5,
+      following: 23,
+    },
+    {
+      userName: "@dickerson99",
+      screenName: "Dickerson",
+      followers: 420,
+      following: 666,
+    },
+    {
+      userName: "@spamlord",
+      screenName: "Spammer McSpamface",
+      followers: 2,
+      following: 10678,
+    },
+    {
+      userName: "@madasitgets",
+      screenName: "Outraged user 951 😤",
+      followers: 487,
+      following: 794,
+    },
+    {
+      userName: "@madasitgets",
+      screenName: "Outraged user 951 😤",
+      followers: 487,
+      following: 794,
+    },
+    {
+      userName: "@madasitgets",
+      screenName: "Outraged user 951 😤",
+      followers: 487,
+      following: 794,
+    },
+  ];
+
+  const groupResults: Array<Group> = [
+    {
+      groupName: "CatLovers",
+      groupAdmin: {
+        userName: "@testuser",
+        screenName: "Test User ✨",
+        followers: 5,
+        following: 23,
+      },
+      groupDescription: "This is a test",
+      groupMembers: 84,
+      groupCreated: new Date(),
+      recentActivity: "--",
+      joinRule: "everyone",
+    },
+    {
+      groupName: "Dog luv",
+      groupAdmin: {
+        userName: "@dickerson99",
+        screenName: "Dickerson",
+        followers: 420,
+        following: 666,
+      },
+      groupDescription: "This is a test",
+      groupMembers: 84,
+      groupCreated: new Date(),
+      recentActivity: "--",
+      joinRule: "everyone",
+    },
+
+    {
+      groupName: "Haters",
+      groupAdmin: {
+        userName: "@madasitgets",
+        screenName: "Outraged user 951 😤",
+        followers: 487,
+        following: 794,
+      },
+      groupDescription: "This is a test",
+      groupMembers: 84,
+      groupCreated: new Date(),
+      recentActivity: "--",
+      joinRule: "everyone",
+    },
+  ];
+
+  const mediaResult: Media[] = [
+    {
+      id: "djgjkdfkjghj123",
+      type: "img",
+      source:
+        "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
+    },
+    {
+      id: "dsu123214o2",
+      type: "vid",
+      source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+    },
+    {
+      id: "djret4323234",
+      type: "img",
+      source:
+        "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
+    },
+    {
+      id: "djret4323234",
+      type: "img",
+      source:
+        "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
+    },
+    {
+      id: "124234rete",
+      type: "img",
+      source:
+        "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
+    },
+    {
+      id: "dsu43dsrw42",
+      type: "vid",
+      source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+    },
+    {
+      id: "dj4234dfgh",
+      type: "img",
+      source:
+        "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
+    },
+  ];
+
   return (
     <div className="my-1 flex flex-col gap-4">
       <h2 className="mx-2">This is the main hub for search</h2>
-      <div className="my-2 text-center">
-        <input id="search" type="text"></input>
+      <div className="flex w-full flex-row justify-center gap-2">
+        <TextInput id="search" class="max-h-min" />
         <label htmlFor="search">
-          <Button class="btn-primary text-lg">
+          <Button class="btn-primary px-2 text-lg">
             <MaterialSymbolsSearchRounded />
           </Button>
         </label>
       </div>
 
-      <div className="flex justify-start gap-2">
-        <h1>
-          <MaterialSymbolsAccountCircle />
-        </h1>
-        <h3>Users</h3>
-      </div>
-
-      <div className="my-2">
-        <UserThumbnail
-          profileName="Test User"
-          username="@text"
-          userDescription="this si test"
-          followers={5}
-          following={23}
-        />
-      </div>
-
-      <div className="flex justify-start gap-2">
-        <h1>
-          <MaterialSymbolsGroupsRounded />
-        </h1>
-        <h3>Groups</h3>
-      </div>
-
-      <div className="my-2">
-        <GroupThumbnail
-          groupName="Group name"
-          groupAdmin="@test"
-          groupDescription="This is a test"
-          members={84}
-          activity="-"
-          rule="Anyone can join"
-        />
-      </div>
-
-      <div className="flex justify-start gap-2">
-        <h1>
-          <MaterialSymbolsPhotoCameraRounded />
-        </h1>
-        <h3>Media</h3>
-      </div>
-
-      <div className="mx-2 my-2 flex flex-wrap gap-2">
-        <ImageThumb
-          image={{
-            id: "djgjkdfkjghj123",
-            type: "img",
-            source:
-              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <VideoThumb
-          video={{
-            id: "dsu123214o2",
-            type: "vid",
-            source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <ImageThumb
-          image={{
-            id: "djgasrser324",
-            type: "img",
-            source:
-              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <ImageThumb
-          image={{
-            id: "djret4323234",
-            type: "img",
-            source:
-              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <VideoThumb
-          video={{
-            id: "dsu234drwr",
-            type: "vid",
-            source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <ImageThumb
-          image={{
-            id: "dj3234fetert",
-            type: "img",
-            source:
-              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <VideoThumb
-          video={{
-            id: "ds23534123214o2",
-            type: "vid",
-            source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <ImageThumb
-          image={{
-            id: "124234rete",
-            type: "img",
-            source:
-              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <ImageThumb
-          image={{
-            id: "d1223423qweqw",
-            type: "img",
-            source:
-              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <ImageThumb
-          image={{
-            id: "djgj422342sdsd123",
-            type: "img",
-            source:
-              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <ImageThumb
-          image={{
-            id: "djgj42kjghj123",
-            type: "img",
-            source:
-              "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-          }}
-          width={150}
-          height={150}
-        />
-
-        <VideoThumb
-          video={{
-            id: "ds2432sfegreg2",
-            type: "vid",
-            source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
-          }}
-          width={150}
-          height={150}
-        />
-      </div>
+      <SearchUsers results={userResults} limit={4} />
+      <SearchGroups results={groupResults} limit={4} />
+      <SearchMedia results={mediaResult} limit={15} />
     </div>
   );
 };

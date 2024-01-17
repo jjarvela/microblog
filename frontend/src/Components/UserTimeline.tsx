@@ -1,4 +1,4 @@
-import Post from "./Elements/Post";
+import Post from "./Elements/PostElements/Post";
 import TimelineTopMenu from "./Elements/TimelineTopMenu";
 import PostCommentForm from "./PostCommentForm";
 
@@ -11,51 +11,71 @@ const UserTimeline = () => {
       <h2 className="my-4 text-center">Timeline</h2>
       <div className="flex flex-col gap-4">
         <Post
-          profileName="Test User ✨"
-          postOwner="@testuser"
+          postOwner={{
+            userName: "@testuser",
+            screenName: "Test User ✨",
+            followers: 5,
+            following: 23,
+          }}
           text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus accusantium, repellendus tempore minima sit quam cum architecto dolores excepturi iure recusandae! Voluptatibus suscipit cupiditate tenetur eveniet deserunt consequatur tempore distinctio."
           reactions={42}
-          tags={["#hashtag", "#longerhashtag", "#tag"]}
+          tags={["hashtag", "longerhashtag", "tag"]}
           time={new Date()}
           media={[]}
           ownerOptions
         />
         <Post
-          profileName="Another User 🙂"
-          postOwner="@anotheruser"
+          postOwner={{
+            userName: "@anotheruser",
+            screenName: "Another User 🙂",
+            followers: 1,
+            following: 37,
+          }}
           text="Hello this is my very cool post!"
           reactions={3}
-          tags={["#help", "#me", "#thanks"]}
+          tags={["help", "me", "thanks"]}
           media={[]}
           time={new Date()}
         />
 
         <Post
-          profileName="Another User 🙂"
-          postOwner="@anotheruser"
+          postOwner={{
+            userName: "@anotheruser",
+            screenName: "Another User 🙂",
+            followers: 1,
+            following: 37,
+          }}
           reposter="@testuser"
           text="Hello this is my very cool post!"
           reactions={3}
-          tags={["#help", "#me", "#thanks"]}
+          tags={["help", "me", "thanks"]}
           media={[]}
           time={new Date()}
         />
 
         <Post
-          profileName="Test User ✨"
-          postOwner="@testuser"
+          postOwner={{
+            userName: "@testuser",
+            screenName: "Test User ✨",
+            followers: 5,
+            following: 23,
+          }}
           replyingTo="@anotheruser"
           text="That IS indeed a very cool post!"
           reactions={3}
-          tags={["#nice"]}
+          tags={["nice"]}
           time={new Date()}
           media={[]}
           ownerOptions
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has a video"
           media={[
             {
@@ -66,48 +86,56 @@ const UserTimeline = () => {
             },
           ]}
           reactions={1}
-          tags={["#catvid"]}
+          tags={["catvid"]}
           time={new Date()}
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {
               id: "32j423j4",
               source:
-                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg?auto=compress&cs=tinysrgb",
+                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
               type: "img",
             },
             {
               id: "1434j4",
               source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
               type: "img",
             },
           ]}
           reactions={1}
-          tags={["#twopics"]}
+          tags={["twopics"]}
           time={new Date()}
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {
               id: "32j423j4",
               source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
               type: "img",
             },
             {
               id: "1434j4",
               source:
-                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg?auto=compress&cs=tinysrgb",
+                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
               type: "img",
             },
             {
@@ -118,13 +146,17 @@ const UserTimeline = () => {
             },
           ]}
           reactions={1}
-          tags={["#coolpics", "#myphotos"]}
+          tags={["coolpics", "myphotos"]}
           time={new Date()}
         />
 
         <Post
-          profileName="Fancy User"
-          postOwner="@fancyuser"
+          postOwner={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
           text="This post has pictures"
           media={[
             {
@@ -137,7 +169,7 @@ const UserTimeline = () => {
             {
               id: "32j423j4",
               source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
               type: "img",
             },
             {
@@ -154,14 +186,24 @@ const UserTimeline = () => {
             },
           ]}
           reactions={1}
-          tags={["#fourpics"]}
+          tags={["fourpics"]}
           time={new Date()}
         />
       </div>
       <div className="flex flex-col gap-4">
         <PostCommentForm
-          profileName="Fancy User"
-          username="@dickerson99"
+          recipient={{
+            userName: "@fancyuser",
+            screenName: "Fancy User",
+            followers: 526,
+            following: 1893,
+          }}
+          commenter={{
+            userName: "@dickerson99",
+            screenName: "Dickerson",
+            followers: 420,
+            following: 666,
+          }}
           text="Awww SUCH A CUTIE!!! ^_____^;"
           tags={["awwww", "cute", "meoww"]}
         />
