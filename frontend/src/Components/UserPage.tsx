@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import UserProfileBanner from "./Elements/ProfileElements/UserProfileBanner";
 import { Navigate, Route, Routes } from "react-router-dom";
 import NotFound from "./NotFound";
@@ -6,6 +6,7 @@ import UserProfile from "./UserProfile";
 import UserPosts from "./UserPosts";
 import UserMedia from "./UserMedia";
 import UserLikes from "./UserLikes";
+import { UserAuthContext } from "../UserAuth";
 
 interface UserWithExtras extends User {
   featuredPost?: Post;
@@ -71,8 +72,11 @@ const mockUserData: UserWithExtras = {
 };
 
 function UserPage() {
+  const auth = useContext(UserAuthContext);
   return (
-    <UserContext.Provider value={mockUserData}>
+    <UserContext.Provider
+      value={{ ...mockUserData, ...auth?.user } || mockUserData}
+    >
       <div>
         <UserProfileBanner bannerImage="https://images.pexels.com/photos/38326/pexels-photo-38326.jpeg" />
         <Routes>
