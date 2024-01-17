@@ -8,6 +8,14 @@ import type {
 
 declare namespace Components {
     namespace Responses {
+        export type EntryId = Schemas.EntryId;
+        export type ErrorResponse = Schemas.ErrorResponse;
+        export type MediaRes = Schemas.MediaRes;
+        export type NewUserId = /**
+         * example:
+         * d8a935c3-62dd-4315-b4a6-638579214891
+         */
+        Schemas.Uuid /* uuid */;
         export interface OK {
         }
     }
@@ -16,7 +24,11 @@ declare namespace Components {
          * Blog entry that hasn't assigned an id.
          */
         export interface BlogEntry {
-            date?: string; // date
+            /**
+             * example:
+             * Future date for publishing in ISO 8601 UTC datetime eg. 2024-01-10T10:32:00Z
+             */
+            date?: string; // date-time
             /**
              * example:
              * Blog entry main text
@@ -25,6 +37,25 @@ declare namespace Components {
             hashtags: string[];
         }
         export type Date = string; // date
+        export interface EntryId {
+            entryId?: number;
+        }
+        export interface ErrorResponse {
+            /**
+             * Status of response.
+             */
+            status?: 400 | 500;
+            err?: {
+                /**
+                 * Class of error
+                 */
+                keyword?: string;
+                /**
+                 * Description of error
+                 */
+                message?: string;
+            }[];
+        }
         export type MediaRes = {
             /**
              * URL to access the media file.
@@ -70,14 +101,14 @@ declare namespace Components {
             /**
              * Blog entry id.
              */
-            id?: number;
+            id: number;
             date?: string; // date
             /**
              * example:
              * Blog entry main text
              */
-            text?: string;
-            hashtags?: string[];
+            text: string;
+            hashtags: string[];
         }
         /**
          * User authentication object.
@@ -110,20 +141,25 @@ declare namespace Components {
              */
             published?: boolean;
         }
+        /**
+         * example:
+         * d8a935c3-62dd-4315-b4a6-638579214891
+         */
+        export type Uuid = string; // uuid
     }
 }
 declare namespace Paths {
     namespace AddBlogEntry {
         namespace Parameters {
-            export type UserId = string;
+            export type UserId = string; // uuid
         }
         export interface PathParameters {
-            userId: Parameters.UserId;
+            userId: Parameters.UserId /* uuid */;
         }
         export type RequestBody = /* Blog entry that hasn't assigned an id. */ Components.Schemas.BlogEntry;
         namespace Responses {
-            export interface $200 {
-            }
+            export type $200 = Components.Responses.EntryId;
+            export type $400 = Components.Schemas.ErrorResponse;
         }
     }
     namespace AddUserMedia {
@@ -164,7 +200,8 @@ declare namespace Paths {
             postId: Parameters.PostId;
         }
         namespace Responses {
-            export type $200 = Components.Responses.OK;
+            export type $200 = Components.Responses.EntryId;
+            export type $400 = Components.Responses.ErrorResponse;
         }
     }
     namespace GetBlogEntry {
@@ -184,6 +221,7 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = /* Blog entry that can be referred with an id. */ Components.Schemas.RefEntry[];
+            export type $400 = Components.Schemas.ErrorResponse;
         }
     }
     namespace GetProfile {
@@ -205,7 +243,7 @@ declare namespace Paths {
             userId: Parameters.UserId;
         }
         namespace Responses {
-            export type $200 = Components.Schemas.MediaRes;
+            export type $200 = Components.Responses.MediaRes;
         }
     }
     namespace LoginUser {
@@ -225,6 +263,12 @@ declare namespace Paths {
             namespace Responses {
                 export type $200 = Components.Schemas.PortfolioRes;
             }
+        }
+    }
+    namespace RegisterUser {
+        export type RequestBody = /* Schema to create new user. */ Components.Schemas.NewUserObject;
+        namespace Responses {
+            export type $200 = Components.Responses.OK;
         }
     }
     namespace UpdateBlogEntry {
@@ -250,14 +294,6 @@ declare namespace Paths {
                 userId: Parameters.UserId;
             }
             export type RequestBody = Components.Schemas.UserProfile;
-            namespace Responses {
-                export type $200 = Components.Responses.OK;
-            }
-        }
-    }
-    namespace UserRegister {
-        namespace Post {
-            export type RequestBody = /* Schema to create new user. */ Components.Schemas.NewUserObject;
             namespace Responses {
                 export type $200 = Components.Responses.OK;
             }
@@ -330,6 +366,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetProfile.Responses.$200>
+  /**
+   * registerUser - Send user's registration data.
+   */
+  'registerUser'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.RegisterUser.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.RegisterUser.Responses.$200>
   /**
    * loginUser - Login using user's credentials.
    */
@@ -420,6 +464,14 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.GetProfile.Responses.$200>
   }
   ['/user/register']: {
+    /**
+     * registerUser - Send user's registration data.
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.RegisterUser.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.RegisterUser.Responses.$200>
   }
   ['/login']: {
     /**
