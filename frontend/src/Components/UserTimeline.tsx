@@ -1,6 +1,5 @@
 import Post from "./Elements/PostElements/Post";
 import TimelineTopMenu from "./Elements/TimelineTopMenu";
-import PostCommentForm from "./PostCommentForm";
 
 const UserTimeline = () => {
   return (
@@ -188,24 +187,6 @@ const UserTimeline = () => {
           reactions={1}
           tags={["fourpics"]}
           time={new Date()}
-        />
-      </div>
-      <div className="flex flex-col gap-4">
-        <PostCommentForm
-          recipient={{
-            userName: "@fancyuser",
-            screenName: "Fancy User",
-            followers: 526,
-            following: 1893,
-          }}
-          commenter={{
-            userName: "@dickerson99",
-            screenName: "Dickerson",
-            followers: 420,
-            following: 666,
-          }}
-          text="Awww SUCH A CUTIE!!! ^_____^;"
-          tags={["awwww", "cute", "meoww"]}
         />
       </div>
     </>
