@@ -6,13 +6,13 @@ import UserProfile from "./UserProfile";
 import UserPosts from "./UserPosts";
 import UserMedia from "./UserMedia";
 import UserLikes from "./UserLikes";
-import { UserAuthContext } from "../UserAuth";
+import { UserContext as UserWrapperContext } from "../UserWrapper";
 
 interface UserWithExtras extends User {
   featuredPost?: Post;
 }
 
-export const UserContext = createContext<UserWithExtras>({
+export const UserProfileContext = createContext<UserWithExtras>({
   userName: "",
   screenName: "",
   profileImage: "",
@@ -72,10 +72,10 @@ const mockUserData: UserWithExtras = {
 };
 
 function UserPage() {
-  const auth = useContext(UserAuthContext);
+  const user = useContext(UserWrapperContext);
   return (
-    <UserContext.Provider
-      value={{ ...mockUserData, ...auth?.user } || mockUserData}
+    <UserProfileContext.Provider
+      value={{ ...mockUserData, ...user?.user } || mockUserData}
     >
       <div>
         <UserProfileBanner bannerImage="https://images.pexels.com/photos/38326/pexels-photo-38326.jpeg" />
@@ -88,7 +88,7 @@ function UserPage() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-    </UserContext.Provider>
+    </UserProfileContext.Provider>
   );
 }
 

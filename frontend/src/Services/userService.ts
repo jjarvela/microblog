@@ -5,7 +5,7 @@ const debug = true;
 
 const login = (username: string, password: string) => {
   // REMOVE ME LATER
-  if (debug) return { token: "token-goes-here" };
+  if (debug) return;
   // TEST RETURN
   const request = axios.post(`${baseURL}/login`, {
     userId: username,
@@ -52,7 +52,6 @@ const register = (
         location: location,
         birthday: birthday,
       },
-      token: "token-goes-here",
     };
   // TEST RETURN
   const request = axios.post(`${baseURL}/register`, {

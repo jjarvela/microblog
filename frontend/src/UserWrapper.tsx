@@ -1,12 +1,11 @@
 import { createContext, useState } from "react";
 import userService from "./Services/userService";
 
-type UserAuthProps = {
+type UserWrapperProps = {
   children: React.ReactNode;
 };
 
-interface IAuthContext {
-  token: string;
+interface IUserContext {
   user: User | null;
   onLogin: (username: string, password: string) => void;
   onLogout: () => void;
@@ -32,23 +31,18 @@ const tempUser: User = {
   profileImage: "/temp/pfp.jpg",
 };
 
-export const UserAuthContext = createContext<IAuthContext | null>(null);
+export const UserContext = createContext<IUserContext | null>(null);
 
-function UserAuth({ children }: UserAuthProps) {
-  const [currentToken, setCurrentToken] = useState("");
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+function UserWrapper({ children }: UserWrapperProps) {
+  const [currentUser, setCurrentUser] = useState<User | null>(tempUser);
 
   const handleLogin = async (username: string, password: string) => {
     const response = await userService.login(username, password);
-    if (response?.token) {
-      setCurrentToken(response.token);
-    } else {
-      console.log("Login error!");
-    }
+    setCurrentUser({ ...tempUser, userName: username });
+    console.log(response);
   };
 
   const handleLogout = () => {
-    setCurrentToken("");
     setCurrentUser(null);
   };
 
@@ -68,7 +62,7 @@ function UserAuth({ children }: UserAuthProps) {
       location,
       birthday,
     );
-    if (response?.user && response?.token) {
+    if (response?.user) {
       setCurrentUser({
         ...tempUser,
         userName: response.user.username,
@@ -77,25 +71,23 @@ function UserAuth({ children }: UserAuthProps) {
         location: response.user.location,
         birthDate: response.user.birthday,
       });
-      setCurrentToken(response.token);
     } else {
       console.log("Register error!");
     }
   };
 
   return (
-    <UserAuthContext.Provider
+    <UserContext.Provider
       value={{
         user: currentUser,
-        token: currentToken,
         onLogin: handleLogin,
         onLogout: handleLogout,
         onRegister: handleRegister,
       }}
     >
       {children}
-    </UserAuthContext.Provider>
+    </UserContext.Provider>
   );
 }
 
-export default UserAuth;
+export default UserWrapper;

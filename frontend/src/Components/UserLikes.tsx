@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { UserContext } from "./UserPage";
+import { UserProfileContext } from "./UserPage";
 import Post from "./Elements/PostElements/Post";
 
 function UserLikes() {
-  const user = useContext(UserContext);
+  const user = useContext(UserProfileContext);
 
   return (
     <div className="my-4">

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../../UserPage";
+import { UserProfileContext } from "../../UserPage";
 import UserProfileInfo from "../UserProfileInfo";
 import ProfileButton from "./ProfileButton";
 import MaterialSymbolsAccountCircle from "../../Icons/MaterialSymbolsAccountCircle";
@@ -14,7 +14,7 @@ type UserProfileBannerProps = {
 };
 
 function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
-  const user = useContext(UserContext);
+  const user = useContext(UserProfileContext);
   const { isSm } = useBreakpoint("sm");
   return (
     <div>
