@@ -17,12 +17,12 @@ components:
   responses:
     OK:
       description: OK
-    entryId:
-      description: Uuid of the new blog entry.
+    postId:
+      description: Id of the new blog post in json array object.
       content:
         application/json:
           schema:
-            $ref: "#components/schemas/uuid"
+            $ref: "#/components/schemas/idList"
     errorResponse:
       description: Error object.
       content:
@@ -35,6 +35,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/uuid"
+    mediaRes:
+      description: Response to media query.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/mediaRes"
 
   securitySchemes:
     mbCookieAuth:
@@ -43,8 +49,8 @@ components:
       name: MBSESSION
 
   schemas:
-    blogEntry:
-      description: Blog entry that hasn't assigned an id.
+    blogPost:
+      description: Blog post that hasn't assigned an id.
       type: object
       required:
         - text
@@ -56,14 +62,14 @@ components:
           example: Future date for publishing in ISO 8601 UTC datetime eg. 2024-01-10T10:32:00Z
         text:
           type: string
-          example: Blog entry main text
+          example: Blog post main text
         hashtags:
           type: array
           items:
             type: string
 
-    refEntry:
-      description: Blog entry that can be referred with an id.
+    refPost:
+      description: Blog post that can be referred with an id.
       type: object
       required:
         - text
@@ -71,14 +77,14 @@ components:
         - id
       properties:
         id:
-          description: Blog entry id.
+          description: Blog post id.
           type: integer
         date:
           type: string
           format: date
         text:
           type: string
-          example: Blog entry main text
+          example: Blog post main text
         hashtags:
           type: array
           items:
@@ -101,20 +107,21 @@ components:
       type: string
       format: date
 
-    entryId:
-      type: string
-      format: number
-
     uuid:
       type: string
       format: uuid
       example: d8a935c3-62dd-4315-b4a6-638579214891
 
-    queryEntries:
-      type: array
-      items:
-        type: integer
-        description: List of blog entry ids.
+    idList:
+      description: List of item ids.
+      type: object
+      required:
+        - itemIds
+      properties:
+        itemIds:
+          type: array
+          items:
+            type: integer
 
     multipleFiles:
       type: array
@@ -228,7 +235,7 @@ components:
 
 tags:
   - name: blog
-    description: Blog entry related functions.
+    description: Blog post related functions.
   - name: media
     description: User media related functions.
   - name: portfolio
@@ -246,7 +253,7 @@ paths:
   /blog/{userId}:
     x-router-controller: BlogController
     get:
-      operationId: getBlogEntry
+      operationId: getBlogPost
       tags:
         - blog
       summary: Get entries filtered by userId and optionally by date or postId
@@ -256,18 +263,18 @@ paths:
           schema:
             type: string
           required: true
-        - name: startDate
-          in: query
+        - in: query
+          name: postId
+          schema:
+            type: string
+        - in: query
+          name: startDate
           schema:
             $ref: "#/components/schemas/date"
-        - name: endDate
-          in: query
+        - in: query
+          name: endDate
           schema:
             $ref: "#/components/schemas/date"
-        - name: postId
-          in: query
-          schema:
-            type: integer
 
       responses:
         "200":
@@ -277,7 +284,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/refEntry"
+                  $ref: "#/components/schemas/refPost"
         "400":
           description: Error object.
           content:
@@ -286,14 +293,14 @@ paths:
                 $ref: "#/components/schemas/errorResponse"
 
     post:
-      operationId: addBlogEntry
+      operationId: addBlogPost
       responses:
         "200":
-          description: Entry added and entry id returned.
+          description: post added and post id returned.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/entryId"
+                $ref: "#/components/responses/postId"
         "400":
           description: Error object.
           content:
@@ -303,7 +310,7 @@ paths:
 
       tags:
         - blog
-      summary: Post new entry to the user's blog.
+      summary: Post new post to the user's blog.
       parameters:
         - name: userId
           in: path
@@ -315,41 +322,40 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/blogEntry"
+              $ref: "#/components/schemas/blogPost"
 
     delete:
-      operationId: deleteBlogEntry
+      operationId: deleteBlogPost
       responses:
         "200":
-          $ref: "#/components/responses/entryId"
+          $ref: "#/components/responses/postId"
         "400":
           $ref: "#/components/responses/errorResponse"
 
       tags:
         - blog
-      summary: Delete one or several blog entries.
+      summary: Delete one or several blog posts.
       parameters:
         - name: userId
           in: path
           schema:
             type: string
           required: true
-        - name: postId
-          in: query
-          schema:
-            $ref: "#/components/schemas/queryEntries"
-          explode: false
-          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/idList"
 
   /blog/{userId}/{postId}:
     put:
-      operationId: updateBlogEntry
+      operationId: updateBlogPost
       responses:
         "200":
           $ref: "#/components/responses/OK"
       tags:
         - blog
-      summary: Update blog entry.
+      summary: Update blog post.
       parameters:
         - name: userId
           in: path
@@ -365,7 +371,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/refEntry"
+              $ref: "#/components/schemas/refPost"
 
   /media/{userId}/{folderId}:
     x-router-controller: mediaController
@@ -406,7 +412,10 @@ paths:
       responses:
         "200":
           description: Return a list of available media resources for user.
-          $ref: "#/components/schemas/mediaRes"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/mediaRes"
       tags:
         - media
       parameters:

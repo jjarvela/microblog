@@ -10,4 +10,4 @@ async function addBlogEntryHandler(
   c: Context<UserRegBody>,
   _req: Request,
   res: Response
-) {
+) {}

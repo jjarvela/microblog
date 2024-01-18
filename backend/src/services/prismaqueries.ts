@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, blog_posts } from '@prisma/client';
+import { Result } from '@prisma/client/runtime/library';
 
 const prisma = new PrismaClient();
 
@@ -36,10 +37,11 @@ const insertPost = async (param: { user_uuid: string; text: string; timestamp: D
 
 
 
-const selectOnePost = async (param: { blog_post_id: number; }) => {  
+const selectOnePost = async (param: { blog_post_id: number, user_uuid: string }) => {  
     const result: object | null = await prisma.blog_posts.findUnique({
         where: {
-            id: param.blog_post_id,  
+            id: param.blog_post_id,
+            user_id: param.user_uuid  
         },
         include: {
             item_properties: {
@@ -58,7 +60,17 @@ const selectOnePost = async (param: { blog_post_id: number; }) => {
     return result;
 };
 
-const selectPosts = async (param: { user_uuid: string; startdate: Date; enddate: Date; }) => {  
+const selectPostsByUser = async (param: { user_uuid: string; }) => {
+    const result = await prisma.blog_posts.findMany({
+        where: {
+            user_id: param.user_uuid,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+const selectPostsbyDate = async (param: { user_uuid: string; startdate: Date; enddate: Date; }) => {  
     const result: object | null = await prisma.blog_posts.findMany({
         where: {
             user_id: param.user_uuid,
@@ -93,7 +105,7 @@ const selectPosts = async (param: { user_uuid: string; startdate: Date; enddate:
 };
 
 const updatePost = async (param: { id: number; blogtext: string}) => {  
-    const result: object | null = await prisma.blog_posts.update({
+    const result: blog_posts | null = await prisma.blog_posts.update({
         where: {
             id: param.id,
         },
@@ -178,7 +190,7 @@ const updateUser = async (param: { uid: string; password: string; email: string;
     return result;
 };
 
-export default {insertPost, selectOnePost, selectPosts, updatePost, deletePost, 
+export default {insertPost, selectOnePost, selectPostsByUser, selectPostsbyDate, updatePost, deletePost, 
     insertUser, selectUser, deleteUser, updateUser};
 
 // const postdata = {
