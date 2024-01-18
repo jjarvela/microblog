@@ -9,19 +9,32 @@ const UserNotifications = () => {
           notifications={["noti1"]}
           groupName={"BuuttiBois"}
           userName={""}
-          text={""}
+          text={"Jarkon Porkkanakakkukatastrofi"}
         />
         <UserNotificationBox
           notifications={["noti1", "noti2"]}
           userName="Mutsis"
           groupName={""}
-          text={""}
+          text={"Simaresepti"}
         />
         <UserNotificationBox
-          notifications={["noti1", "noti2", "noti3"]}
+          notifications={[
+            "noti1",
+            "noti2",
+            "noti3",
+            "noti",
+            "noti",
+            "noti",
+            "noti",
+            "noti",
+            "noti",
+            "noti",
+            "noti",
+            "noti",
+          ]}
           userName="dickerson99"
           groupName={""}
-          text={""}
+          text={"I really like you. Please reply to my messages!!!1"}
         />
       </div>
     </div>

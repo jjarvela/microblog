@@ -11,6 +11,7 @@ const UserNotificationBox = ({
   userName,
   groupName,
   notifications,
+  text,
 }: UserNotificationBoxProps) => {
   const renderNotifications = () => {
     if (notifications.length >= 3) {
@@ -23,8 +24,10 @@ const UserNotificationBox = ({
             </div>
             <div className="flex flex-col">
               <h5>{userName}</h5>
-              <p>I really like you. Please reply to my messages!!!1</p>
-              <p className="mt-8">69 more notifications</p>
+              <p>{text}</p>
+              <p className="mt-8">
+                {notifications.length - 1} more notifications
+              </p>
             </div>
           </div>
         </div>
@@ -38,8 +41,10 @@ const UserNotificationBox = ({
             </div>
             <div className="flex flex-col">
               <h5>{userName}</h5>
-              <p>Simaresepti</p>
-              <p className="mt-8">1 more notification</p>
+              <p>{text}</p>
+              <p className="mt-8">
+                {notifications.length - 1} more notification
+              </p>
             </div>
           </div>
         </div>
@@ -52,8 +57,7 @@ const UserNotificationBox = ({
           </div>
           <div className="flex flex-col">
             <h5>{groupName}</h5>
-            <p>Jarkon Porkkanakakkukatastrofi</p>
-            <p className="mt-8">1 more notification</p>
+            <p>{text}</p>
           </div>
         </div>
       );
