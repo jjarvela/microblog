@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 
-const insertPost = async (param: { user_uuid: string; text: string; timestamp: Date; hashtags: string[] }) => {  
+export const insertPost = async (param: { user_uuid: string; text: string; timestamp: Date; hashtags: string[] }) => {  
 
     let createdObjects = [];  // contains each item_property
 
@@ -16,7 +16,6 @@ const insertPost = async (param: { user_uuid: string; text: string; timestamp: D
         });
     }
     
-
     const result = await prisma.blog_posts.create({
         data: {
             user_id: param.user_uuid,
@@ -36,7 +35,7 @@ const insertPost = async (param: { user_uuid: string; text: string; timestamp: D
 
 
 
-const selectOnePost = async (param: { blog_post_id: number; }) => {  
+export const selectOnePost = async (param: { blog_post_id: number; }) => {  
     const result: object | null = await prisma.blog_posts.findUnique({
         where: {
             id: param.blog_post_id,  
@@ -58,7 +57,7 @@ const selectOnePost = async (param: { blog_post_id: number; }) => {
     return result;
 };
 
-const selectPosts = async (param: { user_uuid: string; startdate: Date; enddate: Date; }) => {  
+export const selectPosts = async (param: { user_uuid: string; startdate: Date; enddate: Date; }) => {  
     const result: object | null = await prisma.blog_posts.findMany({
         where: {
             user_id: param.user_uuid,
@@ -87,12 +86,15 @@ const selectPosts = async (param: { user_uuid: string; startdate: Date; enddate:
                 },
             },
         },
+        orderBy: {
+            timestamp: 'desc',
+        },
     });
     console.log(result);
     return result;
 };
 
-const updatePost = async (param: { id: number; blogtext: string}) => {  
+export const updatePost = async (param: { id: number; blogtext: string}) => {  
     const result: object | null = await prisma.blog_posts.update({
         where: {
             id: param.id,
@@ -105,7 +107,7 @@ const updatePost = async (param: { id: number; blogtext: string}) => {
     return result;
 };
 
-const deletePost = async (param: { id: number; }) => {  
+export const deletePost = async (param: { id: number; }) => {  
     const result: object | null = await prisma.blog_posts.delete({
         where: {
             id: param.id,
@@ -116,7 +118,7 @@ const deletePost = async (param: { id: number; }) => {
 };
 
 
-const insertUser = async (param: { uid: string; username: string; email: string; passwordHash: string; joined: Date}) => {  
+export const insertUser = async (param: { uid: string; username: string; email: string; passwordHash: string; joined: Date}) => {  
     //register: username, email and password from user
     const result = await prisma.users.create({
         data: {
@@ -132,7 +134,7 @@ const insertUser = async (param: { uid: string; username: string; email: string;
 };
 
 
-const selectUser = async (param: { username: string; }) => {  
+export const selectUser = async (param: { username: string; }) => {  
     const result: object | null = await prisma.users.findUnique({
         where: {
             username: param.username, 
@@ -147,7 +149,7 @@ const selectUser = async (param: { username: string; }) => {
     return result;
 };
 
-const deleteUser = async (param: { uid: string; }) => {  
+export const deleteUser = async (param: { uid: string; }) => {  
     const result: object = await prisma.users.delete({
         where: {
             uid: param.uid,
@@ -157,7 +159,7 @@ const deleteUser = async (param: { uid: string; }) => {
     return result;
 };
 
-const updateUser = async (param: { uid: string; password: string; email: string; admin: boolean; 
+export const updateUser = async (param: { uid: string; password: string; email: string; admin: boolean; 
     location: string; birthday: Date; joined: Date; timezone: string; last_login: Date}) => {  
     const result: object = await prisma.users.update({
         where: {
@@ -178,28 +180,209 @@ const updateUser = async (param: { uid: string; password: string; email: string;
     return result;
 };
 
-export default {insertPost, selectOnePost, selectPosts, updatePost, deletePost, 
-    insertUser, selectUser, deleteUser, updateUser};
+export const insertProfile = async (param: { id: string; user_id: string; profile_text: string; screen_name: string}) => {  
+    const result = await prisma.user_profiles.create({
+        data: {
+            id: param.id,
+            user_id: param.user_id,
+            profile_text: param.profile_text,
+            screen_name: param.screen_name,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const selectProfile = async (param: { user_id: string; }) => {  
+    const result: object | null = await prisma.user_profiles.findUnique({
+        where: {
+            user_id: param.user_id, 
+        },
+        include: {
+            social_links: {
+                select: {
+                    id: true,
+                    link: true,
+                },
+            },
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const updateProfile = async (param: { id: string; user_id: string; profile_image: number;
+     profile_text: string; header_media_id: number; homepage: string; screen_name: string; }) => {  
+    const result = await prisma.user_profiles.update({
+        where: {
+            id: param.id,
+        },
+        data: {
+            profile_image: param.profile_image || undefined, 
+            profile_text: param.profile_text || undefined, 
+            header_media_id: param.header_media_id || undefined,
+            homepage: param.homepage || undefined, 
+            screen_name: param.screen_name || undefined,
+    
+        }
+    });
+    console.log(result);
+    return result;
+};
+
+export const deleteProfile = async (param: { id: string; }) => {  
+    const result: object = await prisma.user_profiles.delete({
+        where: {
+            id: param.id,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+
+export const insertConversation = async (param: { participant_1: string; participant_2: string; 
+    timestamp: Date; message: string; }) => {  
+    const result = await prisma.conversations.create({
+        data: {
+            participant_1: param.participant_1,
+            participant_2: param.participant_2,
+            timestamp: param.timestamp,
+            conversation_messages: {
+                        create: {
+                            message: param.message,
+                            timestamp: param.timestamp,
+                            sender_userid: param.participant_1,
+                        },
+                    }
+        },
+        include: {
+            conversation_messages: true,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const selectConversations = async (param: { user_id: string; }) => {  
+    const result: object = await prisma.conversations.findMany({
+        where: {
+            OR: [
+                {
+                    participant_1: param.user_id,
+                },
+                {
+                    participant_2: param.user_id,
+                },
+                ],
+        },
+        orderBy: {
+            timestamp: 'desc',
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const insertMessage = async (param: { conversation_id: number; message: string; timestamp: Date; sender_userid: string }) => {  
+    const result = await prisma.conversation_messages.create({
+        data: {
+            conversation_id: param.conversation_id,
+            message: param.message,
+            timestamp: param.timestamp,
+            sender_userid: param.sender_userid,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const selectMessages = async (param: { conversation_id: number; }) => {  
+    const result = await prisma.conversation_messages.findMany({
+        where: {
+            conversation_id: param.conversation_id, 
+        },
+        orderBy: {
+            timestamp: 'asc',
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+
+export const deleteMessage = async (param: { id: number; }) => {  
+    const result = await prisma.conversation_messages.delete({
+        where: {
+            id: param.id,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const updateMessage = async (param: { id: number; message: string; }) => {  
+    const result = await prisma.conversation_messages.update({
+        where: {
+            id: param.id,
+        },
+        data: {
+            message: param.message,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const insertGroup = async (param: { group_name: string; owner_userid: string; created_at: Date}) => {  
+    const result = await prisma.groups.create({
+        data: {
+            name: param.group_name,
+            owner_uuid: param.owner_userid,
+            created_at: param.created_at,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const selectGroups = async () => {  
+    const result = await prisma.groups.findMany({
+        orderBy: {
+            name: 'asc',
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+
+export const updateGroup = async (param: { id: number; name: string; owner_uuid: string }) => {  
+    const result = await prisma.groups.update({
+        where: {
+            id: param.id,
+        },
+        data: {
+            name: param.name || undefined, 
+            owner_uuid: param.owner_uuid || undefined, 
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const deleteGroup = async (param: { id: number; }) => {  
+    const result = await prisma.groups.delete({
+        where: {
+            id: param.id,
+        },
+    });
+    console.log(result);
+    return result;
+};
 
 // const postdata = {
-//     user_uuid: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed', 
-//     text: 'New post',
-//     timestamp: new Date, 
-//     hashtags: [],
-// };
-
-// const post = insertPost(postdata)
-//   .then(async () => {
-//     await prisma.$disconnect()
-//   })
-//   .catch(async (e) => {
-//     console.error(e)
-//     await prisma.$disconnect()
-//     process.exit(1)
-//   });
-
-// const postdata = {
-//     user_uuid: '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed', 
+//     user_uuid: '22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b', 
 //     startdate: new Date("2024-01-01T00:00:00Z"),
 //     enddate: new Date("2024-01-05T00:00:00Z"), 
 // };
@@ -212,43 +395,4 @@ export default {insertPost, selectOnePost, selectPosts, updatePost, deletePost,
 //     console.error(e)
 //     await prisma.$disconnect()
 //     process.exit(1)
-//   })
-
-
-
-// selectOnePost({blog_post_id: 4})
-// .then(async () => {
-// await prisma.$disconnect()
-// })
-// .catch(async (e) => {
-// console.error(e)
-// await prisma.$disconnect()
-// process.exit(1)
-// })
-
-
-// const postdata = {
-//     id: 2,
-//     blogtext: 'my second post', 
-// };
-
-// updatePost(postdata)
-//   .then(async () => {
-//     await prisma.$disconnect()
-//   })
-//   .catch(async (e) => {
-//     console.error(e)
-//     await prisma.$disconnect()
-//     process.exit(1)
 //   });
-
-
-// deletePost({id: 2})
-// .then(async () => {
-// await prisma.$disconnect()
-// })
-// .catch(async (e) => {
-// console.error(e)
-// await prisma.$disconnect()
-// process.exit(1)
-// });

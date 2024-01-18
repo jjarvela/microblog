@@ -39,6 +39,7 @@ model contexts {
 model conversation_messages {
   id              Int            @id @default(autoincrement())
   conversation_id Int?
+  sender_userid   String?         @db.Uuid
   message         String?
   timestamp       DateTime?      @db.Timestamp(6)
   notification    Boolean?
@@ -197,7 +198,8 @@ model user_medias {
 
 model user_profiles {
   id                                                     String             @id @db.Uuid
-  user_id                                                String?            @db.Uuid
+  user_id                                                String            @unique @db.Uuid
+  screen_name                                            String?
   profile_image                                          Int?
   profile_text                                           String?
   header_media_id                                        Int?
