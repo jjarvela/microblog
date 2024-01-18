@@ -1,9 +1,7 @@
 import { ProfilePicture } from "./ProfilePicture";
 
 type UserProfileInfoProps = {
-  profileImage?: string;
-  profileName: string;
-  profileHandle: string;
+  user: User;
   profileImageSize?: number;
   class?: string;
   nameClass?: string;
@@ -11,9 +9,7 @@ type UserProfileInfoProps = {
 };
 
 function UserProfileInfo({
-  profileImage,
-  profileName,
-  profileHandle,
+  user,
   profileImageSize,
   class: classAdd,
   nameClass,
@@ -26,14 +22,18 @@ function UserProfileInfo({
       }
     >
       <div className="mx-auto">
-        <ProfilePicture
-          width={profileImageSize ? profileImageSize : 80}
-          image={profileImage}
-        />
+        {"profileImage" in user ? (
+          <ProfilePicture
+            width={profileImageSize ? profileImageSize : 80}
+            image={user.profileImage}
+          />
+        ) : (
+          <ProfilePicture width={profileImageSize ? profileImageSize : 80} />
+        )}
       </div>
       <div className={"mx-auto flex flex-col"}>
-        <h5 className={nameClass}>{profileName}</h5>
-        <p className={"text-black50" + " " + handleClass}>{profileHandle}</p>
+        <h5 className={nameClass}>{user.screenName}</h5>
+        <p className={"text-black50" + " " + handleClass}>{user.userName}</p>
       </div>
     </div>
   );
