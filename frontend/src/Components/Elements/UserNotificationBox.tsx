@@ -51,7 +51,7 @@ const UserNotificationBox = ({
       );
     } else if (notifications.length === 1) {
       return (
-        <div className="relative flex h-40 w-5/6 flex-row rounded-md border border-orange-500 bg-gradient-to-r from-gray-200 to-gray-300 p-3 drop-shadow-lg dark:from-gray-500 dark:to-gray-700">
+        <div className="relative flex h-40 w-5/6 flex-row rounded-md border border-primary bg-gradient-to-r from-white to-black25 p-3 drop-shadow-lg dark:from-black75 dark:to-black">
           <div className="mx-3 flex flex-col gap-3">
             <ProfilePicture width={70} />
           </div>
