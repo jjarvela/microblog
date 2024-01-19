@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, blog_posts, followings, groupmembers, users } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -95,7 +95,7 @@ export const selectPosts = async (param: { user_uuid: string; startdate: Date; e
 };
 
 export const updatePost = async (param: { id: number; blogtext: string}) => {  
-    const result: object | null = await prisma.blog_posts.update({
+    const result: blog_posts | null = await prisma.blog_posts.update({
         where: {
             id: param.id,
         },
@@ -159,9 +159,10 @@ export const deleteUser = async (param: { uid: string; }) => {
     return result;
 };
 
-export const updateUser = async (param: { uid: string; password: string; email: string; admin: boolean; 
-    location: string; birthday: Date; joined: Date; timezone: string; last_login: Date}) => {  
-    const result: object = await prisma.users.update({
+export const updateUser = async (param: { uid: string; password?: string; email?: string; 
+    admin?: boolean; location?: string; birthday?: Date; 
+    joined?: Date; timezone?: string; last_login?: Date}) => {  
+    const result: users | null = await prisma.users.update({
         where: {
             uid: param.uid,
         },
@@ -211,8 +212,8 @@ export const selectProfile = async (param: { user_id: string; }) => {
     return result;
 };
 
-export const updateProfile = async (param: { id: string; user_id: string; profile_image: number;
-     profile_text: string; header_media_id: number; homepage: string; screen_name: string; }) => {  
+export const updateProfile = async (param: { id: string; user_id: string; profile_image?: number;
+     profile_text?: string; header_media_id?: number; homepage?: string; screen_name?: string; }) => {  
     const result = await prisma.user_profiles.update({
         where: {
             id: param.id,
@@ -357,7 +358,7 @@ export const selectGroups = async () => {
 };
 
 
-export const updateGroup = async (param: { id: number; name: string; owner_uuid: string }) => {  
+export const updateGroup = async (param: { id: number; name?: string; owner_uuid?: string }) => {  
     const result = await prisma.groups.update({
         where: {
             id: param.id,
@@ -381,6 +382,110 @@ export const deleteGroup = async (param: { id: number; }) => {
     return result;
 };
 
+export const insertGroupMember = async (param: { group_id: number; member_id: string; admin: boolean; joined: Date}) => {  
+    const result: groupmembers | null = await prisma.groupmembers.create({
+        data: {
+            group_id: param.group_id,
+            member_id: param.member_id,
+            admin: param.admin,
+            joined: param.joined,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const selectGroupMembers = async (param: { group_id: number; }) => {  
+    const result = await prisma.groupmembers.findMany({
+        where: {
+            group_id: param.group_id, 
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const deleteGroupMember = async (param: { id: number; }) => {  
+    const result = await prisma.groupmembers.delete({
+        where: {
+            id: param.id,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const updateGroupMember = async (param: { id: number; admin: boolean; }) => {  
+    const result = await prisma.groupmembers.update({
+        where: {
+            id: param.id,
+        },
+        data: {
+            admin: param.admin, 
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const insertFollowing = async (param: { user_id: string; follows_user?: string; follows_group?: number | undefined}) => {  
+    const result: followings | null = await prisma.followings.create({
+        data: {
+            user_id: param.user_id,
+            follows_user: param.follows_user || undefined,
+            follows_group: param.follows_group || undefined,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const selectFollowingUsers = async (param: { user_id: string; }) => {  
+    const result: followings[] | null = await prisma.followings.findMany({
+        where: {
+            AND: [
+                {
+                    user_id: param.user_id,
+                },
+                {
+                    follows_user: { not: null },
+                },
+                ],
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const selectFollowingGroups = async (param: { user_id: string; }) => {  
+    const result = await prisma.followings.findMany({
+        where: {
+            AND: [
+                {
+                    user_id: param.user_id,
+                },
+                {
+                    follows_group: { not: null },
+                },
+                ],
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const deleteFollowing = async (param: { id: number; }) => {  
+    const result = await prisma.followings.delete({
+        where: {
+            id: param.id,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+
+
 // const postdata = {
 //     user_uuid: '22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b', 
 //     startdate: new Date("2024-01-01T00:00:00Z"),
@@ -396,3 +501,37 @@ export const deleteGroup = async (param: { id: number; }) => {
 //     await prisma.$disconnect()
 //     process.exit(1)
 //   });
+
+// const follow = {
+//     user_id: '22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b',
+//     follows_user: '641ae1b3-d5bf-4058-b8d8-2e9e6023114d',
+//     follows_group: undefined
+// };
+
+// insertFollowing(follow)
+//   .then(async () => {
+//     await prisma.$disconnect()
+//   })
+//   .catch(async (e) => {
+//     console.error(e)
+//     await prisma.$disconnect()
+//     process.exit(1)
+//   });
+
+const user = {
+    uid: '641ae1b3-d5bf-4058-b8d8-2e9e6023114d',
+    admin: false,
+    location: 'Finland'
+};
+
+updateUser(user)
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  });
+
+ 
