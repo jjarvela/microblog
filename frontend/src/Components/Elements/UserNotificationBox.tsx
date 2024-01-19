@@ -18,7 +18,7 @@ const UserNotificationBox = ({
       return (
         <div className="relative z-30 mb-5 h-40 w-5/6 rounded-md border border-primary bg-gradient-to-r from-white to-black25 drop-shadow-lg dark:from-black75 dark:to-black">
           <div className="absolute -bottom-3 z-20 h-40 w-full rounded-md border border-primary bg-gradient-to-r from-white to-black25 drop-shadow-lg  dark:from-black75 dark:to-black"></div>
-          <div className="absolute -bottom-6 z-40 flex h-40 w-full rounded-md border border-orange-500 bg-gradient-to-r from-gray-200 to-gray-300 p-3 drop-shadow-lg  dark:from-gray-500 dark:to-gray-700">
+          <div className="absolute -bottom-6 z-40 flex h-40 w-full rounded-md border border-primary bg-gradient-to-r from-white to-black25 p-3 drop-shadow-lg  dark:from-black75 dark:to-black">
             <div className="mx-3 flex flex-col gap-3">
               <ProfilePicture width={70} />
             </div>
