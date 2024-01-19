@@ -10,7 +10,6 @@ type CreateGroupModalProps = {
   tags: string[];
   confirmCallback: (parameter?: unknown) => void;
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
-  children?: React.ReactNode;
 };
 
 function CreateGroupModal({
@@ -19,13 +18,12 @@ function CreateGroupModal({
   tags,
   confirmCallback,
   refObject,
-  children,
 }: CreateGroupModalProps) {
   const [newTags, setNewTags] = useState<string[]>(tags);
   return (
     <dialog
       ref={refObject}
-      className="w-9/12 rounded-xl border border-black50 bg-white p-8 py-3 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50 dark:bg-black dark:text-white"
+      className="w-9/12 max-w-3xl rounded-xl border border-black50 bg-white p-8 py-3 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50 dark:bg-black dark:text-white"
     >
       <form
         className="m-3 my-6 flex flex-col gap-5"
@@ -68,23 +66,22 @@ function CreateGroupModal({
         </div>
         <div className="text-center">
           <h5 className="mb-4">Join Rules</h5>
-          <div className="flex flex-col items-center gap-3">
-            <div className="flex gap-2">
-              All Allowed
+          <div className="grid grid-cols-2 justify-items-center gap-3">
+            <div className="justify-self-auto">
+              <p>All Allowed</p>
               <ToggleInput />
             </div>
-            <div className="flex gap-2">
-              Join by approval
+            <div className="justify-self-auto">
+              <p>Join by approval</p>
               <ToggleInput />
             </div>
-            <div className="flex gap-2">
-              Closed
+            <div className="justify-self-auto">
+              <p>Closed</p>
               <ToggleInput />
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-8">
-          {children}
           <div className="flex h-full flex-row justify-around gap-4">
             <Button
               onClick={() => refObject.current?.close()}
