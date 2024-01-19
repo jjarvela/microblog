@@ -4,14 +4,14 @@ import MaterialSymbolsExpandMoreRounded from "../../Icons/MaterialSymbolsExpandM
 type DropdownInputProps = {
   items: string[];
   class?: string;
-  onChanged?: (value: string, index: number) => void;
+  onChange?: (value: string, index: number) => void;
   initialIndex?: number;
 };
 
 function DropdownInput({
   items,
   class: classAdd,
-  onChanged,
+  onChange,
   initialIndex,
 }: DropdownInputProps) {
   const [selected, setSelected] = useState(
@@ -49,11 +49,12 @@ function DropdownInput({
         {items.map((item, i) => {
           return (
             <button
+              type="button"
               className="w-full border-b border-black25 px-4 py-2 first:border-t last:border-b-0 hover:bg-black25 dark:border-white25 dark:hover:bg-white25"
               key={i}
               onClick={() => {
                 setSelected(item);
-                if (onChanged) onChanged(item, i);
+                if (onChange) onChange(item, i);
                 handleSetIsOpen(false);
               }}
             >
