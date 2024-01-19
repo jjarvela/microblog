@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "./UserPage";
+import { UserProfileContext } from "./UserPage";
 import PostMedia from "./Elements/PostElements/PostMedia";
 import { PostContext } from "./Elements/PostElements/Post";
 
@@ -24,7 +24,7 @@ const mockMediaList: Media[] = [
 ];
 
 function UserMedia() {
-  const user = useContext(UserContext);
+  const user = useContext(UserProfileContext);
 
   return (
     <PostContext.Provider

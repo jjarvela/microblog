@@ -40,7 +40,11 @@ await Promise.all(
     )
   );
 
-  
+// Fix autoincrement id counter lag by reseting increment counter to 20
+// If scripts seeds more than 20 users or blog post increase accordingly.
+
+await prisma.$queryRaw`SELECT setval('public.blog_posts_id_seq', 20, true)`;  
+await prisma.$queryRaw`SELECT setval('public.item_properties_id_seq', 20, true)`;  
 }
 
 runSeeders()
