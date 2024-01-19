@@ -7,6 +7,7 @@ type UserWrapperProps = {
 
 interface IUserContext {
   user: User | null;
+  setUser: (user: User) => void;
   onLogin: (username: string, password: string) => void;
   onLogout: () => void;
   onRegister: (
@@ -31,7 +32,21 @@ const tempUser: User = {
   profileImage: "/temp/pfp.jpg",
 };
 
-export const UserContext = createContext<IUserContext | null>(null);
+export const UserContext = createContext<IUserContext>({
+  user: null,
+  setUser: () => {
+    return;
+  },
+  onLogin: () => {
+    return;
+  },
+  onLogout: () => {
+    return;
+  },
+  onRegister: () => {
+    return;
+  },
+});
 
 function UserWrapper({ children }: UserWrapperProps) {
   const [currentUser, setCurrentUser] = useState<User | null>(tempUser);
@@ -80,6 +95,7 @@ function UserWrapper({ children }: UserWrapperProps) {
     <UserContext.Provider
       value={{
         user: currentUser,
+        setUser: setCurrentUser,
         onLogin: handleLogin,
         onLogout: handleLogout,
         onRegister: handleRegister,

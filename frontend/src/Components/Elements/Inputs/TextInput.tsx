@@ -4,6 +4,7 @@ type TextInputProps = {
   placeholder?: string;
   class?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
 };
 
 function TextInput(props: TextInputProps) {
@@ -14,6 +15,7 @@ function TextInput(props: TextInputProps) {
       type={props.type}
       placeholder={props.placeholder}
       onChange={(e) => props.onChange && props.onChange(e)}
+      value={props.value}
     />
   );
 }
