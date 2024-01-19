@@ -5,10 +5,10 @@ Content-Type: application/json
 ###
 // Get list of posts by user
 GET http://localhost:9000/blog/22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b
-// Get list of posts by user and date
-
+// Get list of posts by user date
+GET http://localhost:9000/blog/22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b?startDate=2024-01-01&endDate=2024-01-05
 // Get one post
-GET http://localhost:9000/blog/22e61ac8-96cd-49cc-8a25-3f0b4b42eb6bpostId=3
+GET http://localhost:9000/blog/22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b?postId=4
 
 // Update one post
 PUT http://localhost:9000/blog/22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b/3
@@ -16,8 +16,6 @@ Content-Type: application/json
 
 < ./updatePost.json
 
-// Delete one post
-DELETE http://localhost:9000/blog/22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b?postId=4
 
 
 // Delete multiple posts
