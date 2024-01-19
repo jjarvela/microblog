@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import MaterialSymbolsExpandMoreRounded from "../Icons/MaterialSymbolsExpandMoreRounded";
-import { useBreakpoint } from "../../Hooks/BreakpointHook";
+import MaterialSymbolsExpandMoreRounded from "../../Icons/MaterialSymbolsExpandMoreRounded";
+import { useBreakpoint } from "../../../Hooks/BreakpointHook";
 
 type SettingsPanelProps = {
   header: string;
+  icon?: React.ReactNode;
   children: React.ReactNode;
   hSlotHeight?: number;
   vSlotHeight?: number;
@@ -11,6 +12,7 @@ type SettingsPanelProps = {
 
 function SettingsPanel({
   header,
+  icon,
   children,
   hSlotHeight,
   vSlotHeight,
@@ -50,7 +52,10 @@ function SettingsPanel({
         className="relative flex flex-row items-center justify-center rounded-t-xl bg-black25 hover:bg-black50 dark:bg-white25"
         onClick={() => handleSetIsOpen(!isOpen)}
       >
-        <h3 className="my-2 w-full select-none text-center">{header}</h3>
+        <h3 className="my-2 flex w-full select-none flex-row items-center justify-center gap-2 text-center">
+          {icon}
+          {header}
+        </h3>
         <MaterialSymbolsExpandMoreRounded
           className={
             "absolute right-2 transition-transform duration-100" +

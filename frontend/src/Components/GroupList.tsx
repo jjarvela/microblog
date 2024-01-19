@@ -1,8 +1,11 @@
 import Button from "./Elements/Button";
 import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
 import GroupTopMenu from "./Elements/GroupTopMenu";
+import { useRef } from "react";
+import CreateGroupModal from "./Elements/Modals/CreateGroupModal";
 
 const GroupList = () => {
+  const createGroupModal = useRef<HTMLDialogElement>(null);
   const placeholderGroups: Group[] = [
     {
       groupName: "CatLovers",
@@ -86,7 +89,13 @@ const GroupList = () => {
       <h2 className="text-center">This is the list of existing groups</h2>
 
       <div className="m-6 flex justify-end">
-        <Button class="btn-primary">Create Group</Button>
+        <Button
+          class="btn-primary"
+          onClick={() => createGroupModal.current?.showModal()}
+          type="button"
+        >
+          Create Group
+        </Button>
       </div>
       <div className="flex flex-col gap-6">
         {placeholderGroups.map((group) => {
@@ -102,6 +111,15 @@ const GroupList = () => {
           );
         })}
       </div>
+      <CreateGroupModal
+        confirmText={"Create"}
+        cancelText={"Cancel"}
+        refObject={createGroupModal}
+        tags={[]}
+        confirmCallback={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
     </div>
   );
 };
