@@ -33,8 +33,8 @@ const VisitorLayout = () => {
   return (
     <>
       <Header />
-      <div className="flex h-full flex-row">
-        <main className="flex-grow">
+      <div className="flex h-full flex-row overflow-hidden">
+        <main className="scrollbar-thin h-full w-full flex-grow overflow-y-auto">
           <Outlet />
         </main>
       </div>

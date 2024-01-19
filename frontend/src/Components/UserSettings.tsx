@@ -8,18 +8,9 @@ import ToggleInput from "./Elements/Inputs/ToggleInput";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsPrivacyTipRounded from "./Icons/MaterialSymbolsPrivacyTipRounded";
 import MaterialSymbolsSettingsApplicationsRounded from "./Icons/MaterialSymbolsSettingsApplicationsRounded";
-
-const mockListOfLocations = [
-  "Finland",
-  "Europe",
-  "North America",
-  "South America",
-  "Middle East",
-  "Africa",
-  "Asia",
-  "Oceania",
-  "Antarctica",
-];
+import { useContext, useState } from "react";
+import { UserContext } from "../UserWrapper";
+import { locationList } from "../globalData";
 
 const mockListOfLanguages = ["English", "Finnish"];
 
@@ -27,6 +18,13 @@ const followingPermission = ["Anyone", "Ask Permission"];
 const postVisibility = ["Anyone", "Only Followers"];
 
 const UserSettings = () => {
+  const user = useContext(UserContext);
+  const [screenName, setScreenName] = useState(user?.user?.screenName || "");
+  const [email, setEmail] = useState(user?.user?.email || "");
+  const [location, setLocation] = useState(
+    user?.user?.location || locationList[0],
+  );
+
   return (
     <div className="m-4 flex flex-col gap-4">
       <h2 className="my-4 text-center">Settings</h2>
@@ -35,8 +33,20 @@ const UserSettings = () => {
           nameElements={<p>Public Name</p>}
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
-              <TextInput class="w-full" />
-              <Button class="btn-primary">Update</Button>
+              <TextInput
+                class="w-full"
+                value={screenName}
+                onChange={(e) => setScreenName(e.target.value)}
+              />
+              <Button
+                onClick={() =>
+                  user.user &&
+                  user.setUser({ ...user.user, screenName: screenName })
+                }
+                class="btn-primary"
+              >
+                Update
+              </Button>
             </div>
           }
         />
@@ -44,9 +54,21 @@ const UserSettings = () => {
           nameElements={<p>Email</p>}
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
-              <TextInput class="w-full" type="email" />
+              <TextInput
+                class="w-full"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
-              <Button class="btn-primary">Update</Button>
+              <Button
+                class="btn-primary"
+                onClick={() =>
+                  user.user && user.setUser({ ...user.user, email: email })
+                }
+              >
+                Update
+              </Button>
             </div>
           }
         />
@@ -63,8 +85,21 @@ const UserSettings = () => {
           nameElements={<p>Location</p>}
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
-              <DropdownInput items={mockListOfLocations} class="w-full" />
-              <Button class="btn-primary">Update</Button>
+              <DropdownInput
+                items={locationList}
+                class="w-full"
+                initialIndex={locationList.indexOf(location)}
+                onChange={(v) => setLocation(v)}
+              />
+              <Button
+                class="btn-primary"
+                onClick={() =>
+                  user.user &&
+                  user.setUser({ ...user.user, location: location })
+                }
+              >
+                Update
+              </Button>
             </div>
           }
         />

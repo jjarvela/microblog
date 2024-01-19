@@ -3,7 +3,7 @@ import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
-import { createContext, useRef, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import PostPin from "./PostPin";
 import { useBreakpoint } from "../../../Hooks/BreakpointHook";
 import UserProfileInfo from "../UserProfileInfo";
@@ -15,6 +15,7 @@ import RepostButton from "./RepostButton";
 import CommentButton from "./CommentButton";
 import ReportButton from "./ReportButton";
 import PostCommentForm from "../../PostCommentForm";
+import { UserContext } from "../../../UserWrapper";
 
 export const PostContext = createContext<Post>({
   postOwner: { userName: "", screenName: "", followers: 0, following: 0 },
@@ -58,6 +59,7 @@ function Post({
   const editModal = useRef<HTMLDialogElement>(null);
   const deleteConfirm = useRef<HTMLDialogElement>(null);
   const [showCommentForm, setShowCommentForm] = useState(false);
+  const user = useContext(UserContext);
   return (
     <PostContext.Provider
       value={{
@@ -130,12 +132,14 @@ function Post({
         {showCommentForm && (
           <PostCommentForm
             recipient={postOwner}
-            commenter={{
-              userName: "@dickerson99",
-              screenName: "Dickerson",
-              followers: 420,
-              following: 666,
-            }}
+            commenter={
+              user?.user || {
+                userName: "",
+                screenName: "",
+                followers: 0,
+                following: 0,
+              }
+            }
             setShowCommentForm={setShowCommentForm}
           />
         )}
