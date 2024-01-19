@@ -36,3 +36,5 @@ type Group = {
   recentActivity: Date | "--";
   joinRule: "everyone" | "permission" | "closed";
 };
+
+type Theme = "system" | "light" | "dark";
