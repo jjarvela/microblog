@@ -55,13 +55,13 @@ function Landing() {
     <div className="h-full">
       <div className="landing-scroll fixed bottom-0 -z-10 h-full w-full bg-gradient-to-l from-primaryFrom to-primaryTo" />
       <div className="landing-scroll-2 fixed bottom-0 -z-20 h-full w-full bg-primary" />
-      <div className="flex h-full min-h-[36rem] w-full flex-row items-center justify-between">
+      <div className="flex h-full min-h-fit w-full flex-row items-center justify-between">
         <h2 className="m-auto hidden break-words text-center md:block">
           Welcome to Microblog
         </h2>
-        <div className="m-auto flex h-full w-full flex-col items-center justify-center border-x border-black25 bg-white dark:border-black75 dark:bg-black md:m-0 [@media(min-width:512px)]:w-[32rem]  ">
+        <div className="scrollbar-thin relative m-auto flex h-full w-full flex-col items-center justify-center overflow-y-scroll border-x border-black25 bg-white dark:border-black75 dark:bg-black md:mx-0 [@media(min-width:512px)]:w-[32rem]  ">
           <form
-            className="flex flex-col justify-center gap-4 text-center md:min-w-[20rem]"
+            className="absolute top-[10%] flex h-max flex-col justify-center gap-4 text-center md:min-w-[20rem]"
             onSubmit={(e) => handleFormSubmit(e)}
           >
             <h3>{register ? "Sign up today!" : "Welcome back!"}</h3>
@@ -96,10 +96,17 @@ function Landing() {
               />
             )}
             {register && (
-              <input
-                type="date"
-                onChange={(e) => setBirthdateInput(e.target.value)}
-              />
+              <>
+                <label htmlFor="birthdate" className="[webkit] -mb-3 text-sm">
+                  Birthdate
+                </label>
+                <input
+                  id="birthdate"
+                  type="date"
+                  onChange={(e) => setBirthdateInput(e.target.value)}
+                  placeholder="Birthdate"
+                />
+              </>
             )}
             {register && (
               <DropdownInput
@@ -132,6 +139,7 @@ function Landing() {
             >
               {register ? "Log in" : "Register"}
             </Button>
+            <div className="h-[10%]" />
           </form>
         </div>
       </div>
