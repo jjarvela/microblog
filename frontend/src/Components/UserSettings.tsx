@@ -4,13 +4,13 @@ import InfoDot from "./Elements/InfoDot";
 import SettingsPanel from "./Elements/SettingsElements/SettingsPanel";
 import SettingsSlot from "./Elements/SettingsElements/SettingsSlot";
 import TextInput from "./Elements/Inputs/TextInput";
-import ToggleInput from "./Elements/Inputs/ToggleInput";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsPrivacyTipRounded from "./Icons/MaterialSymbolsPrivacyTipRounded";
 import MaterialSymbolsSettingsApplicationsRounded from "./Icons/MaterialSymbolsSettingsApplicationsRounded";
 import { useContext, useState } from "react";
 import { UserContext } from "../UserWrapper";
 import { locationList } from "../globalData";
+import ThemeSelector from "./Elements/SettingsElements/ThemeSelector";
 
 const mockListOfLanguages = ["English", "Finnish"];
 
@@ -26,7 +26,7 @@ const UserSettings = () => {
   );
 
   return (
-    <div className="m-4 flex flex-col gap-4">
+    <div className="mx-4 flex flex-col gap-4">
       <h2 className="my-4 text-center">Settings</h2>
       <SettingsPanel header="User" icon={<MaterialSymbolsAccountCircle />}>
         <SettingsSlot
@@ -151,16 +151,10 @@ const UserSettings = () => {
           }
         />
         <SettingsSlot
-          nameElements={<p>Dark Mode</p>}
+          nameElements={<p>Color Theme</p>}
           element={
             <div className="flex w-full flex-row items-center justify-center gap-3">
-              <p className="select-none">Off</p>
-              <ToggleInput
-                onToggle={(val) =>
-                  console.log("Dark mode toggled to state: " + String(val))
-                }
-              />
-              <p className="select-none">On</p>
+              <ThemeSelector />
             </div>
           }
         />
