@@ -1,11 +1,17 @@
+import { useState } from "react";
 import Button from "../Button";
 import { MaterialSymbolsChevronRightRounded } from "../../Icons/MaterialSymbolsChevronRightRounded";
+import RadioInputGroup from "../Inputs/RadioInputGroup";
 
 type ReportPostModalProps = {
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
 };
 
 export default function ReportPostModal({ refObject }: ReportPostModalProps) {
+  const [selected, setSelected] = useState<
+    string | number | readonly string[] | undefined
+  >(undefined);
+
   return (
     <dialog
       ref={refObject}
@@ -45,6 +51,14 @@ export default function ReportPostModal({ refObject }: ReportPostModalProps) {
             <MaterialSymbolsChevronRightRounded />
           </h2>
         </a>
+
+        <RadioInputGroup
+          groupName="test"
+          values={[1, 2, 3]}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <span>{selected}</span>
 
         <Button
           class="btn-secondary w-[80%]"
