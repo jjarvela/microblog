@@ -69,7 +69,7 @@ function CreateGroupModal({
         <div className="text-center">
           <h5 className="mb-4">Join Rules</h5>
           <div className="mb-9 flex flex-col items-center gap-3">
-            <DropdownInput items={mockListOfJoinRules} class="w-1/2" />
+            <DropdownInput items={mockListOfJoinRules} class="w-full" />
           </div>
         </div>
         <div className="flex flex-col gap-8">
