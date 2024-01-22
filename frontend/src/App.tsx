@@ -13,6 +13,7 @@ import Search from "./Components/Search";
 import Header from "./Components/Header";
 import LeftSidebar from "./Components/LeftSidebar";
 import RightSidebar from "./Components/RightSidebar";
+import { SetTheme } from "./Components/Elements/SettingsElements/ThemeSelector";
 
 const UserLayout = () => {
   return (
@@ -41,6 +42,9 @@ const VisitorLayout = () => {
     </>
   );
 };
+
+// Theme selecting
+SetTheme(localStorage.theme);
 
 function App() {
   return (
