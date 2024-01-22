@@ -2,7 +2,9 @@ import { useState } from "react";
 import Button from "../Button";
 import TagInput from "../Inputs/TagInput";
 import TextAreaInput from "../Inputs/TextAreaInput";
-import ToggleInput from "../Inputs/ToggleInput";
+import DropdownInput from "../Inputs/DropdownInput";
+
+const mockListOfJoinRules = ["All Allowed", "Join by approval", "Closed"];
 
 type CreateGroupModalProps = {
   confirmText: string;
@@ -34,7 +36,7 @@ function CreateGroupModal({
       >
         <h2 className="text-center">Create Group</h2>
         <div className="text-center">
-          <h5>Group Name</h5>
+          <h5 className="mb-4">Group Name</h5>
           <TextAreaInput
             text={`Mammutit`}
             placeholder="Post text..."
@@ -44,7 +46,7 @@ function CreateGroupModal({
           />
         </div>
         <div className="text-center">
-          <h5>Group Description</h5>
+          <h5 className="mb-4">Group Description</h5>
           <TextAreaInput
             text={`Me olemme karvaisia mammutteja.`}
             placeholder="Post text..."
@@ -54,7 +56,7 @@ function CreateGroupModal({
           />
         </div>
         <div className="text-center">
-          <h5>Group Hashtags</h5>
+          <h5 className="mb-4">Group Hashtags</h5>
           <TagInput
             tags={newTags}
             onTagsChanged={(tags) => setNewTags(tags)}
@@ -66,19 +68,8 @@ function CreateGroupModal({
         </div>
         <div className="text-center">
           <h5 className="mb-4">Join Rules</h5>
-          <div className="grid grid-cols-2 justify-items-center gap-3">
-            <div className="justify-self-auto">
-              <p>All Allowed</p>
-              <ToggleInput />
-            </div>
-            <div className="justify-self-auto">
-              <p>Join by approval</p>
-              <ToggleInput />
-            </div>
-            <div className="justify-self-auto">
-              <p>Closed</p>
-              <ToggleInput />
-            </div>
+          <div className="mb-9 flex flex-col items-center gap-3">
+            <DropdownInput items={mockListOfJoinRules} class="w-1/2" />
           </div>
         </div>
         <div className="flex flex-col gap-8">
