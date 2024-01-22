@@ -9,7 +9,7 @@ export default function GroupMemberThumbnail({
 }: GroupMemberThumbnailProps) {
   return (
     <div className="m-3 flex flex-col items-center gap-2">
-      <ProfilePicture width={50} />
+      <ProfilePicture width={60} />
       <p className="">{profileName}</p>
     </div>
   );
