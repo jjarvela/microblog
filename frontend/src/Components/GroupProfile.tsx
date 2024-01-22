@@ -3,6 +3,7 @@ import GroupProfileBanner from "./Elements/ProfileElements/GroupProfileBanner";
 import Post from "./Elements/PostElements/Post";
 import FeaturedMediaPost from "./Elements/ProfileElements/FeaturedMediaPost";
 import { useEffect } from "react";
+import GroupMembersBox from "./Elements/ProfileElements/GroupMembersBox";
 
 function GroupProfile() {
   const { state } = useLocation(); //gets the entire group object that group thumbnail passes to state
@@ -24,6 +25,7 @@ function GroupProfile() {
       </div>
 
       <div className="grid grid-cols-1 gap-4">
+        <GroupMembersBox />
         <Post
           postOwner={{
             userName: "@testuser",
