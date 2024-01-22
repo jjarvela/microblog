@@ -16,7 +16,7 @@ function UserProfile() {
         <div className="min-w-[75%] flex-1">
           <FeaturedMediaPost
             postOwner={
-              user.featuredPost?.postOwner || {
+              user || {
                 userName: "",
                 screenName: "",
                 followers: 0,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ConversationThumb from "./Elements/MessagingElements/ConversationThumb.tsx";
 import TextAreaInput from "./Elements/Inputs/TextAreaInput.tsx";
 import Conversation from "./Elements/MessagingElements/Conversation.tsx";
@@ -20,7 +20,7 @@ const UserMessages = () => {
 
   return (
     <div className="mx-1 h-[94%]">
-      <h2>This is the user's messaging hub</h2>
+      <h2 className="my-4 text-center">Messaging Hub</h2>
       <div className="h-full w-full xl:flex xl:flex-row">
         <div
           className={`${

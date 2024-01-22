@@ -3,7 +3,7 @@ import UserNotificationBox from "./Elements/UserNotificationBox";
 const UserNotifications = () => {
   return (
     <div>
-      <h2 className="m-3 text-center">This is the user's notifications hub</h2>
+      <h2 className="my-4 text-center">Notifications Hub</h2>
       <div>
         <UserNotificationBox
           notifications={["noti1"]}

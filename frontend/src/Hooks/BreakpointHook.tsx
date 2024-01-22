@@ -3,7 +3,7 @@ import resolveConfig from "tailwindcss/resolveConfig.js";
 
 import tailwindConfig from "../../tailwind.config.js";
 
-const config = resolveConfig(tailwindConfig);
+const config = resolveConfig({ ...tailwindConfig, darkMode: "class" });
 const breakpoints = config.theme.screens;
 
 type BreakpointKey = keyof typeof breakpoints;
