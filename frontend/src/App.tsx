@@ -60,7 +60,7 @@ function App() {
           <Route path="/search" element={<Search />} />
 
           {/*User routes*/}
-          <Route path="/home" element={<UserTimeline />} />
+          <Route path="/home/*" element={<UserTimeline />} />
           <Route path="/user/:username/*" element={<UserPage />} />
           <Route path="/settings" element={<UserSettings />} />
           <Route path="/notifications" element={<UserNotifications />} />

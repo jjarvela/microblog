@@ -22,10 +22,14 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
       className="rounded-xl border border-black50 bg-white p-8 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50 dark:bg-black dark:text-white"
     >
       <div className="flex flex-col gap-6">
-        {mode === "post" && (
-          <div className="flex flex-row items-center gap-4">
-            <h3>Post to</h3>
-            <UserProfileInfo user={user} />
+        {mode === "post" ? (
+          <div className="flex flex-row items-center justify-center gap-4">
+            <h3 className="whitespace-nowrap">Post to</h3>
+            <UserProfileInfo user={user} class="mr-4" />
+          </div>
+        ) : (
+          <div className="flex flex-row items-center justify-center">
+            <h3 className="whitespace-nowrap">Edit post</h3>
           </div>
         )}
         <form
@@ -59,9 +63,12 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
             showCount
             class="w-full max-w-[32rem]"
           />
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row flex-wrap gap-4">
             <h5 className="ml-2">Add to group</h5>
-            <TextInput class="flex-1" placeholder="Group name..." />
+            <TextInput
+              class="w-full min-w-fit flex-1"
+              placeholder="Group name..."
+            />
           </div>
           <div className="flex flex-row justify-between">
             <Button
