@@ -22,10 +22,14 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
       className="rounded-xl border border-black50 bg-white p-8 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50 dark:bg-black dark:text-white"
     >
       <div className="flex flex-col gap-6">
-        {mode === "post" && (
-          <div className="flex flex-row items-center gap-4">
+        {mode === "post" ? (
+          <div className="flex flex-row items-center justify-center gap-4">
             <h3 className="whitespace-nowrap">Post to</h3>
-            <UserProfileInfo user={user} />
+            <UserProfileInfo user={user} class="mr-4" />
+          </div>
+        ) : (
+          <div className="flex flex-row items-center justify-center">
+            <h3 className="whitespace-nowrap">Edit post</h3>
           </div>
         )}
         <form
