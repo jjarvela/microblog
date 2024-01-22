@@ -33,10 +33,10 @@ function ThemeSelector() {
   };
 
   return (
-    <div className="flex cursor-pointer select-none flex-row rounded-full border border-black50">
+    <div className="flex cursor-pointer select-none flex-row rounded-full">
       <div
         className={
-          "rounded-l-full border-r border-black25 px-4 py-2 dark:border-white25" +
+          "rounded-l-full border border-black50 px-4 py-2 hover:border-black75 hover:bg-black25 dark:border-white25 dark:hover:border-white75 dark:hover:bg-white25" +
           " " +
           (currentTheme === "system" && selectedClassAdd)
         }
@@ -46,7 +46,7 @@ function ThemeSelector() {
       </div>
       <div
         className={
-          "border-black25 bg-white px-4 py-2 text-black dark:border-white25" +
+          "border border-black50 bg-white px-4 py-2 text-black hover:border-black75 hover:bg-black25" +
           " " +
           (currentTheme === "light" && selectedClassAdd)
         }
@@ -56,7 +56,7 @@ function ThemeSelector() {
       </div>
       <div
         className={
-          "rounded-r-full border-l border-black25 bg-black px-4 py-2 text-white dark:border-white25" +
+          "rounded-r-full border border-black50 bg-black px-4 py-2 text-white hover:border-white75 hover:bg-white25" +
           " " +
           (currentTheme === "dark" && selectedClassAdd)
         }
