@@ -86,7 +86,7 @@ const GroupList = () => {
         <GroupTopMenu />
       </div>
 
-      <h2 className="text-center">This is the list of existing groups</h2>
+      <h2 className="my-4 text-center">Group Hub</h2>
 
       <div className="m-6 flex justify-end">
         <Button

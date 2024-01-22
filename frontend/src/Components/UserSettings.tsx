@@ -26,7 +26,7 @@ const UserSettings = () => {
   );
 
   return (
-    <div className="m-4 flex flex-col gap-4">
+    <div className="mx-4 flex flex-col gap-4">
       <h2 className="my-4 text-center">Settings</h2>
       <SettingsPanel header="User" icon={<MaterialSymbolsAccountCircle />}>
         <SettingsSlot
