@@ -32,7 +32,7 @@ function GroupMembersBox({ class: classAdd }: GroupMembersBoxProps) {
       <div className="flex flex-row justify-center">
         <h3>Members</h3>
       </div>
-      <div className="grid h-60 grid-cols-3 overflow-y-auto sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
+      <div className="scrollbar-thin grid h-60 grid-cols-3 overflow-y-auto sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
         {mockUsers.slice(0, usersToShow).map((user) => (
           <GroupMemberThumbnail key={user.id} profileName={user.profileName} />
         ))}
