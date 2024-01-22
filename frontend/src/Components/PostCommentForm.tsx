@@ -21,7 +21,7 @@ function PostCommentForm({
   text,
   tags,
 }: PostCommentFormProps) {
-  const [newTags, setNewTags] = useState<string[]>(tags || [""]);
+  const [newTags, setNewTags] = useState<string[]>(tags || []);
   return (
     <div className="timeline-box mt-4 flex flex-col">
       <div className="mb-4 flex flex-row items-center gap-4">

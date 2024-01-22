@@ -5,10 +5,10 @@ import LogosFacebook from "./Icons/LogosFacebook";
 import LogosGithubIcon from "./Icons/LogosGithubIcon";
 import LogosTwitter from "./Icons/LogosTwitter";
 import LogosYoutubeIcon from "./Icons/LogosYoutubeIcon";
-import { UserContext } from "./UserPage";
+import { UserProfileContext } from "./UserPage";
 
 function UserProfile() {
-  const user = useContext(UserContext);
+  const user = useContext(UserProfileContext);
   return (
     <div className="m-4">
       <h2 className="my-4 text-center">{user.screenName}'s Profile</h2>

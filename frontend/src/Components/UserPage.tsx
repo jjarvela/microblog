@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import UserProfileBanner from "./Elements/ProfileElements/UserProfileBanner";
 import { Navigate, Route, Routes } from "react-router-dom";
 import NotFound from "./NotFound";
@@ -6,12 +6,13 @@ import UserProfile from "./UserProfile";
 import UserPosts from "./UserPosts";
 import UserMedia from "./UserMedia";
 import UserLikes from "./UserLikes";
+import { UserContext as UserWrapperContext } from "../UserWrapper";
 
 interface UserWithExtras extends User {
   featuredPost?: Post;
 }
 
-export const UserContext = createContext<UserWithExtras>({
+export const UserProfileContext = createContext<UserWithExtras>({
   userName: "",
   screenName: "",
   profileImage: "",
@@ -71,8 +72,11 @@ const mockUserData: UserWithExtras = {
 };
 
 function UserPage() {
+  const user = useContext(UserWrapperContext);
   return (
-    <UserContext.Provider value={mockUserData}>
+    <UserProfileContext.Provider
+      value={{ ...mockUserData, ...user?.user } || mockUserData}
+    >
       <div>
         <UserProfileBanner bannerImage="https://images.pexels.com/photos/38326/pexels-photo-38326.jpeg" />
         <Routes>
@@ -84,7 +88,7 @@ function UserPage() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-    </UserContext.Provider>
+    </UserProfileContext.Provider>
   );
 }
 

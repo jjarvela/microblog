@@ -8,28 +8,51 @@ import type {
 
 declare namespace Components {
     namespace Responses {
+        export type ErrorResponse = Schemas.ErrorResponse;
+        export type MediaRes = Schemas.MediaRes;
+        export type NewUserId = /**
+         * example:
+         * d8a935c3-62dd-4315-b4a6-638579214891
+         */
+        Schemas.Uuid /* uuid */;
         export interface OK {
         }
+        export type PostId = Schemas.PostId;
     }
     namespace Schemas {
         /**
-         * Blog entry that hasn't assigned an id.
+         * Blog post that hasn't assigned an id.
          */
-        export interface BlogEntry {
-            date?: string; // date
+        export interface BlogPost {
             /**
              * example:
-             * Blog entry title
+             * Future date for publishing in ISO 8601 UTC datetime eg. 2024-01-10T10:32:00Z
              */
-            title?: string;
+            date?: string; // date-time
             /**
              * example:
-             * Blog entry main text
+             * Blog post main text
              */
-            text?: string;
-            hashtags?: string[];
+            text: string;
+            hashtags: string[];
         }
         export type Date = string; // date
+        export interface ErrorResponse {
+            /**
+             * Status of response.
+             */
+            status?: 400 | 500;
+            err?: {
+                /**
+                 * Class of error
+                 */
+                keyword?: string;
+                /**
+                 * Description of error
+                 */
+                message?: string;
+            }[];
+        }
         export type MediaRes = {
             /**
              * URL to access the media file.
@@ -67,27 +90,25 @@ declare namespace Components {
              */
             userId?: string;
         }[];
-        export type QueryEntries = number[];
+        export interface PostId {
+            postId?: number;
+        }
+        export type QueryPosts = number[];
         /**
-         * Blog entry that can be referred with an id.
+         * Blog post that can be referred with an id.
          */
-        export interface RefEntry {
+        export interface RefPost {
             /**
-             * Blog entry id.
+             * Blog post id.
              */
-            id?: number;
+            id: number;
             date?: string; // date
             /**
              * example:
-             * Blog entry header
+             * Blog post main text
              */
-            header?: string;
-            /**
-             * example:
-             * Blog entry main text
-             */
-            text?: string;
-            hashtags?: string[];
+            text: string;
+            hashtags: string[];
         }
         /**
          * User authentication object.
@@ -120,20 +141,25 @@ declare namespace Components {
              */
             published?: boolean;
         }
+        /**
+         * example:
+         * d8a935c3-62dd-4315-b4a6-638579214891
+         */
+        export type Uuid = string; // uuid
     }
 }
 declare namespace Paths {
-    namespace AddBlogEntry {
+    namespace AddBlogPost {
         namespace Parameters {
-            export type UserId = string;
+            export type UserId = string; // uuid
         }
         export interface PathParameters {
-            userId: Parameters.UserId;
+            userId: Parameters.UserId /* uuid */;
         }
-        export type RequestBody = /* Blog entry that hasn't assigned an id. */ Components.Schemas.BlogEntry;
+        export type RequestBody = /* Blog post that hasn't assigned an id. */ Components.Schemas.BlogPost;
         namespace Responses {
-            export interface $200 {
-            }
+            export type $200 = Components.Responses.PostId;
+            export type $400 = Components.Schemas.ErrorResponse;
         }
     }
     namespace AddUserMedia {
@@ -162,9 +188,9 @@ declare namespace Paths {
             export type $200 = Components.Responses.OK;
         }
     }
-    namespace DeleteBlogEntry {
+    namespace DeleteBlogPost {
         namespace Parameters {
-            export type PostId = Components.Schemas.QueryEntries;
+            export type PostId = Components.Schemas.QueryPosts;
             export type UserId = string;
         }
         export interface PathParameters {
@@ -174,12 +200,14 @@ declare namespace Paths {
             postId: Parameters.PostId;
         }
         namespace Responses {
-            export type $200 = Components.Responses.OK;
+            export type $200 = Components.Responses.PostId;
+            export type $400 = Components.Responses.ErrorResponse;
         }
     }
-    namespace GetBlogEntry {
+    namespace GetBlogPost {
         namespace Parameters {
             export type EndDate = Components.Schemas.Date /* date */;
+            export type PostId = string;
             export type StartDate = Components.Schemas.Date /* date */;
             export type UserId = string;
         }
@@ -187,11 +215,13 @@ declare namespace Paths {
             userId: Parameters.UserId;
         }
         export interface QueryParameters {
+            postId?: Parameters.PostId;
             startDate?: Parameters.StartDate;
             endDate?: Parameters.EndDate;
         }
         namespace Responses {
-            export type $200 = /* Blog entry that can be referred with an id. */ Components.Schemas.RefEntry[];
+            export type $200 = /* Blog post that can be referred with an id. */ Components.Schemas.RefPost[];
+            export type $400 = Components.Schemas.ErrorResponse;
         }
     }
     namespace GetProfile {
@@ -213,7 +243,7 @@ declare namespace Paths {
             userId: Parameters.UserId;
         }
         namespace Responses {
-            export type $200 = Components.Schemas.MediaRes;
+            export type $200 = Components.Responses.MediaRes;
         }
     }
     namespace LoginUser {
@@ -235,7 +265,13 @@ declare namespace Paths {
             }
         }
     }
-    namespace UpdateBlogEntry {
+    namespace RegisterUser {
+        export type RequestBody = /* Schema to create new user. */ Components.Schemas.NewUserObject;
+        namespace Responses {
+            export type $200 = Components.Responses.OK;
+        }
+    }
+    namespace UpdateBlogPost {
         namespace Parameters {
             export type PostId = string;
             export type UserId = string;
@@ -244,7 +280,7 @@ declare namespace Paths {
             userId: Parameters.UserId;
             postId: Parameters.PostId;
         }
-        export type RequestBody = /* Blog entry that can be referred with an id. */ Components.Schemas.RefEntry;
+        export type RequestBody = /* Blog post that can be referred with an id. */ Components.Schemas.RefPost;
         namespace Responses {
             export type $200 = Components.Responses.OK;
         }
@@ -263,49 +299,41 @@ declare namespace Paths {
             }
         }
     }
-    namespace UserRegister {
-        namespace Post {
-            export type RequestBody = /* Schema to create new user. */ Components.Schemas.NewUserObject;
-            namespace Responses {
-                export type $200 = Components.Responses.OK;
-            }
-        }
-    }
 }
 
 export interface OperationMethods {
   /**
-   * getBlogEntry - Get entries filtered by userId and optionally by date
+   * getBlogPost - Get entries filtered by userId and optionally by date or postId
    */
-  'getBlogEntry'(
-    parameters?: Parameters<Paths.GetBlogEntry.PathParameters & Paths.GetBlogEntry.QueryParameters> | null,
+  'getBlogPost'(
+    parameters?: Parameters<Paths.GetBlogPost.PathParameters & Paths.GetBlogPost.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetBlogEntry.Responses.$200>
+  ): OperationResponse<Paths.GetBlogPost.Responses.$200>
   /**
-   * addBlogEntry - Post new entry to the user's blog.
+   * addBlogPost - Post new post to the user's blog.
    */
-  'addBlogEntry'(
-    parameters?: Parameters<Paths.AddBlogEntry.PathParameters> | null,
-    data?: Paths.AddBlogEntry.RequestBody,
+  'addBlogPost'(
+    parameters?: Parameters<Paths.AddBlogPost.PathParameters> | null,
+    data?: Paths.AddBlogPost.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddBlogEntry.Responses.$200>
+  ): OperationResponse<Paths.AddBlogPost.Responses.$200>
   /**
-   * deleteBlogEntry - Delete one or several blog entries.
+   * deleteBlogPost - Delete one or several blog posts.
    */
-  'deleteBlogEntry'(
-    parameters?: Parameters<Paths.DeleteBlogEntry.PathParameters & Paths.DeleteBlogEntry.QueryParameters> | null,
+  'deleteBlogPost'(
+    parameters?: Parameters<Paths.DeleteBlogPost.PathParameters & Paths.DeleteBlogPost.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.DeleteBlogEntry.Responses.$200>
+  ): OperationResponse<Paths.DeleteBlogPost.Responses.$200>
   /**
-   * updateBlogEntry - Update blog entry.
+   * updateBlogPost - Update blog post.
    */
-  'updateBlogEntry'(
-    parameters?: Parameters<Paths.UpdateBlogEntry.PathParameters> | null,
-    data?: Paths.UpdateBlogEntry.RequestBody,
+  'updateBlogPost'(
+    parameters?: Parameters<Paths.UpdateBlogPost.PathParameters> | null,
+    data?: Paths.UpdateBlogPost.RequestBody,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.UpdateBlogEntry.Responses.$200>
+  ): OperationResponse<Paths.UpdateBlogPost.Responses.$200>
   /**
    * addUserMedia - Upload a media files to selected folder.
    */
@@ -339,6 +367,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetProfile.Responses.$200>
   /**
+   * registerUser - Send user's registration data.
+   */
+  'registerUser'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.RegisterUser.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.RegisterUser.Responses.$200>
+  /**
    * loginUser - Login using user's credentials.
    */
   'loginUser'(
@@ -351,39 +387,39 @@ export interface OperationMethods {
 export interface PathsDictionary {
   ['/blog/{userId}']: {
     /**
-     * getBlogEntry - Get entries filtered by userId and optionally by date
+     * getBlogPost - Get entries filtered by userId and optionally by date or postId
      */
     'get'(
-      parameters?: Parameters<Paths.GetBlogEntry.PathParameters & Paths.GetBlogEntry.QueryParameters> | null,
+      parameters?: Parameters<Paths.GetBlogPost.PathParameters & Paths.GetBlogPost.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetBlogEntry.Responses.$200>
+    ): OperationResponse<Paths.GetBlogPost.Responses.$200>
     /**
-     * addBlogEntry - Post new entry to the user's blog.
+     * addBlogPost - Post new post to the user's blog.
      */
     'post'(
-      parameters?: Parameters<Paths.AddBlogEntry.PathParameters> | null,
-      data?: Paths.AddBlogEntry.RequestBody,
+      parameters?: Parameters<Paths.AddBlogPost.PathParameters> | null,
+      data?: Paths.AddBlogPost.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.AddBlogEntry.Responses.$200>
+    ): OperationResponse<Paths.AddBlogPost.Responses.$200>
     /**
-     * deleteBlogEntry - Delete one or several blog entries.
+     * deleteBlogPost - Delete one or several blog posts.
      */
     'delete'(
-      parameters?: Parameters<Paths.DeleteBlogEntry.PathParameters & Paths.DeleteBlogEntry.QueryParameters> | null,
+      parameters?: Parameters<Paths.DeleteBlogPost.PathParameters & Paths.DeleteBlogPost.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.DeleteBlogEntry.Responses.$200>
+    ): OperationResponse<Paths.DeleteBlogPost.Responses.$200>
   }
   ['/blog/{userId}/{postId}']: {
     /**
-     * updateBlogEntry - Update blog entry.
+     * updateBlogPost - Update blog post.
      */
     'put'(
-      parameters?: Parameters<Paths.UpdateBlogEntry.PathParameters> | null,
-      data?: Paths.UpdateBlogEntry.RequestBody,
+      parameters?: Parameters<Paths.UpdateBlogPost.PathParameters> | null,
+      data?: Paths.UpdateBlogPost.RequestBody,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.UpdateBlogEntry.Responses.$200>
+    ): OperationResponse<Paths.UpdateBlogPost.Responses.$200>
   }
   ['/media/{userId}/{folderId}']: {
     /**
@@ -428,6 +464,14 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.GetProfile.Responses.$200>
   }
   ['/user/register']: {
+    /**
+     * registerUser - Send user's registration data.
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.RegisterUser.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.RegisterUser.Responses.$200>
   }
   ['/login']: {
     /**
