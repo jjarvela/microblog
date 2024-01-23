@@ -13,6 +13,7 @@ import Search from "./Components/Search";
 import Header from "./Components/Header";
 import LeftSidebar from "./Components/LeftSidebar";
 import RightSidebar from "./Components/RightSidebar";
+import { SetTheme } from "./Components/Elements/SettingsElements/ThemeSelector";
 
 const UserLayout = () => {
   return (
@@ -42,6 +43,9 @@ const VisitorLayout = () => {
   );
 };
 
+// Theme selecting
+SetTheme(localStorage.theme);
+
 function App() {
   return (
     <div className="app flex h-screen flex-col">
@@ -56,7 +60,7 @@ function App() {
           <Route path="/search" element={<Search />} />
 
           {/*User routes*/}
-          <Route path="/home" element={<UserTimeline />} />
+          <Route path="/home/*" element={<UserTimeline />} />
           <Route path="/user/:username/*" element={<UserPage />} />
           <Route path="/settings" element={<UserSettings />} />
           <Route path="/notifications" element={<UserNotifications />} />

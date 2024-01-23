@@ -1,8 +1,12 @@
 import MaterialSymbolsFlagRounded from "../../Icons/MaterialSymbolsFlagRounded";
 
-export default function ReportButton() {
+type ReportButtonProps = {
+  onClick: () => void;
+};
+
+export default function ReportButton({ onClick }: ReportButtonProps) {
   return (
-    <button>
+    <button onClick={onClick}>
       <MaterialSymbolsFlagRounded />
     </button>
   );
