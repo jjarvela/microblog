@@ -5,6 +5,7 @@ type RadioInputProps = {
   setSelected: React.Dispatch<
     React.SetStateAction<string | number | readonly string[] | undefined>
   >;
+  inputStyle?: string;
 };
 
 export default function RadioInput({
@@ -12,14 +13,15 @@ export default function RadioInput({
   value,
   selected,
   setSelected,
+  inputStyle,
 }: RadioInputProps) {
   return (
-    <div className="relative m-0.5">
+    <div className="relative w-full">
       <label
         htmlFor={inputName + "-" + value}
-        className="flex cursor-pointer items-center"
+        className={`flex cursor-pointer items-center ${inputStyle}`}
       >
-        <span>{value}</span>{" "}
+        <span className="flex-grow-1">{value}</span>{" "}
         <div
           className={
             "mx-2 h-6 w-6 rounded-full border border-black50 bg-primary bg-opacity-0" +
@@ -32,7 +34,7 @@ export default function RadioInput({
             height={"100%"}
             viewBox="0 0 16 16"
             className={
-              "transition-all duration-200 ease-in-out" +
+              "transition-all duration-100 ease-in-out" +
               " " +
               (selected === value ? "fill-primary" : "fill-transparent")
             }
