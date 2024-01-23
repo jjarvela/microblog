@@ -6,15 +6,19 @@ type RadioInputGroupProps = {
   setSelected: React.Dispatch<
     React.SetStateAction<string | number | readonly string[] | undefined>
   >;
+  className?: string;
+  inputStyle?: string;
 };
 export default function RadioInputGroup({
   groupName,
   values,
   selected,
   setSelected,
+  className,
+  inputStyle,
 }: RadioInputGroupProps) {
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className={`flex ${className}`}>
       {values.map((value) => {
         return (
           <RadioInput
@@ -23,6 +27,7 @@ export default function RadioInputGroup({
             value={value}
             selected={selected}
             setSelected={setSelected}
+            inputStyle={inputStyle}
           />
         );
       })}
