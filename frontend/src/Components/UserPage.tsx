@@ -8,9 +8,11 @@ import UserMedia from "./UserMedia";
 import UserLikes from "./UserLikes";
 import { UserContext as UserWrapperContext } from "../UserWrapper";
 import UserProfileEdit from "./UserProfileEdit";
+import { ProfileBox } from "./Elements/ProfileElements/ProfileBoxes/ProfileBoxes";
 
 interface UserWithExtras extends User {
   featuredPost?: Post;
+  userProfileBoxes: ProfileBox[];
 }
 
 export const UserProfileContext = createContext<UserWithExtras>({
@@ -31,6 +33,7 @@ export const UserProfileContext = createContext<UserWithExtras>({
     tags: [],
     time: new Date(),
   },
+  userProfileBoxes: [],
 });
 
 const mockUser: User = {
@@ -70,6 +73,40 @@ const mockUserData: UserWithExtras = {
     tags: ["FirstPost", "Hello", "World", "Blogging"],
     time: new Date(),
   },
+  userProfileBoxes: [
+    {
+      type: "text",
+      data: { title: "Hello World", text: "Lorem ipsum dolor sit amet!" },
+    },
+    {
+      type: "links",
+      data: { links: [{ icon: "T", text: "Twitter" }] },
+    },
+    {
+      type: "media",
+      data: {
+        media: {
+          id: "032589",
+          source:
+            "https://images.pexels.com/photos/1174108/pexels-photo-1174108.jpeg",
+          type: "img",
+        },
+      },
+    },
+    {
+      type: "post",
+      data: {
+        post: {
+          text: "Hello world again! It's me, a computer program. I am forced to say these things because of these meddlesome programmers...",
+          media: [],
+          postOwner: mockUser,
+          reactions: 0,
+          tags: ["tags", "go", "here"],
+          time: new Date(),
+        },
+      },
+    },
+  ],
 };
 
 function UserPage() {

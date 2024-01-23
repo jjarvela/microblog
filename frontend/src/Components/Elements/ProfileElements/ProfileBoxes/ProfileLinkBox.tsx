@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 
-type LinkBoxLink = {
+export type LinkBoxLink = {
   icon: React.ReactNode;
   text: string;
   url?: string;
 };
 
-type LinkBoxProps = {
+export type ProfileLinkBoxProps = {
   links: LinkBoxLink[];
   class?: string;
 };
 
-function LinkBoxProps({ links, class: classAdd }: LinkBoxProps) {
+function ProfileLinkBox({ links, class: classAdd }: ProfileLinkBoxProps) {
   return (
     <div className={"rounded-xl border border-black50 p-2" + " " + classAdd}>
       <h4 className="mb-2 text-center">Links</h4>
@@ -33,4 +33,4 @@ function LinkBoxProps({ links, class: classAdd }: LinkBoxProps) {
   );
 }
 
-export default LinkBoxProps;
+export default ProfileLinkBox;

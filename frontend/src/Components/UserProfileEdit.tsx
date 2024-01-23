@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router";
 import Button from "./Elements/Button";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserProfileContext } from "./UserPage";
+import ProfileBoxes from "./Elements/ProfileElements/ProfileBoxes/ProfileBoxes";
 
 function UserProfileEdit() {
   const user = useContext(UserProfileContext);
+  const [boxes] = useState(user.userProfileBoxes);
   const navigate = useNavigate();
   return (
     <div className="mx-4">
@@ -18,6 +20,9 @@ function UserProfileEdit() {
         <Button onClick={() => navigate("..")} class="btn-primary">
           Confirm Edits
         </Button>
+      </div>
+      <div>
+        <ProfileBoxes boxes={boxes} />
       </div>
     </div>
   );
