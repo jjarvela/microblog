@@ -4,8 +4,14 @@ export type ProfileMediaBoxProps = {
 
 function ProfileMediaBox({ media }: ProfileMediaBoxProps) {
   return (
-    <div className="rounded-xl border border-black50 p-2">
-      <img src={media.source} />
+    <div
+      draggable
+      className="break-inside-avoid-column overflow-hidden rounded-xl border border-black50"
+    >
+      <img
+        src={media.source}
+        className="pointer-events-none h-full object-cover"
+      />
     </div>
   );
 }

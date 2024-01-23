@@ -22,7 +22,7 @@ function UserProfileEdit() {
         </Button>
       </div>
       <div>
-        <ProfileBoxes boxes={boxes} />
+        <ProfileBoxes boxes={boxes} editing />
       </div>
     </div>
   );

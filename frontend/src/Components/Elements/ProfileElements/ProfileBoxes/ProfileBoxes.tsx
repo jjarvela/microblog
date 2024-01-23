@@ -1,3 +1,5 @@
+import Button from "../../Button";
+import DropdownInput from "../../Inputs/DropdownInput";
 import ProfileLinkBox, { ProfileLinkBoxProps } from "./ProfileLinkBox";
 import ProfileMediaBox, { ProfileMediaBoxProps } from "./ProfileMediaBox";
 import ProfilePostBox, { ProfilePostBoxProps } from "./ProfilePostBox";
@@ -11,11 +13,14 @@ export type ProfileBox =
 
 type ProfileBoxesProps = {
   boxes: ProfileBox[];
+  editing?: boolean;
 };
 
-function ProfileBoxes({ boxes }: ProfileBoxesProps) {
+const newBoxTypes = ["Text Box", "Links Box", "Media Box", "Post Box"];
+
+function ProfileBoxes({ boxes, editing }: ProfileBoxesProps) {
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {boxes.map((box, i) => {
         switch (box.type) {
           case "text":
@@ -36,6 +41,14 @@ function ProfileBoxes({ boxes }: ProfileBoxesProps) {
             break;
         }
       })}
+      {editing && (
+        <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-black50 p-4">
+          <Button class="btn-primary">
+            <span className="font-bold">+ </span>Add new
+          </Button>
+          <DropdownInput items={newBoxTypes} class="min-w-[8rem]" />
+        </div>
+      )}
     </div>
   );
 }
