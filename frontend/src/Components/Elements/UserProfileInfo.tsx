@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ProfilePicture } from "./ProfilePicture";
 
 type UserProfileInfoProps = {
@@ -16,7 +17,8 @@ function UserProfileInfo({
   handleClass,
 }: UserProfileInfoProps) {
   return (
-    <div
+    <Link
+      to={"/user/" + user.userName}
       className={
         "mr-auto flex flex-row flex-wrap items-center gap-4" + " " + classAdd
       }
@@ -35,7 +37,7 @@ function UserProfileInfo({
         <h5 className={nameClass}>{user.screenName}</h5>
         <p className={"text-black50" + " " + handleClass}>{user.userName}</p>
       </div>
-    </div>
+    </Link>
   );
 }
 
