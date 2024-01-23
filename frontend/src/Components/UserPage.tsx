@@ -7,6 +7,7 @@ import UserPosts from "./UserPosts";
 import UserMedia from "./UserMedia";
 import UserLikes from "./UserLikes";
 import { UserContext as UserWrapperContext } from "../UserWrapper";
+import UserProfileEdit from "./UserProfileEdit";
 
 interface UserWithExtras extends User {
   featuredPost?: Post;
@@ -82,6 +83,8 @@ function UserPage() {
         <Routes>
           <Route index element={<Navigate to={"profile"} />} />
           <Route path="profile" element={<UserProfile />} />
+          {/* TODO: Secure the edit route to only logged in profiles. */}
+          <Route path="profile/edit" element={<UserProfileEdit />} />
           <Route path="posts" element={<UserPosts />} />
           <Route path="media" element={<UserMedia />} />
           <Route path="likes" element={<UserLikes />} />

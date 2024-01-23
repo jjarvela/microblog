@@ -6,12 +6,23 @@ import LogosGithubIcon from "./Icons/LogosGithubIcon";
 import LogosTwitter from "./Icons/LogosTwitter";
 import LogosYoutubeIcon from "./Icons/LogosYoutubeIcon";
 import { UserProfileContext } from "./UserPage";
+import { useNavigate } from "react-router";
+import Button from "./Elements/Button";
 
 function UserProfile() {
   const user = useContext(UserProfileContext);
+  const owned = true; // Implement later to check if logged in user is the profile owner
+  const navigate = useNavigate();
   return (
-    <div className="m-4">
-      <h2 className="my-4 text-center">{user.screenName}'s Profile</h2>
+    <div className="mx-4">
+      <div className="flex flex-row items-center justify-center gap-4">
+        <h2 className="my-4 text-center">{user.screenName}'s Profile</h2>
+        {owned && (
+          <Button onClick={() => navigate("edit")} class="btn-primary">
+            Edit
+          </Button>
+        )}
+      </div>
       <div className="flex flex-row flex-wrap gap-4">
         <div className="min-w-[75%] flex-1">
           <FeaturedMediaPost
