@@ -13,7 +13,9 @@ export type ProfileLinkBoxProps = {
 
 function ProfileLinkBox({ links, class: classAdd }: ProfileLinkBoxProps) {
   return (
-    <div className={"rounded-xl border border-black50 p-2" + " " + classAdd}>
+    <div
+      className={"h-full rounded-xl border border-black50 p-2" + " " + classAdd}
+    >
       <h4 className="mb-2 text-center">Links</h4>
       {links.map((link, i) => {
         return (

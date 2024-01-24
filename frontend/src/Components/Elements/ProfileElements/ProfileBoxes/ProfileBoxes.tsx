@@ -1,9 +1,11 @@
+import { useState } from "react";
 import Button from "../../Button";
 import DropdownInput from "../../Inputs/DropdownInput";
 import ProfileLinkBox, { ProfileLinkBoxProps } from "./ProfileLinkBox";
 import ProfileMediaBox, { ProfileMediaBoxProps } from "./ProfileMediaBox";
 import ProfilePostBox, { ProfilePostBoxProps } from "./ProfilePostBox";
 import ProfileTextBox, { ProfileTextBoxProps } from "./ProfileTextBox";
+import BoxDragOverIndicator, { DragoverState } from "./BoxDragoverIndicator";
 
 export type ProfileBox =
   | { type: "text"; data: ProfileTextBoxProps }
@@ -30,6 +32,18 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
   const handleOnDrag = (event: React.DragEvent, box: ProfileBox) => {
     event.dataTransfer.setData("box", JSON.stringify(box));
   };
+  const [dragover, setDragover] = useState<DragoverState>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
+  const handleDragOver = (event: React.DragEvent, index: number) => {
+    const rect = (event.target as Element).getBoundingClientRect();
+    setDragOverIndex(index);
+    if (event.clientX < rect.x + rect.width / 2) {
+      setDragover("onLeft");
+    } else {
+      setDragover("onRight");
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -37,30 +51,78 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
         switch (box.type) {
           case "text":
             return (
-              <div draggable onDragStart={(e) => handleOnDrag(e, box)}>
-                <ProfileTextBox
-                  key={i}
-                  title={box.data.title}
-                  text={box.data.text}
-                />
+              <div
+                key={i}
+                draggable
+                onDragStart={(e) => handleOnDrag(e, box)}
+                className="relative"
+                onDragOver={(e) => handleDragOver(e, i)}
+                onDragLeave={() => {
+                  setDragover(null);
+                  setDragOverIndex(null);
+                }}
+              >
+                <ProfileTextBox title={box.data.title} text={box.data.text} />
+                {dragOverIndex === i && (
+                  <BoxDragOverIndicator over={dragover} />
+                )}
               </div>
             );
           case "links":
             return (
-              <div draggable onDragStart={(e) => handleOnDrag(e, box)}>
-                <ProfileLinkBox key={i} links={box.data.links} />
+              <div
+                key={i}
+                draggable
+                onDragStart={(e) => handleOnDrag(e, box)}
+                className="relative"
+                onDragOver={(e) => handleDragOver(e, i)}
+                onDragLeave={() => {
+                  setDragover(null);
+                  setDragOverIndex(null);
+                }}
+              >
+                <ProfileLinkBox links={box.data.links} />
+                {dragOverIndex === i && (
+                  <BoxDragOverIndicator over={dragover} />
+                )}
               </div>
             );
           case "media":
             return (
-              <div draggable onDragStart={(e) => handleOnDrag(e, box)}>
-                <ProfileMediaBox key={i} media={box.data.media} />
+              <div
+                key={i}
+                draggable
+                onDragStart={(e) => handleOnDrag(e, box)}
+                className="relative"
+                onDragOver={(e) => handleDragOver(e, i)}
+                onDragLeave={() => {
+                  setDragover(null);
+                  setDragOverIndex(null);
+                }}
+              >
+                <ProfileMediaBox media={box.data.media} />
+                {dragOverIndex === i && (
+                  <BoxDragOverIndicator over={dragover} />
+                )}
               </div>
             );
           case "post":
             return (
-              <div draggable onDragStart={(e) => handleOnDrag(e, box)}>
-                <ProfilePostBox key={i} post={box.data.post} />
+              <div
+                key={i}
+                draggable
+                onDragStart={(e) => handleOnDrag(e, box)}
+                className="relative"
+                onDragOver={(e) => handleDragOver(e, i)}
+                onDragLeave={() => {
+                  setDragover(null);
+                  setDragOverIndex(null);
+                }}
+              >
+                <ProfilePostBox post={box.data.post} />
+                {dragOverIndex === i && (
+                  <BoxDragOverIndicator over={dragover} />
+                )}
               </div>
             );
           case "placeholder":

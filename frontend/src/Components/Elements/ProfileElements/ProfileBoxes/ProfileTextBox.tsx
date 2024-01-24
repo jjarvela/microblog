@@ -5,7 +5,7 @@ export type ProfileTextBoxProps = {
 
 function ProfileTextBox({ title, text }: ProfileTextBoxProps) {
   return (
-    <div className="flex min-h-[16rem] flex-col gap-4 rounded-xl border border-black50 p-4">
+    <div className="flex h-full min-h-[16rem] flex-col gap-4 rounded-xl border border-black50 p-4">
       <h4>{title}</h4>
       <p>{text}</p>
     </div>

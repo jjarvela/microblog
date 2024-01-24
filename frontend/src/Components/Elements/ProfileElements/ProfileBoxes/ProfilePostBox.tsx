@@ -7,7 +7,7 @@ export type ProfilePostBoxProps = {
 
 function ProfilePostBox({ post }: ProfilePostBoxProps) {
   return (
-    <div className="rounded-xl border border-black50 p-4">
+    <div className="h-full rounded-xl border border-black50 p-4">
       <div className="flex flex-col gap-4">
         <UserProfileInfo user={post.postOwner} />
         <p>{post.text}</p>
