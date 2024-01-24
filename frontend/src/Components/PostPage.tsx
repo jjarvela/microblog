@@ -10,14 +10,13 @@ import PostMediaLayout from "./Elements/PostElements/PostMediaLayout";
 import InReplyTo from "./Elements/PostElements/InReplyTo";
 import ConfirmModal from "./Elements/Modals/ConfirmModal";
 import TagList from "./Elements/PostElements/TagList";
-import LikeButton from "./Elements/PostElements/LikeButton";
-import RepostButton from "./Elements/PostElements/RepostButton";
 import ReportButton from "./Elements/PostElements/ReportButton";
 import PostCommentForm from "./PostCommentForm";
 import { UserContext } from "../UserWrapper";
 import { ProfilePicture } from "./Elements/ProfilePicture";
 import TextAreaInput from "./Elements/Inputs/TextAreaInput";
 import { useLocation } from "react-router";
+import PostPageReactionHub from "./Elements/PostElements/PostPageReactionHub";
 
 export default function PostPage() {
   const location = useLocation();
@@ -54,18 +53,16 @@ export default function PostPage() {
             </div>
           )}
 
-          <div className="flex flex-row-reverse flex-wrap items-center gap-4">
+          <div className="flex flex-row-reverse flex-wrap items-start gap-4">
             <PostContextMenu
-              class="self-start"
               ownerOptions={ownerOptions}
               editPostCallback={() => editModal.current?.showModal()}
               deletePostCallback={() => deleteConfirm.current?.showModal()}
             />
-            {/*add proper postid to link here and in UserProfileInfo*/}
-            <time className="mr-3 self-start underline">
-              {post.time.toLocaleString()}
-            </time>
-            <UserProfileInfo user={post.postOwner} />
+            <h4>
+              <ReportButton onClick={() => reportModal.current?.showModal()} />
+            </h4>
+            <UserProfileInfo class="self-center" user={post.postOwner} />
           </div>
           {post.replyingTo ? (
             <div>
@@ -79,11 +76,10 @@ export default function PostPage() {
             {post.media.length > 0 && <PostMediaLayout media={post.media} />}
 
             <TagList tags={post.tags} />
-            <div className="mb-3 flex flex-row justify-center gap-4 text-2xl">
-              <LikeButton />
-              <RepostButton />
-              <ReportButton onClick={() => reportModal.current?.showModal()} />
-            </div>
+
+            <time className="mr-3">{post.time.toLocaleString()}</time>
+
+            <PostPageReactionHub />
           </div>
           {showCommentForm ? (
             <PostCommentForm
