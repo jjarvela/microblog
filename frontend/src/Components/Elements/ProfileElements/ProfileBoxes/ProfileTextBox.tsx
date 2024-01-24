@@ -7,7 +7,7 @@ function ProfileTextBox({ title, text }: ProfileTextBoxProps) {
   return (
     <div
       draggable
-      className="min-h-[16rem] break-inside-avoid-column rounded-xl border border-black50 p-2"
+      className="flex min-h-[16rem] flex-col gap-4 rounded-xl border border-black50 p-4"
     >
       <h4>{title}</h4>
       <p>{text}</p>

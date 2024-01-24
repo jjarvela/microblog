@@ -43,10 +43,10 @@ function ProfileBoxes({ boxes, editing }: ProfileBoxesProps) {
       })}
       {editing && (
         <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-black50 p-4">
+          <DropdownInput items={newBoxTypes} class="min-w-[9rem]" />
           <Button class="btn-primary">
             <span className="font-bold">+ </span>Add new
           </Button>
-          <DropdownInput items={newBoxTypes} class="min-w-[8rem]" />
         </div>
       )}
     </div>

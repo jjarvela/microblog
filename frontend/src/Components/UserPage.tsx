@@ -106,6 +106,16 @@ const mockUserData: UserWithExtras = {
         },
       },
     },
+    {
+      type: "media",
+      data: {
+        media: {
+          id: "63290",
+          source: "https://va.media.tumblr.com/tumblr_romdvwU6El1z6s460.mp4",
+          type: "vid",
+        },
+      },
+    },
   ],
 };
 
