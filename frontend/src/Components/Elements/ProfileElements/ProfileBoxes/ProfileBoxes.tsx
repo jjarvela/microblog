@@ -9,34 +9,66 @@ export type ProfileBox =
   | { type: "text"; data: ProfileTextBoxProps }
   | { type: "links"; data: ProfileLinkBoxProps }
   | { type: "media"; data: ProfileMediaBoxProps }
-  | { type: "post"; data: ProfilePostBoxProps };
+  | { type: "post"; data: ProfilePostBoxProps }
+  | { type: "placeholder"; data: Record<string, never> };
 
 type ProfileBoxesProps = {
   boxes: ProfileBox[];
   editing?: boolean;
+  setBoxes?: (boxes: ProfileBox[]) => void;
 };
+
+function PlaceholderBox() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dotted border-black50 p-4"></div>
+  );
+}
 
 const newBoxTypes = ["Text Box", "Links Box", "Media Box", "Post Box"];
 
-function ProfileBoxes({ boxes, editing }: ProfileBoxesProps) {
+function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
+  const handleOnDrag = (event: React.DragEvent, box: ProfileBox) => {
+    event.dataTransfer.setData("box", JSON.stringify(box));
+  };
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {boxes.map((box, i) => {
         switch (box.type) {
           case "text":
             return (
-              <ProfileTextBox
-                key={i}
-                title={box.data.title}
-                text={box.data.text}
-              />
+              <div draggable onDragStart={(e) => handleOnDrag(e, box)}>
+                <ProfileTextBox
+                  key={i}
+                  title={box.data.title}
+                  text={box.data.text}
+                />
+              </div>
             );
           case "links":
-            return <ProfileLinkBox key={i} links={box.data.links} />;
+            return (
+              <div draggable onDragStart={(e) => handleOnDrag(e, box)}>
+                <ProfileLinkBox key={i} links={box.data.links} />
+              </div>
+            );
           case "media":
-            return <ProfileMediaBox key={i} media={box.data.media} />;
+            return (
+              <div draggable onDragStart={(e) => handleOnDrag(e, box)}>
+                <ProfileMediaBox key={i} media={box.data.media} />
+              </div>
+            );
           case "post":
-            return <ProfilePostBox key={i} post={box.data.post} />;
+            return (
+              <div draggable onDragStart={(e) => handleOnDrag(e, box)}>
+                <ProfilePostBox key={i} post={box.data.post} />
+              </div>
+            );
+          case "placeholder":
+            return (
+              <div draggable>
+                <PlaceholderBox />
+              </div>
+            );
           default:
             break;
         }

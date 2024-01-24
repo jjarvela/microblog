@@ -6,7 +6,7 @@ import ProfileBoxes from "./Elements/ProfileElements/ProfileBoxes/ProfileBoxes";
 function UserProfile() {
   const user = useContext(UserProfileContext);
   const [isEditing, setIsEditing] = useState(false);
-  const [boxes] = useState(user.userProfileBoxes);
+  const [boxes, setBoxes] = useState(user.userProfileBoxes);
   const owned = true; // Implement later to check if logged in user is the profile owner
   return (
     <div className="mx-4">
@@ -34,7 +34,7 @@ function UserProfile() {
           </>
         )}
       </div>
-      <ProfileBoxes boxes={boxes} editing={isEditing} />
+      <ProfileBoxes boxes={boxes} editing={isEditing} setBoxes={setBoxes} />
     </div>
   );
 }

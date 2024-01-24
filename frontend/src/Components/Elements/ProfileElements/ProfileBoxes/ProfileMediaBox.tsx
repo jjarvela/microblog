@@ -10,7 +10,6 @@ function ProfileMediaBox({ media }: ProfileMediaBoxProps) {
   return (
     <>
       <div
-        draggable
         className="relative max-h-[20rem] cursor-pointer overflow-hidden rounded-xl border border-black50 bg-[#000]"
         onClick={() => dialogRef.current?.showModal()}
       >
