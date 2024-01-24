@@ -1,4 +1,5 @@
 import Post from "./Elements/PostElements/Post";
+import MaterialSymbolsNewspaperSharp from "./Icons/MaterialSymbolsNewspaperSharp";
 
 type SearchPostsProps = {
   results: Post[];
@@ -9,7 +10,9 @@ export default function SearchPosts({ results, limit }: SearchPostsProps) {
   return (
     <div className="flex flex-col">
       <div className="mx-4 flex justify-start gap-2">
-        <h1></h1>
+        <h1>
+          <MaterialSymbolsNewspaperSharp />
+        </h1>
         <h3>Posts</h3>
       </div>
       {limit
