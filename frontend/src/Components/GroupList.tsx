@@ -1,8 +1,16 @@
 import Button from "./Elements/Button";
 import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
-import GroupTopMenu from "./Elements/GroupTopMenu";
 import { useRef } from "react";
 import CreateGroupModal from "./Elements/Modals/CreateGroupModal";
+import TopPageNav from "./Elements/TopPageNav";
+import MaterialSymbolsNewspaperSharp from "./Icons/MaterialSymbolsNewspaperSharp";
+import MaterialSymbolsHeartPlus from "./Icons/MaterialSymbolsHeartPlus";
+import MaterialSymbolsDiamond from "./Icons/MaterialSymbolsDiamond";
+import MaterialSymbolsGroups2Rounded from "./Icons/MaterialSymbolsGroups2Rounded";
+import { Routes, Route, Navigate } from "react-router";
+import FollowedGroups from "./Elements/FollowedGroups";
+import FollowedHashtags from "./Elements/FollowedHashtags";
+import FollowedUsers from "./Elements/FollowedUsers";
 
 const GroupList = () => {
   const createGroupModal = useRef<HTMLDialogElement>(null);
@@ -82,8 +90,27 @@ const GroupList = () => {
   ];
   return (
     <div>
-      <div className="flex justify-center">
-        <GroupTopMenu />
+      <div className="flex basis-4/12 justify-center">
+        <TopPageNav
+          destination="recent-activity"
+          linkName="Recent Activity"
+          icon={MaterialSymbolsNewspaperSharp}
+        />
+        <TopPageNav
+          destination="popular"
+          linkName="Popular"
+          icon={MaterialSymbolsHeartPlus}
+        />
+        <TopPageNav
+          destination="new"
+          linkName="New"
+          icon={MaterialSymbolsDiamond}
+        />
+        <TopPageNav
+          destination="my-groups"
+          linkName="My Groups"
+          icon={MaterialSymbolsGroups2Rounded}
+        />
       </div>
 
       <h2 className="my-4 text-center">Group Hub</h2>
@@ -120,6 +147,15 @@ const GroupList = () => {
           throw new Error("Function not implemented.");
         }}
       />
+
+      <div className="scrollbar-thin overflow-y-auto">
+        <Routes>
+          <Route index element={<Navigate to={"following"} />} />
+          <Route path="people" element={<FollowedUsers />} />
+          <Route path="groups" element={<FollowedGroups />} />
+          <Route path="hashtags" element={<FollowedHashtags />} />
+        </Routes>
+      </div>
     </div>
   );
 };
