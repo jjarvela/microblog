@@ -87,7 +87,7 @@ function DropdownInput({
         width={"1.5rem"}
         height={"1.5rem"}
         className={
-          "absolute right-2 top-2 z-10 transition-transform duration-100" +
+          "pointer-events-none absolute right-2 top-2 z-10 transition-transform duration-100" +
           " " +
           (isOpen && "z-30 rotate-180")
         }

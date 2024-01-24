@@ -61,7 +61,7 @@ function Landing() {
         </h2>
         <div className="scrollbar-thin relative m-auto flex h-full w-full flex-col items-center justify-center overflow-y-scroll border-x border-black25 bg-white dark:border-black75 dark:bg-black md:mx-0 [@media(min-width:512px)]:w-[32rem]  ">
           <form
-            className="absolute top-[10%] flex h-max flex-col justify-center gap-4 text-center md:min-w-[20rem]"
+            className="absolute top-8 flex h-max flex-col justify-center gap-4 text-center md:min-w-[20rem] mid:top-auto"
             onSubmit={(e) => handleFormSubmit(e)}
           >
             <h3>{register ? "Sign up today!" : "Welcome back!"}</h3>

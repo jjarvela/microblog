@@ -61,7 +61,11 @@ function LeftSidebar() {
                 icon={<MaterialSymbolsHomeRounded />}
               />
               <SidebarLink
-                to="/user/:username"
+                to={
+                  user.user?.userName
+                    ? "/user/" + user.user.userName
+                    : "/user/:username"
+                }
                 text="Profile"
                 icon={<MaterialSymbolsAccountCircle />}
               />
