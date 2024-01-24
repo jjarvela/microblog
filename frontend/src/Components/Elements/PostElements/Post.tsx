@@ -17,6 +17,7 @@ import ReportButton from "./ReportButton";
 import PostCommentForm from "../../PostCommentForm";
 import { UserContext } from "../../../UserWrapper";
 import ReportPostModal from "../Modals/ReportPostModal";
+import { Link } from "react-router-dom";
 
 export const PostContext = createContext<Post>({
   postOwner: { userName: "", screenName: "", followers: 0, following: 0 },
@@ -101,7 +102,25 @@ function Post({
               editPostCallback={() => editModal.current?.showModal()}
               deletePostCallback={() => deleteConfirm.current?.showModal()}
             />
-            <p className="mr-3 self-start">{time.toLocaleString()}</p>
+            {/*add proper postid to link here and in UserProfileInfo*/}
+            <Link
+              to={`/${postOwner.userName.substring(1)}/post/${1}`}
+              state={{
+                post: {
+                  postOwner,
+                  text,
+                  reactions,
+                  tags,
+                  time,
+                  media,
+                  reposter,
+                  replyingTo,
+                },
+              }}
+              className="mr-3 self-start underline"
+            >
+              <time>{time.toLocaleString()}</time>
+            </Link>
             <UserProfileInfo user={postOwner} />
           </div>
 
@@ -124,12 +143,28 @@ function Post({
               <ReportButton onClick={() => reportModal.current?.showModal()} />
             </div>
           </div>
-          <div className="-m-3 flex flex-row items-center justify-end gap-1 bg-black25 px-6 py-3 dark:bg-black75">
-            <span className="text-lg">
-              <PhFireSimpleBold />
-            </span>
-            <p>{reactions} Reactions</p>
-          </div>
+          <Link
+            to={`/${postOwner.userName.substring(1)}/post/${1}`}
+            state={{
+              post: {
+                postOwner,
+                text,
+                reactions,
+                tags,
+                time,
+                media,
+                reposter,
+                replyingTo,
+              },
+            }}
+          >
+            <div className="-m-3 flex flex-row items-center justify-end gap-1 bg-black25 px-6 py-3 dark:bg-black75">
+              <span className="text-lg">
+                <PhFireSimpleBold />
+              </span>
+              <p>{reactions} Reactions</p>
+            </div>
+          </Link>
         </div>
         {showCommentForm && (
           <PostCommentForm

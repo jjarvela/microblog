@@ -7,7 +7,7 @@ export default function LikeButton() {
   return (
     <button onClick={() => setLiked(!liked)}>
       {liked ? (
-        <MaterialSymbolsFavoriteRounded fill="#7a072e" />
+        <MaterialSymbolsFavoriteRounded className="text-[#fc4270]" />
       ) : (
         <MaterialSymbolsFavoriteOutlineRounded />
       )}
