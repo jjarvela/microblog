@@ -3,7 +3,7 @@ import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 
 type SearchUserProps = {
   results: Array<User>;
-  limit: number | undefined;
+  limit?: number | undefined;
 };
 
 export default function SearchUsers({ results, limit }: SearchUserProps) {
