@@ -53,8 +53,8 @@ model conversations {
   header                                   String?
   timestamp                                DateTime?               @db.Timestamp(6)
   conversation_messages                    conversation_messages[]
-  users_conversations_participant_1Tousers users?                  @relation("conversations_participant_1Tousers", fields: [participant_1], references: [uid], onUpdate: NoAction)
-  users_conversations_participant_2Tousers users?                  @relation("conversations_participant_2Tousers", fields: [participant_2], references: [uid], onUpdate: NoAction)
+  users_conversations_participant_1Tousers users?                  @relation("conversations_participant_1Tousers", fields: [participant_1], references: [uid], onDelete: Cascade, onUpdate: NoAction)
+  users_conversations_participant_2Tousers users?                  @relation("conversations_participant_2Tousers", fields: [participant_2], references: [uid], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model element_types {
