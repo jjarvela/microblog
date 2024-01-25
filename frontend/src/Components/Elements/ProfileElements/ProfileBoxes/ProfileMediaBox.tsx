@@ -1,17 +1,25 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import MaterialSymbolsCloseRounded from "../../../Icons/MaterialSymbolsCloseRounded";
 
 export type ProfileMediaBoxProps = {
   media: Media;
+  newHeight?: number;
 };
 
-function ProfileMediaBox({ media }: ProfileMediaBoxProps) {
+function ProfileMediaBox({ media, newHeight }: ProfileMediaBoxProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const [height, setHeight] = useState(newHeight || 0);
+
+  window.addEventListener("resize", () => {
+    setHeight(0);
+  });
+
   return (
     <>
       <div
-        className="relative h-full max-h-[20rem] cursor-pointer overflow-hidden rounded-xl border border-black50 bg-[#000]"
+        className="relative cursor-pointer overflow-hidden rounded-xl border border-black50 bg-[#000]"
         onClick={() => dialogRef.current?.showModal()}
+        style={height ? { minHeight: height } : {}}
       >
         {media.type === "img" && (
           <img
