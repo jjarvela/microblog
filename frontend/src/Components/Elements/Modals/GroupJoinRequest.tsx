@@ -32,6 +32,7 @@ export default function GroupJoinRequest({
           showCount
           maxLength={200}
           class="min-h-[10rem] w-full"
+          onChange={(e) => console.log(e.target.value)}
         />
         <div className="flex flex-row justify-between">
           <Button

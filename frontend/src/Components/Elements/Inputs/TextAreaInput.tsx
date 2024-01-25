@@ -5,7 +5,7 @@ type TextAreaInputProps = {
   maxLength?: number;
   showCount?: boolean;
   class?: string;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 function TextAreaInput({
