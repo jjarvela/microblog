@@ -45,6 +45,7 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
             showCount
             maxLength={500}
             class="min-h-[20rem] w-full"
+            autofocus={true}
           />
           <Button
             type="button"
