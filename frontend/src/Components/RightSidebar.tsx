@@ -19,7 +19,7 @@ function RightSidebar() {
       <ul className="ml-12 mr-6 list-decimal">
         {tempTags.map((val, i) => (
           <li key={i} className="border-b py-2 last:border-b-0">
-            <Link className="link" to={""}>
+            <Link className="link" to={`/search?q=${val}`}>
               #{val}
             </Link>
           </li>

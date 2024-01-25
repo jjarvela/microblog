@@ -6,6 +6,7 @@ type TextAreaInputProps = {
   maxLength?: number;
   showCount?: boolean;
   class?: string;
+  autofocus?: boolean;
 };
 
 function TextAreaInput({
@@ -14,9 +15,10 @@ function TextAreaInput({
   maxLength,
   showCount,
   class: classAdd,
+  autofocus,
 }: TextAreaInputProps) {
-  const [charCount, setCharCount] = useState(0);
   const [newText, setNewText] = useState(text);
+  const [charCount, setCharCount] = useState(text?.length || 0);
   return (
     <div className="relative">
       <textarea
@@ -32,6 +34,7 @@ function TextAreaInput({
           setCharCount(e.target.value.length);
         }}
         value={newText}
+        autoFocus={autofocus}
       />
       {showCount && (
         <p className="absolute bottom-3 right-2 select-none text-black50">

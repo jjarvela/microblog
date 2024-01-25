@@ -1,22 +1,22 @@
-import UserThumbnail from "./Elements/SearchThumbnails/UserThumbnail";
-import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
+import Post from "./Elements/PostElements/Post";
+import MaterialSymbolsArticleOutlineRounded from "./Icons/MaterialSymbolsArticleOutlineRounded";
 
-type SearchUserProps = {
-  results: Array<User>;
+type SearchPostsProps = {
+  results: Post[];
   limit?: number | undefined;
 };
 
-export default function SearchUsers({ results, limit }: SearchUserProps) {
+export default function SearchPosts({ results, limit }: SearchPostsProps) {
   return (
     <div className="flex flex-col">
       <div className="mx-4 flex justify-start gap-2">
         <h1>
-          <MaterialSymbolsAccountCircle />
+          <MaterialSymbolsArticleOutlineRounded />
         </h1>
-        <h3>Users</h3>
+        <h3>Posts</h3>
       </div>
       {limit
-        ? results.slice(0, limit).map((user) => {
+        ? results.slice(0, limit).map((post) => {
             return (
               <div
                 key={
@@ -26,17 +26,18 @@ export default function SearchUsers({ results, limit }: SearchUserProps) {
                 }
                 className="my-2"
               >
-                <UserThumbnail
-                  profileName={user.screenName}
-                  username={user.userName}
-                  userDescription="this si test"
-                  followers={5}
-                  following={23}
+                <Post
+                  postOwner={post.postOwner}
+                  text={post.text}
+                  media={post.media}
+                  tags={post.tags}
+                  reactions={post.reactions}
+                  time={post.time}
                 />
               </div>
             );
           })
-        : results.map((user) => {
+        : results.map((post) => {
             return (
               <div
                 key={
@@ -46,12 +47,13 @@ export default function SearchUsers({ results, limit }: SearchUserProps) {
                 }
                 className="my-2"
               >
-                <UserThumbnail
-                  profileName={user.screenName}
-                  username={user.userName}
-                  userDescription="this si test"
-                  followers={5}
-                  following={23}
+                <Post
+                  postOwner={post.postOwner}
+                  text={post.text}
+                  media={post.media}
+                  tags={post.tags}
+                  reactions={post.reactions}
+                  time={post.time}
                 />
               </div>
             );
