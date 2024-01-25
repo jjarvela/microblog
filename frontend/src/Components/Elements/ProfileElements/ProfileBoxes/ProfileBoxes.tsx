@@ -45,16 +45,18 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
     event.dataTransfer.setData("text/plain", JSON.stringify(box));
     const rect = (event.target as Element as Element).getBoundingClientRect();
     setDraggedHeight(rect.height);
+    // This 0ms setTimeout somehow sets the drag and drop image to match the element.
     setTimeout(() => {
-      if (setBoxes)
-        setBoxes(
-          boxes.map((box) => {
-            if (box.type === "media") {
-              box.data = { ...box.data, newHeight: undefined };
-            }
-            return box;
-          }),
-        );
+      // Some old fix work. Keeping it around for now
+      // if (setBoxes)
+      //   setBoxes(
+      //     boxes.map((box) => {
+      //       if (box.type === "media") {
+      //         box.data = { ...box.data, newHeight: undefined };
+      //       }
+      //       return box;
+      //     }),
+      //   );
       setDragOverIndex(index);
       setDraggedBox(box);
       const editedBoxes = boxes;

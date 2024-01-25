@@ -8,15 +8,21 @@ export type ProfileMediaBoxProps = {
 
 function ProfileMediaBox({ media, newHeight }: ProfileMediaBoxProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const rootDivRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(newHeight || 0);
 
+  // These two try to cleanup unused height property
   window.addEventListener("resize", () => {
     setHeight(0);
   });
+  setTimeout(() => {
+    setHeight(0);
+  }, 1000);
 
   return (
     <>
       <div
+        ref={rootDivRef}
         className="relative cursor-pointer overflow-hidden rounded-xl border border-black50 bg-[#000]"
         onClick={() => dialogRef.current?.showModal()}
         style={height ? { minHeight: height } : {}}
@@ -24,13 +30,13 @@ function ProfileMediaBox({ media, newHeight }: ProfileMediaBoxProps) {
         {media.type === "img" && (
           <img
             src={media.source}
-            className="pointer-events-none h-full w-full bg-cover object-cover"
+            className="pointer-events-none h-full w-full bg-cover object-cover object-center"
           />
         )}
         {media.type === "vid" && (
           <video
             src={media.source}
-            className="pointer-events-none h-full w-full bg-cover object-cover"
+            className="pointer-events-none h-full w-full bg-cover object-contain object-center"
           />
         )}
       </div>
