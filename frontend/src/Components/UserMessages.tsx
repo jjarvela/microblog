@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ConversationThumb from "./Elements/MessagingElements/ConversationThumb.tsx";
 import TextAreaInput from "./Elements/Inputs/TextAreaInput.tsx";
 import Conversation from "./Elements/MessagingElements/Conversation.tsx";
@@ -7,6 +7,7 @@ import MaterialSymbolsAddPhotoAlternateOutlineRounded from "./Icons/MaterialSymb
 import MaterialSymbolsSendRounded from "./Icons/MaterialSymbolsSendRounded";
 import Button from "./Elements/Button.tsx";
 import { useBreakpoint } from "../Hooks/BreakpointHook.tsx";
+import EmojiPicker from "emoji-picker-react";
 
 const UserMessages = () => {
   const [openMessage, setOpenMessage] = useState({
@@ -15,8 +16,28 @@ const UserMessages = () => {
     messages: [],
   });
 
+  const useClickOutside = (callback: () => void) => {
+    const ref: React.MutableRefObject<Element | undefined> = useRef();
+
+    useEffect(() => {
+      const handleClick = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) callback();
+      };
+
+      document.addEventListener("click", handleClick, true);
+
+      return () => document.removeEventListener("click", handleClick, true);
+    }, [ref]);
+    return ref;
+  };
+
+  const emojiRef = useClickOutside(() => setShowEmojiPicker(false));
+
   const { isXl } = useBreakpoint("xl");
   const [closed, setClosed] = useState(true);
+
+  const [messageText, setMessageText] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   return (
     <div className="mx-1 h-[94%]">
@@ -76,7 +97,23 @@ const UserMessages = () => {
           )}
           <div className="flex flex-row justify-center gap-2 border-t-[1px] border-solid border-black50 p-2 text-center">
             <span className="px-auto flex flex-row justify-center self-center text-xl text-black50">
-              <button>
+              {showEmojiPicker && (
+                <div
+                  ref={emojiRef}
+                  className="absolute bottom-10 left-0 z-[100]"
+                >
+                  <EmojiPicker
+                    onEmojiClick={(emoji) => {
+                      setMessageText(messageText + emoji.emoji);
+                      console.log(messageText);
+                      setShowEmojiPicker(false);
+                    }}
+                    emojiStyle="native"
+                    theme="auto"
+                  />
+                </div>
+              )}
+              <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
                 <MaterialSymbolsSentimentSatisfiedOutline />
               </button>
               <button>
@@ -84,7 +121,12 @@ const UserMessages = () => {
               </button>
             </span>
             <span className="flex-grow">
-              <TextAreaInput class="w-full" />
+              <TextAreaInput
+                class="w-full"
+                text={messageText}
+                charCount={messageText.length}
+                onChange={(e) => setMessageText(e.target.value)}
+              />
             </span>
             <span className="self-center">
               <Button class="btn-primary aspect-square p-[0.5em] text-lg">
