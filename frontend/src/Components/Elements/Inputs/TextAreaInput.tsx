@@ -31,6 +31,7 @@ function TextAreaInput({
         maxLength={maxLength}
         onChange={onChange}
         value={text}
+        autoFocus={autofocus}
       />
       {showCount && (
         <p className="absolute bottom-3 right-2 select-none text-black50">
