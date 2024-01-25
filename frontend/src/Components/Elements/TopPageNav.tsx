@@ -32,9 +32,16 @@ export default function TopPageNav({
                 dark:aria-[current=page]:text-black
                 "
       >
-        <div className="flex items-center gap-2">
-          <Icon style={{ width: "25px", height: "25px" }} />
+        <div className="hidden items-center gap-2 sm:inline-flex">
+          <Icon style={{ width: "30px", height: "30px" }} />
           <h5>{linkName}</h5>
+        </div>
+
+        <div className="flex flex-col items-center gap-2 sm:hidden">
+          <Icon style={{ width: "25px", height: "25px" }} />
+          <small>
+            <p>{linkName}</p>
+          </small>
         </div>
       </NavLink>
     </nav>

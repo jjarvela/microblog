@@ -5,6 +5,9 @@ import FollowedUsers from "./Elements/FollowedUsers";
 import Post from "./Elements/PostElements/Post";
 import TopPageNav from "./Elements/TopPageNav";
 import StreamlineInterfaceSettingSliderVerticalAdjustmentAdjustControlsFaderVerticalSettingsSlider from "./Icons/StreamlineInterfaceSettingSliderVerticalAdjustmentAdjustControlsFaderVerticalSettingsSlider";
+import MaterialSymbolsPersonCheck from "./Icons/MaterialSymbolsPersonCheck";
+import IonRibbonB from "./Icons/IonRibbonB";
+import MaterialSymbolsTagRounded from "./Icons/MaterialSymbolsTagRounded";
 
 const UserTimeline = () => {
   return (
@@ -13,23 +16,17 @@ const UserTimeline = () => {
         <TopPageNav
           destination="following"
           linkName="Following"
-          icon={
-            StreamlineInterfaceSettingSliderVerticalAdjustmentAdjustControlsFaderVerticalSettingsSlider
-          }
+          icon={MaterialSymbolsPersonCheck}
         />
         <TopPageNav
           destination="originals"
           linkName="Originals"
-          icon={
-            StreamlineInterfaceSettingSliderVerticalAdjustmentAdjustControlsFaderVerticalSettingsSlider
-          }
+          icon={IonRibbonB}
         />
         <TopPageNav
           destination="mytags"
           linkName="My Tags"
-          icon={
-            StreamlineInterfaceSettingSliderVerticalAdjustmentAdjustControlsFaderVerticalSettingsSlider
-          }
+          icon={MaterialSymbolsTagRounded}
         />
       </div>
       <h2 className="my-4 text-center">Timeline</h2>

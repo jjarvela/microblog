@@ -1,9 +1,4 @@
-import MaterialSymbolsDiamond from "../Icons/MaterialSymbolsDiamond";
-import MaterialSymbolsGroups2Rounded from "../Icons/MaterialSymbolsGroups2Rounded";
-import MaterialSymbolsHeartPlus from "../Icons/MaterialSymbolsHeartPlus";
-import MaterialSymbolsNewspaperSharp from "../Icons/MaterialSymbolsNewspaperSharp";
 import GroupThumbnail from "./SearchThumbnails/GroupThumbnail";
-import TopPageNav from "./TopPageNav";
 
 export default function GroupListRecentActivity() {
   const placeholderGroups: Group[] = [
