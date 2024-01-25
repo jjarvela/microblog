@@ -5,8 +5,10 @@ import MaterialSymbolsMarkEmailUnreadRounded from "../../Icons/MaterialSymbolsMa
 import MaterialSymbolsMarkEmailReadRounded from "../../Icons/MaterialSymbolsMarkEmailReadRounded";
 import MaterialSymbolsBlock from "../../Icons/MaterialSymbolsBlock";
 import MaterialSymbolsDeleteForeverOutlineRounded from "../../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
+import { Link } from "react-router-dom";
 
 type ConversationThumbProps = {
+  id: string;
   recipientName: string;
   recipientHandle: string;
   readStatus: boolean;
@@ -18,6 +20,7 @@ type ConversationThumbProps = {
   };
   setOpenMessage: React.Dispatch<
     React.SetStateAction<{
+      id: string;
       recipientName: string;
       recipientHandle: string;
       messages: never[];
@@ -26,6 +29,7 @@ type ConversationThumbProps = {
 };
 
 export default function ConversationThumb({
+  id,
   recipientName,
   recipientHandle,
   readStatus,
@@ -55,11 +59,18 @@ export default function ConversationThumb({
   const ref = useClickOutside(() => setShowContextMenu(false));
 
   return (
-    <button
+    <Link
+      to={`/messages/${id}`}
+      state={{ conversation: { id, recipientName, recipientHandle } }}
       className=" relative flex w-full flex-col overflow-hidden border-[1px] border-solid border-black50 p-2"
       onClick={() => {
         !showContextMenu &&
-          setOpenMessage({ ...openMessage, recipientName, recipientHandle });
+          setOpenMessage({
+            ...openMessage,
+            id,
+            recipientName,
+            recipientHandle,
+          });
         !showContextMenu && setClosed(false);
       }}
       onContextMenu={(e) => {
@@ -129,6 +140,6 @@ export default function ConversationThumb({
           </div>
         </>
       )}
-    </button>
+    </Link>
   );
 }
