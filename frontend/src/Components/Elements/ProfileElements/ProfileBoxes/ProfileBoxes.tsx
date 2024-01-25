@@ -108,7 +108,11 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
                 onDragEnter={(e) => handleDragEnter(e, i)}
                 onDragEnd={() => handleDragEnd()}
               >
-                <ProfileTextBox title={box.data.title} text={box.data.text} />
+                <ProfileTextBox
+                  title={box.data.title}
+                  text={box.data.text}
+                  editing={editing}
+                />
               </div>
             );
           case "links":
