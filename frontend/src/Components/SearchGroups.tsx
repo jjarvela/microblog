@@ -3,7 +3,7 @@ import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
 
 type SearchGroupProps = {
   results: Array<Group>;
-  limit: number | undefined;
+  limit?: number | undefined;
 };
 
 export default function SearchGroups({ results, limit }: SearchGroupProps) {
