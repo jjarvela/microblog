@@ -7,7 +7,7 @@ import MaterialSymbolsAddPhotoAlternateOutlineRounded from "./Icons/MaterialSymb
 import MaterialSymbolsSendRounded from "./Icons/MaterialSymbolsSendRounded";
 import Button from "./Elements/Button.tsx";
 import { useBreakpoint } from "../Hooks/BreakpointHook.tsx";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { Theme, EmojiStyle } from "emoji-picker-react";
 
 const UserMessages = () => {
   const [openMessage, setOpenMessage] = useState({
@@ -20,15 +20,17 @@ const UserMessages = () => {
     const ref: React.MutableRefObject<Element | undefined> = useRef();
 
     useEffect(() => {
-      const handleClick = (event) => {
-        if (ref.current && !ref.current.contains(event.target)) callback();
+      const handleClick = (event: MouseEvent) => {
+        if (ref.current && !ref.current.contains(event.target as Node))
+          callback();
       };
 
       document.addEventListener("click", handleClick, true);
 
       return () => document.removeEventListener("click", handleClick, true);
     }, [ref]);
-    return ref;
+
+    return ref as React.LegacyRef<HTMLDivElement>;
   };
 
   const emojiRef = useClickOutside(() => setShowEmojiPicker(false));
@@ -107,8 +109,8 @@ const UserMessages = () => {
                       const newText = messageText + emoji.emoji;
                       setMessageText(newText);
                     }}
-                    emojiStyle="native"
-                    theme="auto"
+                    emojiStyle={EmojiStyle.NATIVE}
+                    theme={Theme.AUTO}
                   />
                 </div>
               )}
