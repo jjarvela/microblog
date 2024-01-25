@@ -104,9 +104,8 @@ const UserMessages = () => {
                 >
                   <EmojiPicker
                     onEmojiClick={(emoji) => {
-                      setMessageText(messageText + emoji.emoji);
-                      console.log(messageText);
-                      setShowEmojiPicker(false);
+                      const newText = messageText + emoji.emoji;
+                      setMessageText(newText);
                     }}
                     emojiStyle="native"
                     theme="auto"
