@@ -59,7 +59,6 @@ function App() {
         {/*Logged routes*/}
         <Route element={<UserLayout />}>
           <Route path="/search" element={<Search />} />
-
           {/*User routes*/}
           <Route path="/home/*" element={<UserTimeline />} />
           <Route path="/user/:username/*" element={<UserPage />} />
@@ -67,10 +66,9 @@ function App() {
           <Route path="/notifications" element={<UserNotifications />} />
           <Route path="/messages/*" element={<UserMessages />} />
           <Route path="/following/*" element={<UserFollowing />} />
-
-          {/*Group routes*/}
-          <Route path="/groups" element={<GroupList />} />
-          <Route path="/groups/:id" element={<GroupProfile />} />
+          {/*Groups routes*/}
+          <Route path="/groups/*" element={<GroupList />} />
+          <Route path="/groups/profile/:id" element={<GroupProfile />} />
 
           {/*Post routes*/}
           <Route path="/:username/post/:postid" element={<PostPage />} />

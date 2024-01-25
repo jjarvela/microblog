@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import GroupProfileBanner from "./Elements/ProfileElements/GroupProfileBanner";
 import Post from "./Elements/PostElements/Post";
 import FeaturedMediaPost from "./Elements/ProfileElements/FeaturedMediaPost";
@@ -20,7 +20,10 @@ function GroupProfile() {
         {group ? (
           <GroupProfileBanner group={group} />
         ) : (
-          <Navigate to={"/groups"} replace={true} />
+          <div>
+            <p>Loading...</p>
+            {/* or show an error message */}
+          </div>
         )}
       </div>
 

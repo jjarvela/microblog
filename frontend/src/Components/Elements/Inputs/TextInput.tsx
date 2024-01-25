@@ -5,6 +5,7 @@ type TextInputProps = {
   class?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
+  autofocus?: boolean;
 };
 
 function TextInput(props: TextInputProps) {
@@ -16,6 +17,7 @@ function TextInput(props: TextInputProps) {
       placeholder={props.placeholder}
       onChange={(e) => props.onChange && props.onChange(e)}
       value={props.value}
+      autoFocus={props.autofocus || false}
     />
   );
 }

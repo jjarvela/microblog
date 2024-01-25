@@ -107,47 +107,52 @@ export default function PostPageReactionHub() {
             setHeight(size.height);
           }}
         >
-          {innerNav === "likes" &&
-            reactions.likes.map((item) => {
-              return (
-                <Link
-                  to={`/user/${item.userName}/profile`}
-                  className="flex gap-1"
-                >
-                  <ProfilePicture width={20} />
-                  <p>{item.screenName}</p>
-                  <p>{item.userName}</p>
-                </Link>
-              );
-            })}
+          <div className="h-full w-full">
+            {innerNav === "likes" &&
+              reactions.likes.map((item) => {
+                return (
+                  <Link
+                    to={`/user/${item.userName}/profile`}
+                    className="flex gap-1"
+                    key={Math.floor(Math.random() * 1000)}
+                  >
+                    <ProfilePicture width={20} />
+                    <p>{item.screenName}</p>
+                    <p>{item.userName}</p>
+                  </Link>
+                );
+              })}
 
-          {innerNav === "reposts" &&
-            reactions.reposts.map((item) => {
-              return (
-                <Link
-                  to={`/user/${item.userName}/profile`}
-                  className="flex gap-1"
-                >
-                  <ProfilePicture width={20} />
-                  <p>{item.screenName}</p>
-                  <p>{item.userName}</p>
-                </Link>
-              );
-            })}
+            {innerNav === "reposts" &&
+              reactions.reposts.map((item) => {
+                return (
+                  <Link
+                    to={`/user/${item.userName}/profile`}
+                    className="flex gap-1"
+                    key={Math.floor(Math.random() * 1000)}
+                  >
+                    <ProfilePicture width={20} />
+                    <p>{item.screenName}</p>
+                    <p>{item.userName}</p>
+                  </Link>
+                );
+              })}
 
-          {innerNav === "comments" &&
-            reactions.comments.map((item) => {
-              return (
-                <Link
-                  to={`/user/${item.userName}/profile`}
-                  className="flex gap-1"
-                >
-                  <ProfilePicture width={20} />
-                  <p>{item.screenName}</p>
-                  <p>{item.userName}</p>
-                </Link>
-              );
-            })}
+            {innerNav === "comments" &&
+              reactions.comments.map((item) => {
+                return (
+                  <Link
+                    to={`/user/${item.userName}/profile`}
+                    className="flex gap-1"
+                    key={Math.floor(Math.random() * 1000)}
+                  >
+                    <ProfilePicture width={20} />
+                    <p>{item.screenName}</p>
+                    <p>{item.userName}</p>
+                  </Link>
+                );
+              })}
+          </div>
         </ResizableBox>
       </div>
     </div>

@@ -47,6 +47,7 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
             maxLength={500}
             class="min-h-[20rem] w-full"
             onChange={(e) => setPostText(e.target.value)}
+            autofocus
           />
           <Button
             type="button"

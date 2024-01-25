@@ -6,6 +6,7 @@ type TextAreaInputProps = {
   showCount?: boolean;
   class?: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  autofocus?: boolean;
 };
 
 function TextAreaInput({
@@ -16,6 +17,7 @@ function TextAreaInput({
   showCount,
   class: classAdd,
   onChange,
+  autofocus,
 }: TextAreaInputProps) {
   return (
     <div className="relative">
