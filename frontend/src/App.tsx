@@ -15,10 +15,6 @@ import LeftSidebar from "./Components/LeftSidebar";
 import RightSidebar from "./Components/RightSidebar";
 import { SetTheme } from "./Components/Elements/SettingsElements/ThemeSelector";
 import PostPage from "./Components/PostPage";
-import GroupListMyGroups from "./Components/Elements/GroupListMyGroups";
-import GroupListNew from "./Components/Elements/GroupListNew";
-import GroupListRecentActivity from "./Components/Elements/GroupListRecentActivity";
-import GroupListPopular from "./Components/Elements/GroupListPopular";
 
 const UserLayout = () => {
   return (
@@ -71,15 +67,9 @@ function App() {
           <Route path="/messages" element={<UserMessages />} />
           <Route path="/following/*" element={<UserFollowing />} />
           {/*Groups routes*/}
-          <Route path="/groups/" element={<GroupList />} />
-          <Route path="/groupprofile/:id" element={<GroupProfile />} />
-          <Route
-            path="/groups/recent-activity"
-            element={<GroupListRecentActivity />}
-          />{" "}
-          <Route path="/groups/popular" element={<GroupListPopular />} />
-          <Route path="/groups/new" element={<GroupListNew />} />
-          <Route path="/groups/my-groups" element={<GroupListMyGroups />} />
+          <Route path="/groups/*" element={<GroupList />} />
+          <Route path="/groups/profile/:id" element={<GroupProfile />} />
+
           {/*Post routes*/}
           <Route path="/:username/post/:postid" element={<PostPage />} />
         </Route>

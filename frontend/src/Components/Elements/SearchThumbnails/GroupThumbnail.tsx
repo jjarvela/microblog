@@ -12,7 +12,7 @@ function GroupThumbnail({ group }: GroupThumbnailProps) {
   const navigate = useNavigate();
   const joinRequest = useRef<HTMLDialogElement>(null);
   function handleJoinClick() {
-    navigate(`/groupprofile/${group.groupName}`, { state: { group } });
+    navigate(`/groups/profile/${group.groupName}`, { state: { group } });
   }
 
   return (

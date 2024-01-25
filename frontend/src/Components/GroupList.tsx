@@ -6,16 +6,14 @@ import MaterialSymbolsNewspaperSharp from "./Icons/MaterialSymbolsNewspaperSharp
 import MaterialSymbolsHeartPlus from "./Icons/MaterialSymbolsHeartPlus";
 import MaterialSymbolsDiamond from "./Icons/MaterialSymbolsDiamond";
 import MaterialSymbolsGroups2Rounded from "./Icons/MaterialSymbolsGroups2Rounded";
-import { Routes, Route, Navigate } from "react-router";
 
-import NotFound from "./NotFound";
-
-import GroupProfile from "./GroupProfile";
-import GroupListRecentActivity from "./Elements/GroupListRecentActivity";
-import GroupListNew from "./Elements/GroupListNew";
-import GroupListMyGroups from "./Elements/GroupListMyGroups";
-import GroupListPopular from "./Elements/GroupListPopular";
 import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
+import { Routes, Route, Navigate } from "react-router";
+import GroupListMyGroups from "./Elements/GroupListMyGroups";
+import GroupListNew from "./Elements/GroupListNew";
+import GroupListPopular from "./Elements/GroupListPopular";
+import GroupListRecentActivity from "./Elements/GroupListRecentActivity";
+import NotFound from "./NotFound";
 
 const GroupList = () => {
   const createGroupModal = useRef<HTMLDialogElement>(null);
@@ -104,12 +102,6 @@ const GroupList = () => {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-3 p-2">
-        {placeholderGroups.map((group) => {
-          return <GroupThumbnail group={group} />;
-        })}
-      </div>
-
       <CreateGroupModal
         confirmText={"Create"}
         cancelText={"Cancel"}
@@ -121,14 +113,12 @@ const GroupList = () => {
       />
       <div className="scrollbar-thin overflow-y-auto">
         <Routes>
-          <Route index element={<Navigate to={"/groups"} />} />
-          <Route path="/groups" element={<GroupList />} />
-
+          <Route index element={<Navigate to="/groups/recent-activity" />} />
+          <Route path="recent-activity" element={<GroupListRecentActivity />} />
           <Route path="popular" element={<GroupListPopular />} />
-          <Route path="/new" element={<GroupListNew />} />
-          <Route path="/my-groups" element={<GroupListMyGroups />} />
-
-          <Route path="/*" element={<NotFound />} />
+          <Route path="new" element={<GroupListNew />} />
+          <Route path="my-groups" element={<GroupListMyGroups />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </div>

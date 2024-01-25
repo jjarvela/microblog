@@ -1,4 +1,9 @@
+import MaterialSymbolsDiamond from "../Icons/MaterialSymbolsDiamond";
+import MaterialSymbolsGroups2Rounded from "../Icons/MaterialSymbolsGroups2Rounded";
+import MaterialSymbolsHeartPlus from "../Icons/MaterialSymbolsHeartPlus";
+import MaterialSymbolsNewspaperSharp from "../Icons/MaterialSymbolsNewspaperSharp";
 import GroupThumbnail from "./SearchThumbnails/GroupThumbnail";
+import TopPageNav from "./TopPageNav";
 
 export default function GroupListRecentActivity() {
   const placeholderGroups: Group[] = [
@@ -49,10 +54,12 @@ export default function GroupListRecentActivity() {
   ];
 
   return (
-    <div className="flex flex-col gap-3 p-2">
-      {placeholderGroups.map((group) => {
-        return <GroupThumbnail group={group} />;
-      })}
+    <div>
+      <div className="flex flex-col gap-3 p-2">
+        {placeholderGroups.map((group) => {
+          return <GroupThumbnail group={group} />;
+        })}
+      </div>
     </div>
   );
 }
