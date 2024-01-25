@@ -15,7 +15,7 @@ export default function Conversation({
   setClosed,
 }: ConversationProps) {
   return (
-    <div className="flex flex-col">
+    <div className="flex h-[70%] flex-col">
       <div>
         <div className="flex flex-row items-center gap-2 border-y-[1px] border-black50 py-2">
           <button

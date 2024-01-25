@@ -8,6 +8,9 @@ import MaterialSymbolsSendRounded from "./Icons/MaterialSymbolsSendRounded";
 import Button from "./Elements/Button.tsx";
 import { useBreakpoint } from "../Hooks/BreakpointHook.tsx";
 import EmojiPicker, { Theme, EmojiStyle } from "emoji-picker-react";
+import MaterialSymbolsChatAddOnRounded from "./Icons/MaterialSymbolsChatAddOnRounded.tsx";
+import MaterialSymbolsSettingsRounded from "./Icons/MaterialSymbolsSettingsRounded.tsx";
+import TextInput from "./Elements/Inputs/TextInput.tsx";
 
 const UserMessages = () => {
   const [openMessage, setOpenMessage] = useState({
@@ -42,13 +45,19 @@ const UserMessages = () => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   return (
-    <div className="mx-1 h-[94%]">
-      <h2 className="my-4 text-center">Messaging Hub</h2>
+    <div className="h-full overflow-hidden">
+      <div className="flex w-full justify-between border-b-[1px] border-b-black50 px-2">
+        <h2 className="my-4 text-center">Messaging Hub</h2>
+        <div className="flex gap-2 self-center text-lg">
+          <MaterialSymbolsChatAddOnRounded />
+          <MaterialSymbolsSettingsRounded />
+        </div>
+      </div>
       <div className="h-full w-full xl:flex xl:flex-row">
         <div
           className={`${
             !isXl && !closed && "collapse h-0"
-          } scrollbar-thin w-full border-b-[1px] border-solid border-black50 xl:w-[50%] xl:overflow-y-scroll xl:border-b-0 xl:border-r-[1px]`}
+          } scrollbar-thin w-full overflow-y-scroll border-b-[1px] border-solid border-black50 p-2 xl:w-[50%] xl:border-b-0 xl:border-r-[1px]`}
         >
           <ConversationThumb
             recipientName="Test User ✨"
@@ -95,7 +104,15 @@ const UserMessages = () => {
               setClosed={setClosed}
             />
           ) : (
-            <h4 className="p-4 text-center">Start a new conversation</h4>
+            <div className=" flex h-[70%] flex-col">
+              <h4 className="p-4 text-center">Start a new conversation</h4>
+              <div className="flex justify-center gap-2">
+                <TextInput placeholder="Search for users..." />
+                <Button class="btn-primary text-2xl">
+                  <MaterialSymbolsChatAddOnRounded />
+                </Button>
+              </div>
+            </div>
           )}
           <div className="flex flex-row justify-center gap-2 border-t-[1px] border-solid border-black50 p-2 text-center">
             <span className="px-auto flex flex-row justify-center self-center text-xl text-black50">
