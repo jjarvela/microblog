@@ -12,6 +12,10 @@ import { Routes, Route, Navigate } from "react-router";
 import NotFound from "./NotFound";
 
 import GroupProfile from "./GroupProfile";
+import GroupListRecentActivity from "./Elements/GroupListRecentActivity";
+import GroupListNew from "./Elements/GroupListNew";
+import GroupListMyGroups from "./Elements/GroupListMyGroups";
+import GroupListPopular from "./Elements/GroupListPopular";
 
 const GroupList = () => {
   const createGroupModal = useRef<HTMLDialogElement>(null);
@@ -92,26 +96,28 @@ const GroupList = () => {
   return (
     <div>
       <div className="flex basis-4/12 justify-center">
-        <TopPageNav
-          destination="recent-activity"
-          linkName="Recent Activity"
-          icon={MaterialSymbolsNewspaperSharp}
-        />
-        <TopPageNav
-          destination="popular"
-          linkName="Popular"
-          icon={MaterialSymbolsHeartPlus}
-        />
-        <TopPageNav
-          destination="new"
-          linkName="New"
-          icon={MaterialSymbolsDiamond}
-        />
-        <TopPageNav
-          destination="my-groups"
-          linkName="My Groups"
-          icon={MaterialSymbolsGroups2Rounded}
-        />
+        <nav className="flex flex-row justify-center gap-0 border-b-[1px] border-primary">
+          <TopPageNav
+            destination="recent-activity"
+            linkName="Recent Activity"
+            icon={MaterialSymbolsNewspaperSharp}
+          />
+          <TopPageNav
+            destination="popular"
+            linkName="Popular"
+            icon={MaterialSymbolsHeartPlus}
+          />
+          <TopPageNav
+            destination="new"
+            linkName="New"
+            icon={MaterialSymbolsDiamond}
+          />
+          <TopPageNav
+            destination="my-groups"
+            linkName="My Groups"
+            icon={MaterialSymbolsGroups2Rounded}
+          />
+        </nav>
       </div>
 
       <h2 className="my-4 text-center">Group Hub</h2>
@@ -125,20 +131,7 @@ const GroupList = () => {
           Create Group
         </Button>
       </div>
-      <div className="flex flex-col gap-6">
-        {placeholderGroups.map((group) => {
-          return (
-            <GroupThumbnail
-              key={
-                Math.floor(Math.random() * 1000) +
-                "" +
-                Math.floor(Math.random() * 1000)
-              }
-              group={group}
-            />
-          );
-        })}
-      </div>
+
       <CreateGroupModal
         confirmText={"Create"}
         cancelText={"Cancel"}
@@ -148,17 +141,20 @@ const GroupList = () => {
           throw new Error("Function not implemented.");
         }}
       />
-      <Routes>
-        <Route path="/" element={<Navigate to="/groups" />} />
-
-        <Route path="/groups" element={<GroupList />} />
-        <Route path="/groups/:id" element={<GroupProfile />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/recent-activity" element={<GroupList />} />
-        <Route path="/popular" element={<GroupList />} />
-        <Route path="/new" element={<GroupList />} />
-        <Route path="/my-groups" element={<GroupList />} />
-      </Routes>
+      <div className="scrollbar-thin overflow-y-auto">
+        <Routes>
+          <Route index element={<Navigate to={"/groups/recent-activity"} />} />
+          <Route
+            path="/recent-activity"
+            element={<GroupListRecentActivity />}
+          />
+          <Route path="/popular" element={<GroupListPopular />} />
+          <Route path="/new" element={<GroupListNew />} />
+          <Route path="/my-groups" element={<GroupListMyGroups />} />
+          <Route path="/*" element={<NotFound />} />
+          <Route path="/groups/:id" element={<GroupProfile />} />
+        </Routes>
+      </div>
     </div>
   );
 };
