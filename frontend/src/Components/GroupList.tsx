@@ -8,9 +8,10 @@ import MaterialSymbolsHeartPlus from "./Icons/MaterialSymbolsHeartPlus";
 import MaterialSymbolsDiamond from "./Icons/MaterialSymbolsDiamond";
 import MaterialSymbolsGroups2Rounded from "./Icons/MaterialSymbolsGroups2Rounded";
 import { Routes, Route, Navigate } from "react-router";
-import FollowedGroups from "./Elements/FollowedGroups";
-import FollowedHashtags from "./Elements/FollowedHashtags";
-import FollowedUsers from "./Elements/FollowedUsers";
+
+import NotFound from "./NotFound";
+
+import GroupProfile from "./GroupProfile";
 
 const GroupList = () => {
   const createGroupModal = useRef<HTMLDialogElement>(null);
@@ -147,15 +148,17 @@ const GroupList = () => {
           throw new Error("Function not implemented.");
         }}
       />
+      <Routes>
+        <Route path="/" element={<Navigate to="/groups" />} />
 
-      <div className="scrollbar-thin overflow-y-auto">
-        <Routes>
-          <Route index element={<Navigate to={"following"} />} />
-          <Route path="people" element={<FollowedUsers />} />
-          <Route path="groups" element={<FollowedGroups />} />
-          <Route path="hashtags" element={<FollowedHashtags />} />
-        </Routes>
-      </div>
+        <Route path="/groups" element={<GroupList />} />
+        <Route path="/groups/:id" element={<GroupProfile />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/recent-activity" element={<GroupList />} />
+        <Route path="/popular" element={<GroupList />} />
+        <Route path="/new" element={<GroupList />} />
+        <Route path="/my-groups" element={<GroupList />} />
+      </Routes>
     </div>
   );
 };

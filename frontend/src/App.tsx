@@ -67,8 +67,7 @@ function App() {
           <Route path="/messages" element={<UserMessages />} />
           <Route path="/following/*" element={<UserFollowing />} />
 
-          {/*Group routes*/}
-          <Route path="/groups" element={<GroupList />} />
+          <Route path="/groups/*" element={<GroupList />} />
           <Route path="/groups/:id" element={<GroupProfile />} />
         </Route>
       </Routes>
