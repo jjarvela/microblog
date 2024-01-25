@@ -17,7 +17,7 @@ const UserMessages = () => {
   });
 
   const useClickOutside = (callback: () => void) => {
-    const ref: React.MutableRefObject<Element | undefined> = useRef();
+    const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
       const handleClick = (event: MouseEvent) => {
@@ -30,7 +30,7 @@ const UserMessages = () => {
       return () => document.removeEventListener("click", handleClick, true);
     }, [ref]);
 
-    return ref as React.LegacyRef<HTMLDivElement>;
+    return ref;
   };
 
   const emojiRef = useClickOutside(() => setShowEmojiPicker(false));
