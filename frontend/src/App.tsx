@@ -14,6 +14,7 @@ import Header from "./Components/Header";
 import LeftSidebar from "./Components/LeftSidebar";
 import RightSidebar from "./Components/RightSidebar";
 import { SetTheme } from "./Components/Elements/SettingsElements/ThemeSelector";
+import PostPage from "./Components/PostPage";
 
 const UserLayout = () => {
   return (
@@ -69,6 +70,9 @@ function App() {
 
           <Route path="/groups/*" element={<GroupList />} />
           <Route path="/groups/:id" element={<GroupProfile />} />
+
+          {/*Post routes*/}
+          <Route path="/:username/post/:postid" element={<PostPage />} />
         </Route>
       </Routes>
     </div>
