@@ -4,7 +4,6 @@ import FollowedHashtags from "./Elements/FollowedHashtags";
 import FollowedUsers from "./Elements/FollowedUsers";
 import Post from "./Elements/PostElements/Post";
 import TopPageNav from "./Elements/TopPageNav";
-import StreamlineInterfaceSettingSliderVerticalAdjustmentAdjustControlsFaderVerticalSettingsSlider from "./Icons/StreamlineInterfaceSettingSliderVerticalAdjustmentAdjustControlsFaderVerticalSettingsSlider";
 import MaterialSymbolsPersonCheck from "./Icons/MaterialSymbolsPersonCheck";
 import IonRibbonB from "./Icons/IonRibbonB";
 import MaterialSymbolsTagRounded from "./Icons/MaterialSymbolsTagRounded";
