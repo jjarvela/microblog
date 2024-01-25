@@ -1,5 +1,4 @@
 import Button from "./Elements/Button";
-import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
 import { useRef } from "react";
 import CreateGroupModal from "./Elements/Modals/CreateGroupModal";
 import TopPageNav from "./Elements/TopPageNav";
@@ -16,6 +15,7 @@ import GroupListRecentActivity from "./Elements/GroupListRecentActivity";
 import GroupListNew from "./Elements/GroupListNew";
 import GroupListMyGroups from "./Elements/GroupListMyGroups";
 import GroupListPopular from "./Elements/GroupListPopular";
+import GroupThumbnail from "./Elements/SearchThumbnails/GroupThumbnail";
 
 const GroupList = () => {
   const createGroupModal = useRef<HTMLDialogElement>(null);
@@ -43,34 +43,6 @@ const GroupList = () => {
         following: 666,
       },
       groupDescription: "This is a test",
-      groupMembers: 84,
-      groupCreated: new Date(),
-      recentActivity: "--",
-      joinRule: "permission",
-    },
-    {
-      groupName: "Baby luvvers",
-      groupAdmin: {
-        userName: "@anotheruser",
-        screenName: "Another User 🙂",
-        followers: 1,
-        following: 37,
-      },
-      groupDescription: "This is a test",
-      groupMembers: 84,
-      groupCreated: new Date(),
-      recentActivity: "--",
-      joinRule: "everyone",
-    },
-    {
-      groupName: "Haters",
-      groupAdmin: {
-        userName: "@madasitgets",
-        screenName: "Outraged user 951 😤",
-        followers: 487,
-        following: 794,
-      },
-      groupDescription: "IN THE UNDYING WORDS OF PÄIVI RÄSÄNEN: 'EI!",
       groupMembers: 84,
       groupCreated: new Date(),
       recentActivity: "--",
@@ -132,6 +104,12 @@ const GroupList = () => {
         </Button>
       </div>
 
+      <div className="flex flex-col gap-3 p-2">
+        {placeholderGroups.map((group) => {
+          return <GroupThumbnail group={group} />;
+        })}
+      </div>
+
       <CreateGroupModal
         confirmText={"Create"}
         cancelText={"Cancel"}
@@ -143,16 +121,14 @@ const GroupList = () => {
       />
       <div className="scrollbar-thin overflow-y-auto">
         <Routes>
-          <Route index element={<Navigate to={"/groups/recent-activity"} />} />
-          <Route
-            path="/recent-activity"
-            element={<GroupListRecentActivity />}
-          />
-          <Route path="/popular" element={<GroupListPopular />} />
+          <Route index element={<Navigate to={"/groups"} />} />
+          <Route path="/groups" element={<GroupList />} />
+
+          <Route path="popular" element={<GroupListPopular />} />
           <Route path="/new" element={<GroupListNew />} />
           <Route path="/my-groups" element={<GroupListMyGroups />} />
+
           <Route path="/*" element={<NotFound />} />
-          <Route path="/groups/:id" element={<GroupProfile />} />
         </Routes>
       </div>
     </div>
