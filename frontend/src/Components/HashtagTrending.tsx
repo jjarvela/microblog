@@ -1,3 +1,5 @@
+import Hashtag from "./Elements/Hashtag";
+
 export default function HashtagTrending() {
   const tempTrending = [
     "trending-tag1",
@@ -19,9 +21,9 @@ export default function HashtagTrending() {
           <div key={tag + index}>
             <h5>
               {index + 1}.{" "}
-              <span className="link">
-                #<a href={`/hashtag/${tag}`}>{tag}</a>
-              </span>
+              <Hashtag tag={tag}>
+                <span>#{tag}</span>
+              </Hashtag>
             </h5>
             <p className="ml-8">
               {Math.floor(Math.random() * 1000) +
