@@ -1,23 +1,37 @@
 import { useState } from "react";
 import Button from "../../Button";
 import DropdownInput from "../../Inputs/DropdownInput";
-import ProfileLinkBox, { ProfileLinkBoxProps } from "./ProfileLinkBox";
-import ProfileMediaBox, { ProfileMediaBoxProps } from "./ProfileMediaBox";
-import ProfilePostBox, { ProfilePostBoxProps } from "./ProfilePostBox";
-import ProfileTextBox, { ProfileTextBoxProps } from "./ProfileTextBox";
+import ProfileLinkBox, { IProfileLinkBoxData } from "./ProfileLinkBox";
+import ProfileMediaBox, { IProfileMediaBoxData } from "./ProfileMediaBox";
+import ProfilePostBox, { IProfilePostBoxData } from "./ProfilePostBox";
+import ProfileTextBox, { IProfileTextBoxData } from "./ProfileTextBox";
+import { emptyPost } from "../../../../globalData";
 
 export type ProfileBox =
-  | { type: "text"; data: ProfileTextBoxProps }
-  | { type: "links"; data: ProfileLinkBoxProps }
-  | { type: "media"; data: ProfileMediaBoxProps }
-  | { type: "post"; data: ProfilePostBoxProps }
+  | { type: "text"; data: IProfileTextBoxData }
+  | { type: "links"; data: IProfileLinkBoxData }
+  | { type: "media"; data: IProfileMediaBoxData }
+  | { type: "post"; data: IProfilePostBoxData }
   | { type: "placeholder"; data: Record<string, never> };
 
 type ProfileBoxesProps = {
   boxes: ProfileBox[];
+  setBoxes: (boxes: ProfileBox[]) => void;
   editing?: boolean;
-  setBoxes?: (boxes: ProfileBox[]) => void;
 };
+
+export interface IProfileEditableBox {
+  editing: boolean;
+  index: number;
+  handleDataChange: (
+    index: number,
+    data:
+      | IProfileTextBoxData
+      | IProfileLinkBoxData
+      | IProfileMediaBoxData
+      | IProfilePostBoxData,
+  ) => void;
+}
 
 function PlaceholderBox(props: { height: number }) {
   return (
@@ -28,12 +42,57 @@ function PlaceholderBox(props: { height: number }) {
   );
 }
 
-const newBoxTypes = ["Text Box", "Links Box", "Media Box", "Post Box"];
+const newBoxDisplayTypes = ["Text Box", "Links Box", "Media Box", "Post Box"];
+const newBoxTypes = ["text", "links", "media", "post"];
 
 function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [draggedBox, setDraggedBox] = useState<ProfileBox | null>(null);
   const [draggedHeight, setDraggedHeight] = useState(0);
+
+  const [currentNewType, setCurrentNewType] = useState(newBoxTypes[0]);
+
+  const handleBoxDataChange = (
+    index: number,
+    data:
+      | IProfileTextBoxData
+      | IProfileLinkBoxData
+      | IProfileMediaBoxData
+      | IProfilePostBoxData,
+  ) => {
+    setBoxes(
+      boxes.map((box, i) => {
+        if (i === index) {
+          box.data = data;
+        }
+        return box;
+      }),
+    );
+  };
+
+  const handleAddBox = (type: ProfileBox["type"]) => {
+    let newBox: ProfileBox = { type: "placeholder", data: {} };
+    switch (type) {
+      case "text":
+        newBox = { type: "text", data: { title: "", text: "" } };
+        break;
+      case "links":
+        newBox = { type: "links", data: { links: [] } };
+        break;
+      case "media":
+        newBox = {
+          type: "media",
+          data: { media: { id: "", source: "", type: "img" } },
+        };
+        break;
+      case "post":
+        newBox = { type: "post", data: { post: emptyPost } };
+        break;
+      default:
+        return;
+    }
+    setBoxes([...boxes, newBox]);
+  };
 
   const handleDragStart = (
     event: React.DragEvent,
@@ -61,7 +120,7 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
       setDraggedBox(box);
       const editedBoxes = boxes;
       editedBoxes.splice(index, 1, { type: "placeholder", data: {} });
-      if (setBoxes) setBoxes(editedBoxes);
+      setBoxes(editedBoxes);
     }, 0);
   };
 
@@ -73,7 +132,7 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
       type: "placeholder",
       data: {},
     });
-    if (setBoxes) setBoxes(editedBoxes);
+    setBoxes(editedBoxes);
   };
 
   const handleDragEnd = () => {
@@ -88,7 +147,7 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
         editedBoxes.splice(dragOverIndex, 0, dropData);
       }
     }
-    if (setBoxes) setBoxes(editedBoxes);
+    setBoxes(editedBoxes);
     setDragOverIndex(null);
     setDraggedBox(null);
     setDraggedHeight(0);
@@ -111,7 +170,9 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
                 <ProfileTextBox
                   title={box.data.title}
                   text={box.data.text}
-                  editing={editing}
+                  editing={editing || false}
+                  index={i}
+                  handleDataChange={handleBoxDataChange}
                 />
               </div>
             );
@@ -125,7 +186,12 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
                 onDragEnter={(e) => handleDragEnter(e, i)}
                 onDragEnd={() => handleDragEnd()}
               >
-                <ProfileLinkBox links={box.data.links} />
+                <ProfileLinkBox
+                  links={box.data.links}
+                  editing={editing || false}
+                  index={i}
+                  handleDataChange={handleBoxDataChange}
+                />
               </div>
             );
           case "media":
@@ -141,6 +207,9 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
                 <ProfileMediaBox
                   media={box.data.media}
                   newHeight={box.data.newHeight}
+                  editing={editing || false}
+                  index={i}
+                  handleDataChange={handleBoxDataChange}
                 />
               </div>
             );
@@ -154,7 +223,12 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
                 onDragEnter={(e) => handleDragEnter(e, i)}
                 onDragEnd={() => handleDragEnd()}
               >
-                <ProfilePostBox post={box.data.post} />
+                <ProfilePostBox
+                  post={box.data.post}
+                  editing={editing || false}
+                  index={i}
+                  handleDataChange={handleBoxDataChange}
+                />
               </div>
             );
           case "placeholder":
@@ -175,8 +249,15 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
       })}
       {editing && (
         <div className="flex h-64 flex-col items-center justify-center gap-4 rounded-xl border border-black50 p-4">
-          <DropdownInput items={newBoxTypes} class="min-w-[9rem]" />
-          <Button class="btn-primary">
+          <DropdownInput
+            items={newBoxDisplayTypes}
+            class="min-w-[9rem]"
+            onChange={(_val, i) => setCurrentNewType(newBoxTypes[i])}
+          />
+          <Button
+            class="btn-primary"
+            onClick={() => handleAddBox(currentNewType as ProfileBox["type"])}
+          >
             <span className="font-bold">+ </span>Add new
           </Button>
         </div>

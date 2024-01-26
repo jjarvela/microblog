@@ -1,12 +1,33 @@
 import { useRef, useState } from "react";
 import MaterialSymbolsCloseRounded from "../../../Icons/MaterialSymbolsCloseRounded";
+import { IProfileEditableBox } from "./ProfileBoxes";
+import ProfileBoxModifyingButton from "./ProfileBoxModifyingButton";
+import TextInput from "../../Inputs/TextInput";
+import Button from "../../Button";
 
-export type ProfileMediaBoxProps = {
+type ProfileMediaBoxProps = IProfileEditableBox & IProfileMediaBoxData;
+
+export interface IProfileMediaBoxData {
   media: Media;
   newHeight?: number;
-};
+}
 
-function ProfileMediaBox({ media, newHeight }: ProfileMediaBoxProps) {
+function ProfileMediaBox({
+  media,
+  newHeight,
+  editing,
+  index,
+  handleDataChange,
+}: ProfileMediaBoxProps) {
+  const [modifying, setModifying] = useState(false);
+  const handleEndEdit = () => {
+    if (modifying && index !== undefined && handleDataChange) {
+      handleDataChange(index, { media: editedMedia });
+    }
+    setModifying(!modifying);
+  };
+  const [editedMedia] = useState(media);
+
   const dialogRef = useRef<HTMLDialogElement>(null);
   const rootDivRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(newHeight || 0);
@@ -27,16 +48,34 @@ function ProfileMediaBox({ media, newHeight }: ProfileMediaBoxProps) {
         onClick={() => dialogRef.current?.showModal()}
         style={height ? { minHeight: height } : {}}
       >
-        {media.type === "img" && (
-          <img
-            src={media.source}
-            className="pointer-events-none h-full w-full bg-cover object-cover object-center"
-          />
+        {editing && modifying ? (
+          <div className="flex flex-col flex-wrap gap-4 bg-white p-2 dark:bg-black">
+            <TextInput placeholder="Enter media id..." />
+            <Button class="btn-primary">Apply</Button>
+            <p className="text-sm italic opacity-50">
+              Replace eventually with an actual media picker...
+            </p>
+          </div>
+        ) : (
+          <>
+            {media.type === "img" && (
+              <img
+                src={media.source}
+                className="pointer-events-none h-full w-full bg-cover object-cover object-center"
+              />
+            )}
+            {media.type === "vid" && (
+              <video
+                src={media.source}
+                className="pointer-events-none h-full w-full bg-cover object-contain object-center"
+              />
+            )}
+          </>
         )}
-        {media.type === "vid" && (
-          <video
-            src={media.source}
-            className="pointer-events-none h-full w-full bg-cover object-contain object-center"
+        {editing && (
+          <ProfileBoxModifyingButton
+            modifying={modifying}
+            handleEndEdit={handleEndEdit}
           />
         )}
       </div>

@@ -1,24 +1,47 @@
 import { useState } from "react";
 import TextAreaInput from "../../Inputs/TextAreaInput";
 import TextInput from "../../Inputs/TextInput";
-import MaterialSymbolsEditOutlineRounded from "../../../Icons/MaterialSymbolsEditOutlineRounded";
-import IonCheckmarkRound from "../../../Icons/IonCheckmarkRound";
+import { IProfileEditableBox } from "./ProfileBoxes";
+import ProfileBoxModifyingButton from "./ProfileBoxModifyingButton";
 
-export type ProfileTextBoxProps = {
+type ProfileTextBoxProps = IProfileEditableBox & IProfileTextBoxData;
+
+export interface IProfileTextBoxData {
   title: string;
   text: string;
-  editing?: boolean;
-};
+}
 
-function ProfileTextBox({ title, text, editing }: ProfileTextBoxProps) {
+function ProfileTextBox({
+  title,
+  text,
+  editing,
+  index,
+  handleDataChange,
+}: ProfileTextBoxProps) {
   const [modifying, setModifying] = useState(false);
+  const handleEndEdit = () => {
+    if (modifying && index !== undefined && handleDataChange) {
+      handleDataChange(index, { title: editedTitle, text: editedText });
+    }
+    setModifying(!modifying);
+  };
+
+  const [editedTitle, setEditedTitle] = useState(title);
+  const [editedText, setEditedText] = useState(text);
 
   return (
     <div className="relative flex min-h-[16rem] flex-col gap-4 rounded-xl border border-black50 p-4">
       {editing && modifying ? (
         <>
-          <TextInput value={title} />
-          <TextAreaInput text={text} class="h-max w-full" />
+          <TextInput
+            value={editedTitle}
+            onChange={(e) => setEditedTitle(e.target.value)}
+          />
+          <TextAreaInput
+            text={editedText}
+            onChange={(e) => setEditedText(e.target.value)}
+            class="h-max w-full"
+          />
         </>
       ) : (
         <>
@@ -27,16 +50,10 @@ function ProfileTextBox({ title, text, editing }: ProfileTextBoxProps) {
         </>
       )}
       {editing && (
-        <div
-          onClick={() => setModifying(!modifying)}
-          className="absolute bottom-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border border-black50 text-xl opacity-25 hover:opacity-75"
-        >
-          {modifying ? (
-            <IonCheckmarkRound />
-          ) : (
-            <MaterialSymbolsEditOutlineRounded />
-          )}
-        </div>
+        <ProfileBoxModifyingButton
+          modifying={modifying}
+          handleEndEdit={handleEndEdit}
+        />
       )}
     </div>
   );
