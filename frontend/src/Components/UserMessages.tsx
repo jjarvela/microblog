@@ -156,14 +156,14 @@ const UserMessages = () => {
                 {showEmojiPicker && (
                   <div
                     ref={emojiRef}
-                    className="absolute bottom-10 left-0 z-[100]"
+                    className="absolute bottom-[5em] left-0 z-[100]"
                   >
                     <EmojiPicker
                       onEmojiClick={(emoji) => {
                         const newText = messageText + emoji.emoji;
                         setMessageText(newText);
                       }}
-                      emojiStyle={EmojiStyle.NATIVE}
+                      emojiStyle={EmojiStyle.TWITTER}
                       theme={Theme.AUTO}
                     />
                   </div>
