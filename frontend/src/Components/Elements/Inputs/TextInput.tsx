@@ -4,6 +4,7 @@ type TextInputProps = {
   placeholder?: string;
   class?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   value?: string;
   autofocus?: boolean;
 };
@@ -18,6 +19,7 @@ function TextInput(props: TextInputProps) {
       onChange={(e) => props.onChange && props.onChange(e)}
       value={props.value}
       autoFocus={props.autofocus || false}
+      onKeyDown={(e) => props.onKeyDown && props.onKeyDown(e)}
     />
   );
 }
