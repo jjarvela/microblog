@@ -7,11 +7,13 @@ type TagListProps = {
 
 function TagList({ tags, class: classList }: TagListProps) {
   return (
-    <p className={"flex flex-row flex-wrap gap-x-4 gap-y-2" + " " + classList}>
+    <div
+      className={"flex flex-row flex-wrap gap-x-4 gap-y-2" + " " + classList}
+    >
       {tags.map((val, i) => (
         <Hashtag key={i} tag={val} />
       ))}
-    </p>
+    </div>
   );
 }
 
