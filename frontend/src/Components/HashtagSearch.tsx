@@ -7,8 +7,11 @@ import NotFound from "./NotFound";
 import HashtagTrending from "./HashtagTrending";
 import HashtagIndividual from "./HashtagIndividual";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function HashtagSearch() {
+  const [searchTag, setSearchTag] = useState("");
+
   return (
     <div className="my-1 flex flex-col gap-4">
       <div className="flex border-b-[1px] border-b-black50 py-2">
@@ -18,8 +21,23 @@ export default function HashtagSearch() {
           </Link>
         </div>
         <div className="flex flex-grow justify-center gap-2">
-          <TextInput placeholder="Search" />
-          <Button class="btn-primary flex-shrink-0">
+          <TextInput
+            placeholder="Search"
+            value={searchTag}
+            onChange={(e) => {
+              const newSearchTag = e.target.value;
+              setSearchTag(newSearchTag);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                location.href = `/hashtag/${searchTag}`;
+              }
+            }}
+          />
+          <Button
+            class="btn-primary flex-shrink-0"
+            onClick={() => (location.href = `/hashtag/${searchTag}`)}
+          >
             <MaterialSymbolsSearchRounded />
           </Button>
         </div>
