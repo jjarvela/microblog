@@ -43,6 +43,7 @@ function CreateGroupModal({
             showCount
             maxLength={50}
             class="min-h-[1rem] w-full"
+            onChange={(e) => console.log(e.target.value)}
           />
         </div>
         <div className="text-center">
@@ -53,6 +54,7 @@ function CreateGroupModal({
             showCount
             maxLength={100}
             class="min-h-[1rem] w-full"
+            onChange={(e) => console.log(e.target.value)}
           />
         </div>
         <div className="text-center">

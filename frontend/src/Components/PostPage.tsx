@@ -101,7 +101,13 @@ export default function PostPage() {
             >
               <ProfilePicture width={50} image={user.user?.profileImage} />
               <div className="flex-grow">
-                <TextAreaInput class="w-full" placeholder="Comment" />
+                <TextAreaInput
+                  class="w-full"
+                  placeholder="Comment"
+                  onChange={(e) => {
+                    e.preventDefault();
+                  }}
+                />
               </div>
             </div>
           )}
