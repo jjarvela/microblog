@@ -7,7 +7,7 @@ export default function RepostButton() {
   return (
     <button onClick={() => setReposted(!reposted)}>
       {reposted ? (
-        <TeamYellowRepostIconFill fill="#077a4a" />
+        <TeamYellowRepostIconFill className="text-[#13d664]" />
       ) : (
         <TeamYellowRepostIconLine />
       )}

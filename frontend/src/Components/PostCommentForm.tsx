@@ -37,6 +37,7 @@ function PostCommentForm({
             showCount
             maxLength={500}
             class="h-40 w-full"
+            autofocus={true}
           />
         </div>
         <Button
