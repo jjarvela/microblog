@@ -1,9 +1,14 @@
+import { Link } from "react-router-dom";
 import Button from "./Elements/Button";
 import TextInput from "./Elements/Inputs/TextInput";
 import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
+
+import { useEffect, useState } from "react";
+import SearchAll from "./SearchAll";
+import SearchUsers from "./SearchUsers";
 import SearchGroups from "./SearchGroups";
 import SearchMedia from "./SearchMedia";
-import SearchUsers from "./SearchUsers";
+import SearchPosts from "./SearchPosts";
 
 const Search = () => {
   const userResults: User[] = [
@@ -134,21 +139,77 @@ const Search = () => {
     },
   ];
 
+  const [query, setQuery] = useState("");
+
+  const [innerNav, setInnerNav] = useState("");
+
+  useEffect(() => {}, [query]);
+
   return (
     <div className="my-1 flex flex-col gap-4">
       <h2 className="my-4 text-center">Search Hub</h2>
+      <div className="flex justify-center gap-2">
+        <Link
+          to={`/search${query !== "" ? "?q=" + query : ""}`}
+          onClick={() => setInnerNav("")}
+        >
+          Top
+        </Link>
+        <Link
+          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=posts`}
+          onClick={() => setInnerNav("posts")}
+        >
+          Posts
+        </Link>
+        <Link
+          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=people`}
+          onClick={() => setInnerNav("people")}
+        >
+          People
+        </Link>
+        <Link
+          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=groups`}
+          onClick={() => setInnerNav("groups")}
+        >
+          Groups
+        </Link>
+        <Link
+          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=media`}
+          onClick={() => setInnerNav("media")}
+        >
+          Media
+        </Link>
+      </div>
       <div className="flex w-full flex-row justify-center gap-2">
-        <TextInput id="search" class="max-h-min" />
+        <TextInput
+          id="search"
+          class="max-h-min"
+          onChange={(e) => setQuery(e.target.value)}
+        />
         <label htmlFor="search">
-          <Button class="btn-primary px-2 text-xl">
-            <MaterialSymbolsSearchRounded />
-          </Button>
+          <Link
+            to={`/search${query !== "" ? "&q=" + query : ""}${
+              innerNav !== "" ? "&f=" + innerNav : ""
+            }`}
+          >
+            <Button class="btn-primary px-2 text-xl">
+              <MaterialSymbolsSearchRounded />
+            </Button>
+          </Link>
         </label>
       </div>
-
-      <SearchUsers results={userResults} limit={4} />
-      <SearchGroups results={groupResults} limit={4} />
-      <SearchMedia results={mediaResult} limit={15} />
+      {innerNav === "" && (
+        <SearchAll
+          postResults={[]}
+          userResults={userResults}
+          groupResults={groupResults}
+          mediaResults={mediaResult}
+        />
+      )}
+      {innerNav === "posts" && <SearchPosts results={[]} />}
+      {innerNav === "people" && <SearchUsers results={userResults} />}
+      {innerNav === "groups" && <SearchGroups results={groupResults} />}
+      {innerNav === "media" && <SearchMedia results={mediaResult} />}
     </div>
   );
 };

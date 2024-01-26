@@ -4,7 +4,7 @@ import VideoThumb from "./Elements/SearchThumbnails/VideoThumb";
 
 type SearchMediaProps = {
   results: Array<Media>;
-  limit: number | undefined;
+  limit?: number | undefined;
 };
 
 export default function SearchMedia({ results, limit }: SearchMediaProps) {
