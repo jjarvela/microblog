@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Hashtag from "../Hashtag";
 
 type TagListProps = {
   tags: string[];
@@ -7,13 +7,13 @@ type TagListProps = {
 
 function TagList({ tags, class: classList }: TagListProps) {
   return (
-    <p className={"flex flex-row flex-wrap gap-x-4 gap-y-2" + " " + classList}>
+    <div
+      className={"flex flex-row flex-wrap gap-x-4 gap-y-2" + " " + classList}
+    >
       {tags.map((val, i) => (
-        <Link to={`/search?q=${val}`} key={i}>
-          #{val}
-        </Link>
+        <Hashtag key={i} tag={val} />
       ))}
-    </p>
+    </div>
   );
 }
 

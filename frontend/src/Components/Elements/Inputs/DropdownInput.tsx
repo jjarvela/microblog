@@ -66,7 +66,7 @@ function DropdownInput({
       <input
         type="button"
         className={
-          "z-10 rounded-[1.33rem] px-4 py-2 transition-[border-radius] duration-0 hover:bg-black25 motion-reduce:delay-0 dark:hover:bg-white25" +
+          "z-10 rounded-[1.33rem] py-2 pl-4 pr-7 transition-[border-radius] duration-0 hover:bg-black25 motion-reduce:delay-0 dark:hover:bg-white25" +
           " " +
           (isOpen && "z-20 rounded-b-none")
         }

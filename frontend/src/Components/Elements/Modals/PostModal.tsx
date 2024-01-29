@@ -15,6 +15,7 @@ type NewPostProps = {
 };
 
 function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
+  const [postText, setPostText] = useState(text);
   const [newTags, setNewTags] = useState<string[]>(tags);
   return (
     <dialog
@@ -40,11 +41,12 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
           }}
         >
           <TextAreaInput
-            text={text}
+            text={postText}
             placeholder="Post text..."
             showCount
             maxLength={500}
             class="min-h-[20rem] w-full"
+            onChange={(e) => setPostText(e.target.value)}
             autofocus
           />
           <Button

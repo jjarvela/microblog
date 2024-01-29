@@ -1,47 +1,40 @@
-import { useContext } from "react";
-import FeaturedMediaPost from "./Elements/ProfileElements/FeaturedMediaPost";
-import LinksBox from "./Elements/ProfileElements/LinksBox";
-import LogosFacebook from "./Icons/LogosFacebook";
-import LogosGithubIcon from "./Icons/LogosGithubIcon";
-import LogosTwitter from "./Icons/LogosTwitter";
-import LogosYoutubeIcon from "./Icons/LogosYoutubeIcon";
+import { useContext, useState } from "react";
 import { UserProfileContext } from "./UserPage";
+import Button from "./Elements/Button";
+import ProfileBoxes from "./Elements/ProfileElements/ProfileBoxes/ProfileBoxes";
 
 function UserProfile() {
   const user = useContext(UserProfileContext);
+  const [isEditing, setIsEditing] = useState(false);
+  const [boxes, setBoxes] = useState(user.userProfileBoxes);
+  const owned = true; // Implement later to check if logged in user is the profile owner
   return (
-    <div className="m-4">
-      <h2 className="my-4 text-center">{user.screenName}'s Profile</h2>
-      <div className="flex flex-row flex-wrap gap-4">
-        <div className="min-w-[75%] flex-1">
-          <FeaturedMediaPost
-            postOwner={
-              user || {
-                userName: "",
-                screenName: "",
-                followers: 0,
-                following: 0,
-              }
-            }
-            media={user.featuredPost?.media}
-            tags={user.featuredPost?.tags || []}
-            time={user.featuredPost?.time || new Date()}
-            text={user.featuredPost?.text}
-            reactions={user.featuredPost?.reactions}
-            class="mx-0"
-            ownerOptions
-          />
-        </div>
-        <LinksBox
-          links={[
-            { icon: <LogosTwitter />, text: "Twitter" },
-            { icon: <LogosYoutubeIcon />, text: "YouTube" },
-            { icon: <LogosFacebook />, text: "Facebook" },
-            { icon: <LogosGithubIcon />, text: "GitHub" },
-          ]}
-          class="h-max flex-grow"
-        />
+    <div className="mx-4">
+      <div className="flex flex-row items-center justify-center gap-4">
+        {isEditing ? (
+          <h3 className="my-[1.31rem] text-center">
+            Editing {user.screenName}'s Profile
+          </h3>
+        ) : (
+          <h2 className="my-4 text-center">{user.screenName}'s Profile</h2>
+        )}
+        {owned && !isEditing && (
+          <Button onClick={() => setIsEditing(true)} class="btn-primary">
+            Edit
+          </Button>
+        )}
+        {isEditing && (
+          <>
+            <Button onClick={() => setIsEditing(false)} class="btn-secondary">
+              Cancel
+            </Button>
+            <Button onClick={() => setIsEditing(false)} class="btn-primary">
+              Confirm Edits
+            </Button>
+          </>
+        )}
       </div>
+      <ProfileBoxes boxes={boxes} editing={isEditing} setBoxes={setBoxes} />
     </div>
   );
 }

@@ -1,24 +1,24 @@
-import { useState } from "react";
-
 type TextAreaInputProps = {
   text?: string;
+  charCount?: number;
   placeholder?: string;
   maxLength?: number;
   showCount?: boolean;
   class?: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   autofocus?: boolean;
 };
 
 function TextAreaInput({
   text,
+  charCount,
   placeholder,
   maxLength,
   showCount,
   class: classAdd,
+  onChange,
   autofocus,
 }: TextAreaInputProps) {
-  const [newText, setNewText] = useState(text);
-  const [charCount, setCharCount] = useState(text?.length || 0);
   return (
     <div className="relative">
       <textarea
@@ -29,11 +29,8 @@ function TextAreaInput({
         }
         placeholder={placeholder}
         maxLength={maxLength}
-        onChange={(e) => {
-          setNewText(e.target.value);
-          setCharCount(e.target.value.length);
-        }}
-        value={newText}
+        onChange={onChange}
+        value={text}
         autoFocus={autofocus}
       />
       {showCount && (

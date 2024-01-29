@@ -15,6 +15,7 @@ import LeftSidebar from "./Components/LeftSidebar";
 import RightSidebar from "./Components/RightSidebar";
 import { SetTheme } from "./Components/Elements/SettingsElements/ThemeSelector";
 import PostPage from "./Components/PostPage";
+import HashtagSearch from "./Components/HashtagSearch";
 
 const UserLayout = () => {
   return (
@@ -59,12 +60,13 @@ function App() {
         {/*Logged routes*/}
         <Route element={<UserLayout />}>
           <Route path="/search" element={<Search />} />
+          <Route path="/hashtag/*" element={<HashtagSearch />} />
           {/*User routes*/}
           <Route path="/home/*" element={<UserTimeline />} />
           <Route path="/user/:username/*" element={<UserPage />} />
           <Route path="/settings" element={<UserSettings />} />
           <Route path="/notifications" element={<UserNotifications />} />
-          <Route path="/messages" element={<UserMessages />} />
+          <Route path="/messages/*" element={<UserMessages />} />
           <Route path="/following/*" element={<UserFollowing />} />
           {/*Groups routes*/}
           <Route path="/groups/*" element={<GroupList />} />
