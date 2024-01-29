@@ -133,3 +133,9 @@
 .epr_-4ag7tl {
   background-image: url("emojipickericons.svg") !important;
 }
+
+/*This doesn't actually change the colour of the ring but rather gets rid of it altogether*/
+.epr_6ocl7q {
+  --epr-dark-category-icon-active-color: "#9E4DB9";
+  --epr-category-icon-active-color: "#9E4DB9";
+}
