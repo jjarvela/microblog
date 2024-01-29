@@ -179,20 +179,48 @@ const Search = () => {
         >
           Media
         </Link>
+        <Link
+          to={`/hashtag/${query !== "" ? query : ""}`}
+          onClick={() => setInnerNav("media")}
+        >
+          Hashtags
+        </Link>
       </div>
       <div className="flex w-full flex-row justify-center gap-2">
         <TextInput
           id="search"
           class="max-h-min"
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              location.href = `/search${
+                query !== ""
+                  ? "?q=" + query
+                  : "" + innerNav !== ""
+                    ? "?f=" + innerNav
+                    : ""
+              }`;
+            }
+          }}
         />
         <label htmlFor="search">
           <Link
-            to={`/search${query !== "" ? "&q=" + query : ""}${
+            to={`/search${query !== "" ? "?q=" + query : ""}${
               innerNav !== "" ? "&f=" + innerNav : ""
             }`}
           >
-            <Button class="btn-primary px-2 text-xl">
+            <Button
+              class="btn-primary px-2 text-xl"
+              onClick={() =>
+                (location.href = `/search${
+                  query !== ""
+                    ? "?q=" + query
+                    : "" + innerNav !== ""
+                      ? "?f=" + innerNav
+                      : ""
+                }`)
+              }
+            >
               <MaterialSymbolsSearchRounded />
             </Button>
           </Link>

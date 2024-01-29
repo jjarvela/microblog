@@ -16,9 +16,15 @@ export default function HashtagSearch() {
     <div className="my-1 flex flex-col gap-4">
       <div className="flex border-b-[1px] border-b-black50 py-2">
         <div className="self-center justify-self-start">
-          <Link to={"/hashtag/trending"}>
-            <MaterialSymbolsChevronLeftRounded className="text-xl" />
-          </Link>
+          {searchTag !== "" ? (
+            <Link to={"/hashtag/trending"}>
+              <MaterialSymbolsChevronLeftRounded className="text-xl" />
+            </Link>
+          ) : (
+            <Link to={"/search"}>
+              <MaterialSymbolsChevronLeftRounded className="text-xl" />
+            </Link>
+          )}
         </div>
         <div className="flex flex-grow justify-center gap-2">
           <TextInput
