@@ -16,6 +16,8 @@ import RightSidebar from "./Components/RightSidebar";
 import { SetTheme } from "./Components/Elements/SettingsElements/ThemeSelector";
 import PostPage from "./Components/PostPage";
 import HashtagSearch from "./Components/HashtagSearch";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserLayout = () => {
   return (
@@ -76,6 +78,7 @@ function App() {
           <Route path="/:username/post/:postid" element={<PostPage />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </div>
   );
 }

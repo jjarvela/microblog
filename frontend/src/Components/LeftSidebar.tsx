@@ -14,6 +14,7 @@ import PhHashStraightBold from "./Icons/PhHashStraightBold";
 import { useBreakpoint } from "../Hooks/BreakpointHook";
 import MdiDotsVertical from "./Icons/MdiDotsVertical";
 import { UserContext } from "../UserWrapper";
+import { useNotificationCenter } from "react-toastify/addons/use-notification-center";
 
 function LeftSidebar() {
   const user = useContext(UserContext);
@@ -26,6 +27,8 @@ function LeftSidebar() {
     if (isXs) setShowSidebar(true);
     else setShowSidebar(false);
   }, [isXs]);
+
+  const { unreadCount } = useNotificationCenter();
 
   return (
     <>
