@@ -189,7 +189,7 @@ const Search = () => {
       <div className="flex w-full flex-row justify-center gap-2">
         <TextInput
           id="search"
-          class="max-h-min"
+          className="max-h-min"
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
