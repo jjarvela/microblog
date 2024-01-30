@@ -158,25 +158,25 @@ const Search = () => {
           Top
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=posts`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=posts`}
           onClick={() => setInnerNav("posts")}
         >
           Posts
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=people`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=people`}
           onClick={() => setInnerNav("people")}
         >
           People
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=groups`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=groups`}
           onClick={() => setInnerNav("groups")}
         >
           Groups
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=media`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=media`}
           onClick={() => setInnerNav("media")}
         >
           Media
@@ -196,13 +196,9 @@ const Search = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               navigate(
-                `/search${
-                  query !== ""
-                    ? "?q=" + query
-                    : "" + innerNav !== ""
-                      ? "?f=" + innerNav
-                      : ""
-                }`,
+                `/search${query !== "" ? "?q=" + query : "?"}${
+                  query !== "" && innerNav !== "" && "&"
+                }${innerNav !== "" ? "f=" + innerNav : ""}`,
               );
             }
           }}
@@ -217,13 +213,9 @@ const Search = () => {
               class="btn-primary px-2 text-xl"
               onClick={() =>
                 navigate(
-                  `/search${
-                    query !== ""
-                      ? "?q=" + query
-                      : "" + innerNav !== ""
-                        ? "?f=" + innerNav
-                        : ""
-                  }`,
+                  `/search${query !== "" ? "?q=" + query : "?"}${
+                    query !== "" && innerNav !== "" && "&"
+                  }${innerNav !== "" ? "f=" + innerNav : ""}`,
                 )
               }
             >
