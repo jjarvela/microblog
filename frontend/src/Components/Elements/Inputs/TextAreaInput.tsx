@@ -8,12 +8,14 @@ interface TextAreaInputProps
   charCount?: number;
   showCount?: boolean;
   className?: string;
+  autofocus?: boolean;
 }
 
 function TextAreaInput({
   charCount,
   maxLength,
   showCount,
+  autofocus,
   className: className,
   ...rest
 }: TextAreaInputProps) {
@@ -26,6 +28,7 @@ function TextAreaInput({
           className
         }
         maxLength={maxLength}
+        autoFocus={autofocus || false}
         {...rest}
       />
       {showCount && (
