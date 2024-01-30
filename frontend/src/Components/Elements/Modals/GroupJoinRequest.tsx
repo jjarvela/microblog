@@ -27,11 +27,11 @@ export default function GroupJoinRequest({
         }}
       >
         <TextAreaInput
-          text={`Dear ${groupAdmin}... Can i haz azzez?? ^__^`}
+          value={`Dear ${groupAdmin}... Can i haz azzez?? ^__^`}
           placeholder="Post text..."
           showCount
           maxLength={200}
-          class="min-h-[10rem] w-full"
+          className="min-h-[10rem] w-full"
           onChange={(e) => console.log(e.target.value)}
         />
         <div className="flex flex-row justify-between">

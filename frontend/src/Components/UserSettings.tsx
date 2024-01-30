@@ -34,7 +34,7 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <TextInput
-                class="w-full"
+                className="w-full"
                 value={screenName}
                 onChange={(e) => setScreenName(e.target.value)}
               />
@@ -55,7 +55,7 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <TextInput
-                class="w-full"
+                className="w-full"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
