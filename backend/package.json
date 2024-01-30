@@ -4,8 +4,7 @@
   "description": "Backend for Microbolg project",
   "main": "index.js",
   "scripts": {
-    "test": "backend-test",
-    "start": "ts-node ."
+    "start": "ts-node ./src/index.ts"
   },
   "prisma": {
     "seed": "ts-node ./src/services/seed/index.ts"

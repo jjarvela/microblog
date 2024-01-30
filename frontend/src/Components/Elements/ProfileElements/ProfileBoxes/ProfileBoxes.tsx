@@ -49,6 +49,7 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [draggedBox, setDraggedBox] = useState<ProfileBox | null>(null);
   const [draggedHeight, setDraggedHeight] = useState(0);
+  const [dragActive, setDragActive] = useState(false);
 
   const [currentNewType, setCurrentNewType] = useState(newBoxTypes[0]);
 
@@ -100,6 +101,10 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
     box: ProfileBox,
   ) => {
     if (!editing) return;
+    // TEMP FIX (along with dragActive state) for default draggable elements as children of profile boxes.
+    if ((event.target as Element).nodeName !== "DIV") return;
+    event.stopPropagation();
+    setDragActive(true);
     // event.dataTransfer.setDragImage(event.target as Element, 0, 0); // Maybe fix this later to have an image of the element
     event.dataTransfer.setData("text/plain", JSON.stringify(box));
     const rect = (event.target as Element as Element).getBoundingClientRect();
@@ -126,6 +131,7 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
 
   const handleDragEnter = (_event: React.DragEvent, index: number) => {
     if (!editing) return;
+    if (!dragActive) return;
     setDragOverIndex(index);
     const editedBoxes = boxes.filter((box) => box.type !== "placeholder");
     editedBoxes.splice(index, 0, {
@@ -136,7 +142,7 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
   };
 
   const handleDragEnd = () => {
-    if (!editing) return;
+    if (!editing || !dragActive) return;
     const dropData = draggedBox;
     if (dropData?.type === "media") {
       dropData.data.newHeight = draggedHeight;
@@ -151,6 +157,7 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
     setDragOverIndex(null);
     setDraggedBox(null);
     setDraggedHeight(0);
+    setDragActive(false);
   };
 
   return (

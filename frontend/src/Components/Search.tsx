@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "./Elements/Button";
 import TextInput from "./Elements/Inputs/TextInput";
 import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
@@ -143,6 +143,8 @@ const Search = () => {
 
   const [innerNav, setInnerNav] = useState("");
 
+  const navigate = useNavigate();
+
   useEffect(() => {}, [query]);
 
   return (
@@ -156,43 +158,67 @@ const Search = () => {
           Top
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=posts`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=posts`}
           onClick={() => setInnerNav("posts")}
         >
           Posts
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=people`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=people`}
           onClick={() => setInnerNav("people")}
         >
           People
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=groups`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=groups`}
           onClick={() => setInnerNav("groups")}
         >
           Groups
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=media`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=media`}
           onClick={() => setInnerNav("media")}
         >
           Media
+        </Link>
+        <Link
+          to={`/hashtag/${query !== "" ? query : ""}`}
+          onClick={() => setInnerNav("media")}
+        >
+          Hashtags
         </Link>
       </div>
       <div className="flex w-full flex-row justify-center gap-2">
         <TextInput
           id="search"
-          class="max-h-min"
+          className="max-h-min"
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              navigate(
+                `/search${query !== "" ? "?q=" + query : "?"}${
+                  query !== "" && innerNav !== "" && "&"
+                }${innerNav !== "" ? "f=" + innerNav : ""}`,
+              );
+            }
+          }}
         />
         <label htmlFor="search">
           <Link
-            to={`/search${query !== "" ? "&q=" + query : ""}${
+            to={`/search${query !== "" ? "?q=" + query : ""}${
               innerNav !== "" ? "&f=" + innerNav : ""
             }`}
           >
-            <Button class="btn-primary px-2 text-xl">
+            <Button
+              class="btn-primary px-2 text-xl"
+              onClick={() =>
+                navigate(
+                  `/search${query !== "" ? "?q=" + query : "?"}${
+                    query !== "" && innerNav !== "" && "&"
+                  }${innerNav !== "" ? "f=" + innerNav : ""}`,
+                )
+              }
+            >
               <MaterialSymbolsSearchRounded />
             </Button>
           </Link>

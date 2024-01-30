@@ -41,13 +41,13 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
           }}
         >
           <TextAreaInput
-            text={postText}
+            value={postText}
             placeholder="Post text..."
             showCount
             maxLength={500}
-            class="min-h-[20rem] w-full"
+            className="min-h-[20rem] w-full"
             onChange={(e) => setPostText(e.target.value)}
-            autofocus
+            autofocus={true}
           />
           <Button
             type="button"
@@ -69,7 +69,7 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
           <div className="flex flex-row flex-wrap gap-4">
             <h5 className="ml-2">Add to group</h5>
             <TextInput
-              class="w-full min-w-fit flex-1"
+              className="w-full min-w-fit flex-1"
               placeholder="Group name..."
             />
           </div>
