@@ -156,7 +156,7 @@ const UserMessages = () => {
                 {showEmojiPicker && (
                   <div
                     ref={emojiRef}
-                    className="absolute bottom-[5em] left-0 z-[100]"
+                    className="absolute bottom-[6em] left-0 z-[100]"
                   >
                     <EmojiPicker
                       onEmojiClick={(emoji) => {
