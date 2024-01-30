@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import InReplyTo from "./InReplyTo";
 import MaterialSymbolsFavoriteOutlineRounded from "../../Icons/MaterialSymbolsFavoriteOutlineRounded";
 import MaterialSymbolsShareOutline from "../../Icons/MaterialSymbolsShareOutline";
@@ -25,6 +25,7 @@ export default function MediaViewer({
   setIsOpen,
 }: MediaViewerProps) {
   const post = useContext(PostContext);
+  const mediaRef = useRef<HTMLVideoElement>(null);
   const ids = post.media.map((item) => item.id);
   const [activeIndex, setActiveIndex] = useState(ids.indexOf(active.id));
   const [activeMedia, setActiveMedia] = useState(active);
@@ -94,6 +95,7 @@ export default function MediaViewer({
             </>
           ) : (
             <video
+              ref={mediaRef}
               id={activeMedia.id}
               src={activeMedia.source}
               controls
@@ -108,6 +110,7 @@ export default function MediaViewer({
             type="button"
             onClick={() => {
               setIsOpen(false);
+              mediaRef.current?.pause();
               refObject.current?.close();
             }}
           >
