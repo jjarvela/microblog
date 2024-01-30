@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate, Route, Routes, useNavigate } from "react-router";
 import Button from "./Elements/Button";
 import TextInput from "./Elements/Inputs/TextInput";
 import { MaterialSymbolsChevronLeftRounded } from "./Icons/MaterialSymbolsChevronLeftRounded";
@@ -12,16 +12,20 @@ import { useState } from "react";
 export default function HashtagSearch() {
   const [searchTag, setSearchTag] = useState("");
 
+  const trending = location.pathname === "/hashtag/trending";
+
+  const navigate = useNavigate();
+
   return (
     <div className="my-1 flex flex-col gap-4">
       <div className="flex border-b-[1px] border-b-black50 py-2">
         <div className="self-center justify-self-start">
-          {searchTag !== "" ? (
-            <Link to={"/hashtag/trending"}>
+          {trending ? (
+            <Link to={"/search"}>
               <MaterialSymbolsChevronLeftRounded className="text-xl" />
             </Link>
           ) : (
-            <Link to={"/search"}>
+            <Link to={"/hashtag/trending"}>
               <MaterialSymbolsChevronLeftRounded className="text-xl" />
             </Link>
           )}
@@ -36,13 +40,13 @@ export default function HashtagSearch() {
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                location.href = `/hashtag/${searchTag}`;
+                navigate(`/hashtag/${searchTag}`);
               }
             }}
           />
           <Button
             class="btn-primary flex-shrink-0"
-            onClick={() => (location.href = `/hashtag/${searchTag}`)}
+            onClick={() => navigate(`/hashtag/${searchTag}`)}
           >
             <MaterialSymbolsSearchRounded />
           </Button>
