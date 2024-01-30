@@ -1,4 +1,10 @@
-type TextAreaInputProps = {
+import { DetailedHTMLProps, TextareaHTMLAttributes } from "react";
+
+interface TextAreaInputProps
+  extends DetailedHTMLProps<
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    HTMLTextAreaElement
+  > {
   text?: string;
   charCount?: number;
   placeholder?: string;
@@ -7,17 +13,14 @@ type TextAreaInputProps = {
   class?: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   autofocus?: boolean;
-};
+}
 
 function TextAreaInput({
-  text,
   charCount,
-  placeholder,
   maxLength,
   showCount,
   class: classAdd,
-  onChange,
-  autofocus,
+  ...rest
 }: TextAreaInputProps) {
   return (
     <div className="relative">
@@ -27,11 +30,8 @@ function TextAreaInput({
           " " +
           classAdd
         }
-        placeholder={placeholder}
         maxLength={maxLength}
-        onChange={onChange}
-        value={text}
-        autoFocus={autofocus}
+        {...rest}
       />
       {showCount && (
         <p className="absolute bottom-3 right-2 select-none text-black50">
