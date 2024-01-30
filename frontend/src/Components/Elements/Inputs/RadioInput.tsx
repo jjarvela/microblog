@@ -31,7 +31,7 @@ export default function RadioInput({
         <span className="flex-grow-1">{inputValue}</span>{" "}
         <div
           className={
-            "mx-2 h-6 w-6 rounded-full border border-black50 bg-primary bg-opacity-0" +
+            "mx-2 h-6 w-6 flex-shrink-0 rounded-full border border-black50 bg-primary bg-opacity-0" +
             " " +
             (selected === inputValue && "bg-opacity-25")
           }
