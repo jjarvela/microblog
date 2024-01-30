@@ -1,10 +1,14 @@
+import { toast } from "react-toastify";
 import { ProfilePicture } from "../Elements/ProfilePicture";
+import { useNotificationCenter } from "react-toastify/addons/use-notification-center";
 
 type UserNotificationBoxProps = {
   userName: string;
   groupName: string;
   text: string;
   notifications: string[];
+  notificationId: string;
+  removeNotification: (id: string) => void;
 };
 
 const UserNotificationBox = ({
@@ -12,13 +16,25 @@ const UserNotificationBox = ({
   groupName,
   notifications,
   text,
+  notificationId,
+  removeNotification,
 }: UserNotificationBoxProps) => {
+  const handleCloseToast = () => {
+    removeNotification(notificationId);
+  };
+
   const renderNotifications = () => {
     if (notifications.length >= 3) {
       return (
         <div className="relative z-30 mb-5 h-40 w-5/6 rounded-md border border-primary bg-gradient-to-r from-white to-black25 drop-shadow-lg dark:from-black75 dark:to-black">
           <div className="absolute -bottom-3 z-20 h-40 w-full rounded-md border border-primary bg-gradient-to-r from-white to-black25 drop-shadow-lg  dark:from-black75 dark:to-black"></div>
           <div className="absolute -bottom-6 z-40 flex h-40 w-full rounded-md border border-primary bg-gradient-to-r from-white to-black25 p-3 drop-shadow-lg  dark:from-black75 dark:to-black">
+            <button
+              className="absolute right-1 top-1 m-2"
+              onClick={handleCloseToast}
+            >
+              X
+            </button>
             <div className="mx-3 flex flex-col gap-3">
               <ProfilePicture width={70} />
             </div>
@@ -36,6 +52,12 @@ const UserNotificationBox = ({
       return (
         <div className="relative mb-3 h-40 w-5/6 rounded-md border border-primary bg-gradient-to-r from-white to-black25 drop-shadow-lg dark:from-black75 dark:to-black">
           <div className="absolute -bottom-3 flex h-40 w-full rounded-md border border-primary bg-gradient-to-r from-white to-black25 p-3  drop-shadow-lg dark:from-black75 dark:to-black">
+            <button
+              className="absolute right-1 top-1 m-2"
+              onClick={handleCloseToast}
+            >
+              X
+            </button>
             <div className="mx-3 flex flex-col gap-3">
               <ProfilePicture width={70} />
             </div>
@@ -52,6 +74,12 @@ const UserNotificationBox = ({
     } else if (notifications.length === 1) {
       return (
         <div className="relative flex h-40 w-5/6 flex-row rounded-md border border-primary bg-gradient-to-r from-white to-black25 p-3 drop-shadow-lg dark:from-black75 dark:to-black">
+          <button
+            className="absolute right-1 top-1 m-2"
+            onClick={handleCloseToast}
+          >
+            X
+          </button>
           <div className="mx-3 flex flex-col gap-3">
             <ProfilePicture width={70} />
           </div>

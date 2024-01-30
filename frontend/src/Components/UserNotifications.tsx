@@ -5,63 +5,24 @@ import { Key, ReactNode } from "react";
 
 const types = ["success", "info", "warning", "error"];
 
-interface Data {
-  id: Key | null | undefined;
-  createdAt: ReactNode;
-  content: ReactNode;
-  title: string;
-  text: string;
-  exclude: boolean;
-}
-
-toast("Hello", {
-  data: {
-    title: "Hello",
-    text: "Lorem ipsum dolor...",
-  },
-});
-
 const UserNotifications = () => {
+  interface Data {
+    id: Key | null | undefined;
+    createdAt: ReactNode;
+    content: ReactNode;
+    title: string;
+    text: string;
+    exclude: boolean;
+  }
+  const { notifications, clear, markAsRead, remove } =
+    useNotificationCenter<Data>({});
+
   const addNotification = () => {
     // use a random type of notification
     toast("Lorem ipsum dolor sit amet, consectetur adipiscing elit", {
       type: types[Math.floor(Math.random() * types.length)] as TypeOptions,
     });
   };
-  const { notifications, clear } = useNotificationCenter<Data>({
-    data: [
-      {
-        id: "anId",
-        createdAt: Date.now(),
-        data: { exclude: false },
-        notifications: ["noti1"],
-        content: "jammajeee",
-        groupName: "BuuttiPois",
-        userName: "",
-        text: "Jarkon porkkanakakkukatastrofi",
-      },
-      {
-        id: "anotherId",
-        createdAt: Date.now(),
-        data: { exclude: false },
-        notifications: ["noti1", "noti2"],
-        userName: "Mutsis",
-        groupName: "",
-        text: "Simaresepti",
-      },
-      {
-        id: "Kolmas",
-        createdAt: Date.now(),
-        data: { exclude: false },
-        notifications: ["noti1", "noti2", "noti3"],
-        userName: "Dickerson",
-        groupName: "",
-        text: "<3<3<3",
-      },
-    ],
-    sort: (l, r) => l.createdAt - r.createdAt,
-    filter: (item) => item.data.exclude === false,
-  });
 
   return (
     <div>
@@ -74,10 +35,12 @@ const UserNotifications = () => {
           {notifications.map((notification) => (
             <li key={notification.id}>
               <UserNotificationBox
-                notifications={notification.notifications}
-                groupName={notification.groupName}
+                notifications={notifications}
+                groupName={notifications.groupName}
                 userName={notification.userName}
-                text={notification.text}
+                text={notification.content}
+                notificationId={notification.id}
+                removeNotification={remove}
               />
             </li>
           ))}
