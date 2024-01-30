@@ -103,7 +103,7 @@ export default function PostPageReactionHub() {
             <div className="absolute bottom-0 mx-auto h-2 w-[95%] cursor-ns-resize"></div>
           }
           className="timeline-box scrollbar-thin relative my-2 flex flex-col overflow-y-auto px-4"
-          onResize={(event, { element, size }) => {
+          onResize={(_event, { size }) => {
             setHeight(size.height);
           }}
         >
