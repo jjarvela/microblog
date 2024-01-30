@@ -5,6 +5,8 @@ import * as handlers from "./blogHandlers";
 import Ajv from "ajv"
 import addFormats from "ajv-formats"
 
+// Check working directory and form path to api-definition.
+
 const base_dir = process.cwd()
 const api_def = `${base_dir}/../api-definition/api-definition.yaml`
 // Init custom configuration for ajv validator.
