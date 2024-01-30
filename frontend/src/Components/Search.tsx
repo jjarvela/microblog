@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "./Elements/Button";
 import TextInput from "./Elements/Inputs/TextInput";
 import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
@@ -143,6 +143,8 @@ const Search = () => {
 
   const [innerNav, setInnerNav] = useState("");
 
+  const navigate = useNavigate();
+
   useEffect(() => {}, [query]);
 
   return (
@@ -156,25 +158,25 @@ const Search = () => {
           Top
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=posts`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=posts`}
           onClick={() => setInnerNav("posts")}
         >
           Posts
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=people`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=people`}
           onClick={() => setInnerNav("people")}
         >
           People
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=groups`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=groups`}
           onClick={() => setInnerNav("groups")}
         >
           Groups
         </Link>
         <Link
-          to={`/search${query !== "" ? "?q=" + query + "&" : ""}?f=media`}
+          to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=media`}
           onClick={() => setInnerNav("media")}
         >
           Media
@@ -193,13 +195,11 @@ const Search = () => {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              location.href = `/search${
-                query !== ""
-                  ? "?q=" + query
-                  : "" + innerNav !== ""
-                    ? "?f=" + innerNav
-                    : ""
-              }`;
+              navigate(
+                `/search${query !== "" ? "?q=" + query : "?"}${
+                  query !== "" && innerNav !== "" && "&"
+                }${innerNav !== "" ? "f=" + innerNav : ""}`,
+              );
             }
           }}
         />
@@ -212,13 +212,11 @@ const Search = () => {
             <Button
               class="btn-primary px-2 text-xl"
               onClick={() =>
-                (location.href = `/search${
-                  query !== ""
-                    ? "?q=" + query
-                    : "" + innerNav !== ""
-                      ? "?f=" + innerNav
-                      : ""
-                }`)
+                navigate(
+                  `/search${query !== "" ? "?q=" + query : "?"}${
+                    query !== "" && innerNav !== "" && "&"
+                  }${innerNav !== "" ? "f=" + innerNav : ""}`,
+                )
               }
             >
               <MaterialSymbolsSearchRounded />
