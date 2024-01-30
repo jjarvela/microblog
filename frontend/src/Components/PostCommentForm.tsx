@@ -32,11 +32,11 @@ function PostCommentForm({
       <form className="mt-4 flex flex-col gap-4">
         <div className="flex flex-col">
           <TextAreaInput
-            text={text || ""}
+            value={text || ""}
             placeholder="Post text..."
             showCount
             maxLength={500}
-            class="h-40 w-full"
+            className="h-40 w-full"
             autofocus={true}
           />
         </div>

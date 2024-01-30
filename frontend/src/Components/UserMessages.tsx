@@ -177,8 +177,8 @@ const UserMessages = () => {
               </span>
               <span className="flex-grow">
                 <TextAreaInput
-                  class="w-full"
-                  text={messageText}
+                  className="w-full"
+                  value={messageText}
                   charCount={messageText.length}
                   onChange={(e) => setMessageText(e.target.value)}
                 />
