@@ -5,14 +5,13 @@ interface TextAreaInputProps
     TextareaHTMLAttributes<HTMLTextAreaElement>,
     HTMLTextAreaElement
   > {
-  charCount?: number;
   showCount?: boolean;
   className?: string;
   autofocus?: boolean;
 }
 
 function TextAreaInput({
-  charCount,
+  value,
   maxLength,
   showCount,
   autofocus,
@@ -33,7 +32,7 @@ function TextAreaInput({
       />
       {showCount && (
         <p className="absolute bottom-3 right-2 select-none text-black50">
-          {charCount} / {maxLength}
+          {typeof value === "string" && value?.length} / {maxLength}
         </p>
       )}
     </div>

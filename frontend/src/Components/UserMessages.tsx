@@ -179,7 +179,6 @@ const UserMessages = () => {
                 <TextAreaInput
                   className="w-full"
                   value={messageText}
-                  charCount={messageText.length}
                   onChange={(e) => setMessageText(e.target.value)}
                 />
               </span>
