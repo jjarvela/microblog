@@ -7,11 +7,10 @@ import TopPageNav from "./Elements/TopPageNav";
 import MaterialSymbolsPersonCheck from "./Icons/MaterialSymbolsPersonCheck";
 import IonRibbonB from "./Icons/IonRibbonB";
 import MaterialSymbolsTagRounded from "./Icons/MaterialSymbolsTagRounded";
-import { useContext } from "react";
-import { UserContext } from "../UserWrapper";
+import { useUser } from "../UserWrapper";
 
 const UserTimeline = () => {
-  const user = useContext(UserContext).user;
+  const user = useUser().user;
   const placeholderPosts: Post[] = [
     {
       postOwner: {

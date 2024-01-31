@@ -11,7 +11,7 @@ import LikeButton from "./LikeButton";
 import RepostButton from "./RepostButton";
 import CommentButton from "./CommentButton";
 import PostCommentForm from "../../PostCommentForm";
-import { UserContext } from "../../../UserWrapper";
+import { useUser } from "../../../UserWrapper";
 
 type MediaViewerProps = {
   active: Media;
@@ -32,7 +32,7 @@ export default function MediaViewer({
   const [activeIndex, setActiveIndex] = useState(ids.indexOf(active.id));
   const [activeMedia, setActiveMedia] = useState(active);
   const [showCommentForm, setShowCommentForm] = useState(false);
-  const user = useContext(UserContext);
+  const user = useUser();
 
   useEffect(() => {
     isOpen && setActiveMedia(active);
