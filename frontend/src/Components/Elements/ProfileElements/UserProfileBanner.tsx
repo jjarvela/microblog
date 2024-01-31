@@ -41,7 +41,7 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
             <ul className="mb-4">
               <li>Location: {user.location}</li>
               <li>Joined: {user.joinDate?.toDateString()}</li>
-              <li>Birthday: {user.birthDate?.toDateString()}</li>
+              <li>Birthday: {user.birthday?.toDateString()}</li>
             </ul>
             <div className="flex max-w-fit flex-shrink flex-row flex-wrap justify-around gap-6 whitespace-nowrap text-secondary">
               <p className="text-[1.2rem] font-bold">
