@@ -25,12 +25,18 @@ const UserNotifications = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col">
       <h2 className="my-4 text-center">Notifications Hub</h2>
-      <div>
-        <button className="btn-primary" onClick={addNotification}>
-          Show notification
-        </button>
+      <div className="flex flex-col">
+        <div className="flex justify-end">
+          <button className="btn-primary mx-3" onClick={addNotification}>
+            Show notification
+          </button>
+          <button className="btn-primary mx-5 " onClick={clear}>
+            Clear All
+          </button>
+        </div>
+
         <ul>
           {notifications.map((notification) => (
             <li key={notification.id}>
@@ -41,14 +47,12 @@ const UserNotifications = () => {
                 text={notification.content}
                 notificationId={notification.id}
                 removeNotification={remove}
+                createdAt={notification.createdAt}
               />
             </li>
           ))}
         </ul>
       </div>
-      <button className="btn-primary" onClick={clear}>
-        Clear All
-      </button>
     </div>
   );
 };
