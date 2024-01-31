@@ -121,8 +121,8 @@ function Landing() {
             )}
             <Button
               type="submit"
-              class="btn-primary"
-              isDisabled={Boolean(errorMessage)}
+              className="btn-primary"
+              disabled={Boolean(errorMessage)}
             >
               {register ? "Register" : "Log in"}
             </Button>
@@ -134,7 +134,7 @@ function Landing() {
             </h5>
             <Button
               onClick={() => setRegister(!register)}
-              class="btn-secondary"
+              className="btn-secondary"
               type="button"
             >
               {register ? "Log in" : "Register"}
