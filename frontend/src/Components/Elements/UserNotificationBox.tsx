@@ -1,6 +1,4 @@
-import { toast } from "react-toastify";
 import { ProfilePicture } from "../Elements/ProfilePicture";
-import { useNotificationCenter } from "react-toastify/addons/use-notification-center";
 
 type UserNotificationBoxProps = {
   userName: string;
@@ -10,11 +8,11 @@ type UserNotificationBoxProps = {
   notificationId: string;
   removeNotification: (id: string) => void;
   createdAt: string;
+  title: string;
 };
 
 const UserNotificationBox = ({
-  userName,
-  groupName,
+  title,
   notifications,
   text,
   notificationId,
@@ -56,7 +54,7 @@ const UserNotificationBox = ({
               </p>
             </div>
             <div className="flex basis-7/12 flex-col">
-              <h5>{userName}</h5>
+              <h5>{title}</h5>
               <p>{text}</p>
             </div>
             <div className="absolute right-2 top-1 m-1 flex flex-col">
@@ -79,7 +77,7 @@ const UserNotificationBox = ({
               </p>
             </div>
             <div className="flex basis-7/12 flex-col">
-              <h5>{userName}</h5>
+              <h5>{title}</h5>
               <p>{text}</p>
             </div>
             <div className="absolute right-2 top-1 m-1 flex flex-col">
@@ -98,7 +96,7 @@ const UserNotificationBox = ({
             <ProfilePicture width={70} />
           </div>
           <div className="flex basis-7/12 flex-col">
-            <h5>{userName}</h5>
+            <h5>{title}</h5>
             <p>{text}</p>
           </div>
           <div className="absolute right-2 top-1 m-1 flex flex-col">
@@ -114,7 +112,7 @@ const UserNotificationBox = ({
   };
 
   return (
-    <div className="my-6 flex flex-col items-center gap-10">
+    <div className="my-10 flex flex-col items-center">
       {renderNotifications()}
     </div>
   );

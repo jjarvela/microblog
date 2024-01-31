@@ -14,13 +14,15 @@ const UserNotifications = () => {
     text: string;
     exclude: boolean;
   }
-  const { notifications, clear, markAsRead, remove } =
-    useNotificationCenter<Data>({});
+  const { notifications, clear, remove } = useNotificationCenter<Data>({});
 
   const addNotification = () => {
     // use a random type of notification
     toast("Lorem ipsum dolor sit amet, consectetur adipiscing elit", {
       type: types[Math.floor(Math.random() * types.length)] as TypeOptions,
+      data: {
+        title: "GroupName or UserName",
+      },
     });
   };
 
@@ -42,8 +44,7 @@ const UserNotifications = () => {
             <li key={notification.id}>
               <UserNotificationBox
                 notifications={notifications}
-                groupName={notifications.groupName}
-                userName={notification.userName}
+                title={notification.data.title}
                 text={notification.content}
                 notificationId={notification.id}
                 removeNotification={remove}
