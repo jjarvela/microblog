@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { ProfilePicture } from "./ProfilePicture";
-import { useContext, useState } from "react";
-import { UserContext } from "../../UserWrapper";
+import { useState } from "react";
 import Button from "./Button";
+import { useUser } from "../../UserWrapper";
 
 type UserProfileInfoProps = {
   user: User;
@@ -19,7 +19,7 @@ function UserProfileInfo({
   nameClass,
   handleClass,
 }: UserProfileInfoProps) {
-  const self = useContext(UserContext).user;
+  const self = useUser().user;
   const [showPopup, setShowPopup] = useState(false);
   return (
     <div className={"relative mr-auto " + " " + classAdd}>
