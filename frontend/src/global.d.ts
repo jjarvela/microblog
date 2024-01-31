@@ -1,13 +1,15 @@
 type User = {
   userName: string;
   screenName: string;
+  password?: string;
   profileImage?: string;
   location?: string;
   email?: string;
   joinDate?: Date;
-  birthDate?: Date;
-  followers: number; //change to User[] when data starts coming in
-  following: number; //change to User[] when data starts coming in
+  birthday?: Date;
+  followers?: number; //change to User[] when data starts coming in
+  following?: number; //change to User[] when data starts coming in
+  jwt?: string;
 };
 
 type Media = {

@@ -3,7 +3,7 @@ import PostContextMenu from "./Elements/PostElements/PostContextMenu";
 import { useBreakpoint } from "../Hooks/BreakpointHook";
 import UserProfileInfo from "./Elements/UserProfileInfo";
 import PostModal from "./Elements/Modals/PostModal";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { PostContext } from "./Elements/PostElements/Post";
 import ReportPostModal from "./Elements/Modals/ReportPostModal";
 import PostMediaLayout from "./Elements/PostElements/PostMediaLayout";
@@ -12,7 +12,7 @@ import ConfirmModal from "./Elements/Modals/ConfirmModal";
 import TagList from "./Elements/PostElements/TagList";
 import ReportButton from "./Elements/PostElements/ReportButton";
 import PostCommentForm from "./PostCommentForm";
-import { UserContext } from "../UserWrapper";
+import { useUser } from "../UserWrapper";
 import { ProfilePicture } from "./Elements/ProfilePicture";
 import TextAreaInput from "./Elements/Inputs/TextAreaInput";
 import { useLocation } from "react-router";
@@ -26,7 +26,7 @@ export default function PostPage() {
   const editModal = useRef<HTMLDialogElement>(null);
   const deleteConfirm = useRef<HTMLDialogElement>(null);
   const reportModal = useRef<HTMLDialogElement>(null);
-  const user = useContext(UserContext);
+  const user = useUser();
 
   const [showCommentForm, setShowCommentForm] = useState(false);
 
