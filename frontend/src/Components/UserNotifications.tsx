@@ -20,6 +20,7 @@ const UserNotifications = () => {
     // use a random type of notification
     toast("Lorem ipsum dolor sit amet, consectetur adipiscing elit", {
       type: types[Math.floor(Math.random() * types.length)] as TypeOptions,
+      className: "timeline-box dark:text-gray-100 dark:bg-gray-500",
       data: {
         title: "GroupName or UserName",
       },
