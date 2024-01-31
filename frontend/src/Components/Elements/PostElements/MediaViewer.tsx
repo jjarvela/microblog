@@ -114,9 +114,7 @@ export default function MediaViewer({
               <UserProfileInfo user={post.postOwner} />
               <Link
                 to={`/${post.postOwner.userName.substring(1)}/post/${1}`}
-                state={{
-                  post,
-                }}
+                state={post}
               >
                 <time className="my-[0.5em] text-center text-sm underline underline-offset-2">
                   {post.time.toLocaleString()}
