@@ -46,7 +46,7 @@ const GroupList = () => {
 
       <div className="m-6 flex justify-end">
         <Button
-          class="btn-primary"
+          className="btn-primary"
           onClick={() => createGroupModal.current?.showModal()}
           type="button"
         >

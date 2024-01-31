@@ -110,7 +110,7 @@ export default function HashtagIndividual() {
     <div className="mx-auto">
       <div className=" mb-4 flex flex-wrap justify-center gap-2">
         <h3 className="text-primary">#{tag}</h3>
-        <Button class="btn-primary">Follow</Button>
+        <Button className="btn-primary">Follow</Button>
       </div>
       <div className="flex flex-col gap-4">
         {tempPosts.map((post) => {

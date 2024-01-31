@@ -22,24 +22,24 @@ function GroupProfileBanner({ group }: GroupProfileBannerProps) {
         {<h1>{group.groupName}</h1>}
       </div>
       <div className="absolute right-7 top-7 flex gap-5 ">
-        <Button class="btn-primary">
+        <Button className="btn-primary">
           <small>Follow</small>
         </Button>
         {group.joinRule === "everyone" && (
-          <Button class="btn-primary">
+          <Button className="btn-primary">
             <small>Join</small>
           </Button>
         )}
         {group.joinRule === "permission" && (
           <Button
-            class="btn-primary"
+            className="btn-primary"
             onClick={() => joinRequest.current?.showModal()}
           >
             <small>Request to Join</small>
           </Button>
         )}
         {group.joinRule === "closed" && (
-          <Button class="btn-primary" disabled>
+          <Button className="btn-primary" disabled>
             <small>Join</small>
           </Button>
         )}

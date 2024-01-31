@@ -28,7 +28,7 @@ function ConfirmModal({
         <div className="flex h-full flex-row justify-around gap-4">
           <Button
             onClick={() => refObject.current?.close()}
-            class="btn-secondary"
+            className="btn-secondary"
           >
             {cancelText}
           </Button>
@@ -37,7 +37,7 @@ function ConfirmModal({
               confirmCallback();
               refObject.current?.close();
             }}
-            class="btn-primary"
+            className="btn-primary"
           >
             {confirmText}
           </Button>

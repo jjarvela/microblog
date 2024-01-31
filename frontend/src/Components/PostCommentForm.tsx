@@ -44,7 +44,7 @@ function PostCommentForm({
         </div>
         <Button
           type="button"
-          class="btn-primary flex w-fit flex-row items-center gap-2 px-4"
+          className="btn-primary flex w-fit flex-row items-center gap-2 px-4"
         >
           <span className="text-lg">
             <MaterialSymbolsAddPhotoAlternateOutlineRounded />
@@ -64,14 +64,14 @@ function PostCommentForm({
         <div className="flex justify-between gap-4">
           <Button
             type="button"
-            class="btn-secondary m-3"
+            className="btn-secondary m-3"
             onClick={() => setShowCommentForm(false)}
           >
             Cancel
           </Button>
           <Button
             type="submit"
-            class="btn-primary m-3"
+            className="btn-primary m-3"
             onClick={() => setShowCommentForm(false)}
           >
             Comment

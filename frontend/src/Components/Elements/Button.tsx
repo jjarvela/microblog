@@ -5,12 +5,16 @@ interface ButtonProps
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
+  className: string;
   children?: React.ReactNode;
-  class: string;
 }
 
-function Button(props: ButtonProps) {
-  return <button className={`${props.class}`}>{props.children}</button>;
+function Button({ children, className, ...rest }: ButtonProps) {
+  return (
+    <button className={className} {...rest}>
+      {children}
+    </button>
+  );
 }
 
 export default Button;
