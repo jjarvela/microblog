@@ -5,16 +5,23 @@ type PostMediaProps = {
   index: number;
   media: Media;
   class?: string;
+  maxH?: string;
+  maxW?: string;
 };
 
-export default function PostMedia({ media, class: classAdd }: PostMediaProps) {
+export default function PostMedia({
+  media,
+  class: classAdd,
+  maxH,
+  maxW,
+}: PostMediaProps) {
   const mediaViewer = useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div
       className={
-        "relative h-[100%] overflow-hidden bg-white75 dark:bg-[#000]" +
+        "relative m-auto h-full w-full overflow-hidden bg-white75 dark:bg-[#000]" +
         " " +
         classAdd
       }
@@ -43,7 +50,7 @@ export default function PostMedia({ media, class: classAdd }: PostMediaProps) {
             className="cursor-pointer"
             onClick={() => mediaViewer.current?.showModal()}
           >
-            <div className="absolute left-0 top-0 z-50 h-[60%] w-full"></div>
+            <div className="absolute left-0 top-0 z-50 h-[75%] w-full"></div>
           </a>
           <video
             id={media.id}
@@ -51,9 +58,10 @@ export default function PostMedia({ media, class: classAdd }: PostMediaProps) {
             muted
             src={media.source}
             style={{
-              maxHeight: "100%",
-              maxWidth: "100%",
-              margin: "auto",
+              height: "100%",
+              width: "100%",
+              maxHeight: maxH || "100%",
+              maxWidth: maxW || "100%",
             }}
           />
         </>
