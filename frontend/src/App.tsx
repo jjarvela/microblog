@@ -8,7 +8,6 @@ import UserFollowing from "./Components/UserFollowing";
 import GroupList from "./Components/GroupList";
 import GroupProfile from "./Components/GroupProfile";
 import Landing from "./Components/Landing";
-import LogIn from "./Components/LogIn";
 import Search from "./Components/Search";
 import Header from "./Components/Header";
 import LeftSidebar from "./Components/LeftSidebar";
@@ -57,7 +56,6 @@ function App() {
         {/*Not logged routes*/}
         <Route element={<VisitorLayout />}>
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<LogIn />} />
         </Route>
         {/*Logged routes*/}
         <Route element={<UserLayout />}>

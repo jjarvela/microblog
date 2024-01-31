@@ -38,9 +38,9 @@ function ProfileTextBox({
             onChange={(e) => setEditedTitle(e.target.value)}
           />
           <TextAreaInput
-            text={editedText}
+            value={editedText}
             onChange={(e) => setEditedText(e.target.value)}
-            class="h-max w-full"
+            className="h-max w-full"
           />
         </>
       ) : (
