@@ -22,7 +22,7 @@ function UserProfileInfo({
   const self = useUser().user;
   const [showPopup, setShowPopup] = useState(false);
   return (
-    <div className={"relative mr-auto " + " " + classAdd}>
+    <div className={"relative z-[90] mr-auto" + " " + classAdd}>
       <Link
         to={"/user/" + user.userName}
         className="flex flex-row flex-wrap items-center gap-4"
@@ -59,7 +59,7 @@ function UserProfileInfo({
         } absolute left-4 top-0 overflow-hidden `}
         onMouseLeave={() => setShowPopup(false)}
       >
-        <div className="z-99 mt-[3rem] rounded-xl border border-black50 bg-white dark:border-white50 dark:bg-black dark:text-white">
+        <div className="mt-[3rem] rounded-xl border border-black50 bg-white dark:border-white50 dark:bg-black dark:text-white">
           <div className="flex flex-col gap-2 p-4">
             <div className="flex flex-row justify-between">
               <ProfilePicture image={user.profileImage} width={60} />
