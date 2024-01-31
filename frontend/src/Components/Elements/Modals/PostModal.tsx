@@ -51,7 +51,7 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
           />
           <Button
             type="button"
-            class="btn-primary flex w-fit flex-row items-center gap-2 px-4"
+            className="btn-primary flex w-fit flex-row items-center gap-2 px-4"
           >
             <span className="text-lg">
               <MaterialSymbolsAddPhotoAlternateOutlineRounded />
@@ -75,13 +75,13 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
           </div>
           <div className="flex flex-row justify-between">
             <Button
-              class="btn-secondary"
+              className="btn-secondary"
               onClick={() => refObject.current?.close()}
               type="button"
             >
               Cancel
             </Button>
-            <Button class="btn-primary" type="submit">
+            <Button className="btn-primary" type="submit">
               {mode === "post" && "Post"}
               {mode === "edit" && "Edit"}
             </Button>

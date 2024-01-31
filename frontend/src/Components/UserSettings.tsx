@@ -43,7 +43,7 @@ const UserSettings = () => {
                   user.user &&
                   user.setUser({ ...user.user, screenName: screenName })
                 }
-                class="btn-primary"
+                className="btn-primary"
               >
                 Update
               </Button>
@@ -62,7 +62,7 @@ const UserSettings = () => {
               />
 
               <Button
-                class="btn-primary"
+                className="btn-primary"
                 onClick={() =>
                   user.user && user.setUser({ ...user.user, email: email })
                 }
@@ -76,7 +76,7 @@ const UserSettings = () => {
           nameElements={<p>Password</p>}
           element={
             <div className="flex w-full flex-col items-center justify-center gap-2 sm:flex-row">
-              <Button class="btn-primary">Request Password Reset</Button>
+              <Button className="btn-primary">Request Password Reset</Button>
               <InfoDot text="Reset link will be sent to the current email address." />
             </div>
           }
@@ -92,7 +92,7 @@ const UserSettings = () => {
                 onChange={(v) => setLocation(v)}
               />
               <Button
-                class="btn-primary"
+                className="btn-primary"
                 onClick={() =>
                   user.user &&
                   user.setUser({ ...user.user, location: location })
@@ -118,7 +118,7 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <DropdownInput items={followingPermission} class="w-full" />
-              <Button class="btn-primary">Update</Button>
+              <Button className="btn-primary">Update</Button>
             </div>
           }
         />
@@ -132,7 +132,7 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <DropdownInput items={postVisibility} class="w-full" />
-              <Button class="btn-primary">Update</Button>
+              <Button className="btn-primary">Update</Button>
             </div>
           }
         />
@@ -146,7 +146,7 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <DropdownInput items={mockListOfLanguages} class="w-full" />
-              <Button class="btn-primary">Update</Button>
+              <Button className="btn-primary">Update</Button>
             </div>
           }
         />

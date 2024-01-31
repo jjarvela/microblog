@@ -105,7 +105,7 @@ function LeftSidebar() {
               className="flex items-center justify-center px-1 py-4 md:px-10 mid:py-10"
             >
               <Button
-                class="btn-primary flex h-12 w-12 items-center justify-center p-0 text-xl md:h-16 md:w-16 md:text-2xl"
+                className="btn-primary flex h-12 w-12 items-center justify-center p-0 text-xl md:h-16 md:w-16 md:text-2xl"
                 onClick={() => postModal.current?.showModal()}
                 type="button"
               >

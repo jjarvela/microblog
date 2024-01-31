@@ -51,7 +51,7 @@ function ProfileMediaBox({
         {editing && modifying ? (
           <div className="flex flex-col flex-wrap gap-4 bg-white p-2 dark:bg-black">
             <TextInput placeholder="Enter media id..." />
-            <Button class="btn-primary">Apply</Button>
+            <Button className="btn-primary">Apply</Button>
             <p className="text-sm italic opacity-50">
               Replace eventually with an actual media picker...
             </p>

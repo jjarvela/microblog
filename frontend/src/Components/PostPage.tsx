@@ -20,7 +20,7 @@ import PostPageReactionHub from "./Elements/PostElements/PostPageReactionHub";
 
 export default function PostPage() {
   const location = useLocation();
-  const post: Post = location.state.post;
+  const post: Post = location.state;
 
   const { isSm } = useBreakpoint("sm");
   const editModal = useRef<HTMLDialogElement>(null);
@@ -28,23 +28,10 @@ export default function PostPage() {
   const reportModal = useRef<HTMLDialogElement>(null);
   const user = useUser();
 
-  const ownerOptions = post.postOwner.userName === user.user?.userName;
-
   const [showCommentForm, setShowCommentForm] = useState(false);
 
   return (
-    <PostContext.Provider
-      value={{
-        postOwner: post.postOwner,
-        text: post.text,
-        reactions: post.reactions,
-        tags: post.tags,
-        time: post.time,
-        media: post.media,
-        reposter: post.reposter,
-        replyingTo: post.replyingTo,
-      }}
-    >
+    <PostContext.Provider value={post}>
       <div className="relative my-2">
         <div className="timeline-box flex flex-col">
           {post.reposter && (
@@ -55,7 +42,7 @@ export default function PostPage() {
 
           <div className="flex flex-row-reverse flex-wrap items-start gap-4">
             <PostContextMenu
-              ownerOptions={ownerOptions}
+              ownerOptions={post.postOwner.userName === user.user?.userName}
               editPostCallback={() => editModal.current?.showModal()}
               deletePostCallback={() => deleteConfirm.current?.showModal()}
             />

@@ -45,7 +45,7 @@ export default function HashtagSearch() {
             }}
           />
           <Button
-            class="btn-primary flex-shrink-0"
+            className="btn-primary flex-shrink-0"
             onClick={() => navigate(`/hashtag/${searchTag}`)}
           >
             <MaterialSymbolsSearchRounded />

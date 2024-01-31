@@ -61,7 +61,7 @@ function ProfileLinkBox({
             );
           })}
           <Button
-            class="btn-primary w-fit self-center"
+            className="btn-primary w-fit self-center"
             onClick={() =>
               setEditedLinks([...editedLinks, { icon: "", text: "" }])
             }
