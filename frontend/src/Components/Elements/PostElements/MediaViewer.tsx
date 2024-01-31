@@ -123,7 +123,7 @@ export default function MediaViewer({
                 </time>
               </Link>
               <div
-                className="mx-[1em] cursor-pointer self-start text-xl text-black50"
+                className="mx-[1em] cursor-pointer self-start text-xl text-black50 lg:ml-[0.5em] lg:mr-0"
                 onClick={() => {
                   setIsOpen(false);
                   mediaRef.current?.pause();
