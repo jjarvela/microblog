@@ -1,24 +1,16 @@
-import { MouseEvent } from "react";
+import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
-type ButtonProps = {
+interface ButtonProps
+  extends DetailedHTMLProps<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
   children?: React.ReactNode;
   class: string;
-  type?: "submit" | "reset" | "button" | undefined;
-  isDisabled?: boolean;
-  onClick?: (event: MouseEvent) => void;
-};
+}
 
 function Button(props: ButtonProps) {
-  return (
-    <button
-      onClick={(e) => (props.onClick ? props.onClick(e) : null)}
-      className={`${props.class}`}
-      type={props.type}
-      disabled={props.isDisabled}
-    >
-      {props.children}
-    </button>
-  );
+  return <button className={`${props.class}`}>{props.children}</button>;
 }
 
 export default Button;

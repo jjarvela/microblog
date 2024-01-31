@@ -78,7 +78,7 @@ function GroupThumbnail({ group }: GroupThumbnailProps) {
               </Button>
             )}
             {group.joinRule === "closed" && (
-              <Button class="btn-primary" isDisabled>
+              <Button class="btn-primary" disabled>
                 <small>Join</small>
               </Button>
             )}
