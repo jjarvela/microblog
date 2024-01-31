@@ -3,7 +3,7 @@ import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useRef, useState } from "react";
 import PostPin from "./PostPin";
 import { useBreakpoint } from "../../../Hooks/BreakpointHook";
 import UserProfileInfo from "../UserProfileInfo";
@@ -15,7 +15,7 @@ import RepostButton from "./RepostButton";
 import CommentButton from "./CommentButton";
 import ReportButton from "./ReportButton";
 import PostCommentForm from "../../PostCommentForm";
-import { UserContext } from "../../../UserWrapper";
+import { useUser } from "../../../UserWrapper";
 import ReportPostModal from "../Modals/ReportPostModal";
 import { Link } from "react-router-dom";
 
@@ -62,7 +62,7 @@ function Post({
   const deleteConfirm = useRef<HTMLDialogElement>(null);
   const reportModal = useRef<HTMLDialogElement>(null);
   const [showCommentForm, setShowCommentForm] = useState(false);
-  const user = useContext(UserContext);
+  const user = useUser();
   return (
     <PostContext.Provider
       value={{

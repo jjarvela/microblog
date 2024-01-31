@@ -7,8 +7,8 @@ import TextInput from "./Elements/Inputs/TextInput";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsPrivacyTipRounded from "./Icons/MaterialSymbolsPrivacyTipRounded";
 import MaterialSymbolsSettingsApplicationsRounded from "./Icons/MaterialSymbolsSettingsApplicationsRounded";
-import { useContext, useState } from "react";
-import { UserContext } from "../UserWrapper";
+import { useState } from "react";
+import { useUser } from "../UserWrapper";
 import { locationList } from "../globalData";
 import ThemeSelector from "./Elements/SettingsElements/ThemeSelector";
 
@@ -18,7 +18,7 @@ const followingPermission = ["Anyone", "Ask Permission"];
 const postVisibility = ["Anyone", "Only Followers"];
 
 const UserSettings = () => {
-  const user = useContext(UserContext);
+  const user = useUser();
   const [screenName, setScreenName] = useState(user?.user?.screenName || "");
   const [email, setEmail] = useState(user?.user?.email || "");
   const [location, setLocation] = useState(
