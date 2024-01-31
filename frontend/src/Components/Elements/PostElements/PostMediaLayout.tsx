@@ -17,27 +17,27 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
         );
       case 2:
         return (
-          <div className="flex flex-row gap-1">
+          <div className="flex h-[15rem] flex-row gap-1 lg:h-[30rem]">
             <div className="flex w-[50%] flex-col">
-              <PostMedia index={0} media={items[0]} maxH="15rem" />
+              <PostMedia index={0} media={items[0]} />
             </div>
             <div className="flex w-[50%] flex-col">
-              <PostMedia index={1} media={items[1]} maxH="15rem" />
+              <PostMedia index={1} media={items[1]} />
             </div>
           </div>
         );
       case 3:
         return (
-          <div className="flex gap-1">
+          <div className="flex h-[15rem] gap-1 lg:h-[30rem]">
             <div className="flex w-[50%] flex-col">
-              <PostMedia index={0} media={items[0]} maxH="30rem" />
+              <PostMedia index={0} media={items[0]} />
             </div>
             <div className="flex w-[50%] flex-col">
               <div className="mb-0.5 h-[50%]">
-                <PostMedia index={1} media={items[1]} maxH="15rem" />
+                <PostMedia index={1} media={items[1]} />
               </div>
               <div className="mt-0.5 h-[50%]">
-                <PostMedia index={2} media={items[2]} maxH="15rem" />
+                <PostMedia index={2} media={items[2]} />
               </div>
             </div>
           </div>
@@ -45,7 +45,7 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
       case 4:
         return (
           <>
-            <div className="mb-1 flex h-[15rem] flex-row gap-1">
+            <div className="mb-1 flex h-[15rem] flex-row">
               <div className=" flex  w-[50%] flex-col">
                 <PostMedia index={0} media={items[0]} maxH="15rem" />
               </div>
@@ -53,7 +53,7 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
                 <PostMedia index={1} media={items[1]} maxH="15rem" />
               </div>
             </div>
-            <div className="mt-1 flex h-[15rem] flex-row gap-1">
+            <div className="mt-1 flex h-[15rem] flex-row">
               <div className="flex w-[50%] flex-col">
                 <PostMedia index={2} media={items[2]} maxH="15rem" />
               </div>
