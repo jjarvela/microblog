@@ -121,12 +121,7 @@ export default function HashtagIndividual() {
                 "-" +
                 Math.floor(Math.random() * 1000)
               }
-              postOwner={post.postOwner}
-              text={post.text}
-              media={post.media}
-              reactions={post.reactions}
-              tags={post.tags}
-              time={post.time}
+              post={post}
             />
           );
         })}
