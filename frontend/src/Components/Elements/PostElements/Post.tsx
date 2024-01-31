@@ -117,7 +117,7 @@ function Post({
                   replyingTo,
                 },
               }}
-              className="mr-3 self-start underline"
+              className="mr-3 self-start underline underline-offset-2"
             >
               <time>{time.toLocaleString()}</time>
             </Link>
