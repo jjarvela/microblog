@@ -1,12 +1,12 @@
 .landing-scroll {
-  mask: url(wave2.svg);
+  mask: url("/wave2.svg");
   mask-repeat: repeat-x;
   animation: scroll-left-2 40s linear infinite;
   mix-blend-mode: hard-light;
 }
 
 .landing-scroll-2 {
-  mask: url(wave.svg);
+  mask: url("/wave.svg");
   mask-repeat: repeat-x;
   animation: scroll-left 30s linear infinite;
   opacity: 0.75;

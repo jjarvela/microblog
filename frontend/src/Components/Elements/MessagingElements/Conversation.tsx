@@ -3,6 +3,7 @@ import { ProfilePicture } from "../ProfilePicture";
 import MessageBubble from "./MessageBubble";
 import { MaterialSymbolsChevronLeftRounded } from "../../Icons/MaterialSymbolsChevronLeftRounded";
 import { Link, useLocation } from "react-router-dom";
+import ImageMessageBubble from "./ImageMessageBubble";
 
 type ConversationProps = {
   setClosed: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,8 +16,16 @@ export default function Conversation({ setClosed }: ConversationProps) {
     recipientName: string;
     recipientHandle: string;
   } = location.state.conversation;
+
+  const placeholderMedia: Media = {
+    id: "32j423j4",
+    source:
+      "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
+    type: "img",
+  };
+
   return (
-    <div className="flex h-[70%] flex-col">
+    <div className="flex h-[74%] flex-col">
       <div>
         <div className="flex flex-row items-center gap-2 border-y-[1px] border-black50 py-2">
           <Link
@@ -46,6 +55,11 @@ export default function Conversation({ setClosed }: ConversationProps) {
         <MessageBubble text="test message" time={new Date()} sender={false} />
         <MessageBubble text="test message" time={new Date()} sender={true} />
         <MessageBubble text="test message" time={new Date()} sender={true} />
+        <ImageMessageBubble
+          media={placeholderMedia}
+          time={new Date()}
+          sender={false}
+        />
         <MessageBubble text="test message" time={new Date()} sender={false} />
         <MessageBubble text="test message" time={new Date()} sender={false} />
         <MessageBubble text="test message" time={new Date()} sender={true} />
