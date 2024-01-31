@@ -1,15 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import InReplyTo from "./InReplyTo";
-import MaterialSymbolsFavoriteOutlineRounded from "../../Icons/MaterialSymbolsFavoriteOutlineRounded";
-import MaterialSymbolsShareOutline from "../../Icons/MaterialSymbolsShareOutline";
-import MaterialSymbolsChatOutlineRounded from "../../Icons/MaterialSymbolsChatOutlineRounded";
-import MaterialSymbolsFlagRounded from "../../Icons/MaterialSymbolsFlagRounded";
-import Button from "../Button";
 import { MaterialSymbolsChevronLeftRounded } from "../../Icons/MaterialSymbolsChevronLeftRounded";
 import { MaterialSymbolsChevronRightRounded } from "../../Icons/MaterialSymbolsChevronRightRounded";
 import { PostContext } from "./Post";
 import UserProfileInfo from "../UserProfileInfo";
 import TagList from "./TagList";
+import MaterialSymbolsCloseRounded from "../../Icons/MaterialSymbolsCloseRounded";
+import { Link } from "react-router-dom";
+import LikeButton from "./LikeButton";
+import RepostButton from "./RepostButton";
+import CommentButton from "./CommentButton";
+import PostCommentForm from "../../PostCommentForm";
+import { UserContext } from "../../../UserWrapper";
 
 type MediaViewerProps = {
   active: Media;
@@ -25,9 +27,12 @@ export default function MediaViewer({
   setIsOpen,
 }: MediaViewerProps) {
   const post = useContext(PostContext);
+  const mediaRef = useRef<HTMLVideoElement>(null);
   const ids = post.media.map((item) => item.id);
   const [activeIndex, setActiveIndex] = useState(ids.indexOf(active.id));
   const [activeMedia, setActiveMedia] = useState(active);
+  const [showCommentForm, setShowCommentForm] = useState(false);
+  const user = useContext(UserContext);
 
   useEffect(() => {
     isOpen && setActiveMedia(active);
@@ -53,10 +58,10 @@ export default function MediaViewer({
   return (
     <dialog
       ref={refObject}
-      className="h-screen rounded-xl border border-black50 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50  dark:text-white"
+      className="scrollbar-thin h-screen rounded-xl border border-black50 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50  dark:text-white"
     >
-      <div className="flex h-full w-full flex-row">
-        <div className="relative flex-grow bg-[#000]">
+      <div className=" flex h-full w-full flex-col lg:flex-row">
+        <div className="relative max-h-[80%] flex-grow bg-[#000] lg:max-h-screen">
           {
             /*Display arrows if there is more than one piece of media associated to the post*/
             post.media && post.media.length > 1 && (
@@ -94,31 +99,37 @@ export default function MediaViewer({
             </>
           ) : (
             <video
+              ref={mediaRef}
               id={activeMedia.id}
               src={activeMedia.source}
               controls
               muted
-              className="h-full w-full object-contain"
+              className="h-full w-full object-contain lg:h-full"
             />
           )}
         </div>
-        <div className="flex h-full flex-col gap-4 bg-white px-3 py-1 dark:bg-black">
-          <Button
-            class="btn-primary my-1 w-fit self-end"
-            type="button"
-            onClick={() => {
-              setIsOpen(false);
-              refObject.current?.close();
-            }}
-          >
-            <p>Close</p>
-          </Button>
-          <div className="mx-1 border-b-2 border-black25 dark:border-white25">
-            <div className="flex flex-col items-center gap-4">
-              <small className="text-center">
-                {post.time.toLocaleString()}
-              </small>
+        <div className="flex h-full flex-col gap-4 bg-white px-3 py-1 dark:bg-black lg:min-w-[30em]">
+          <div className="mx-[1em] border-b-2 border-black25 dark:border-white25">
+            <div className="my-[1em] flex flex-row justify-between">
               <UserProfileInfo user={post.postOwner} />
+              <Link
+                to={`/${post.postOwner.userName.substring(1)}/post/${1}`}
+                state={post}
+              >
+                <time className="my-[0.5em] text-center text-sm underline underline-offset-2">
+                  {post.time.toLocaleString()}
+                </time>
+              </Link>
+              <div
+                className="mx-[1em] cursor-pointer self-start text-xl text-black50 lg:ml-[0.5em] lg:mr-0"
+                onClick={() => {
+                  setIsOpen(false);
+                  mediaRef.current?.pause();
+                  refObject.current?.close();
+                }}
+              >
+                <MaterialSymbolsCloseRounded />
+              </div>
             </div>
             {post.replyingTo ? (
               <div className="-mx-3 mt-4 flex flex-row justify-start border-y border-black25 px-4 py-4 dark:border-white25">
@@ -130,14 +141,30 @@ export default function MediaViewer({
               <div>{post.text}</div>
 
               <TagList tags={post.tags} />
-              <div className="flex flex-row justify-center gap-4 text-2xl">
-                <MaterialSymbolsFavoriteOutlineRounded />
-                <MaterialSymbolsShareOutline />
-                <MaterialSymbolsChatOutlineRounded />
-                <MaterialSymbolsFlagRounded />
+              <div className="mb-3 flex flex-row justify-center gap-4 text-2xl">
+                <span className="mx-2">{4}</span>
+                <LikeButton />
+                <span className="mx-2">{1}</span>
+                <RepostButton />
+                <span className="mx-2">{0}</span>
+                <CommentButton setShowCommentForm={setShowCommentForm} />
               </div>
             </div>
           </div>
+          {showCommentForm && (
+            <PostCommentForm
+              recipient={post.postOwner}
+              commenter={
+                user?.user || {
+                  userName: "",
+                  screenName: "",
+                  followers: 0,
+                  following: 0,
+                }
+              }
+              setShowCommentForm={setShowCommentForm}
+            />
+          )}
         </div>
       </div>
     </dialog>

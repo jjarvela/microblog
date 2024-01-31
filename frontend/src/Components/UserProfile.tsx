@@ -19,16 +19,19 @@ function UserProfile() {
           <h2 className="my-4 text-center">{user.screenName}'s Profile</h2>
         )}
         {owned && !isEditing && (
-          <Button onClick={() => setIsEditing(true)} class="btn-primary">
+          <Button onClick={() => setIsEditing(true)} className="btn-primary">
             Edit
           </Button>
         )}
         {isEditing && (
           <>
-            <Button onClick={() => setIsEditing(false)} class="btn-secondary">
+            <Button
+              onClick={() => setIsEditing(false)}
+              className="btn-secondary"
+            >
               Cancel
             </Button>
-            <Button onClick={() => setIsEditing(false)} class="btn-primary">
+            <Button onClick={() => setIsEditing(false)} className="btn-primary">
               Confirm Edits
             </Button>
           </>

@@ -36,7 +36,7 @@ const UserFollowing = () => {
       </label>
       <div className="flex w-full flex-row justify-center gap-2">
         <TextInput id="search" className="max-h-min" />
-        <Button class="btn-primary px-2 text-lg">
+        <Button className="btn-primary px-2 text-lg">
           <MaterialSymbolsSearchRounded />
         </Button>
       </div>

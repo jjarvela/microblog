@@ -262,7 +262,7 @@ function ProfileBoxes({ boxes, editing, setBoxes }: ProfileBoxesProps) {
             onChange={(_val, i) => setCurrentNewType(newBoxTypes[i])}
           />
           <Button
-            class="btn-primary"
+            className="btn-primary"
             onClick={() => handleAddBox(currentNewType as ProfileBox["type"])}
           >
             <span className="font-bold">+ </span>Add new

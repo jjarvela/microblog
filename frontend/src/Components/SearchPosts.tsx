@@ -26,14 +26,7 @@ export default function SearchPosts({ results, limit }: SearchPostsProps) {
                 }
                 className="my-2"
               >
-                <Post
-                  postOwner={post.postOwner}
-                  text={post.text}
-                  media={post.media}
-                  tags={post.tags}
-                  reactions={post.reactions}
-                  time={post.time}
-                />
+                <Post post={post} />
               </div>
             );
           })
@@ -47,14 +40,7 @@ export default function SearchPosts({ results, limit }: SearchPostsProps) {
                 }
                 className="my-2"
               >
-                <Post
-                  postOwner={post.postOwner}
-                  text={post.text}
-                  media={post.media}
-                  tags={post.tags}
-                  reactions={post.reactions}
-                  time={post.time}
-                />
+                <Post post={post} />
               </div>
             );
           })}

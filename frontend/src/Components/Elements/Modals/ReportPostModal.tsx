@@ -171,7 +171,7 @@ export default function ReportPostModal({ refObject }: ReportPostModalProps) {
           <h4 className="mb-2">Thank you for your report!</h4>
           <div className="flex-grow text-center">
             <Button
-              class="btn-primary w-[80%]"
+              className="btn-primary w-[80%]"
               onClick={() => {
                 setNav("default");
                 refObject.current?.close();
@@ -187,7 +187,7 @@ export default function ReportPostModal({ refObject }: ReportPostModalProps) {
         {nav !== "reported" && (
           <div className="flex-grow text-center">
             <Button
-              class="btn-secondary w-[80%]"
+              className="btn-secondary w-[80%]"
               onClick={() => {
                 setNav("default");
                 refObject.current?.close();
@@ -200,8 +200,11 @@ export default function ReportPostModal({ refObject }: ReportPostModalProps) {
         {nav !== "default" && nav !== "reported" && (
           <div className="flex-grow text-center">
             <Button
-              class="btn-primary w-[80%]"
-              onClick={() => setNav("reported")}
+              className="btn-primary w-[80%]"
+              onClick={(e) => {
+                e.preventDefault();
+                setNav("reported");
+              }}
             >
               Report
             </Button>
