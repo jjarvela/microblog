@@ -183,7 +183,7 @@ const UserMessages = () => {
                 />
               </span>
               <span className="self-center">
-                <Button class="btn-primary aspect-square p-[0.5em] text-lg">
+                <Button className="btn-primary aspect-square p-[0.5em] text-lg">
                   <MaterialSymbolsSendRounded />
                 </Button>
               </span>
