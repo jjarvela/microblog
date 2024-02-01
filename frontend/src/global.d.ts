@@ -29,6 +29,14 @@ type Post = {
   time: Date;
 };
 
+type ServerBlog = {
+  blog_text: string;
+  id: number;
+  timestamp: string;
+  user_id: string;
+  item_properties: { blogpost_id: number; context_id: number; value: string }[];
+};
+
 type Group = {
   groupName: string;
   groupAdmin: User;

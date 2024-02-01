@@ -1,59 +1,51 @@
 import { useContext } from "react";
 import { UserProfileContext } from "./UserPage";
 import Post from "./Elements/PostElements/Post";
+import { useQuery } from "@tanstack/react-query";
+import { testUserId } from "../globalData";
+import postService from "../Services/postService";
 
 function UserPosts() {
   const user = useContext(UserProfileContext);
-  const placeholderPosts: Post[] = [
-    {
-      postOwner: user,
-      text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus accusantium, repellendus tempore minima sit quam cum architecto dolores excepturi iure recusandae! Voluptatibus suscipit cupiditate tenetur eveniet deserunt consequatur tempore distinctio.",
-      reactions: 42,
-      tags: ["hashtag", "longerhashtag", "tag"],
-      time: new Date(),
-      media: [],
-    },
-    {
-      postOwner: user,
-      text: "This past week was very exiting. I bought a coconut!",
-      reactions: 3,
-      tags: ["coconuts", "are", "cool"],
-      media: [],
-      time: new Date(),
-    },
+  const userPosts = useQuery({
+    queryKey: ["posts", testUserId],
+    queryFn: () => postService.getUserPosts(testUserId),
+  });
 
-    {
-      postOwner: user,
-      text: "Here are some pictures",
-      media: [
-        {
-          id: "32j423j4",
-          source:
-            "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
-          type: "img",
-        },
-        {
-          id: "1434j4",
-          source:
-            "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
-          type: "img",
-        },
-      ],
-      reactions: 1,
-      tags: ["pics", "are", "cool"],
-      time: new Date(),
-    },
-  ];
+  if (userPosts.isLoading) {
+    return (
+      <div className="my-4">
+        <h4 className="my-4 text-center">Loading posts...</h4>
+      </div>
+    );
+  }
+
+  if (userPosts.isError) {
+    return (
+      <div className="my-4">
+        <h4 className="my-4 text-center text-warning dark:text-warningDark">
+          Error loading posts!
+        </h4>
+      </div>
+    );
+  }
 
   return (
     <div className="my-4">
       <h2 className="my-4 text-center">{user.screenName}'s Posts</h2>
       <div className="flex flex-col gap-4">
-        {placeholderPosts.map((post) => {
+        {(userPosts.data as ServerBlog[]).map((post: ServerBlog) => {
           return (
             <Post
-              key={post.postOwner.userName + Math.floor(Math.random() * 10000)}
-              post={post}
+              key={post.id + Math.floor(Math.random() * 10000)}
+              post={{
+                text: post.blog_text,
+                postOwner: user,
+                reactions: 0,
+                media: [],
+                tags: post.item_properties.map((item) => item.value),
+                time: new Date(post.timestamp),
+              }}
             />
           );
         })}
