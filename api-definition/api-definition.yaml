@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.6"
+  version: "0.7.1"
 
 servers:
   - url: https://api.microblog.fi
