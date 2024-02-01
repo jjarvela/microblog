@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ProfilePicture } from "./ProfilePicture";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "./Button";
 import { useUser } from "../../UserWrapper";
 
@@ -21,6 +21,10 @@ function UserProfileInfo({
 }: UserProfileInfoProps) {
   const self = useUser().user;
   const [showPopup, setShowPopup] = useState(false);
+  const popup = useRef<HTMLDivElement>(null);
+  const [floatY, setFloatY] = useState("top-0");
+  const [floatX, setFloatX] = useState("left-4");
+
   return (
     <div className={"relative z-[90] mr-auto" + " " + classAdd}>
       <Link
@@ -43,6 +47,25 @@ function UserProfileInfo({
               showPopup ? "underline underline-offset-2" : ""
             }`}
             onMouseEnter={() => {
+              console.log(
+                window.innerWidth - popup.current!.getBoundingClientRect().x,
+              );
+              if (
+                window.innerHeight - popup.current!.getBoundingClientRect().y <
+                400
+              ) {
+                setFloatY("bottom-[5rem]");
+              } else {
+                setFloatY("top-0");
+              }
+              if (
+                window.innerWidth - popup.current!.getBoundingClientRect().x >
+                400
+              ) {
+                setFloatX("left-0");
+              } else {
+                setFloatX("left-4");
+              }
               setShowPopup(true);
             }}
           >
@@ -53,10 +76,10 @@ function UserProfileInfo({
       </Link>
 
       <div
-        id={user.userName + "popup"}
+        ref={popup}
         className={`${
-          !showPopup ? "h-0 w-0" : "h-[max-content] w-[max-content]"
-        } absolute left-4 top-0 overflow-hidden `}
+          !showPopup ? "z-[9999] h-0 w-0" : "h-[max-content] w-[max-content]"
+        } absolute ${floatX} ${floatY} overflow-hidden `}
         onMouseLeave={() => setShowPopup(false)}
       >
         <div className="mt-[3rem] rounded-xl border border-black50 bg-white dark:border-white50 dark:bg-black dark:text-white">
