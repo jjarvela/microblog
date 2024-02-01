@@ -90,7 +90,7 @@ function UserProfileInfo({
               <div className="flex flex-row justify-between">
                 <ProfilePicture image={user.profileImage} width={60} />
                 {self?.userName !== user.userName && (
-                  <Button className="btn-primary">
+                  <Button className="btn-primary h-[max-content]">
                     <p>Follow</p>
                   </Button>
                 )}
