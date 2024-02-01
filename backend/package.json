@@ -1,7 +1,7 @@
 {
   "name": "microblog-backend",
   "version": "0.0.2",
-  "description": "Backend for Microbolg project",
+  "description": "Backend for Microblog project",
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/index.ts",
