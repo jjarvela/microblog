@@ -13,6 +13,8 @@ services: # define the services or containers that make up your application
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - default
 
   mb-backend: # name of the second service
     image: microblog-backend
@@ -33,11 +35,13 @@ services: # define the services or containers that make up your application
     volumes: # list of volumes to mount on this service
       - user_media:/user_media
     ports: # list of ports to expose on the host machine
-      - "9000:8085"
+      - "9000:9000"
     depends_on: # list of services that this service depends on
       db:
         condition: service_started
         restart: true
+    networks:
+      - default
 
 volumes:
   user_media:
