@@ -19,6 +19,7 @@ type Media = {
 };
 
 type Post = {
+  id?: number;
   postOwner: User;
   reposter?: string | undefined; //change to User when data starts coming in
   replyingTo?: string | undefined; //change to User when data starts coming in
@@ -29,12 +30,19 @@ type Post = {
   time: Date;
 };
 
-type ServerBlog = {
+type BlogFromServer = {
   blog_text: string;
   id: number;
   timestamp: string;
   user_id: string;
   item_properties: { blogpost_id: number; context_id: number; value: string }[];
+};
+
+type BlogToServer = {
+  id?: number;
+  text: string;
+  date: string;
+  hashtags: string[];
 };
 
 type Group = {

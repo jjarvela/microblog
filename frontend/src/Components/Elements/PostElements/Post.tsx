@@ -18,6 +18,9 @@ import PostCommentForm from "../../PostCommentForm";
 import { useUser } from "../../../UserWrapper";
 import ReportPostModal from "../Modals/ReportPostModal";
 import { Link } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import postService from "../../../Services/postService";
+import { testUserId } from "../../../globalData";
 
 export const PostContext = createContext<Post>({
   postOwner: { userName: "", screenName: "", followers: 0, following: 0 },
@@ -43,6 +46,20 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
   const reportModal = useRef<HTMLDialogElement>(null);
   const [showCommentForm, setShowCommentForm] = useState(false);
   const user = useUser();
+  const queryClient = useQueryClient();
+
+  const mutateDeletePost = useMutation({
+    mutationFn: (ids: number[]) => postService.deletePost(ids, testUserId),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+    },
+  });
+
+  const handlePostDelete = () => {
+    if (post.id) mutateDeletePost.mutate([post.id]);
+    else console.error("Missing post id for delete request!");
+  };
+
   return (
     <PostContext.Provider value={post}>
       <div className="relative">
@@ -129,6 +146,7 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
         )}
       </div>
       <PostModal
+        id={post.id}
         text={post.text}
         tags={post.tags}
         user={post.postOwner}
@@ -139,7 +157,7 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
         message="Are you sure you want to delete this post?"
         cancelText="Cancel"
         confirmText="Delete"
-        confirmCallback={() => console.log("Post delete triggered")}
+        confirmCallback={() => handlePostDelete()}
         refObject={deleteConfirm}
       >
         <div className="flex flex-col gap-4">

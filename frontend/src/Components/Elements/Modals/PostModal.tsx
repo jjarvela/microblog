@@ -1,22 +1,68 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Button from "../Button";
 import TagInput from "../Inputs/TagInput";
 import TextAreaInput from "../Inputs/TextAreaInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
 import TextInput from "../Inputs/TextInput";
 import UserProfileInfo from "../UserProfileInfo";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import postService from "../../../Services/postService";
+import { testUserId } from "../../../globalData";
 
 type NewPostProps = {
   user: User;
+  id?: number;
   text: string;
   tags: string[];
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
   mode: "post" | "edit";
 };
 
-function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
+function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
+  const queryClient = useQueryClient();
+
   const [postText, setPostText] = useState(text);
   const [newTags, setNewTags] = useState<string[]>(tags);
+
+  const mutateAddPost = useMutation({
+    mutationFn: (post: BlogToServer) =>
+      postService.addNewPost(post, testUserId),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+    },
+  });
+
+  const mutateEditPost = useMutation({
+    mutationFn: (post: BlogToServer) =>
+      postService.editPost(post, testUserId, id!), // FIX ME: id optional for now because of rewriting
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+    },
+  });
+
+  const handleAddPostSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const newPost: BlogToServer = {
+      text: postText,
+      date: new Date().toISOString(),
+      hashtags: newTags,
+    };
+    mutateAddPost.mutate(newPost);
+    refObject.current?.close();
+  };
+
+  const handleEditPostSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const editedPost: BlogToServer = {
+      id: id,
+      text: postText,
+      date: new Date().toISOString(),
+      hashtags: newTags,
+    };
+    mutateEditPost.mutate(editedPost);
+    refObject.current?.close();
+  };
+
   return (
     <dialog
       ref={refObject}
@@ -36,8 +82,11 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
         <form
           className="flex flex-col gap-6"
           onSubmit={(e) => {
-            e.preventDefault();
-            refObject.current?.close();
+            mode === "post"
+              ? handleAddPostSubmit(e)
+              : mode === "edit"
+                ? handleEditPostSubmit(e)
+                : null;
           }}
         >
           <TextAreaInput
@@ -60,7 +109,7 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
           </Button>
           <TagInput
             tags={newTags}
-            onTagsChanged={(tags) => setNewTags(tags)}
+            onTagsChanged={(tag) => setNewTags(tag)}
             maxTagLength={20}
             maxTags={20}
             showCount
