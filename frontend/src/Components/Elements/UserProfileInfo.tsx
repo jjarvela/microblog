@@ -47,9 +47,7 @@ function UserProfileInfo({
               showPopup ? "underline underline-offset-2" : ""
             }`}
             onMouseEnter={() => {
-              console.log(
-                window.innerWidth - popup.current!.getBoundingClientRect().x,
-              );
+              /*Get the window height and current x and y positions of the popup to adjust its offset so it's always fully on screen*/
               if (
                 window.innerHeight - popup.current!.getBoundingClientRect().y <
                 400
@@ -99,9 +97,10 @@ function UserProfileInfo({
               <small>{user.userName}</small>
             </Link>
             <p>Fetch user about at some point</p>
-            <div className="flex flex-row gap-2 text-lg text-secondary">
-              <p>Followers</p>
-              <p>Following</p>
+            {/*Add proper follower counts once we get them*/}
+            <div className="bold flex flex-row gap-2 text-lg text-secondary">
+              <p>{3} Followers</p>
+              <p>{5} Following</p>
             </div>
           </div>
         </div>
