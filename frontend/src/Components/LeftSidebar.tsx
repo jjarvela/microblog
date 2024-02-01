@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "./Elements/Button";
 import PostModal from "./Elements/Modals/PostModal";
 import SidebarLink from "./Elements/SidebarLink";
@@ -13,10 +13,10 @@ import MaterialSymbolsSettingsRounded from "./Icons/MaterialSymbolsSettingsRound
 import PhHashStraightBold from "./Icons/PhHashStraightBold";
 import { useBreakpoint } from "../Hooks/BreakpointHook";
 import MdiDotsVertical from "./Icons/MdiDotsVertical";
-import { UserContext } from "../UserWrapper";
+import { useUser } from "../UserWrapper";
 
 function LeftSidebar() {
-  const user = useContext(UserContext);
+  const user = useUser();
   const postModal = useRef<HTMLDialogElement>(null);
   const { isMd } = useBreakpoint("md");
   const { isXs } = useBreakpoint("xs");
