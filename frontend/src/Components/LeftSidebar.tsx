@@ -14,9 +14,12 @@ import PhHashStraightBold from "./Icons/PhHashStraightBold";
 import { useBreakpoint } from "../Hooks/BreakpointHook";
 import MdiDotsVertical from "./Icons/MdiDotsVertical";
 import { useUser } from "../UserWrapper";
-import { useNotificationCenter } from "react-toastify/addons/use-notification-center";
 
-function LeftSidebar() {
+type LeftSidebarProps = {
+  unreadCount: number;
+};
+
+function LeftSidebar({ unreadCount }: LeftSidebarProps) {
   const user = useUser();
   const postModal = useRef<HTMLDialogElement>(null);
   const { isMd } = useBreakpoint("md");
@@ -27,8 +30,6 @@ function LeftSidebar() {
     if (isXs) setShowSidebar(true);
     else setShowSidebar(false);
   }, [isXs]);
-
-  const { unreadCount } = useNotificationCenter();
 
   return (
     <>
@@ -52,7 +53,7 @@ function LeftSidebar() {
             // Different style for the xs view.
             className={
               isXs
-                ? "scrollbar-thin flex h-full w-16 flex-shrink-0 flex-col overflow-auto border-r border-black50 dark:to-black75 md:w-full md:max-w-[16rem] short:overflow-hidden"
+                ? "scrollbar-thin relative flex h-full w-16 flex-shrink-0 flex-col overflow-auto border-r border-black50 dark:to-black75 md:w-full md:max-w-[16rem] short:overflow-hidden"
                 : "scrollbar-thin absolute top-[3.5rem] z-10 flex w-16 flex-shrink-0 flex-col overflow-auto rounded-md border border-black50 bg-white shadow-md dark:border-black75 dark:bg-black"
             }
             tabIndex={-1}
@@ -87,11 +88,18 @@ function LeftSidebar() {
                 text="Settings"
                 icon={<MaterialSymbolsSettingsRounded />}
               />
-              <SidebarLink
-                to="/notifications"
-                text="Notifications"
-                icon={<MaterialSymbolsNotificationsRounded />}
-              />
+              <div className="relative">
+                <SidebarLink
+                  to="/notifications"
+                  text="Notifications"
+                  icon={<MaterialSymbolsNotificationsRounded />}
+                />
+                {unreadCount > 0 && (
+                  <div className="absolute left-8 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                    {unreadCount}
+                  </div>
+                )}
+              </div>
               <SidebarLink
                 to="/messages"
                 text="Messages"
