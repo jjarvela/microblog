@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.7.1"
+  version: "0.7.2"
 
 servers:
   - url: https://api.microblog.fi
@@ -17,6 +17,12 @@ components:
   responses:
     OK:
       description: OK
+    Id:
+      description: Id of the deleted item.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Id"
     postId:
       description: Id of the new blog post in json array object.
       content:
@@ -81,7 +87,7 @@ components:
           type: integer
         date:
           type: string
-          format: date
+          format: date-time
         text:
           type: string
           example: Blog post main text
@@ -112,6 +118,15 @@ components:
       format: uuid
       example: d8a935c3-62dd-4315-b4a6-638579214891
 
+    Id:
+      description: numerical id.
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+
     idList:
       description: List of item ids.
       type: object
@@ -140,7 +155,6 @@ components:
         - screenName
         - email
         - birthday
-
       properties:
         screenName:
           type: string
@@ -159,7 +173,6 @@ components:
       required:
         - userName
         - email
-
       properties:
         screenName:
           type: string
@@ -172,6 +185,39 @@ components:
         birthday:
           type: string
           format: date
+
+    userFollow:
+      type: object
+      description: User following other user or group.
+      required:
+        - id
+        - user_id
+        - follows_user
+        - follows_group
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: string
+          format: uuid
+        follows_user:
+          type: string
+          format: uuid
+        follows_group:
+          type: integer
+
+    newFollow:
+      type: object
+      description: For creating new following
+      required:
+        - follows_user
+        - follows_group
+      properties:
+        follows_user:
+          type: string
+          format: uuid
+        follows_group:
+          type: integer
 
     mediaRes:
       type: array
@@ -499,6 +545,135 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/userProfile"
+
+  /user/{userId}/following:
+    get:
+      summary: Get list of users the person is following.
+      operationId: getFollowings
+      tags:
+        - user
+      responses:
+        "200":
+          description: A list of users and followings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/userFollow"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
+    post:
+      summary: Add the user's id and a user or a group they are following      
+      operationId: addFollowing
+      tags: 
+        - user
+      responses:
+        "200":
+          description: Return added user's following
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userFollow"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+            format: uuid
+          required: true
+        - in: query
+          name: followsUser
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: followsGroup
+          schema:
+            type: string
+
+    delete:
+      summary: Delete one user's following item
+      operationId: deleteFollowing
+      responses:
+        "200":
+          $ref: "#/components/responses/Id"
+        "400":
+          $ref: "#/components/responses/errorResponse"
+      tags:
+        - user
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Id"
+
+  /user/{userId}/followingGroups:
+    get:
+      summary: Get list of groups the person is following.
+      operationId: getGroupFollowings
+      tags:
+        - user
+      responses:
+        "200":
+          description: A list of objects; users and followings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/userFollow"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+    
+  /user/{userId}/followers:
+    get:
+      summary: Get list of user's followers.
+      operationId: getFollowers
+      tags:
+        - user
+      responses:
+        "200":
+          description: A list of objects; followers the user has
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/userFollow"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
 
   /user/register:
     post:

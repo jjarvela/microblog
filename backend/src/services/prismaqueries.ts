@@ -1,6 +1,7 @@
 import { PrismaClient, followings, groupmembers, users } from '@prisma/client';
 
 const prisma = new PrismaClient();
+import * as queries from "../services/followingQueries";
 
 
 
@@ -22,12 +23,34 @@ const prisma = new PrismaClient();
 //   });
 
 // const follow = {
-//     user_id: '22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b',
-//     follows_user: '641ae1b3-d5bf-4058-b8d8-2e9e6023114d',
-//     follows_group: undefined
+//     user_id: '641ae1b3-d5bf-4058-b8d8-2e9e6023114d',
+//     follows_user: '22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b'
 // };
 
-// insertFollowing(follow)
+// queries.insertFollowing(follow)
+//   .then(async () => {
+//     await prisma.$disconnect()
+//   })
+//   .catch(async (e) => {
+//     console.error(e)
+//     await prisma.$disconnect()
+//     process.exit(1)
+//   });
+
+
+queries.selectFollowingGroups({
+    user_id: '22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b'})
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  });
+
+// queries.selectFollowingUsers({
+//     user_id: '22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b'})
 //   .then(async () => {
 //     await prisma.$disconnect()
 //   })
