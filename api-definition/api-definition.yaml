@@ -210,13 +210,9 @@ components:
       type: object
       description: For creating new following
       required:
-        - user_id
         - follows_user
         - follows_group
       properties:
-        user_id:
-          type: string
-          format: uuid
         follows_user:
           type: string
           format: uuid
@@ -603,11 +599,15 @@ paths:
             type: string
             format: uuid
           required: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/newFollow"
+        - in: query
+          name: followsUser
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: followsGroup
+          schema:
+            type: string
 
     delete:
       summary: Delete one user's following item
@@ -639,7 +639,13 @@ paths:
         - user
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          description: A list of objects; users and followings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/userFollow"
       parameters:
         - name: userId
           required: true
@@ -655,7 +661,13 @@ paths:
         - user
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          description: A list of objects; followers the user has
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/userFollow"
       parameters:
         - name: userId
           required: true
