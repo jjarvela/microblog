@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import Button from "../Button";
 import TagInput from "../Inputs/TagInput";
 import TextAreaInput from "../Inputs/TextAreaInput";
@@ -8,6 +8,7 @@ import UserProfileInfo from "../UserProfileInfo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postService from "../../../Services/postService";
 import { testUserId } from "../../../globalData";
+import axios from "axios";
 
 type NewPostProps = {
   user: User;
@@ -20,9 +21,10 @@ type NewPostProps = {
 
 function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
   const queryClient = useQueryClient();
-
+  const form = useRef<HTMLFormElement>(null);
   const [postText, setPostText] = useState(text);
   const [newTags, setNewTags] = useState<string[]>(tags);
+  const [files, setFiles] = useState<File[]>([]);
 
   const mutateAddPost = useMutation({
     mutationFn: (post: BlogToServer) =>
@@ -63,6 +65,27 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
     refObject.current?.close();
   };
 
+  const postFile = useMutation({
+    mutationKey: ["post-modal-files"],
+    mutationFn: () =>
+      axios
+        .post(`http://localhost:9000/${testUserId}/${testUserId}`, files, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((res) => res.data),
+  });
+
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const isFormValid = form.current?.checkValidity();
+
+    if (!isFormValid) form.current && form.current.reportValidity();
+    else {
+      e.preventDefault();
+
+      postFile.mutate();
+    }
+  };
+
   return (
     <dialog
       ref={refObject}
@@ -80,6 +103,7 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
           </div>
         )}
         <form
+          ref={form}
           className="flex flex-col gap-6"
           onSubmit={(e) => {
             mode === "post"
@@ -98,15 +122,35 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
             onChange={(e) => setPostText(e.target.value)}
             autofocus={true}
           />
-          <Button
-            type="button"
-            className="btn-primary flex w-fit flex-row items-center gap-2 px-4"
+          <label
+            htmlFor="post-media"
+            className="btn-primary mt-2 flex w-fit flex-row items-center gap-2 px-4"
           >
             <span className="text-lg">
               <MaterialSymbolsAddPhotoAlternateOutlineRounded />
             </span>
             Add media...
-          </Button>
+          </label>
+          <input
+            id="post-media"
+            name="user-media"
+            className="collapse h-0 w-0"
+            type="file"
+            accept=".jpg, .jpeg, .png, .gif, .svg, .mp4, .mpeg, .avi"
+            multiple
+            max={4}
+            onChange={(e) => {
+              if (e.target.files) {
+                console.log(e.target.files);
+                const files = [];
+                for (let i = 0; i < e.target.files.length; i++) {
+                  files.push(e.target.files[i]);
+                }
+                console.log(files);
+                setFiles(files);
+              }
+            }}
+          />
           <TagInput
             tags={newTags}
             onTagsChanged={(tag) => setNewTags(tag)}
@@ -122,7 +166,7 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
               placeholder="Group name..."
             />
           </div>
-          <div className="flex flex-row justify-between">
+          <div className="mt-2 flex flex-row justify-between">
             <Button
               className="btn-secondary"
               onClick={() => refObject.current?.close()}
@@ -130,7 +174,13 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
             >
               Cancel
             </Button>
-            <Button className="btn-primary" type="submit">
+            <Button
+              className="btn-primary"
+              onClick={(e) => {
+                handleSubmit(e);
+                refObject.current?.close();
+              }}
+            >
               {mode === "post" && "Post"}
               {mode === "edit" && "Edit"}
             </Button>

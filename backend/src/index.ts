@@ -14,4 +14,5 @@ app.use(
 api.init();
 
 app.use((req, res) => api.handleRequest(req as Request, req, res));
-app.listen(9000, () => console.info('api listening at http://localhost:9000'));
+
+app.listen(9000, () => console.info("api listening at http://localhost:9000"));
