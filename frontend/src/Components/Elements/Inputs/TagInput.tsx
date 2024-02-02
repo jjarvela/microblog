@@ -19,17 +19,16 @@ function TagInput({
   class: classAdd,
 }: TagInputProps) {
   const [newTag, setNewTag] = useState("");
-  const [newTags, setNewTags] = useState(tags);
   const tagInput = useRef<HTMLInputElement>(null);
 
   const handleTagDelete = (index: number) => {
     // Workaround: toSpliced is a thing, but not supported completely yet.
-    onTagsChanged(newTags.splice(index, 1));
+    onTagsChanged(tags.filter((_tag, i) => i !== index));
   };
   useEffect(() => {
     if (newTag.endsWith(",") || newTag.endsWith(" ")) {
-      if (newTags.length < maxTags) {
-        setNewTags([...newTags, newTag.substring(0, newTag.length - 1)]);
+      if (tags.length < maxTags) {
+        onTagsChanged([...tags, newTag.substring(0, newTag.length - 1)]);
         setNewTag("");
       } else {
         setNewTag(newTag.substring(0, newTag.length - 1));
@@ -37,7 +36,7 @@ function TagInput({
     } else {
       setNewTag(newTag.substring(0, maxTagLength));
     }
-  }, [newTag, newTags, maxTagLength, maxTags]);
+  }, [newTag, maxTagLength, maxTags, tags, onTagsChanged]);
   return (
     <div
       className={
@@ -51,12 +50,12 @@ function TagInput({
         }
       }}
     >
-      {newTags.map((val, i) => (
+      {tags.map((val, i) => (
         <TagBox text={val} key={i} onDelete={() => handleTagDelete(i)} />
       ))}
       {showCount && (
         <p className="absolute bottom-1 right-2 select-none text-black50">
-          {newTags.length} / {maxTags}
+          {tags.length} / {maxTags}
         </p>
       )}
       <input
@@ -67,8 +66,7 @@ function TagInput({
         maxLength={maxTagLength + 1}
         ref={tagInput}
         onKeyDown={(e) => {
-          if (e.key == "Backspace" && !newTag)
-            handleTagDelete(newTags.length - 1);
+          if (e.key == "Backspace" && !newTag) handleTagDelete(tags.length - 1);
         }}
       ></input>
     </div>
