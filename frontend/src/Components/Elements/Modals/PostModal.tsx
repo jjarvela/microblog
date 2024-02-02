@@ -77,11 +77,9 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
 
   const handleDelete = (file: File) => {
     const deleteIndex = files.indexOf(file);
-    const newFiles: File[] = files.filter((file, index) => {
-      if (index !== deleteIndex) {
-        return file;
-      }
-    });
+    const newFiles: File[] = files.filter(
+      (_file, index) => index !== deleteIndex,
+    );
     setFiles(newFiles);
   };
 
