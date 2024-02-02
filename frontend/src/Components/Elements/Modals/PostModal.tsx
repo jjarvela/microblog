@@ -115,48 +115,49 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
             onChange={(e) => setPostText(e.target.value)}
             autofocus={true}
           />
-          <label
-            htmlFor="post-media"
-            className="btn-primary mt-2 flex w-fit cursor-pointer flex-row items-center gap-2 px-4"
-          >
-            <span className="text-lg">
-              <MaterialSymbolsAddPhotoAlternateOutlineRounded />
-            </span>
-            Add media...
-          </label>
-          <input
-            ref={fileInput}
-            id="post-media"
-            name="user-media"
-            className="collapse h-0 w-0"
-            type="file"
-            accept=".jpg, .jpeg, .png, .gif, .svg, .mp4, .mpeg, .avi"
-            multiple
-            max={4}
-            onChange={(e) => {
-              if (e.target.files) {
-                console.log(e.target.files);
-                const newFiles = [];
-                for (let i = 0; i < e.target.files.length; i++) {
-                  newFiles.push(e.target.files[i]);
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="post-media"
+              className="btn-primary flex w-fit cursor-pointer flex-row items-center gap-2 px-4"
+            >
+              <span className="text-lg">
+                <MaterialSymbolsAddPhotoAlternateOutlineRounded />
+              </span>
+              Add media...
+            </label>
+            <input
+              ref={fileInput}
+              id="post-media"
+              name="user-media"
+              className="collapse h-0 w-0"
+              type="file"
+              accept=".jpg, .jpeg, .png, .gif, .svg, .mp4, .mpeg, .avi"
+              multiple
+              max={4}
+              onChange={(e) => {
+                if (e.target.files) {
+                  console.log(e.target.files);
+                  const newFiles = [];
+                  for (let i = 0; i < e.target.files.length; i++) {
+                    newFiles.push(e.target.files[i]);
+                  }
+                  setFiles(newFiles);
                 }
-                setFiles(newFiles);
-              }
-            }}
-          />
+              }}
+            />
 
-          {files.length > 0 && (
-            <div className="my-2 flex flex-row gap-1">
-              {files.map((file) => (
-                <FormMediaPreview
-                  key={Math.floor(Math.random() * 10000)}
-                  file={file}
-                  handleDelete={handleDelete}
-                />
-              ))}
-            </div>
-          )}
-
+            {files.length > 0 && (
+              <div className="flex flex-row gap-1">
+                {files.map((file) => (
+                  <FormMediaPreview
+                    key={Math.floor(Math.random() * 10000)}
+                    file={file}
+                    handleDelete={handleDelete}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
           <TagInput
             tags={newTags}
             onTagsChanged={(tag) => setNewTags(tag)}
@@ -165,14 +166,14 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
             showCount
             class="w-full max-w-[32rem]"
           />
-          <div className="my-4 flex flex-row flex-wrap gap-4">
+          <div className="flex flex-row flex-wrap gap-4">
             <h5 className="ml-2">Add to group</h5>
             <TextInput
               className="w-full min-w-fit flex-1"
               placeholder="Group name..."
             />
           </div>
-          <div className="mt-2 flex flex-row justify-between">
+          <div className="flex flex-row justify-between">
             <Button
               className="btn-secondary"
               onClick={() => {
