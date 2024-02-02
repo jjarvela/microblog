@@ -1,38 +1,38 @@
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Button from "./Elements/Button";
 import TextInput from "./Elements/Inputs/TextInput";
 import "./Landing.css";
 import { useNavigate } from "react-router";
-import { UserContext } from "../UserWrapper";
+import { useUser } from "../UserWrapper";
 import DropdownInput from "./Elements/Inputs/DropdownInput";
 import { locationList } from "../globalData";
 
 function Landing() {
   const [register, setRegister] = useState(true);
   const navigate = useNavigate();
-  const userContext = useContext(UserContext);
+  const user = useUser();
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [screenNameInput, setScreenNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordConfirmInput, setPasswordConfirmInput] = useState("");
-  const [birthdateInput, setBirthdateInput] = useState("");
+  const [birthdayInput, setBirthdayInput] = useState("");
   const [locationInput, setLocationInput] = useState(locationList[0]);
 
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = () => {
-    userContext?.onLogin(usernameInput, passwordInput);
+    user?.onLogin(usernameInput, passwordInput);
   };
 
   const handleRegister = () => {
-    userContext?.onRegister(
+    user?.onRegister(
       usernameInput,
       passwordInput,
       screenNameInput,
       emailInput,
       locationInput,
-      new Date(birthdateInput),
+      new Date(birthdayInput),
     );
   };
 
@@ -97,14 +97,14 @@ function Landing() {
             )}
             {register && (
               <>
-                <label htmlFor="birthdate" className="[webkit] -mb-3 text-sm">
-                  Birthdate
+                <label htmlFor="birthday" className="[webkit] -mb-3 text-sm">
+                  birthday
                 </label>
                 <input
-                  id="birthdate"
+                  id="birthday"
                   type="date"
-                  onChange={(e) => setBirthdateInput(e.target.value)}
-                  placeholder="Birthdate"
+                  onChange={(e) => setBirthdayInput(e.target.value)}
+                  placeholder="birthday"
                 />
               </>
             )}
@@ -121,8 +121,8 @@ function Landing() {
             )}
             <Button
               type="submit"
-              class="btn-primary"
-              isDisabled={Boolean(errorMessage)}
+              className="btn-primary"
+              disabled={Boolean(errorMessage)}
             >
               {register ? "Register" : "Log in"}
             </Button>
@@ -134,7 +134,7 @@ function Landing() {
             </h5>
             <Button
               onClick={() => setRegister(!register)}
-              class="btn-secondary"
+              className="btn-secondary"
               type="button"
             >
               {register ? "Log in" : "Register"}

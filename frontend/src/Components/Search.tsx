@@ -210,7 +210,7 @@ const Search = () => {
             }`}
           >
             <Button
-              class="btn-primary px-2 text-xl"
+              className="btn-primary px-2 text-xl"
               onClick={() =>
                 navigate(
                   `/search${query !== "" ? "?q=" + query : "?"}${

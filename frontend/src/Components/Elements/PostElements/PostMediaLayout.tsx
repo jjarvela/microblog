@@ -10,10 +10,14 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
   ) => {
     switch (items.length) {
       case 1:
-        return <PostMedia index={0} media={items[0]} />;
+        return (
+          <div className="m-auto">
+            <PostMedia index={0} media={items[0]} maxH="35rem" maxW="100rem" />
+          </div>
+        );
       case 2:
         return (
-          <div className="flex h-[100%] flex-row gap-1">
+          <div className="flex h-[15rem] flex-row gap-1 lg:h-[30rem]">
             <div className="flex w-[50%] flex-col">
               <PostMedia index={0} media={items[0]} />
             </div>
@@ -24,7 +28,7 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
         );
       case 3:
         return (
-          <div className="flex h-[100%] gap-1">
+          <div className="flex h-[15rem] gap-1 lg:h-[30rem]">
             <div className="flex w-[50%] flex-col">
               <PostMedia index={0} media={items[0]} />
             </div>
@@ -41,20 +45,20 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
       case 4:
         return (
           <>
-            <div className="mb-1 flex h-[50%] flex-row gap-1">
-              <div className=" flex w-[50%] flex-col">
-                <PostMedia index={0} media={items[0]} />
+            <div className="mb-1 flex h-[15rem] flex-row">
+              <div className=" flex  w-[50%] flex-col">
+                <PostMedia index={0} media={items[0]} maxH="15rem" />
               </div>
               <div className="flex w-[50%] flex-col">
-                <PostMedia index={1} media={items[1]} />
+                <PostMedia index={1} media={items[1]} maxH="15rem" />
               </div>
             </div>
-            <div className="mt-1 flex h-[50%] flex-row gap-1">
+            <div className="mt-1 flex h-[15rem] flex-row">
               <div className="flex w-[50%] flex-col">
-                <PostMedia index={2} media={items[2]} />
+                <PostMedia index={2} media={items[2]} maxH="15rem" />
               </div>
               <div className="flex w-[50%] flex-col">
-                <PostMedia index={3} media={items[3]} />
+                <PostMedia index={3} media={items[3]} maxH="15rem" />
               </div>
             </div>
           </>
@@ -65,7 +69,11 @@ export default function PostMediaLayout({ media }: PostMediaProps) {
   };
 
   return (
-    <div className=" m-auto h-[15rem] w-[95%] overflow-hidden rounded-lg border-[1px] border-solid border-black25 dark:border-black75 mid:h-[25rem]">
+    <div
+      className={`mx-auto overflow-hidden rounded-lg border-[1px] border-solid border-black25 dark:border-black75 ${
+        media.length > 1 ? "w-full" : "w-[max-content] max-w-[100%]"
+      }`}
+    >
       {renderLayout(media)}
     </div>
   );

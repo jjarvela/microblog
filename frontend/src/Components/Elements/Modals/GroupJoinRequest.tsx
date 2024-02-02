@@ -36,13 +36,13 @@ export default function GroupJoinRequest({
         />
         <div className="flex flex-row justify-between">
           <Button
-            class="btn-secondary"
+            className="btn-secondary"
             onClick={() => refObject.current?.close()}
             type="button"
           >
             Cancel
           </Button>
-          <Button class="btn-primary" type="submit">
+          <Button className="btn-primary" type="submit">
             Request
           </Button>
         </div>
