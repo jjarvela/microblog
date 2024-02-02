@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.7.1"
+  version: "0.7.2"
 
 servers:
   - url: https://api.microblog.fi
@@ -87,7 +87,7 @@ components:
           type: integer
         date:
           type: string
-          format: date
+          format: date-time
         text:
           type: string
           example: Blog post main text

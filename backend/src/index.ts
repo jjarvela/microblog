@@ -1,13 +1,14 @@
-import Express from "express";
-import api from "./controllers/loadApi";
-import type { Request } from "openapi-backend";
+import Express from 'express';
+import api from "./controllers/loadApi"
+import type { Request } from 'openapi-backend';
 import cors from "cors";
+import "dotenv/config";
 
 const app = Express();
 app.use(Express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173"
+    origin: process.env.FRONTEND_URL,
   })
 );
 api.init();

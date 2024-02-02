@@ -1,48 +1,73 @@
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import Button from "../Button";
 import TagInput from "../Inputs/TagInput";
 import TextAreaInput from "../Inputs/TextAreaInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
 import TextInput from "../Inputs/TextInput";
 import UserProfileInfo from "../UserProfileInfo";
-import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import postService from "../../../Services/postService";
 import { testUserId } from "../../../globalData";
-import { useMutation } from "@tanstack/react-query";
 
 type NewPostProps = {
   user: User;
+  id?: number;
   text: string;
   tags: string[];
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
   mode: "post" | "edit";
 };
 
-function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
+function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
+  const queryClient = useQueryClient();
+  const form = useRef<HTMLFormElement>(null);
   const [postText, setPostText] = useState(text);
   const [newTags, setNewTags] = useState<string[]>(tags);
-  const form = useRef<HTMLFormElement>(null);
-
   const [files, setFiles] = useState<File[]>([]);
 
-  const postFile = useMutation({
-    mutationKey: ["post-modal-files"],
-    mutationFn: () =>
-      axios
-        .post(`http://localhost:9000/${testUserId}/${testUserId}`, files, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => res.data),
+  const mutateAddPost = useMutation({
+    mutationFn: (post: BlogToServer) =>
+      postService.addNewPost(post, testUserId),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+    },
   });
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const isFormValid = form.current?.checkValidity();
+  const mutateEditPost = useMutation({
+    mutationFn: (post: BlogToServer) =>
+      postService.editPost(post, testUserId, id!), // FIX ME: id optional for now because of rewriting
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+    },
+  });
 
-    if (!isFormValid) form.current && form.current.reportValidity();
-    else {
-      e.preventDefault();
+  const mutateSendMedia = useMutation({
+    mutationKey: ["post-modal-files"],
+    mutationFn: () => postService.sendPostMedia(testUserId, testUserId, files),
+  });
 
-      postFile.mutate();
+  const handleSubmit = (e: FormEvent, mode: NewPostProps["mode"]) => {
+    e.preventDefault();
+    if (mode === "post") {
+      const newPost: BlogToServer = {
+        text: postText,
+        date: new Date().toISOString(),
+        hashtags: newTags,
+      };
+      mutateAddPost.mutate(newPost);
+    } else if (mode === "edit") {
+      const editedPost: BlogToServer = {
+        id: id,
+        text: postText,
+        date: new Date().toISOString(),
+        hashtags: newTags,
+      };
+      mutateEditPost.mutate(editedPost);
     }
+    if (files.length > 0) {
+      mutateSendMedia.mutate();
+    }
+    refObject.current?.close();
   };
 
   return (
@@ -61,7 +86,11 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
             <h3 className="whitespace-nowrap">Edit post</h3>
           </div>
         )}
-        <form ref={form} className="gap flex flex-col">
+        <form
+          ref={form}
+          className="flex flex-col gap-6"
+          onSubmit={(e) => handleSubmit(e, mode)}
+        >
           <TextAreaInput
             value={postText}
             placeholder="Post text..."
@@ -90,19 +119,17 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
             max={4}
             onChange={(e) => {
               if (e.target.files) {
-                console.log(e.target.files);
                 const files = [];
                 for (let i = 0; i < e.target.files.length; i++) {
                   files.push(e.target.files[i]);
                 }
-                console.log(files);
                 setFiles(files);
               }
             }}
           />
           <TagInput
             tags={newTags}
-            onTagsChanged={(tags) => setNewTags(tags)}
+            onTagsChanged={(tag) => setNewTags(tag)}
             maxTagLength={20}
             maxTags={20}
             showCount
@@ -123,13 +150,7 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
             >
               Cancel
             </Button>
-            <Button
-              className="btn-primary"
-              onClick={(e) => {
-                handleSubmit(e);
-                refObject.current?.close();
-              }}
-            >
+            <Button className="btn-primary">
               {mode === "post" && "Post"}
               {mode === "edit" && "Edit"}
             </Button>
