@@ -37,3 +37,14 @@ When running locally, set HOST to localhost and PORT is typically 5432.
 
 This will populate the database with data that is required for application 
 to start, and for development purpose also.
+
+
+### Container build & starting
+
+1. In developement pull branch 'backend-container' from origin.
+2. On your local developement environment navigate to .\backend\deployment\microblog-container-backend
+3. In microblog-container-backend folder:
+   a) Edit .env environment variables  
+   b) Run `docker-compose build` to build container image. The default configuration has all development dependencies,
+      if you want to reduce image size edit package.json accordingly.
+   c) Run `docker-compose up` to start up the container. 

@@ -130,6 +130,11 @@
   }
 }
 
+.bold {
+  font-weight: 400;
+  font-weight: 600;
+}
+
 .epr_-4ag7tl {
   background-image: url("/emojipickericons.svg") !important;
 }

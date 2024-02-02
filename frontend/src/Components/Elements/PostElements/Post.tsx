@@ -46,7 +46,7 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
   return (
     <PostContext.Provider value={post}>
       <div className="relative">
-        <div className="timeline-box flex flex-col overflow-hidden">
+        <div className="timeline-box flex flex-col">
           {pinnedPost ? (
             <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 p-2 px-6 pb-1 dark:border-white25">
               <PostPin />
@@ -105,7 +105,7 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
             to={`/${post.postOwner.userName.substring(1)}/post/${1}`}
             state={post}
           >
-            <div className="-m-3 flex flex-row items-center justify-end gap-1 bg-black25 px-6 py-3 dark:bg-black75">
+            <div className="-m-3 flex flex-row items-center justify-end gap-1 rounded-b-xl bg-black25 px-6 py-3 dark:bg-black75">
               <span className="text-lg">
                 <PhFireSimpleBold />
               </span>
