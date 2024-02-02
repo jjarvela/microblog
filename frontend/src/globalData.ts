@@ -23,3 +23,6 @@ export const emptyPost: Post = {
   reactions: 0,
   time: new Date(),
 };
+
+export const serverUrl = import.meta.env.VITE_BACKEND_URL;
+export const testUserId = "22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b";

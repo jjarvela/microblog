@@ -1,6 +1,6 @@
 # Microblog Backend
 
-Backend for Microblog service using Express server and PostgreSQL database 
+Backend for Microblog service using Express server and PostgreSQL database
 with Prisma connected to the database.
 
 ## Installing
@@ -33,11 +33,10 @@ When running locally, set HOST to localhost and PORT is typically 5432.
 
 ### Seeding
 
-1. Navigate to `.\backend\` and run `npx prisma db seed`. 
+1. Navigate to `.\backend\` and run `npx prisma db seed --schema ./src/services/schema.prisma`.
 
-This will populate the database with data that is required for application 
+This will populate the database with data that is required for application
 to start, and for development purpose also.
-
 
 ### Container build & starting
 
@@ -46,5 +45,5 @@ to start, and for development purpose also.
 3. In microblog-container-backend folder:
    a) Edit .env environment variables  
    b) Run `docker-compose build` to build container image. The default configuration has all development dependencies,
-      if you want to reduce image size edit package.json accordingly.
-   c) Run `docker-compose up` to start up the container. 
+   if you want to reduce image size edit package.json accordingly.
+   c) Run `docker-compose up` to start up the container.
