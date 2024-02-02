@@ -8,7 +8,6 @@ import UserProfileInfo from "../UserProfileInfo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postService from "../../../Services/postService";
 import { testUserId } from "../../../globalData";
-import axios from "axios";
 
 type NewPostProps = {
   user: User;
@@ -42,48 +41,33 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
     },
   });
 
-  const handleAddPostSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const newPost: BlogToServer = {
-      text: postText,
-      date: new Date().toISOString(),
-      hashtags: newTags,
-    };
-    mutateAddPost.mutate(newPost);
-    refObject.current?.close();
-  };
-
-  const handleEditPostSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const editedPost: BlogToServer = {
-      id: id,
-      text: postText,
-      date: new Date().toISOString(),
-      hashtags: newTags,
-    };
-    mutateEditPost.mutate(editedPost);
-    refObject.current?.close();
-  };
-
-  const postFile = useMutation({
+  const mutateSendMedia = useMutation({
     mutationKey: ["post-modal-files"],
-    mutationFn: () =>
-      axios
-        .post(`http://localhost:9000/${testUserId}/${testUserId}`, files, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => res.data),
+    mutationFn: () => postService.sendPostMedia(testUserId, testUserId, files),
   });
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const isFormValid = form.current?.checkValidity();
-
-    if (!isFormValid) form.current && form.current.reportValidity();
-    else {
-      e.preventDefault();
-
-      postFile.mutate();
+  const handleSubmit = (e: FormEvent, mode: NewPostProps["mode"]) => {
+    e.preventDefault();
+    if (mode === "post") {
+      const newPost: BlogToServer = {
+        text: postText,
+        date: new Date().toISOString(),
+        hashtags: newTags,
+      };
+      mutateAddPost.mutate(newPost);
+    } else if (mode === "edit") {
+      const editedPost: BlogToServer = {
+        id: id,
+        text: postText,
+        date: new Date().toISOString(),
+        hashtags: newTags,
+      };
+      mutateEditPost.mutate(editedPost);
     }
+    if (files.length > 0) {
+      mutateSendMedia.mutate();
+    }
+    refObject.current?.close();
   };
 
   return (
@@ -105,13 +89,7 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
         <form
           ref={form}
           className="flex flex-col gap-6"
-          onSubmit={(e) => {
-            mode === "post"
-              ? handleAddPostSubmit(e)
-              : mode === "edit"
-                ? handleEditPostSubmit(e)
-                : null;
-          }}
+          onSubmit={(e) => handleSubmit(e, mode)}
         >
           <TextAreaInput
             value={postText}
@@ -141,12 +119,10 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
             max={4}
             onChange={(e) => {
               if (e.target.files) {
-                console.log(e.target.files);
                 const files = [];
                 for (let i = 0; i < e.target.files.length; i++) {
                   files.push(e.target.files[i]);
                 }
-                console.log(files);
                 setFiles(files);
               }
             }}
@@ -174,13 +150,7 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
             >
               Cancel
             </Button>
-            <Button
-              className="btn-primary"
-              onClick={(e) => {
-                handleSubmit(e);
-                refObject.current?.close();
-              }}
-            >
+            <Button className="btn-primary">
               {mode === "post" && "Post"}
               {mode === "edit" && "Edit"}
             </Button>

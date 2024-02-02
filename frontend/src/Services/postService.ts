@@ -21,10 +21,19 @@ function deletePost(postIds: number[], userId: string) {
   }); // DELETE request does not necessarily support a request body
 }
 
+function sendPostMedia(userId: string, folderId: string, files: File[]) {
+  return axios
+    .post(`${serverUrl}/${userId}/${folderId}`, files, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => res.data);
+}
+
 export default {
   getUserPosts: getPosts,
   getPosts,
   addNewPost,
   editPost,
   deletePost,
+  sendPostMedia,
 };
