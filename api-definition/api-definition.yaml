@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.7.2"
+  version: "0.7.3"
 
 servers:
   - url: https://api.microblog.fi
@@ -242,9 +242,13 @@ components:
       items:
         type: object
         properties:
-          userId:
+          type:
             type: string
-            description: User uuid
+            description: Portfolio item type.
+          data:
+            type: object
+            additionalProperties: true
+            description: Portfolio item data object.
 
     userProfile:
       type: object
@@ -492,25 +496,56 @@ paths:
           schema:
             type: string
 
-  /portfolio/{userId}/public:
+  /portfolio/{userId}:
     get:
-      summary: List public portfolio items.
+      operationId: getPortfolio
+      summary: List portfolio items.
       tags:
         - portfolio
       responses:
         "200":
-          description: Response contains user's portfolio items and their location.
+          description: Response contains user's portfolio items as a JSON array.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/portfolioRes"
-
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
       parameters:
         - name: userId
           required: true
           in: path
           schema:
             type: string
+    post:
+      operationId: editPortfolio
+      summary: Update portfolio items.
+      tags:
+        - portfolio
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/portfolioRes"
 
   /user/{userId}/profile:
     get:
