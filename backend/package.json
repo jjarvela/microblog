@@ -4,9 +4,7 @@
   "description": "Backend for Microblog project",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node ./src/index.ts"
-  },
-  "prisma": {
+    "start": "ts-node ./src/index.ts",
     "seed": "ts-node ./src/services/seed/index.ts"
   },
   "repository": {
