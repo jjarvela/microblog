@@ -1,0 +1,52 @@
+version: "3.9" # specify the version of the compose file format
+
+services: # define the services or containers that make up your application
+
+  db: # name of the third service
+    image: postgres:15 # name of the image to use for this service
+    hostname: mbdb
+    ports: 
+      - "5432:5432"
+    env_file: ./.env_backend
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "mbdb"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  mb-backend: # name of the second service
+    image: microblog-backend
+    hostname: mbapp
+    env_file: ./.env_backend
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    build: 
+      context: . # Root of build context /opt/microblog/
+      dockerfile: ./backend/Dockerfile 
+      args:
+        - DB_HOST=${DB_HOST}
+        - DATABASE_URL=${DATABASE_URL}
+
+    volumes: # list of volumes to mount on this service
+      - user_media:/user_media
+    ports: # list of ports to expose on the host machine
+      - "9000:9000"
+    depends_on: # list of services that this service depends on
+      db:
+        condition: service_healthy
+        restart: true
+    networks:
+      - default
+
+volumes:
+  user_media:
+
+networks: # define any custom networks used by the services
+  default: # name of the default network
+    driver: bridge # driver to use for this network
