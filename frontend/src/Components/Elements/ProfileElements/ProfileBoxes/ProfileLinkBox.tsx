@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { IProfileEditableBox } from "./ProfileBoxes";
-import ProfileBoxModifyingButton from "./ProfileBoxModifyingButton";
+import ProfileBoxModificationButtons from "./ProfileBoxModificationButtons";
 import { useState } from "react";
 import TextInput from "../../Inputs/TextInput";
 import Button from "../../Button";
@@ -24,6 +24,7 @@ function ProfileLinkBox({
   editing,
   index,
   handleDataChange,
+  handleDelete,
 }: ProfileLinkBoxProps) {
   const [modifying, setModifying] = useState(false);
   const handleEndEdit = () => {
@@ -93,9 +94,10 @@ function ProfileLinkBox({
         </>
       )}
       {editing && (
-        <ProfileBoxModifyingButton
+        <ProfileBoxModificationButtons
           modifying={modifying}
           handleEndEdit={handleEndEdit}
+          handleDelete={() => handleDelete(index)}
         />
       )}
     </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import TagList from "../../PostElements/TagList";
 import UserProfileInfo from "../../UserProfileInfo";
-import ProfileBoxModifyingButton from "./ProfileBoxModifyingButton";
+import ProfileBoxModificationButtons from "./ProfileBoxModificationButtons";
 import { IProfileEditableBox } from "./ProfileBoxes";
 import TextInput from "../../Inputs/TextInput";
 import Button from "../../Button";
@@ -17,6 +17,7 @@ function ProfilePostBox({
   editing,
   index,
   handleDataChange,
+  handleDelete,
 }: ProfilePostBoxProps) {
   const [modifying, setModifying] = useState(false);
   const handleEndEdit = () => {
@@ -44,9 +45,10 @@ function ProfilePostBox({
         </div>
       )}
       {editing && (
-        <ProfileBoxModifyingButton
+        <ProfileBoxModificationButtons
           modifying={modifying}
           handleEndEdit={handleEndEdit}
+          handleDelete={() => handleDelete(index)}
         />
       )}
     </div>

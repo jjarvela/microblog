@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../Button";
 import DropdownInput from "../../Inputs/DropdownInput";
 import ProfileLinkBox, { IProfileLinkBoxData } from "./ProfileLinkBox";
@@ -19,6 +19,7 @@ type ProfileBoxesProps = {
   boxes: ProfileBox[];
   setBoxes: (boxes: ProfileBox[]) => void;
   owned?: boolean;
+  onEditCancel: () => void;
 };
 
 export interface IProfileEditableBox {
@@ -32,6 +33,7 @@ export interface IProfileEditableBox {
       | IProfileMediaBoxData
       | IProfilePostBoxData,
   ) => void;
+  handleDelete: (index: number) => void;
 }
 
 function PlaceholderBox(props: { height: number }) {
@@ -46,7 +48,12 @@ function PlaceholderBox(props: { height: number }) {
 const newBoxDisplayTypes = ["Text Box", "Links Box", "Media Box", "Post Box"];
 const newBoxTypes = ["text", "links", "media", "post"];
 
-function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
+function ProfileBoxes({
+  boxes,
+  setBoxes,
+  owned,
+  onEditCancel,
+}: ProfileBoxesProps) {
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [draggedBox, setDraggedBox] = useState<ProfileBox | null>(null);
   const [draggedHeight, setDraggedHeight] = useState(0);
@@ -57,6 +64,11 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
   const [newBoxes, setNewBoxes] = useState(boxes);
   const [isEditing, setIsEditing] = useState(false);
   const user = useUser();
+
+  const handleBoxCommit = (commitBoxes: ProfileBox[]) => {
+    setBoxes(commitBoxes);
+    setIsEditing(false);
+  };
 
   const handleBoxDataChange = (
     index: number,
@@ -76,9 +88,8 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
     );
   };
 
-  const handleBoxCommit = (commitBoxes: ProfileBox[]) => {
-    setBoxes(commitBoxes);
-    setIsEditing(false);
+  const handleBoxDelete = (index: number) => {
+    setNewBoxes(newBoxes.filter((_box, i) => i !== index));
   };
 
   const handleAddBox = (type: ProfileBox["type"]) => {
@@ -170,6 +181,12 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
     setDragActive(false);
   };
 
+  const boxesToRender = isEditing ? newBoxes : boxes;
+
+  useEffect(() => {
+    setNewBoxes(boxes);
+  }, [boxes, isEditing]);
+
   return (
     <div>
       <div className="flex flex-row items-center justify-center gap-4">
@@ -190,7 +207,11 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
         {isEditing && (
           <>
             <Button
-              onClick={() => setIsEditing(false)}
+              onClick={() => {
+                setIsEditing(false);
+                setNewBoxes(boxes);
+                onEditCancel();
+              }}
               className="btn-secondary"
             >
               Cancel
@@ -205,7 +226,7 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
         )}
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {newBoxes.map((box, i) => {
+        {boxesToRender.map((box, i) => {
           switch (box.type) {
             case "text":
               return (
@@ -223,6 +244,7 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
                     editing={isEditing || false}
                     index={i}
                     handleDataChange={handleBoxDataChange}
+                    handleDelete={handleBoxDelete}
                   />
                 </div>
               );
@@ -241,6 +263,7 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
                     editing={isEditing || false}
                     index={i}
                     handleDataChange={handleBoxDataChange}
+                    handleDelete={handleBoxDelete}
                   />
                 </div>
               );
@@ -260,6 +283,7 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
                     editing={isEditing || false}
                     index={i}
                     handleDataChange={handleBoxDataChange}
+                    handleDelete={handleBoxDelete}
                   />
                 </div>
               );
@@ -278,6 +302,7 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
                     editing={isEditing || false}
                     index={i}
                     handleDataChange={handleBoxDataChange}
+                    handleDelete={handleBoxDelete}
                   />
                 </div>
               );
@@ -303,6 +328,9 @@ function ProfileBoxes({ boxes, setBoxes, owned }: ProfileBoxesProps) {
               items={newBoxDisplayTypes}
               class="min-w-[9rem]"
               onChange={(_val, i) => setCurrentNewType(newBoxTypes[i])}
+              initialIndex={newBoxTypes.findIndex(
+                (val) => val === currentNewType,
+              )}
             />
             <Button
               className="btn-primary"

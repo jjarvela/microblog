@@ -2,7 +2,7 @@ import { useState } from "react";
 import TextAreaInput from "../../Inputs/TextAreaInput";
 import TextInput from "../../Inputs/TextInput";
 import { IProfileEditableBox } from "./ProfileBoxes";
-import ProfileBoxModifyingButton from "./ProfileBoxModifyingButton";
+import ProfileBoxModificationButtons from "./ProfileBoxModificationButtons";
 
 type ProfileTextBoxProps = IProfileEditableBox & IProfileTextBoxData;
 
@@ -17,6 +17,7 @@ function ProfileTextBox({
   editing,
   index,
   handleDataChange,
+  handleDelete,
 }: ProfileTextBoxProps) {
   const [modifying, setModifying] = useState(false);
   const handleEndEdit = () => {
@@ -50,9 +51,10 @@ function ProfileTextBox({
         </>
       )}
       {editing && (
-        <ProfileBoxModifyingButton
+        <ProfileBoxModificationButtons
           modifying={modifying}
           handleEndEdit={handleEndEdit}
+          handleDelete={() => handleDelete(index)}
         />
       )}
     </div>

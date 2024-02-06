@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import MaterialSymbolsCloseRounded from "../../../Icons/MaterialSymbolsCloseRounded";
 import { IProfileEditableBox } from "./ProfileBoxes";
-import ProfileBoxModifyingButton from "./ProfileBoxModifyingButton";
+import ProfileBoxModificationButtons from "./ProfileBoxModificationButtons";
 import TextInput from "../../Inputs/TextInput";
 import Button from "../../Button";
 
@@ -18,6 +18,7 @@ function ProfileMediaBox({
   editing,
   index,
   handleDataChange,
+  handleDelete,
 }: ProfileMediaBoxProps) {
   const [modifying, setModifying] = useState(false);
   const handleEndEdit = () => {
@@ -44,7 +45,7 @@ function ProfileMediaBox({
     <>
       <div
         ref={rootDivRef}
-        className="relative cursor-pointer overflow-hidden rounded-xl border border-black50 bg-[#000]"
+        className="relative min-h-[4rem] cursor-pointer overflow-hidden rounded-xl border border-black50 bg-[#000]"
         onClick={() => dialogRef.current?.showModal()}
         style={height ? { minHeight: height } : {}}
       >
@@ -73,9 +74,10 @@ function ProfileMediaBox({
           </>
         )}
         {editing && (
-          <ProfileBoxModifyingButton
+          <ProfileBoxModificationButtons
             modifying={modifying}
             handleEndEdit={handleEndEdit}
+            handleDelete={() => handleDelete(index)}
           />
         )}
       </div>

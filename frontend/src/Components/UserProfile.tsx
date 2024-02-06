@@ -47,6 +47,10 @@ function UserProfile() {
         boxes={boxesQuery.data as ProfileBox[]}
         setBoxes={(boxes) => mutateBoxes.mutate(boxes)}
         owned={owned}
+        onEditCancel={() => {
+          queryClient.invalidateQueries({ queryKey: ["boxes", testUserId] });
+          console.log("Cancelled");
+        }}
       />
     </div>
   );
