@@ -92,9 +92,14 @@
       0px 0px 2px #ef6140,
       0px 0px 2px #ef6140;
   }
-  .scrollbar-thin {
+  /* Uncomment below to enable native thin scrollbar */
+  /* .scrollbar-thin {
     scrollbar-width: thin;
+    scrollbar-color: theme(colors.white50) theme(colors.white);
   }
+  .dark .scrollbar-thin {
+    scrollbar-color: theme(colors.black50) theme(colors.black);
+  } */
   .scrollbar-thin::-webkit-scrollbar {
     @apply h-2 w-2 bg-transparent;
   }
@@ -130,6 +135,17 @@
   }
 }
 
+.bold {
+  font-weight: 400;
+  font-weight: 600;
+}
+
 .epr_-4ag7tl {
-  background-image: url("emojipickericons.svg") !important;
+  background-image: url("/emojipickericons.svg") !important;
+}
+
+/*This doesn't actually change the colour of the ring but rather gets rid of it altogether*/
+.epr_6ocl7q {
+  --epr-dark-category-icon-active-color: "#9E4DB9";
+  --epr-category-icon-active-color: "#9E4DB9";
 }

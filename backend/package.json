@@ -1,11 +1,10 @@
 {
   "name": "microblog-backend",
-  "version": "0.0.1",
-  "description": "Backend for Microbolg project",
+  "version": "0.0.3",
+  "description": "Backend for Microblog project",
   "main": "index.js",
   "scripts": {
-    "test": "backend-test",
-    "start": "ts-node ."
+    "start": "ts-node ./src/index.ts"
   },
   "prisma": {
     "seed": "ts-node ./src/services/seed/index.ts"
@@ -24,27 +23,32 @@
   },
   "homepage": "https://github.com/jjarvela/microblog#readme",
   "dependencies": {
+    "@prisma/client": "~5.8.1",
     "@oas-tools/core": "^3.1.0",
-    "@prisma/client": "^5.8.0",
     "@types/uuid": "^9.0.7",
+    "ajv": "^8.12.0",
     "connect-pg-simple": "^9.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "multer": "^1.4.5-lts.1",
     "node": "^20.10.0",
     "openapi-backend": "^5.10.5",
     "pg": "^8.11.3",
+    "prisma": "^5.8.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
     "@types/connect-pg-simple": "^7.0.3",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.11",
     "@types/node": "^20.10.4",
     "cypress": "^13.6.2",
     "eslint": "^8.56.0",
-    "nodemon": "^3.0.2",
-    "prisma": "^5.8.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "nodemon": "^3.0.2"
   }
 }

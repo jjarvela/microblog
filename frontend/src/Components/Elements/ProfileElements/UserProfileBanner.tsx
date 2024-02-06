@@ -19,20 +19,23 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
   return (
     <div>
       <div className="relative h-80 sm:h-60">
-        <div className="absolute right-7 top-7 z-10">
-          <Button class="btn-primary">Follow</Button>
+        <div className="absolute left-0 top-0 h-full w-full">
+          <div className="z-10 mx-4 mt-4 flex flex-row justify-between">
+            <UserProfileInfo
+              user={user}
+              profileImageSize={150}
+              class=" text-white"
+              nameClass="text-xl font-bold md:text-2xl"
+              disablePopup={true}
+            />
+            <Button className="btn-primary h-[max-content]">Follow</Button>
+          </div>
         </div>
         <div
           className="h-full w-full bg-cover bg-center"
           style={{
             backgroundImage: `url(${bannerImage})`,
           }}
-        />
-        <UserProfileInfo
-          user={user}
-          profileImageSize={150}
-          class="absolute bottom-5 left-[5%] text-white sm:-bottom-5"
-          nameClass="text-xl font-bold md:text-2xl"
         />
       </div>
       <div className="flex flex-col border-black50 xl:flex-row">
@@ -41,7 +44,7 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
             <ul className="mb-4">
               <li>Location: {user.location}</li>
               <li>Joined: {user.joinDate?.toDateString()}</li>
-              <li>Birthday: {user.birthDate?.toDateString()}</li>
+              <li>Birthday: {user.birthday?.toDateString()}</li>
             </ul>
             <div className="flex max-w-fit flex-shrink flex-row flex-wrap justify-around gap-6 whitespace-nowrap text-secondary">
               <p className="text-[1.2rem] font-bold">

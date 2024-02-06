@@ -10,6 +10,123 @@ function GroupProfile() {
   const group = state?.group;
   //!!will result in 404 if navigation is not done from a group thumbnail
 
+  const placeholderPosts: Post[] = [
+    {
+      postOwner: {
+        userName: "@fancyuser",
+        screenName: "Fancy User",
+        followers: 526,
+        following: 1893,
+      },
+      text: "This post has a video",
+      media: [
+        {
+          id: "5rttryrt",
+          source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+          type: "vid",
+        },
+      ],
+      reactions: 1,
+      tags: ["catvid"],
+      time: new Date(),
+    },
+    {
+      postOwner: {
+        userName: "@fancyuser",
+        screenName: "Fancy User",
+        followers: 526,
+        following: 1893,
+      },
+      text: "This post has pictures",
+      media: [
+        {
+          id: "32j423j4",
+          source:
+            "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
+          type: "img",
+        },
+        {
+          id: "1434j4",
+          source:
+            "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
+          type: "img",
+        },
+      ],
+      reactions: 1,
+      tags: ["twopics"],
+      time: new Date(),
+    },
+    {
+      postOwner: {
+        userName: "@fancyuser",
+        screenName: "Fancy User",
+        followers: 526,
+        following: 1893,
+      },
+      text: "This post has pictures",
+      media: [
+        {
+          id: "32j423j4",
+          source:
+            "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
+          type: "img",
+        },
+        {
+          id: "1434j4",
+          source:
+            "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
+          type: "img",
+        },
+        {
+          id: "5rttryrt",
+          source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+          type: "vid",
+        },
+      ],
+      reactions: 1,
+      tags: ["coolpics", "myphotos"],
+      time: new Date(),
+    },
+
+    {
+      postOwner: {
+        userName: "@fancyuser",
+        screenName: "Fancy User",
+        followers: 526,
+        following: 1893,
+      },
+      text: "This post has pictures",
+      media: [
+        {
+          id: "5erryrt",
+          source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+          type: "vid",
+        },
+
+        {
+          id: "32j423j4",
+          source:
+            "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
+          type: "img",
+        },
+        {
+          id: "1434j4",
+          source:
+            "https://images.pexels.com/photos/1008737/pexels-photo-1008737.jpeg",
+          type: "img",
+        },
+        {
+          id: "5r3243",
+          source: "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
+          type: "vid",
+        },
+      ],
+      reactions: 1,
+      tags: ["fourpics"],
+      time: new Date(),
+    },
+  ];
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -30,19 +147,20 @@ function GroupProfile() {
       <div className="grid grid-cols-1 gap-4">
         <GroupMembersBox />
         <Post
-          postOwner={{
-            userName: "@testuser",
-            screenName: "Test User ✨",
-            followers: 5,
-            following: 23,
+          post={{
+            postOwner: {
+              userName: "@testuser",
+              screenName: "Test User ✨",
+              followers: 5,
+              following: 23,
+            },
+            text: "That IS indeed a very cool post!",
+            reactions: 3,
+            tags: ["nice"],
+            time: new Date(),
+            media: [],
           }}
-          text="That IS indeed a very cool post!"
-          reactions={3}
-          tags={["nice"]}
-          time={new Date()}
-          ownerOptions
           pinnedPost
-          media={[]}
         />
 
         <FeaturedMediaPost
@@ -64,86 +182,14 @@ function GroupProfile() {
           time={new Date()}
         />
 
-        <Post
-          postOwner={{
-            userName: "@fancyuser",
-            screenName: "Fancy User",
-            followers: 526,
-            following: 1893,
-          }}
-          text="This post has pictures"
-          media={[
-            {
-              id: "32j423j4",
-              source:
-                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg?auto=compress&cs=tinysrgb",
-              type: "img",
-            },
-            {
-              id: "1434j4",
-              source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-              type: "img",
-            },
-          ]}
-          reactions={1}
-          tags={["twopics"]}
-          time={new Date()}
-        />
-
-        <Post
-          postOwner={{
-            userName: "@fancyuser",
-            screenName: "Fancy User",
-            followers: 526,
-            following: 1893,
-          }}
-          text="This post has a video"
-          media={[
-            {
-              id: "5rttryrt",
-              source:
-                "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
-              type: "vid",
-            },
-          ]}
-          reactions={1}
-          tags={["catvid"]}
-          time={new Date()}
-        />
-
-        <Post
-          postOwner={{
-            userName: "@fancyuser",
-            screenName: "Fancy User",
-            followers: 526,
-            following: 1893,
-          }}
-          text="This post has pictures"
-          media={[
-            {
-              id: "32j423j4",
-              source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-              type: "img",
-            },
-            {
-              id: "1434j4",
-              source:
-                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg?auto=compress&cs=tinysrgb",
-              type: "img",
-            },
-            {
-              id: "5rttryrt",
-              source:
-                "https://va.media.tumblr.com/tumblr_s5wiv6nqZf1z8ckep.mp4",
-              type: "vid",
-            },
-          ]}
-          reactions={1}
-          tags={["coolpics", "myphotos"]}
-          time={new Date()}
-        />
+        {placeholderPosts.map((post) => {
+          return (
+            <Post
+              key={post.postOwner.userName + Math.floor(Math.random() * 1000)}
+              post={post}
+            />
+          );
+        })}
       </div>
     </div>
   );

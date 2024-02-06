@@ -7,8 +7,8 @@ import TextInput from "./Elements/Inputs/TextInput";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsPrivacyTipRounded from "./Icons/MaterialSymbolsPrivacyTipRounded";
 import MaterialSymbolsSettingsApplicationsRounded from "./Icons/MaterialSymbolsSettingsApplicationsRounded";
-import { useContext, useState } from "react";
-import { UserContext } from "../UserWrapper";
+import { useState } from "react";
+import { useUser } from "../UserWrapper";
 import { locationList } from "../globalData";
 import ThemeSelector from "./Elements/SettingsElements/ThemeSelector";
 
@@ -18,7 +18,7 @@ const followingPermission = ["Anyone", "Ask Permission"];
 const postVisibility = ["Anyone", "Only Followers"];
 
 const UserSettings = () => {
-  const user = useContext(UserContext);
+  const user = useUser();
   const [screenName, setScreenName] = useState(user?.user?.screenName || "");
   const [email, setEmail] = useState(user?.user?.email || "");
   const [location, setLocation] = useState(
@@ -34,7 +34,7 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <TextInput
-                class="w-full"
+                className="w-full"
                 value={screenName}
                 onChange={(e) => setScreenName(e.target.value)}
               />
@@ -43,7 +43,7 @@ const UserSettings = () => {
                   user.user &&
                   user.setUser({ ...user.user, screenName: screenName })
                 }
-                class="btn-primary"
+                className="btn-primary"
               >
                 Update
               </Button>
@@ -55,14 +55,14 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <TextInput
-                class="w-full"
+                className="w-full"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
 
               <Button
-                class="btn-primary"
+                className="btn-primary"
                 onClick={() =>
                   user.user && user.setUser({ ...user.user, email: email })
                 }
@@ -76,7 +76,7 @@ const UserSettings = () => {
           nameElements={<p>Password</p>}
           element={
             <div className="flex w-full flex-col items-center justify-center gap-2 sm:flex-row">
-              <Button class="btn-primary">Request Password Reset</Button>
+              <Button className="btn-primary">Request Password Reset</Button>
               <InfoDot text="Reset link will be sent to the current email address." />
             </div>
           }
@@ -92,7 +92,7 @@ const UserSettings = () => {
                 onChange={(v) => setLocation(v)}
               />
               <Button
-                class="btn-primary"
+                className="btn-primary"
                 onClick={() =>
                   user.user &&
                   user.setUser({ ...user.user, location: location })
@@ -118,7 +118,7 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <DropdownInput items={followingPermission} class="w-full" />
-              <Button class="btn-primary">Update</Button>
+              <Button className="btn-primary">Update</Button>
             </div>
           }
         />
@@ -132,7 +132,7 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <DropdownInput items={postVisibility} class="w-full" />
-              <Button class="btn-primary">Update</Button>
+              <Button className="btn-primary">Update</Button>
             </div>
           }
         />
@@ -146,7 +146,7 @@ const UserSettings = () => {
           element={
             <div className="flex w-full flex-col gap-2 sm:flex-row">
               <DropdownInput items={mockListOfLanguages} class="w-full" />
-              <Button class="btn-primary">Update</Button>
+              <Button className="btn-primary">Update</Button>
             </div>
           }
         />

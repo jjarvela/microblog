@@ -61,24 +61,24 @@ function GroupThumbnail({ group }: GroupThumbnailProps) {
             </p>
           </div>
           <div className="flex content-start justify-end gap-4">
-            <Button class="btn-primary">
+            <Button className="btn-primary">
               <small>Follow</small>
             </Button>
             {group.joinRule === "everyone" && (
-              <Button class="btn-primary" onClick={handleJoinClick}>
+              <Button className="btn-primary" onClick={handleJoinClick}>
                 <small>Join</small>
               </Button>
             )}
             {group.joinRule === "permission" && (
               <Button
-                class="btn-primary"
+                className="btn-primary"
                 onClick={() => joinRequest.current?.showModal()}
               >
                 <small>Request to Join</small>
               </Button>
             )}
             {group.joinRule === "closed" && (
-              <Button class="btn-primary" isDisabled>
+              <Button className="btn-primary" disabled>
                 <small>Join</small>
               </Button>
             )}

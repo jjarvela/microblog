@@ -33,7 +33,7 @@ function ProfilePostBox({
       {editing && modifying ? (
         <div className="flex flex-col flex-wrap gap-4">
           <TextInput placeholder="Enter post id..." />
-          <Button class="btn-primary">Apply</Button>
+          <Button className="btn-primary">Apply</Button>
           <p className="text-sm italic opacity-50">Not implemented yet...</p>
         </div>
       ) : (

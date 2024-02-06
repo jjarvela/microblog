@@ -21,6 +21,7 @@ function PostCommentForm({
   text,
   tags,
 }: PostCommentFormProps) {
+  const [newText, setNewText] = useState(text);
   const [newTags, setNewTags] = useState<string[]>(tags || []);
   return (
     <div className="timeline-box mt-4 flex flex-col">
@@ -32,17 +33,18 @@ function PostCommentForm({
       <form className="mt-4 flex flex-col gap-4">
         <div className="flex flex-col">
           <TextAreaInput
-            text={text || ""}
+            value={newText || ""}
             placeholder="Post text..."
             showCount
             maxLength={500}
-            class="h-40 w-full"
+            className="h-40 w-full"
             autofocus={true}
+            onChange={(e) => setNewText(e.target.value)}
           />
         </div>
         <Button
           type="button"
-          class="btn-primary flex w-fit flex-row items-center gap-2 px-4"
+          className="btn-primary flex w-fit flex-row items-center gap-2 px-4"
         >
           <span className="text-lg">
             <MaterialSymbolsAddPhotoAlternateOutlineRounded />
@@ -62,14 +64,14 @@ function PostCommentForm({
         <div className="flex justify-between gap-4">
           <Button
             type="button"
-            class="btn-secondary m-3"
+            className="btn-secondary m-3"
             onClick={() => setShowCommentForm(false)}
           >
             Cancel
           </Button>
           <Button
             type="submit"
-            class="btn-primary m-3"
+            className="btn-primary m-3"
             onClick={() => setShowCommentForm(false)}
           >
             Comment

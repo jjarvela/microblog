@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { userdata } from './data/users';
 import { postdata } from './data/posts';
 import { contextdata } from './data/contexts';
+import { groupdata } from './data/groups';
 
 const prisma = new PrismaClient();
 
@@ -40,11 +41,23 @@ await Promise.all(
     )
   );
 
+  // groups
+await Promise.all(
+  groupdata.map(async (group) =>
+    prisma.groups.upsert({
+      where: { id: group.id },
+      update: {},
+      create: group,
+    })
+  )
+);
+
 // Fix autoincrement id counter lag by reseting increment counter to 20
 // If scripts seeds more than 20 users or blog post increase accordingly.
 
 await prisma.$queryRaw`SELECT setval('public.blog_posts_id_seq', 20, true)`;  
 await prisma.$queryRaw`SELECT setval('public.item_properties_id_seq', 20, true)`;  
+await prisma.$queryRaw`SELECT setval('public.groups_id_seq', 20, true)`; 
 }
 
 runSeeders()

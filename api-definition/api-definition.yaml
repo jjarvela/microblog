@@ -654,9 +654,9 @@ paths:
             type: string
 
     post:
-      summary: Add the user's id and a user or a group they are following
+      summary: Add the user's id and a user or a group they are following      
       operationId: addFollowing
-      tags:
+      tags: 
         - user
       responses:
         "200":

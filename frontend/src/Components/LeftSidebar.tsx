@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "./Elements/Button";
 import PostModal from "./Elements/Modals/PostModal";
 import SidebarLink from "./Elements/SidebarLink";
@@ -13,10 +13,10 @@ import MaterialSymbolsSettingsRounded from "./Icons/MaterialSymbolsSettingsRound
 import PhHashStraightBold from "./Icons/PhHashStraightBold";
 import { useBreakpoint } from "../Hooks/BreakpointHook";
 import MdiDotsVertical from "./Icons/MdiDotsVertical";
-import { UserContext } from "../UserWrapper";
+import { useUser } from "../UserWrapper";
 
 function LeftSidebar() {
-  const user = useContext(UserContext);
+  const user = useUser();
   const postModal = useRef<HTMLDialogElement>(null);
   const { isMd } = useBreakpoint("md");
   const { isXs } = useBreakpoint("xs");
@@ -105,7 +105,7 @@ function LeftSidebar() {
               className="flex items-center justify-center px-1 py-4 md:px-10 mid:py-10"
             >
               <Button
-                class="btn-primary flex h-12 w-12 items-center justify-center p-0 text-xl md:h-16 md:w-16 md:text-2xl"
+                className="btn-primary flex h-12 w-12 items-center justify-center p-0 text-xl md:h-16 md:w-16 md:text-2xl"
                 onClick={() => postModal.current?.showModal()}
                 type="button"
               >

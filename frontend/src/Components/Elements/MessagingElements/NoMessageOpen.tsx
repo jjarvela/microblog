@@ -25,7 +25,7 @@ export default function NoMessageOpen({ setClosed }: NoMessageOpenProps) {
       <h4 className="p-4 text-center">Start a new conversation</h4>
       <div className="flex justify-center gap-2">
         <TextInput placeholder="Search for users..." />
-        <Button class="btn-primary text-2xl">
+        <Button className="btn-primary text-2xl">
           <MaterialSymbolsChatAddOnRounded />
         </Button>
       </div>

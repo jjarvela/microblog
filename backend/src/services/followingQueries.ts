@@ -32,6 +32,16 @@ export const selectFollowingUsers = async (param: { user_id: string; }) => {
     return result;
 };
 
+export const selectFollowers = async (param: { user_id: string; }) => {  
+    const result: followings[] | null = await prisma.followings.findMany({
+        where: {
+            follows_user: param.user_id,     
+        },
+    });
+    console.log(result);
+    return result;
+};
+
 export const selectFollowingGroups = async (param: { user_id: string; }) => {  
     const result = await prisma.followings.findMany({
         where: {
