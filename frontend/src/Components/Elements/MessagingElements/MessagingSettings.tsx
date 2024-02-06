@@ -4,12 +4,10 @@ import RadioInputGroup from "../Inputs/RadioInputGroup";
 
 type MessagingSettingsProps = {
   setClosed: React.Dispatch<React.SetStateAction<boolean>>;
-  setHideChatbox: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MessagingSettings({
   setClosed,
-  setHideChatbox,
 }: MessagingSettingsProps) {
   return (
     <div className="flex flex-col gap-2">
@@ -17,7 +15,6 @@ export default function MessagingSettings({
         to={"/messages"}
         className="text-3xl text-black50"
         onClick={() => {
-          setHideChatbox(false);
           setClosed(true);
         }}
       >

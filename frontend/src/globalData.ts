@@ -26,3 +26,9 @@ export const emptyPost: Post = {
 
 export const serverUrl = import.meta.env.VITE_BACKEND_URL;
 export const testUserId = "22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b";
+
+export const recipientUser1: User = {
+  id:  "641ae1b3-d5bf-4058-b8d8-2e9e6023114d",
+  userName: "@johnmalkoffitz",
+  screenName: "Heeeeeere's Johnny"
+}

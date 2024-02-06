@@ -1,14 +1,9 @@
 type MessageBubbleProps = {
-  text: string;
-  time: Date;
   sender: boolean;
+  message: ConversationMessage;
 };
 
-export default function MessageBubble({
-  text,
-  time,
-  sender,
-}: MessageBubbleProps) {
+export default function MessageBubble({ sender, message }: MessageBubbleProps) {
   return (
     <div
       className={`relative flex w-fit max-w-[90%] flex-col ${
@@ -22,12 +17,12 @@ export default function MessageBubble({
             : "dark:  justify-self-start rounded-bl-sm bg-black25 dark:bg-black50"
         }`}
       >
-        <p>{text}</p>
+        <p>{message.message}</p>
       </div>
       <small
         className={`my-1 text-black50 ${sender ? "self-start" : "self-end"}`}
       >
-        {time.toLocaleString()}
+        {Date.parse(message.timestamp).toLocaleString()}
       </small>
     </div>
   );
