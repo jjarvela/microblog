@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as queries from "../services/profileQueries";
+import * as queries from "../services/profileElementQueries";
 import { Context } from "openapi-backend";
 
 export async function getProfileElements(

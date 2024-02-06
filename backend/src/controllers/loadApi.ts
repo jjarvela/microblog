@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { Context } from "openapi-backend";
 import * as handlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
-import * as profileHandlers from "./profileHandlers";
+import * as profileElementHandlers from "./profileElementHandlers";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 
@@ -55,8 +55,8 @@ api.register("getGroupFollowings", followHandlers.getGroupFollowings);
 api.register("getFollowers", followHandlers.getFollowers);
 api.register("deleteFollowing", followHandlers.deleteFollowing);
 
-// Profile handlers
-api.register("getProfileElements", profileHandlers.getProfileElements);
-api.register("editProfileElements", profileHandlers.editProfileElements);
+// Profile element handlers
+api.register("getProfileElements", profileElementHandlers.getProfileElements);
+api.register("editProfileElements", profileElementHandlers.editProfileElements);
 
 export default api;
