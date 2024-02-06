@@ -10,9 +10,7 @@ export async function getProfileElements(
   const userId = c.request.params.userId;
 
   try {
-    const result = await queries.getProfileElements({
-      uid: userId as string,
-    });
+    const result = await queries.getProfileElements({ uid: userId as string });
     res.status(200).json(result);
   } catch (e) {
     console.log(e);
