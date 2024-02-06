@@ -3,7 +3,8 @@ import { userdata } from "./data/users";
 import { postdata } from "./data/posts";
 import { contextdata } from "./data/contexts";
 import { groupdata } from "./data/groups";
-import { elementTypes } from "./data/profile";
+import { elementTypes, userProfiles } from "./data/profile";
+import { userMedia } from "./data/media";
 
 const prisma = new PrismaClient();
 
@@ -59,6 +60,26 @@ async function runSeeders() {
         where: { id: type.id, name: type.name },
         update: {},
         create: type,
+      })
+    )
+  );
+
+  await Promise.all(
+    userMedia.map(async (media) =>
+      prisma.user_medias.upsert({
+        where: { id: media.id, user_id: media.user_id },
+        update: {},
+        create: media,
+      })
+    )
+  );
+
+  await Promise.all(
+    userProfiles.map(async (user) =>
+      prisma.user_profiles.upsert({
+        where: { user_id: user.user_id },
+        update: {},
+        create: user,
       })
     )
   );
