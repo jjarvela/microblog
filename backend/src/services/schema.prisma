@@ -190,7 +190,7 @@ model user_medias {
   id                                                       Int               @id @default(autoincrement())
   filename                                                 String?           @db.VarChar(40)
   path                                                     String?           @db.VarChar(40)
-  user_id                                                  String?           @db.Uuid
+  user_id                                                  String?           @unique @db.Uuid
   foldermedia                                              foldermedia[]
   item_properties                                          item_properties[]
   likes                                                    likes[]
@@ -201,7 +201,7 @@ model user_medias {
 }
 
 model user_profiles {
-  id                                                     String             @id @db.Uuid
+  id                                                     String             @id @default(uuid()) @db.Uuid
   user_id                                                String             @unique @db.Uuid
   screen_name                                            String?
   profile_image                                          Int?
