@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getPortfolio = async (param: { uid: string }) => {
+export const getProfileElements = async (param: { uid: string }) => {
   const queryResult = await prisma.user_profiles.findUnique({
     where: { user_id: param.uid },
     select: { profile_elements: true },
@@ -19,7 +19,7 @@ export const getPortfolio = async (param: { uid: string }) => {
   return result;
 };
 
-export const updatePortfolio = async (param: {
+export const updateProfileElements = async (param: {
   uid: string;
   elements: { type: string; data: object }[];
 }) => {

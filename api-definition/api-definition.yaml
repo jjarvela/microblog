@@ -237,18 +237,18 @@ components:
             type: string
             description: The folder media file is related to.
 
-    portfolioRes:
+    profileElements:
       type: array
       items:
         type: object
         properties:
           type:
             type: string
-            description: Portfolio item type.
+            description: Profile element type.
           data:
             type: object
             additionalProperties: true
-            description: Portfolio item data object.
+            description: Profile element data object.
 
     userProfile:
       type: object
@@ -288,8 +288,8 @@ tags:
     description: Blog post related functions.
   - name: media
     description: User media related functions.
-  - name: portfolio
-    description: User portfolio related functions.
+  - name: profile
+    description: User profile related functions.
   - name: usertags
     description: Tag-management related functions.
   - name: login
@@ -496,19 +496,19 @@ paths:
           schema:
             type: string
 
-  /portfolio/{userId}:
+  /profile/elements/{userId}:
     get:
-      operationId: getPortfolio
-      summary: List portfolio items.
+      operationId: getProfileElements
+      summary: List profile elements.
       tags:
-        - portfolio
+        - profile
       responses:
         "200":
-          description: Response contains user's portfolio items as a JSON array.
+          description: Response contains user's profile elements as a JSON array.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/portfolioRes"
+                $ref: "#/components/schemas/profileElements"
         "400":
           description: Error object.
           content:
@@ -522,10 +522,10 @@ paths:
           schema:
             type: string
     post:
-      operationId: editPortfolio
-      summary: Update portfolio items.
+      operationId: editProfileElements
+      summary: Edit profile elements.
       tags:
-        - portfolio
+        - profile
       responses:
         "200":
           $ref: "#/components/responses/OK"
@@ -545,7 +545,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/portfolioRes"
+              $ref: "#/components/schemas/profileElements"
 
   /user/{userId}/profile:
     get:

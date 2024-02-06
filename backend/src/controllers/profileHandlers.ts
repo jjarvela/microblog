@@ -1,12 +1,16 @@
 import { Request, Response } from "express";
-import * as queries from "../services/portfolioQueries";
+import * as queries from "../services/profileQueries";
 import { Context } from "openapi-backend";
 
-export async function getPortfolio(c: Context, _req: Request, res: Response) {
+export async function getProfileElements(
+  c: Context,
+  _req: Request,
+  res: Response
+) {
   const userId = c.request.params.userId;
 
   try {
-    const result = await queries.getPortfolio({
+    const result = await queries.getProfileElements({
       uid: userId as string,
     });
     res.status(200).json(result);
@@ -18,11 +22,15 @@ export async function getPortfolio(c: Context, _req: Request, res: Response) {
   }
 }
 
-export async function editPortfolio(c: Context, req: Request, res: Response) {
+export async function editProfileElements(
+  c: Context,
+  _req: Request,
+  res: Response
+) {
   const userId = c.request.params.userId;
 
   try {
-    const result = await queries.updatePortfolio({
+    const result = await queries.updateProfileElements({
       uid: userId as string,
       elements: c.request.body,
     });
