@@ -156,7 +156,7 @@ const UserMessages = () => {
                 {showEmojiPicker && (
                   <div
                     ref={emojiRef}
-                    className="absolute bottom-[5em] left-0 z-[100]"
+                    className="absolute bottom-[6em] left-0 z-[100]"
                   >
                     <EmojiPicker
                       onEmojiClick={(emoji) => {
@@ -177,14 +177,13 @@ const UserMessages = () => {
               </span>
               <span className="flex-grow">
                 <TextAreaInput
-                  class="w-full"
-                  text={messageText}
-                  charCount={messageText.length}
+                  className="w-full"
+                  value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
                 />
               </span>
               <span className="self-center">
-                <Button class="btn-primary aspect-square p-[0.5em] text-lg">
+                <Button className="btn-primary aspect-square p-[0.5em] text-lg">
                   <MaterialSymbolsSendRounded />
                 </Button>
               </span>

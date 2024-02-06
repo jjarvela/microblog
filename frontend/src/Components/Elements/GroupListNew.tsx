@@ -21,7 +21,16 @@ export default function GroupListNew() {
   return (
     <div className="flex flex-col gap-3 p-2">
       {placeholderGroups.map((group) => {
-        return <GroupThumbnail group={group} />;
+        return (
+          <GroupThumbnail
+            key={
+              Math.floor(Math.random() * 1000) +
+              "-" +
+              Math.floor(Math.random() * 1000)
+            }
+            group={group}
+          />
+        );
       })}
     </div>
   );

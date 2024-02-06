@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 import UserProfileBanner from "./Elements/ProfileElements/UserProfileBanner";
 import { Navigate, Route, Routes } from "react-router-dom";
 import NotFound from "./NotFound";
@@ -6,7 +6,7 @@ import UserProfile from "./UserProfile";
 import UserPosts from "./UserPosts";
 import UserMedia from "./UserMedia";
 import UserLikes from "./UserLikes";
-import { UserContext as UserWrapperContext } from "../UserWrapper";
+import { useUser } from "../UserWrapper";
 import { ProfileBox } from "./Elements/ProfileElements/ProfileBoxes/ProfileBoxes";
 
 interface UserWithExtras extends User {
@@ -21,7 +21,7 @@ export const UserProfileContext = createContext<UserWithExtras>({
   location: "",
   email: "",
   joinDate: new Date(),
-  birthDate: new Date(),
+  birthday: new Date(),
   followers: 0,
   following: 0,
   featuredPost: {
@@ -42,7 +42,7 @@ const mockUser: User = {
   location: "Finland",
   email: "theblogger@email.com",
   joinDate: new Date(),
-  birthDate: new Date(),
+  birthday: new Date(),
   followers: 6513,
   following: 134,
 };
@@ -54,7 +54,7 @@ const mockUserData: UserWithExtras = {
   location: "Finland",
   email: "theblogger@email.com",
   joinDate: new Date(),
-  birthDate: new Date(),
+  birthday: new Date(),
   followers: 6513,
   following: 134,
   featuredPost: {
@@ -119,7 +119,7 @@ const mockUserData: UserWithExtras = {
 };
 
 function UserPage() {
-  const user = useContext(UserWrapperContext);
+  const user = useUser();
   return (
     <UserProfileContext.Provider
       value={{ ...mockUserData, ...user?.user } || mockUserData}

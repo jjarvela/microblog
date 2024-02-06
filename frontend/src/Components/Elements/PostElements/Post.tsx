@@ -3,7 +3,7 @@ import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useRef, useState } from "react";
 import PostPin from "./PostPin";
 import { useBreakpoint } from "../../../Hooks/BreakpointHook";
 import UserProfileInfo from "../UserProfileInfo";
@@ -15,9 +15,12 @@ import RepostButton from "./RepostButton";
 import CommentButton from "./CommentButton";
 import ReportButton from "./ReportButton";
 import PostCommentForm from "../../PostCommentForm";
-import { UserContext } from "../../../UserWrapper";
+import { useUser } from "../../../UserWrapper";
 import ReportPostModal from "../Modals/ReportPostModal";
 import { Link } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import postService from "../../../Services/postService";
+import { testUserId } from "../../../globalData";
 
 export const PostContext = createContext<Post>({
   postOwner: { userName: "", screenName: "", followers: 0, following: 0 },
@@ -31,62 +34,45 @@ export const PostContext = createContext<Post>({
 });
 
 type PostProps = {
-  postOwner: User;
-  reposter?: string | undefined;
-  replyingTo?: string | undefined;
-  text: string;
-  media: Array<Media>;
-  reactions: number;
-  tags: string[];
-  time: Date;
-  ownerOptions?: boolean;
+  post: Post;
   pinnedPost?: boolean;
   topInfo?: string; // This can be used instead of "reposter" for a customized message.
 };
 
-function Post({
-  postOwner,
-  text,
-  reactions,
-  tags,
-  time,
-  media,
-  reposter,
-  replyingTo,
-  ownerOptions,
-  pinnedPost,
-  topInfo,
-}: PostProps) {
+function Post({ post, pinnedPost, topInfo }: PostProps) {
   const { isSm } = useBreakpoint("sm");
   const editModal = useRef<HTMLDialogElement>(null);
   const deleteConfirm = useRef<HTMLDialogElement>(null);
   const reportModal = useRef<HTMLDialogElement>(null);
   const [showCommentForm, setShowCommentForm] = useState(false);
-  const user = useContext(UserContext);
+  const user = useUser();
+  const queryClient = useQueryClient();
+
+  const mutateDeletePost = useMutation({
+    mutationFn: (ids: number[]) => postService.deletePost(ids, testUserId),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+    },
+  });
+
+  const handlePostDelete = () => {
+    if (post.id) mutateDeletePost.mutate([post.id]);
+    else console.error("Missing post id for delete request!");
+  };
+
   return (
-    <PostContext.Provider
-      value={{
-        postOwner,
-        text,
-        reactions,
-        tags,
-        time,
-        media,
-        reposter,
-        replyingTo,
-      }}
-    >
+    <PostContext.Provider value={post}>
       <div className="relative">
-        <div className="timeline-box flex flex-col overflow-hidden">
+        <div className="timeline-box flex flex-col">
           {pinnedPost ? (
             <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 p-2 px-6 pb-1 dark:border-white25">
               <PostPin />
             </div>
           ) : null}
 
-          {reposter && (
+          {post.reposter && (
             <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 px-6 pb-1 dark:border-white25">
-              <UsernameRepost username={reposter} />
+              <UsernameRepost username={post.reposter} />
             </div>
           )}
           {topInfo && (
@@ -98,44 +84,33 @@ function Post({
           <div className="flex flex-row-reverse flex-wrap items-center gap-4">
             <PostContextMenu
               class="self-start"
-              ownerOptions={ownerOptions}
+              ownerOptions={user.user?.userName === post.postOwner.userName}
               editPostCallback={() => editModal.current?.showModal()}
               deletePostCallback={() => deleteConfirm.current?.showModal()}
             />
             {/*add proper postid to link here and in UserProfileInfo*/}
             <Link
-              to={`/${postOwner.userName.substring(1)}/post/${1}`}
-              state={{
-                post: {
-                  postOwner,
-                  text,
-                  reactions,
-                  tags,
-                  time,
-                  media,
-                  reposter,
-                  replyingTo,
-                },
-              }}
-              className="mr-3 self-start underline"
+              to={`/${post.postOwner.userName.substring(1)}/post/${1}`}
+              state={post}
+              className="mr-3 self-start underline underline-offset-2"
             >
-              <time>{time.toLocaleString()}</time>
+              <time>{post.time.toLocaleString()}</time>
             </Link>
-            <UserProfileInfo user={postOwner} />
+            <UserProfileInfo user={post.postOwner} />
           </div>
 
-          {replyingTo ? (
+          {post.replyingTo ? (
             <div>
-              <InReplyTo username={replyingTo} />
+              <InReplyTo username={post.replyingTo} />
             </div>
           ) : null}
 
           <div className={`flex flex-col gap-3 ${isSm ? "m-6" : "m-3"}`}>
-            <div>{text}</div>
+            <div>{post.text}</div>
 
-            {media.length > 0 && <PostMediaLayout media={media} />}
+            {post.media.length > 0 && <PostMediaLayout media={post.media} />}
 
-            <TagList tags={tags} />
+            <TagList tags={post.tags} />
             <div className="mb-3 flex flex-row justify-center gap-4 text-2xl">
               <LikeButton />
               <RepostButton />
@@ -144,31 +119,20 @@ function Post({
             </div>
           </div>
           <Link
-            to={`/${postOwner.userName.substring(1)}/post/${1}`}
-            state={{
-              post: {
-                postOwner,
-                text,
-                reactions,
-                tags,
-                time,
-                media,
-                reposter,
-                replyingTo,
-              },
-            }}
+            to={`/${post.postOwner.userName.substring(1)}/post/${1}`}
+            state={post}
           >
-            <div className="-m-3 flex flex-row items-center justify-end gap-1 bg-black25 px-6 py-3 dark:bg-black75">
+            <div className="-m-3 flex flex-row items-center justify-end gap-1 rounded-b-xl bg-black25 px-6 py-3 dark:bg-black75">
               <span className="text-lg">
                 <PhFireSimpleBold />
               </span>
-              <p>{reactions} Reactions</p>
+              <p>{post.reactions} Reactions</p>
             </div>
           </Link>
         </div>
         {showCommentForm && (
           <PostCommentForm
-            recipient={postOwner}
+            recipient={post.postOwner}
             commenter={
               user?.user || {
                 userName: "",
@@ -182,9 +146,10 @@ function Post({
         )}
       </div>
       <PostModal
-        text={text}
-        tags={tags}
-        user={postOwner}
+        id={post.id}
+        text={post.text}
+        tags={post.tags}
+        user={post.postOwner}
         refObject={editModal}
         mode="edit"
       />
@@ -192,7 +157,7 @@ function Post({
         message="Are you sure you want to delete this post?"
         cancelText="Cancel"
         confirmText="Delete"
-        confirmCallback={() => console.log("Post delete triggered")}
+        confirmCallback={() => handlePostDelete()}
         refObject={deleteConfirm}
       >
         <div className="flex flex-col gap-4">
@@ -204,9 +169,9 @@ function Post({
               WebkitBoxOrient: "vertical",
             }}
           >
-            {text}
+            {post.text}
           </p>
-          <TagList tags={tags} class="italic" />
+          <TagList tags={post.tags} class="italic" />
         </div>
       </ConfirmModal>
 

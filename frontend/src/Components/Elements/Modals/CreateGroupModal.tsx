@@ -38,22 +38,22 @@ function CreateGroupModal({
         <div className="text-center">
           <h5 className="mb-4">Group Name</h5>
           <TextAreaInput
-            text={`Mammutit`}
+            value={`Mammutit`}
             placeholder="Post text..."
             showCount
             maxLength={50}
-            class="min-h-[1rem] w-full"
+            className="min-h-[1rem] w-full"
             onChange={(e) => console.log(e.target.value)}
           />
         </div>
         <div className="text-center">
           <h5 className="mb-4">Group Description</h5>
           <TextAreaInput
-            text={`Me olemme karvaisia mammutteja.`}
+            value={`Me olemme karvaisia mammutteja.`}
             placeholder="Post text..."
             showCount
             maxLength={100}
-            class="min-h-[1rem] w-full"
+            className="min-h-[1rem] w-full"
             onChange={(e) => console.log(e.target.value)}
           />
         </div>
@@ -78,7 +78,7 @@ function CreateGroupModal({
           <div className="flex h-full flex-row justify-around gap-4">
             <Button
               onClick={() => refObject.current?.close()}
-              class="btn-secondary"
+              className="btn-secondary"
             >
               {cancelText}
             </Button>
@@ -87,7 +87,7 @@ function CreateGroupModal({
                 confirmCallback();
                 refObject.current?.close();
               }}
-              class="btn-primary"
+              className="btn-primary"
             >
               {confirmText}
             </Button>

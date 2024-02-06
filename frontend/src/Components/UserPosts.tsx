@@ -1,66 +1,59 @@
 import { useContext } from "react";
 import { UserProfileContext } from "./UserPage";
 import Post from "./Elements/PostElements/Post";
+import { useQuery } from "@tanstack/react-query";
+import { testUserId } from "../globalData";
+import postService from "../Services/postService";
 
 function UserPosts() {
   const user = useContext(UserProfileContext);
+  const userPostsQuery = useQuery({
+    queryKey: ["posts", testUserId],
+    queryFn: () => postService.getUserPosts(testUserId),
+  });
+
+  if (userPostsQuery.isLoading) {
+    return (
+      <div className="my-4">
+        <h4 className="my-4 text-center">Loading posts...</h4>
+      </div>
+    );
+  }
+
+  if (userPostsQuery.isError) {
+    return (
+      <div className="my-4">
+        <h4 className="my-4 text-center text-warning dark:text-warningDark">
+          Error loading posts!
+        </h4>
+      </div>
+    );
+  }
 
   return (
     <div className="my-4">
       <h2 className="my-4 text-center">{user.screenName}'s Posts</h2>
       <div className="flex flex-col gap-4">
-        <Post
-          postOwner={user}
-          text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus accusantium, repellendus tempore minima sit quam cum architecto dolores excepturi iure recusandae! Voluptatibus suscipit cupiditate tenetur eveniet deserunt consequatur tempore distinctio."
-          reactions={42}
-          tags={["hashtag", "longerhashtag", "tag"]}
-          time={new Date()}
-          media={[]}
-          ownerOptions
-        />
+        {(userPostsQuery.data as BlogFromServer[]).map(
+          (post: BlogFromServer) => {
+            return (
+              <Post
+                key={post.id + Math.floor(Math.random() * 10000)}
+                post={{
+                  id: post.id,
+                  text: post.blog_text,
+                  postOwner: user,
+                  reactions: 0,
+                  media: [],
+                  tags: post.item_properties.map((item) => item.value),
+                  time: new Date(post.timestamp),
+                }}
+              />
+            );
+          },
+        )}
 
-        <Post
-          postOwner={user}
-          text="This past week was very exiting. I bought a coconut!"
-          reactions={3}
-          tags={["coconuts", "are", "cool"]}
-          media={[]}
-          time={new Date()}
-          ownerOptions
-        />
-
-        <Post
-          postOwner={user}
-          text="Here are some pictures"
-          media={[
-            {
-              id: "32j423j4",
-              source:
-                "https://images.pexels.com/photos/847393/pexels-photo-847393.jpeg",
-              type: "img",
-            },
-            {
-              id: "1434j4",
-              source:
-                "https://images.pexels.com/photos/5340051/pexels-photo-5340051.jpeg",
-              type: "img",
-            },
-          ]}
-          reactions={1}
-          tags={["pics", "are", "cool"]}
-          time={new Date()}
-          ownerOptions
-        />
-
-        <Post
-          postOwner={user}
-          text={user.featuredPost?.text || ""}
-          media={user.featuredPost?.media || []}
-          reactions={user.featuredPost?.reactions || 0}
-          tags={user.featuredPost?.tags || []}
-          time={user.featuredPost?.time || new Date()}
-          ownerOptions
-        />
+        {user.featuredPost && <Post post={user.featuredPost} />}
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ export default function RadioInputGroup({
           <RadioInput
             key={groupName + value}
             inputName={groupName}
-            value={value}
+            inputValue={value}
             selected={selected}
             setSelected={setSelected}
             inputStyle={inputStyle}

@@ -7,7 +7,7 @@ export default function FollowedHashtags() {
       <div className="flex w-max flex-col items-center border-b-[1px] border-black50 p-2 sm:flex-row sm:gap-5">
         <Hashtag tag="tag" />
         <small className=" text-black50">New Posts</small>
-        <Button class="btn-primary w-fit">
+        <Button className="btn-primary w-fit">
           <small>Unfollow</small>
         </Button>
       </div>
@@ -15,7 +15,7 @@ export default function FollowedHashtags() {
       <div className="flex w-max flex-col border-b-[1px] border-black50 p-2 sm:flex-row sm:gap-5">
         <Hashtag tag="tag" />
         <small className=" text-black50">New Posts</small>
-        <Button class="btn-primary w-fit">
+        <Button className="btn-primary w-fit">
           <small>Unfollow</small>
         </Button>
       </div>
@@ -23,7 +23,7 @@ export default function FollowedHashtags() {
       <div className="flex w-max flex-col border-b-[1px] border-black50 p-2 sm:flex-row sm:gap-5">
         <Hashtag tag="tag" />
         <small className=" text-black50">New Posts</small>
-        <Button class="btn-primary w-fit">
+        <Button className="btn-primary w-fit">
           <small>Unfollow</small>
         </Button>
       </div>
