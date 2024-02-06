@@ -8,9 +8,11 @@ export const getPortfolio = async (param: { uid: string }) => {
     select: { profile_elements: true },
   });
   const result = queryResult?.profile_elements.map(async (element) => {
-    const typeName = await prisma.element_types.findFirst({
-      where: { id: element.type_id },
-    });
+    const typeName = (
+      await prisma.element_types.findFirst({
+        where: { id: element.type_id },
+      })
+    )?.name;
     return { type: typeName, data: element.data };
   });
   console.log(result);
@@ -21,21 +23,25 @@ export const updatePortfolio = async (param: {
   uid: string;
   elements: { type: string; data: object }[];
 }) => {
-  const data = param.elements.map(async (element) => {
-    return {
-      type_id: (
-        await prisma.element_types.findFirst({
-          where: { name: element.type },
-          select: { id: true },
-        })
-      )?.id,
-      data: element.data,
-    };
-  });
-  const result = await prisma.profile_elements.updateMany({
-    data: data,
+  const data = Promise.all(
+    param.elements.map(async (element) => {
+      return {
+        type_id:
+          (
+            await prisma.element_types.findFirst({
+              where: { name: element.type },
+              select: { id: true },
+            })
+          )?.id || 0,
+        data: element.data,
+        profile_id: param.uid,
+      };
+    })
+  );
+  await prisma.profile_elements.deleteMany({
     where: { profile_id: param.uid },
   });
+  const result = await prisma.profile_elements.createMany({ data: await data });
   console.log(result);
   return result;
 };
