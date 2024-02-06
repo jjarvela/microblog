@@ -4,7 +4,7 @@
   "description": "Backend for Microblog project",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -w src/ -x ts-node src/index.ts",
+    "dev": "nodemon ./src/index.ts",
     "start": "ts-node ./src/index.ts",
     "seed": "ts-node ./src/services/seed/index.ts"
   },
@@ -52,3 +52,4 @@
     "nodemon": "^3.0.3"
   }
 }
+

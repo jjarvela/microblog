@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const insertConversation = async (param: {
+export const createConversation = async (param: {
   participant_1: string;
   participant_2: string;
   timestamp: Date;
@@ -29,24 +29,45 @@ export const insertConversation = async (param: {
   return result;
 };
 
-export const selectConversations = async (param: { user_id: string }) => {
-  const result: object = await prisma.conversations.findMany({
-    where: {
-      OR: [
-        {
-          participant_1: param.user_id
+export const selectConversations = async (param: { user_id: string; }) => {  
+    const result: object = await prisma.conversations.findMany({
+        where: {
+            OR: [
+                {
+                    participant_1: param.user_id,
+                },
+                {
+                    participant_2: param.user_id,
+                },
+                ],
         },
-        {
-          participant_2: param.user_id
+        include: {
+            users_conversations_participant_1Tousers: true,
+            users_conversations_participant_2Tousers: true
+        },
+        orderBy: {
+            timestamp: 'desc',
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const selectConversation = async (param: { id: number; }) => {  
+    const result: object = await prisma.conversations.findMany({
+        where: {
+                    id: param.id
+        },
+        include: {
+            users_conversations_participant_1Tousers: true,
+            users_conversations_participant_2Tousers: true,
+        },
+        orderBy: {
+            timestamp: 'desc',
         }
-      ]
-    },
-    orderBy: {
-      timestamp: "desc"
-    }
-  });
-  console.log(result);
-  return result;
+    });
+    console.log(result);
+    return result;
 };
 
 export const deleteConversation = async (param: { id: number }) => {
@@ -59,7 +80,7 @@ export const deleteConversation = async (param: { id: number }) => {
   return result;
 };
 
-export const insertMessage = async (param: {
+export const createMessage = async (param: {
   conversation_id: number;
   message: string;
   timestamp: Date;

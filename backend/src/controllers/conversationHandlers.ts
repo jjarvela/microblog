@@ -9,13 +9,41 @@ import { Context } from "openapi-backend";
 
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
+export async function getUserConversations(
+  c: Context,
+  _req: Request,
+  res: Response
+) {
+
+  const userId = c.request.params.userId;
+
+  if (typeof userId !== "string"){ 
+    res.status(401).json({message: "Invalid parametres"});
+    return;
+  }
+  
+  try {
+    const conversations = await queries.selectConversations({user_id: userId});
+    res.status(200).json(conversations);
+  } catch (e) {
+    console.log(e);
+    res
+      .status(500)
+      .json({ status: 500, err: [{ message: "Unidentified error" }] });
+  }
+}
+
 export async function createConversation(
   c: Context,
   _req: Request,
   res: Response
 ) {
+  const newConversation = c.request.body;
+  const date = new Date (Date.now()).toISOString();
+  console.log(newConversation);
   try {
-    res.status(200).json({ status: 200 });
+    const responseConversation = await queries.createConversation({...newConversation, timestamp: date});
+    res.status(200).json(responseConversation);
   } catch (e) {
     console.log(e);
     res
@@ -29,8 +57,17 @@ export async function getConversation(
   _req: Request,
   res: Response
 ) {
+  const conversationId = c.request.params.conversationId;
+
+  if (typeof conversationId !== "string"){ 
+    res.status(401).json({message: "Invalid parametres"});
+    return;
+  }
+
   try {
-    res.status(200).json({ status: 200 });
+    const conversation = await queries.selectConversation({id: parseInt(conversationId)});
+    console.log(conversation);
+    res.status(200).json(conversation);
   } catch (e) {
     console.log(e);
     res
@@ -44,8 +81,18 @@ export async function deleteConversation(
   _req: Request,
   res: Response
 ) {
+  const conversationId = c.request.params.conversationId
+
+  if (typeof conversationId !== "string"){ 
+    res.status(401).json({message: "Invalid parametres"});
+    return;
+  }
+
   try {
-    res.status(200).json({ status: 200, itemId: "id" });
+    const messages = await queries.selectMessages({conversation_id: parseInt(conversationId)});
+    messages.length > 0 && messages.forEach(async message => await queries.deleteMessage({id: message.id}));
+    await queries.deleteConversation({id: parseInt(conversationId)});
+    res.status(200).json({ status: 200, itemId: conversationId });
   } catch (e) {
     console.log(e);
     res
@@ -55,36 +102,13 @@ export async function deleteConversation(
 }
 
 export async function postMessage(c: Context, _req: Request, res: Response) {
-  let dataError = 2;
+  res.json({status: 201});
+}
 
-  const dbDelete = async (item: number) => {
-    try {
-      await queries.deleteConversation({ id: item });
+export async function editMessage(c: Context, _req: Request, res: Response) {
+  res.json({status: 201});
+}
 
-      dataError = 0;
-    } catch (e: unknown) {
-      console.log(e);
-      if (e instanceof PrismaClientKnownRequestError && e.code === "P2025") {
-        dataError = 1;
-      } else {
-        dataError = 2;
-      }
-    }
-  };
-
-  for (const item of c.request.requestBody.itemIds) {
-    await dbDelete(item as number);
-  }
-
-  if (dataError === 2) {
-    res
-      .status(500)
-      .json({ status: 500, err: [{ message: "Unidentified error" }] });
-  } else if (dataError === 1) {
-    res
-      .status(400)
-      .json({ status: 400, err: [{ message: "Items not found." }] });
-  } else {
-    res.status(200).json({ status: 200, err: [{ message: "Items deleted." }] });
-  }
+export async function deleteMessage(c: Context, _req: Request, res: Response) {
+  res.json({status: 201});
 }
