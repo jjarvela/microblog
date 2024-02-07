@@ -342,6 +342,7 @@ components:
           type: number
           enum:
             - 400
+            - 401
             - 500
           description: Status of response.
         err:
@@ -367,6 +368,8 @@ tags:
     description: Tag-management related functions.
   - name: login
     description: User authentication related functions.
+  - name: logout
+    description: User session logout related functions.
   - name: group
     description: Groups related functions.
   - name: user
@@ -654,9 +657,9 @@ paths:
             type: string
 
     post:
-      summary: Add the user's id and a user or a group they are following      
+      summary: Add the user's id and a user or a group they are following
       operationId: addFollowing
-      tags: 
+      tags:
         - user
       responses:
         "200":
@@ -778,11 +781,24 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/OK"
+        "401":
+          $ref: "#/components/responses/errorResponse"
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/userAuth"
+  /logout:
+    get§:
+      summary: Logout user and destroy the session.
+      operationId: "logoutUser"
+      tags:
+        - logout
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "500":
+          $ref: "#/components/responses/errorResponse"
 
   /user/conversation:
     post:
@@ -886,4 +902,3 @@ paths:
           schema:
             type: string
           required: true
-

@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { Context } from 'openapi-backend';
 import * as handlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
+import * as authHandler from "./authHandler";
 import Ajv from "ajv"
 import addFormats from "ajv-formats"
 
@@ -54,5 +55,10 @@ api.register("getFollowings", followHandlers.getFollowings);
 api.register("getGroupFollowings", followHandlers.getGroupFollowings);
 api.register("getFollowers", followHandlers.getFollowers);
 api.register("deleteFollowing", followHandlers.deleteFollowing);
+
+// Authentication handlers
+api.register("loginUser", authHandler.loginUser)
+api.register("logoutUser", authHandler.logoutUser)
+
 
 export default api
