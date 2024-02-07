@@ -188,8 +188,9 @@ model social_links {
 
 model user_medias {
   id                                                       Int               @id @default(autoincrement())
+  uuid                                                     String?           @db.Uuid
   filename                                                 String?           @db.VarChar(40)
-  path                                                     String?           @db.VarChar(40)
+  path                                                     String?           @db.VarChar
   user_id                                                  String?           @db.Uuid
   foldermedia                                              foldermedia[]
   item_properties                                          item_properties[]

@@ -1,14 +1,27 @@
-import { PrismaClient, user_medias, } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-
-export const insertMedia = async (param: { user_id: string; filename: string; path: string; blogpost_id: number}) => {  
+export const insertMedia = async (param: { user_id: string; filename: string; path: string; uuid: string; }) => {  
     const result = await prisma.user_medias.create({
         data: {
             user_id: param.user_id,
             filename: param.filename,
             path: param.path,
+            uuid: param.uuid,
+        },
+    });
+    console.log(result);
+    return result;
+};
+
+export const insertMediaWithPost = async (param: { user_id: string; filename: string; path: string; uuid: string; blogpost_id: number}) => {  
+    const result = await prisma.user_medias.create({
+        data: {
+            user_id: param.user_id,
+            filename: param.filename,
+            path: param.path,
+            uuid: param.uuid,
             post_medias: {
                 create: {
                     blogpost_id: param.blogpost_id,
@@ -56,4 +69,3 @@ export const deleteMedia = async (param: { id: number; }) => {
     console.log(result);
     return result;
 };
-

@@ -22,9 +22,11 @@ export async function addUserMedia(c: Context, req: Request, res: Response) {
           return;
         }
         //everything worked and Multer has recorded the filepath in req.body.filePath
+        console.log(req.body)
       });
     } catch {
       res.status(500).send("Internal server error");
     }
   }
+ 
 }

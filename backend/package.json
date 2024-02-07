@@ -4,6 +4,7 @@
   "description": "Backend for Microblog project",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon -w src/ -x ts-node src/index.ts",
     "start": "ts-node ./src/index.ts"
   },
   "prisma": {
@@ -23,8 +24,8 @@
   },
   "homepage": "https://github.com/jjarvela/microblog#readme",
   "dependencies": {
-    "@prisma/client": "~5.8.1",
     "@oas-tools/core": "^3.1.0",
+    "@prisma/client": "~5.8.1",
     "@types/uuid": "^9.0.7",
     "ajv": "^8.12.0",
     "connect-pg-simple": "^9.0.1",
@@ -49,6 +50,6 @@
     "@types/node": "^20.10.4",
     "cypress": "^13.6.2",
     "eslint": "^8.56.0",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.3"
   }
 }

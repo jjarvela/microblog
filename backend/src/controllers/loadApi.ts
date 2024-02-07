@@ -5,6 +5,7 @@ import * as handlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
 import Ajv from "ajv"
 import addFormats from "ajv-formats"
+import { addUserMedia } from './mediaController';
 
 // Check working directory and form path to api-definition.
 
@@ -54,5 +55,7 @@ api.register("getFollowings", followHandlers.getFollowings);
 api.register("getGroupFollowings", followHandlers.getGroupFollowings);
 api.register("getFollowers", followHandlers.getFollowers);
 api.register("deleteFollowing", followHandlers.deleteFollowing);
+
+api.register("addUserMedia", addUserMedia)
 
 export default api

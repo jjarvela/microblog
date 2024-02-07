@@ -18,7 +18,7 @@ components:
     OK:
       description: OK
     Id:
-      description: Id of the deleted item.
+      description: Id of the item.
       content:
         application/json:
           schema:
@@ -139,11 +139,11 @@ components:
             type: integer
 
     multipleFiles:
-      type: array
-      items:
-        type: object
-        properties:
-          imagefile:
+      type: object
+      properties:
+        filename:
+          type: array
+          items:
             type: string
             format: base64
 
@@ -220,23 +220,28 @@ components:
           type: integer
 
     mediaRes:
-      type: array
-      items:
-        type: object
-        properties:
-          fileUrl:
-            type: string
-            description: URL to access the media file.
-          mimeType:
-            type: string
-            description: Mime type string for the media file.
-          mediaId:
-            type: string
-            description: Unique id for media file.
-          folderId:
-            type: string
-            description: The folder media file is related to.
-
+      type: object     
+      required:
+      - id
+      - uuid
+      - filename
+      - path
+      - user_id
+      properties:
+        id:
+          type: integer
+        uuid:
+          type: string
+          format: uuid
+        filename:
+          type: string
+        path:
+          type: string
+          description: URL to access the media file.
+        user_id:
+          type: string
+          format: uuid
+        
     portfolioRes:
       type: array
       items:
@@ -419,67 +424,84 @@ paths:
             schema:
               $ref: "#/components/schemas/refPost"
 
-  /media/{userId}/{folderId}:
+  /media/{userId}:
     x-router-controller: mediaController
     post:
+      summary: add media file to user's folder, and if given in query, relation to post
       operationId: addUserMedia
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          $ref: "#/components/responses/Id"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
       tags:
         - media
-      summary: Upload a media files to selected folder.
       parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
-
-        - name: folderId
-          in: path
+        - in: path
+          name: userId
           required: true
           schema:
             type: string
+        - in: query
+          name: postId
+          schema:
+            type: integer
       requestBody:
         description: Array of multipart/formdata in base64 encoding.
         content:
           multipart/formdata:
             schema:
               $ref: "#/components/schemas/multipleFiles"
-            encoding:
-              multipleFiles:
-                contentType: image/png, image/jpeg
+            # encoding:
+            #   multipleFiles:
+            #     contentType: image/png, image/jpeg
 
-  /media/{userId}:
     get:
+      summary: Get list of user's media files and their location.
       operationId: getUserMedia
-      summary: Get list of media files and their location.
       responses:
         "200":
-          description: Return a list of available media resources for user.
+          description: Return a list of media resources.
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/mediaRes"
+                type: array
+                items:
+                  $ref: "#/components/schemas/mediaRes"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
       tags:
         - media
       parameters:
-        - name: userId
+        - in: path
+          name: userId
           required: true
-          in: path
           schema:
             type: string
+        - in: query
+          name: postId
+          schema:
+            type: integer
 
   /media/{userId}/{mediaId}:
     delete:
       operationId: delUserMedia
       summary: Delete refered media file.
-      tags:
-        - media
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          $ref: "#/components/responses/Id"
+        "400":
+          $ref: "#/components/responses/errorResponse"
+      tags:
+        - media
       parameters:
         - name: userId
           required: true
