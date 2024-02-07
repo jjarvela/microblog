@@ -56,7 +56,7 @@ export default function Conversation({ setClosed }: ConversationProps) {
    * Conversation getter
    */
   const conversationQuery = useQuery({
-    queryKey: ["messages", id],
+    queryKey: ["conversation", id],
     queryFn: () => {
       return conversationService.getConversation(parseInt(id));
     },
@@ -125,11 +125,11 @@ export default function Conversation({ setClosed }: ConversationProps) {
         <div className="flex w-[90%] flex-col">
           <p className="truncate">
             {conversationQuery.data[0].users_conversations_participant_1Tousers
-              .username === user?.screenName
+              .screen_name === user?.screenName
               ? conversationQuery.data[0]
-                  .users_conversations_participant_2Tousers.username
+                  .users_conversations_participant_2Tousers.screen_name
               : conversationQuery.data[0]
-                  .users_conversations_participant_1Tousers.username}
+                  .users_conversations_participant_1Tousers.screen_name}
           </p>
           <small className="text-black50">
             {"@"}
@@ -151,10 +151,11 @@ export default function Conversation({ setClosed }: ConversationProps) {
             </p>
           </div>
         )}
+
         {messageQuery.isLoading && (
           <div className="flex h-full flex-col">
             <p className="animate-pulse p-4 text-center text-black50">
-              Loading conversation
+              Loading messages
             </p>
           </div>
         )}

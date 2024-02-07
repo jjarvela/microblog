@@ -63,7 +63,10 @@ api.register("editProfileElements", profileElementHandlers.editProfileElements);
 //Conversation handlers
 api.register("getConversations", conversationHandlers.getUserConversations);
 api.register("getConversationDetails", conversationHandlers.getConversation);
-api.register("getConversationMessages", conversationHandlers.getConversation);
+api.register(
+  "getConversationMessages",
+  conversationHandlers.getConversationMessages
+);
 api.register("createConversation", conversationHandlers.createConversation);
 api.register("deleteConversation", conversationHandlers.deleteConversation);
 api.register("sendDirectMessage", conversationHandlers.postMessage);

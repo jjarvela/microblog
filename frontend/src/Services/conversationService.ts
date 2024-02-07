@@ -21,6 +21,7 @@ function getConversation(conversationId: number) {
 }
 
 function getMessages(conversationId: number) {
+  console.log("get messages request");
   return axios
     .get(`${serverUrl}/conversation/${conversationId}/messages`)
     .then((res) => res.data);

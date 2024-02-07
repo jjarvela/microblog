@@ -87,17 +87,21 @@ export async function getConversationMessages(
 ) {
   const conversationId = c.request.params.conversationId;
 
+  console.log("Get conversation messages");
+
   if (typeof conversationId !== "string") {
     res.status(401).json({ message: "Invalid parametres" });
     return;
   }
 
   try {
-    const conversation = await queries.selectMessages({
+    const messages = await queries.selectMessages({
       conversation_id: parseInt(conversationId)
     });
-    console.log(conversation);
-    res.status(200).json(conversation);
+    console.log("***********************MESSAGES**************************");
+    console.log(messages);
+    console.log("***********************MESSAGES**************************");
+    res.status(200).json(messages);
   } catch (e) {
     console.log(e);
     res
