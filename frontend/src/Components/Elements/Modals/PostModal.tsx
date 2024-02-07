@@ -93,12 +93,20 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
         >
           <TextAreaInput
             value={postText}
+            defaultValue={postText}
             placeholder="Post text..."
             showCount
             maxLength={500}
             className="min-h-[20rem] w-full"
             onChange={(e) => setPostText(e.target.value)}
             autofocus={true}
+            // Put text cursor at the end on autofocus.
+            onFocus={(e) =>
+              e.currentTarget.setSelectionRange(
+                e.currentTarget.value.length,
+                e.currentTarget.value.length,
+              )
+            }
           />
           <label
             htmlFor="post-media"
