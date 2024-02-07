@@ -226,102 +226,103 @@ function ProfileBoxes({
         )}
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {boxesToRender.map((box, i) => {
-          switch (box.type) {
-            case "text":
-              return (
-                <div
-                  key={i}
-                  draggable={isEditing}
-                  onDragStart={(e) => handleDragStart(e, i, box)}
-                  className="relative h-fit"
-                  onDragEnter={(e) => handleDragEnter(e, i)}
-                  onDragEnd={() => handleDragEnd()}
-                >
-                  <ProfileTextBox
-                    title={box.data.title}
-                    text={box.data.text}
-                    editing={isEditing || false}
-                    index={i}
-                    handleDataChange={handleBoxDataChange}
-                    handleDelete={handleBoxDelete}
-                  />
-                </div>
-              );
-            case "links":
-              return (
-                <div
-                  key={i}
-                  draggable={isEditing}
-                  onDragStart={(e) => handleDragStart(e, i, box)}
-                  className="relative h-fit"
-                  onDragEnter={(e) => handleDragEnter(e, i)}
-                  onDragEnd={() => handleDragEnd()}
-                >
-                  <ProfileLinkBox
-                    links={box.data.links}
-                    editing={isEditing || false}
-                    index={i}
-                    handleDataChange={handleBoxDataChange}
-                    handleDelete={handleBoxDelete}
-                  />
-                </div>
-              );
-            case "media":
-              return (
-                <div
-                  key={i}
-                  draggable={isEditing}
-                  onDragStart={(e) => handleDragStart(e, i, box)}
-                  className="relative h-fit"
-                  onDragEnter={(e) => handleDragEnter(e, i)}
-                  onDragEnd={() => handleDragEnd()}
-                >
-                  <ProfileMediaBox
-                    media={box.data.media}
-                    newHeight={box.data.newHeight}
-                    editing={isEditing || false}
-                    index={i}
-                    handleDataChange={handleBoxDataChange}
-                    handleDelete={handleBoxDelete}
-                  />
-                </div>
-              );
-            case "post":
-              return (
-                <div
-                  key={i}
-                  draggable={isEditing}
-                  onDragStart={(e) => handleDragStart(e, i, box)}
-                  className="relative h-fit"
-                  onDragEnter={(e) => handleDragEnter(e, i)}
-                  onDragEnd={() => handleDragEnd()}
-                >
-                  <ProfilePostBox
-                    post={box.data.post}
-                    editing={isEditing || false}
-                    index={i}
-                    handleDataChange={handleBoxDataChange}
-                    handleDelete={handleBoxDelete}
-                  />
-                </div>
-              );
-            case "placeholder":
-              return (
-                <div
-                  key={i}
-                  className="relative h-fit"
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={() => handleDragEnd()}
-                  onDragEnd={() => handleDragEnd()}
-                >
-                  <PlaceholderBox height={draggedHeight} />
-                </div>
-              );
-            default:
-              break;
-          }
-        })}
+        {boxesToRender && // Check that boxes are not undefined before mapping
+          boxesToRender.map((box, i) => {
+            switch (box.type) {
+              case "text":
+                return (
+                  <div
+                    key={i}
+                    draggable={isEditing}
+                    onDragStart={(e) => handleDragStart(e, i, box)}
+                    className="relative h-fit"
+                    onDragEnter={(e) => handleDragEnter(e, i)}
+                    onDragEnd={() => handleDragEnd()}
+                  >
+                    <ProfileTextBox
+                      title={box.data.title}
+                      text={box.data.text}
+                      editing={isEditing || false}
+                      index={i}
+                      handleDataChange={handleBoxDataChange}
+                      handleDelete={handleBoxDelete}
+                    />
+                  </div>
+                );
+              case "links":
+                return (
+                  <div
+                    key={i}
+                    draggable={isEditing}
+                    onDragStart={(e) => handleDragStart(e, i, box)}
+                    className="relative h-fit"
+                    onDragEnter={(e) => handleDragEnter(e, i)}
+                    onDragEnd={() => handleDragEnd()}
+                  >
+                    <ProfileLinkBox
+                      links={box.data.links}
+                      editing={isEditing || false}
+                      index={i}
+                      handleDataChange={handleBoxDataChange}
+                      handleDelete={handleBoxDelete}
+                    />
+                  </div>
+                );
+              case "media":
+                return (
+                  <div
+                    key={i}
+                    draggable={isEditing}
+                    onDragStart={(e) => handleDragStart(e, i, box)}
+                    className="relative h-fit"
+                    onDragEnter={(e) => handleDragEnter(e, i)}
+                    onDragEnd={() => handleDragEnd()}
+                  >
+                    <ProfileMediaBox
+                      media={box.data.media}
+                      newHeight={box.data.newHeight}
+                      editing={isEditing || false}
+                      index={i}
+                      handleDataChange={handleBoxDataChange}
+                      handleDelete={handleBoxDelete}
+                    />
+                  </div>
+                );
+              case "post":
+                return (
+                  <div
+                    key={i}
+                    draggable={isEditing}
+                    onDragStart={(e) => handleDragStart(e, i, box)}
+                    className="relative h-fit"
+                    onDragEnter={(e) => handleDragEnter(e, i)}
+                    onDragEnd={() => handleDragEnd()}
+                  >
+                    <ProfilePostBox
+                      post={box.data.post}
+                      editing={isEditing || false}
+                      index={i}
+                      handleDataChange={handleBoxDataChange}
+                      handleDelete={handleBoxDelete}
+                    />
+                  </div>
+                );
+              case "placeholder":
+                return (
+                  <div
+                    key={i}
+                    className="relative h-fit"
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => handleDragEnd()}
+                    onDragEnd={() => handleDragEnd()}
+                  >
+                    <PlaceholderBox height={draggedHeight} />
+                  </div>
+                );
+              default:
+                break;
+            }
+          })}
         {isEditing && (
           <div className="flex h-64 flex-col items-center justify-center gap-4 rounded-xl border border-black50 p-4">
             <DropdownInput

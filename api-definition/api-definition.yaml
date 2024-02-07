@@ -288,8 +288,6 @@ tags:
     description: Blog post related functions.
   - name: media
     description: User media related functions.
-  - name: profile
-    description: User profile related functions.
   - name: usertags
     description: Tag-management related functions.
   - name: login
@@ -496,12 +494,28 @@ paths:
           schema:
             type: string
 
-  /profile/elements/{userId}:
+  /user/{userId}/profile:
+    get:
+      summary: Get user profile atributes.
+      operationId: getProfile
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
+  /user/{userId}/profile/elements:
     get:
       operationId: getProfileElements
-      summary: List profile elements.
+      summary: Get profile elements.
       tags:
-        - profile
+        - user
       responses:
         "200":
           description: Response contains user's profile elements as a JSON array.
@@ -523,9 +537,9 @@ paths:
             type: string
     post:
       operationId: editProfileElements
-      summary: Edit profile elements.
+      summary: Update profile elements.
       tags:
-        - profile
+        - user
       responses:
         "200":
           $ref: "#/components/responses/OK"
@@ -546,40 +560,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/profileElements"
-
-  /user/{userId}/profile:
-    get:
-      summary: Get user profile atributes.
-      operationId: getProfile
-      tags:
-        - user
-      responses:
-        "200":
-          $ref: "#/components/responses/OK"
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
-    patch:
-      summary: Update user profile elements.
-      tags:
-        - user
-      responses:
-        "200":
-          $ref: "#/components/responses/OK"
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/userProfile"
 
   /user/{userId}/following:
     get:

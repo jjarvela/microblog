@@ -4,13 +4,13 @@ import { ProfileBox } from "../Components/Elements/ProfileElements/ProfileBoxes/
 
 function getProfileElements(userId: string) {
   return axios
-    .get(`${serverUrl}/profile/elements/${userId}`)
+    .get(`${serverUrl}/user/${userId}/profile/elements`)
     .then((res) => res.data);
 }
 
 function editProfileElements(userId: string, data: ProfileBox[]) {
   return axios
-    .post(`${serverUrl}/profile/elements/${userId}`, data)
+    .post(`${serverUrl}/user/${userId}/profile/elements`, data)
     .then((res) => res.data);
 }
 
