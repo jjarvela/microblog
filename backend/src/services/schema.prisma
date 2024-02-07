@@ -197,14 +197,12 @@ model user_medias {
   post_medias                                              post_medias[]
   users                                                    users?            @relation(fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
   user_profiles_user_profiles_header_media_idTouser_medias user_profiles[]   @relation("user_profiles_header_media_idTouser_medias")
-  user_profiles_user_profiles_profile_imageTouser_medias   user_profiles[]   @relation("user_profiles_profile_imageTouser_medias")
+  users_user_medias_profile_image                          users[]           @relation("user_medias_profile_image")
 }
 
 model user_profiles {
   id                                                     String             @id @db.Uuid
   user_id                                                String            @unique @db.Uuid
-  screen_name                                            String?
-  profile_image                                          Int?
   profile_text                                           String?
   header_media_id                                        Int?
   homepage                                               String?
@@ -213,7 +211,6 @@ model user_profiles {
   profile_elements                                       profile_elements[]
   social_links                                           social_links[]
   user_medias_user_profiles_header_media_idTouser_medias user_medias?       @relation("user_profiles_header_media_idTouser_medias", fields: [header_media_id], references: [id], onUpdate: NoAction)
-  user_medias_user_profiles_profile_imageTouser_medias   user_medias?       @relation("user_profiles_profile_imageTouser_medias", fields: [profile_image], references: [id], onUpdate: NoAction)
   users                                                  users?             @relation(fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
 }
 
@@ -222,6 +219,8 @@ model users {
   username                                         String            @unique @db.VarChar(50)
   password                                         String            @db.VarChar
   email                                            String?           @db.VarChar(50)
+  screen_name                                      String?
+  profile_image                                    Int?
   admin                                            Boolean?
   location                                         String?
   birthday                                         DateTime?         @db.Date
@@ -241,4 +240,5 @@ model users {
   meetings                                         meetings[]
   user_medias                                      user_medias[]
   user_profiles                                    user_profiles[]
+  user_medias_profile_image                        user_medias?      @relation("user_medias_profile_image", fields: [profile_image], references: [id])
 }
