@@ -4,6 +4,7 @@ import { Context } from "openapi-backend";
 import * as handlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
 import * as profileElementHandlers from "./profileElementHandlers";
+import * as conversationHandlers from "./conversationHandlers";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 
@@ -61,6 +62,7 @@ api.register("editProfileElements", profileElementHandlers.editProfileElements);
 
 //Conversation handlers
 api.register("getConversations", conversationHandlers.getUserConversations);
+api.register("getConversationDetails", conversationHandlers.getConversation);
 api.register("getConversationMessages", conversationHandlers.getConversation);
 api.register("createConversation", conversationHandlers.createConversation);
 api.register("deleteConversation", conversationHandlers.deleteConversation);
