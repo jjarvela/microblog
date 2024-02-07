@@ -2,14 +2,16 @@ import axios from "axios";
 import { serverUrl } from "../globalData";
 
 function getUserConversations(userId: string) {
-  return axios.get(`${serverUrl}/user/${userId}/conversations`).then(res => {
+  return axios.get(`${serverUrl}/user/${userId}/conversations`).then((res) => {
     console.log(res.data);
-    return res.data
-  })
+    return res.data;
+  });
 }
 
 function createConversation(newConversation: NewConversation) {
-  return axios.post(`${serverUrl}/conversation/`, newConversation).then(res => res.data);
+  return axios
+    .post(`${serverUrl}/conversation/`, newConversation)
+    .then((res) => res.data);
 }
 
 function getConversation(conversationId: number) {
@@ -18,8 +20,19 @@ function getConversation(conversationId: number) {
     .then((res) => res.data);
 }
 
-function addNewMessage(conversationId: number, message: NewConversationMessage) {
-  return axios.post(`${serverUrl}/conversation/${conversationId}`, message).then(res => res.data);
+function getMessages(conversationId: number) {
+  return axios
+    .get(`${serverUrl}/conversation/${conversationId}/messages`)
+    .then((res) => res.data);
+}
+
+function addNewMessage(
+  conversationId: number,
+  message: NewConversationMessage,
+) {
+  return axios
+    .post(`${serverUrl}/conversation/${conversationId}`, message)
+    .then((res) => res.data);
 }
 
 function editMessage(conversationId: number, messageId: number) {
@@ -33,17 +46,16 @@ function deleteConversation(conversationId: number) {
 }
 
 function deleteMessage(conversationId: number) {
-  return axios.delete(`${serverUrl}/conversation/${conversationId}`
-  );
+  return axios.delete(`${serverUrl}/conversation/${conversationId}`);
 }
-
 
 export default {
   getUserConversations,
   createConversation,
   getConversation,
+  getMessages,
   addNewMessage,
   editMessage,
   deleteConversation,
-  deleteMessage
+  deleteMessage,
 };

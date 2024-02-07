@@ -4,7 +4,7 @@ import MessageBubble from "./MessageBubble";
 import { MaterialSymbolsChevronLeftRounded } from "../../Icons/MaterialSymbolsChevronLeftRounded";
 import { Link, useParams } from "react-router-dom";
 import conversationService from "../../../Services/conversationService";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { testUserId } from "../../../globalData";
 import { useUser } from "../../../UserWrapper";
 import EmojiPicker, { Theme, EmojiStyle } from "emoji-picker-react";
@@ -13,6 +13,7 @@ import TextAreaInput from "../Inputs/TextAreaInput.tsx";
 import MaterialSymbolsSentimentSatisfiedOutline from "../../Icons/MaterialSymbolsSentimentSatisfiedOutline";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
 import MaterialSymbolsSendRounded from "../../Icons/MaterialSymbolsSendRounded";
+import { queryClient } from "../../../main.tsx";
 
 type ConversationProps = {
   setClosed: React.Dispatch<React.SetStateAction<boolean>>;
@@ -54,24 +55,57 @@ export default function Conversation({ setClosed }: ConversationProps) {
   /**
    * Conversation getter
    */
-  const messageQuery = useQuery({
+  const conversationQuery = useQuery({
     queryKey: ["messages", id],
     queryFn: () => {
       return conversationService.getConversation(parseInt(id));
     },
   });
 
-  if (messageQuery.isError)
+  /**
+   * Message getter
+   */
+  const messageQuery = useQuery({
+    queryKey: ["messages", id],
+    queryFn: () => {
+      return conversationService.getMessages(parseInt(id));
+    },
+  });
+
+  /***
+   * New message mutation
+   */
+
+  const sendMessageMutation = useMutation({
+    mutationKey: ["sendMessage", id],
+    mutationFn: () => {
+      return conversationService.addNewMessage(parseInt(id), {
+        conversation_id: parseInt(id),
+        sender_userid: testUserId,
+        message: messageText,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["messages", id] });
+      setMessageText("");
+    },
+  });
+
+  if (conversationQuery.isError)
     return (
       <div className="flex h-full flex-col">
-        <p className="text-warning">Error loading messages</p>
+        <p className="p-4 text-center text-warning">
+          Error loading conversation
+        </p>
       </div>
     );
 
-  if (messageQuery.isLoading)
+  if (conversationQuery.isLoading)
     return (
       <div className="flex h-full flex-col">
-        <p>Loading messages</p>
+        <p className="animate-pulse p-4 text-center text-black50">
+          Loading conversation
+        </p>
       </div>
     );
 
@@ -90,37 +124,55 @@ export default function Conversation({ setClosed }: ConversationProps) {
         </div>
         <div className="flex w-[90%] flex-col">
           <p className="truncate">
-            {messageQuery.data[0].users_conversations_participant_1Tousers
+            {conversationQuery.data[0].users_conversations_participant_1Tousers
               .username === user?.screenName
-              ? messageQuery.data[0].users_conversations_participant_2Tousers
-                  .username
-              : messageQuery.data[0].users_conversations_participant_1Tousers
-                  .username}
+              ? conversationQuery.data[0]
+                  .users_conversations_participant_2Tousers.username
+              : conversationQuery.data[0]
+                  .users_conversations_participant_1Tousers.username}
           </p>
           <small className="text-black50">
             {"@"}
-            {messageQuery.data[0].users_conversations_participant_1Tousers
+            {conversationQuery.data[0].users_conversations_participant_1Tousers
               .username === user?.userName
-              ? messageQuery.data[0].users_conversations_participant_2Tousers
-                  .username
-              : messageQuery.data[0].users_conversations_participant_1Tousers
-                  .username}
+              ? conversationQuery.data[0]
+                  .users_conversations_participant_2Tousers.username
+              : conversationQuery.data[0]
+                  .users_conversations_participant_1Tousers.username}
           </small>
         </div>
       </div>
 
       <div className="scrollbar-thin flex h-[80%] flex-col overflow-y-scroll p-2">
-        {messageQuery.data[0].conversation_messages
-          ? (
-              messageQuery.data[0]
-                .conversation_messages as ConversationMessage[]
-            ).map((message) => (
-              <MessageBubble
-                sender={testUserId === message.sender_userid}
-                message={message}
-              />
-            ))
-          : ""}
+        {messageQuery.isError && (
+          <div className="flex h-full flex-col">
+            <p className="p-4 text-center text-warning">
+              Error loading messages
+            </p>
+          </div>
+        )}
+        {messageQuery.isLoading && (
+          <div className="flex h-full flex-col">
+            <p className="animate-pulse p-4 text-center text-black50">
+              Loading conversation
+            </p>
+          </div>
+        )}
+        {messageQuery.isSuccess && (
+          <>
+            {messageQuery.data[0].conversation_messages
+              ? (
+                  messageQuery.data[0]
+                    .conversation_messages as ConversationMessage[]
+                ).map((message) => (
+                  <MessageBubble
+                    sender={testUserId === message.sender_userid}
+                    message={message}
+                  />
+                ))
+              : ""}
+          </>
+        )}
       </div>
       <div className="flex flex-row justify-center gap-2 border-t-[1px] border-solid border-black50 p-2 text-center">
         <span className="px-auto flex flex-row justify-center self-center text-xl text-black50">
@@ -154,7 +206,10 @@ export default function Conversation({ setClosed }: ConversationProps) {
           />
         </span>
         <span className="self-center">
-          <Button className="btn-primary aspect-square p-[0.5em] text-lg">
+          <Button
+            className="btn-primary aspect-square p-[0.5em] text-lg"
+            onClick={() => sendMessageMutation.mutate()}
+          >
             <MaterialSymbolsSendRounded />
           </Button>
         </span>
