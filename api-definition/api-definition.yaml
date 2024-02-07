@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.7.2"
+  version: "0.7.4"
 
 servers:
   - url: https://api.microblog.fi
@@ -757,6 +757,29 @@ paths:
           schema:
             type: string
 
+  /user/{userId}/conversations:
+    get:
+      summary: Get list of user's active conversations.
+      operationId: getConversations
+      tags:
+        - user
+        - conversation
+      responses:
+        "200":
+          description: A list of the user's active conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/conversations"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
   /user/register:
     post:
       operationId: registerUser
@@ -800,7 +823,7 @@ paths:
         "500":
           $ref: "#/components/responses/errorResponse"
 
-  /user/conversation:
+  /conversation:
     post:
       summary: Start new conversation
       operationId: createConversation
@@ -808,7 +831,7 @@ paths:
         - conversation
       responses:
         "200":
-          description: A list of messages in a conversation
+          description: The information of the newly-created conversation
           content:
             application/json:
               schema:
@@ -827,7 +850,7 @@ paths:
             schema:
               $ref: "#/components/schemas/newConversation"
 
-  /user/conversation/{conversationId}:
+  /conversation/{conversationId}:
     get:
       summary: Get conversation by id.
       operationId: getConversationMessages
@@ -859,7 +882,7 @@ paths:
       summary: Add a new message to the conversation
       operationId: sendDirectMessage
       tags:
-        - user
+        - conversation
       responses:
         "201":
           description: Return updated message list
@@ -895,9 +918,67 @@ paths:
         "400":
           $ref: "#/components/responses/errorResponse"
       tags:
-        - user
+        - conversation
       parameters:
         - name: conversationId
+          in: path
+          schema:
+            type: string
+          required: true
+
+  /conversation/{conversationId}/{messageId}:
+    put:
+      summary: Edit message in a conversation
+      operationId: editDirectMessage
+      tags:
+        - conversation
+      responses:
+        "201":
+          description: Return updated message list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/conversation_messages"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: conversationId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: messageId
+          in: path
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newConversationMessage"
+
+    delete:
+      summary: Delete message by ID
+      operationId: deleteDirectMessage
+      responses:
+        "200":
+          $ref: "#/components/responses/Id"
+        "400":
+          $ref: "#/components/responses/errorResponse"
+      tags:
+        - conversation
+      parameters:
+        - name: conversationId
+          in: path
+          schema:
+            type: string
+          required: true
+        - name: messageId
           in: path
           schema:
             type: string
