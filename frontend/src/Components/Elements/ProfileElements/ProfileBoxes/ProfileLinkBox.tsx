@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { IProfileEditableBox } from "./ProfileBoxes";
 import ProfileBoxModificationButtons from "./ProfileBoxModificationButtons";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextInput from "../../Inputs/TextInput";
 import Button from "../../Button";
 
@@ -34,6 +34,24 @@ function ProfileLinkBox({
     setModifying(!modifying);
   };
 
+  const divRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (divRef.current) {
+      if (
+        modifying &&
+        divRef.current.parentElement &&
+        divRef.current.parentElement.draggable
+      ) {
+        divRef.current.parentElement!.draggable = false;
+      } else if (
+        divRef.current.parentElement &&
+        !divRef.current.parentElement.draggable
+      ) {
+        divRef.current.parentElement.draggable = true;
+      }
+    }
+  }, [modifying]);
+
   const [editedLinks, setEditedLinks] = useState(links);
 
   const handleChangeLinks = (
@@ -49,7 +67,10 @@ function ProfileLinkBox({
   };
 
   return (
-    <div className={"rounded-xl border border-black50 p-2" + " " + classAdd}>
+    <div
+      ref={divRef}
+      className={"rounded-xl border border-black50 p-2" + " " + classAdd}
+    >
       {editing && modifying ? (
         <div className="flex flex-col gap-4">
           {editedLinks.map((link, i) => {

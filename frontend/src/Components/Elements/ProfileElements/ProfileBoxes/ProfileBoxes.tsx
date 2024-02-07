@@ -132,19 +132,9 @@ function ProfileBoxes({
     setDraggedHeight(rect.height);
     // This 0ms setTimeout somehow sets the drag and drop image to match the element.
     setTimeout(() => {
-      // Some old fix work. Keeping it around for now
-      // if (setBoxes)
-      //   setBoxes(
-      //     boxes.map((box) => {
-      //       if (box.type === "media") {
-      //         box.data = { ...box.data, newHeight: undefined };
-      //       }
-      //       return box;
-      //     }),
-      //   );
       setDragOverIndex(index);
       setDraggedBox(box);
-      const editedBoxes = boxes;
+      const editedBoxes = newBoxes;
       editedBoxes.splice(index, 1, { type: "placeholder", data: {} });
       setNewBoxes(editedBoxes);
     }, 0);
@@ -154,7 +144,7 @@ function ProfileBoxes({
     if (!isEditing) return;
     if (!dragActive) return;
     setDragOverIndex(index);
-    const editedBoxes = boxes.filter((box) => box.type !== "placeholder");
+    const editedBoxes = newBoxes.filter((box) => box.type !== "placeholder");
     editedBoxes.splice(index, 0, {
       type: "placeholder",
       data: {},
@@ -168,7 +158,7 @@ function ProfileBoxes({
     if (dropData?.type === "media") {
       dropData.data.newHeight = draggedHeight;
     }
-    const editedBoxes = boxes.filter((box) => box.type !== "placeholder");
+    const editedBoxes = newBoxes.filter((box) => box.type !== "placeholder");
     if (dropData) {
       if (dragOverIndex !== null) {
         editedBoxes.splice(dragOverIndex, 0, dropData);
@@ -180,8 +170,6 @@ function ProfileBoxes({
     setDraggedHeight(0);
     setDragActive(false);
   };
-
-  const boxesToRender = isEditing ? newBoxes : boxes;
 
   useEffect(() => {
     setNewBoxes(boxes);
@@ -226,8 +214,8 @@ function ProfileBoxes({
         )}
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {boxesToRender && // Check that boxes are not undefined before mapping
-          boxesToRender.map((box, i) => {
+        {newBoxes && // Check that boxes are not undefined before mapping
+          newBoxes.map((box, i) => {
             switch (box.type) {
               case "text":
                 return (
