@@ -4,6 +4,19 @@ import ProfileBoxModificationButtons from "./ProfileBoxModificationButtons";
 import { useEffect, useRef, useState } from "react";
 import TextInput from "../../Inputs/TextInput";
 import Button from "../../Button";
+import LogosYoutubeIcon from "../../../Icons/LogosYoutubeIcon";
+import LogosGithubIcon from "../../../Icons/LogosGithubIcon";
+import LogosTwitter from "../../../Icons/LogosTwitter";
+import LogosFacebook from "../../../Icons/LogosFacebook";
+import PhGlobe from "../../../Icons/PhGlobe";
+
+const recognizedIconList = [
+  { find: "youtube", icon: <LogosYoutubeIcon /> },
+  { find: "github", icon: <LogosGithubIcon /> },
+  { find: "twitter", icon: <LogosTwitter /> },
+  { find: "facebook", icon: <LogosFacebook /> },
+];
+const defaultIcon = <PhGlobe />;
 
 export type LinkBoxLink = {
   icon: React.ReactNode;
@@ -103,10 +116,21 @@ function ProfileLinkBox({
                 to={link.url || ""}
                 key={i}
                 draggable="false"
-                className="flex flex-row items-center gap-4 rounded-lg px-4 py-3 hover:bg-black25 dark:hover:bg-white25"
+                className="flex flex-row items-center gap-4 rounded-lg px-4 py-3 text-lg hover:bg-black25 dark:hover:bg-white25"
               >
                 <span className="flex w-6 flex-row justify-center">
-                  {link.icon}
+                  {/* {recognizedIconList.map((icon, i, array) => {
+                    if (link.text?.toLowerCase().includes(icon.find))
+                      return icon.icon;
+                    else if (array.length === i + 1) return defaultIcon;
+                  })} */}
+                  {recognizedIconList.reduce(
+                    (result, icon) =>
+                      link.text.toLowerCase().includes(icon.find)
+                        ? icon.icon
+                        : result,
+                    defaultIcon,
+                  )}
                 </span>
                 <p className="text-[1.2rem]">{link.text}</p>
               </Link>
