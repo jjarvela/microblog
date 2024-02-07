@@ -69,7 +69,9 @@ const UserMessages = () => {
             /**
              * Conversation query is loading
              */
-            conversationQuery.isLoading && <p>Loading conversations</p>
+            conversationQuery.isLoading && (
+              <p className="p-4 text-center">Loading conversations</p>
+            )
           }
 
           {conversationQuery.isSuccess && (
