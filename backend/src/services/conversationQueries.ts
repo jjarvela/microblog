@@ -38,6 +38,10 @@ export const selectConversations = async (param: { user_id: string; }) => {
                 },
                 ],
         },
+        include: {
+            users_conversations_participant_1Tousers: true,
+            users_conversations_participant_2Tousers: true
+        },
         orderBy: {
             timestamp: 'desc',
         },
