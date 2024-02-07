@@ -789,7 +789,7 @@ paths:
             schema:
               $ref: "#/components/schemas/userAuth"
   /logout:
-    get§:
+    get:
       summary: Logout user and destroy the session.
       operationId: "logoutUser"
       tags:
