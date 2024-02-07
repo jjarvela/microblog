@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MaterialSymbolsCloseRounded from "../../../Icons/MaterialSymbolsCloseRounded";
 import { IProfileEditableBox } from "./ProfileBoxes";
-import ProfileBoxModifyingButton from "./ProfileBoxModifyingButton";
+import ProfileBoxModificationButtons from "./ProfileBoxModificationButtons";
 import TextInput from "../../Inputs/TextInput";
 import Button from "../../Button";
 
@@ -18,6 +18,7 @@ function ProfileMediaBox({
   editing,
   index,
   handleDataChange,
+  handleDelete,
 }: ProfileMediaBoxProps) {
   const [modifying, setModifying] = useState(false);
   const handleEndEdit = () => {
@@ -26,10 +27,28 @@ function ProfileMediaBox({
     }
     setModifying(!modifying);
   };
+
+  const divRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (divRef.current) {
+      if (
+        modifying &&
+        divRef.current.parentElement &&
+        divRef.current.parentElement.draggable
+      ) {
+        divRef.current.parentElement!.draggable = false;
+      } else if (
+        divRef.current.parentElement &&
+        !divRef.current.parentElement.draggable
+      ) {
+        divRef.current.parentElement.draggable = true;
+      }
+    }
+  }, [modifying]);
+
   const [editedMedia] = useState(media);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const rootDivRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(newHeight || 0);
 
   // These two try to cleanup unused height property
@@ -43,8 +62,8 @@ function ProfileMediaBox({
   return (
     <>
       <div
-        ref={rootDivRef}
-        className="relative cursor-pointer overflow-hidden rounded-xl border border-black50 bg-[#000]"
+        ref={divRef}
+        className="relative min-h-[4rem] cursor-pointer overflow-hidden rounded-xl border border-black50 bg-[#000]"
         onClick={() => dialogRef.current?.showModal()}
         style={height ? { minHeight: height } : {}}
       >
@@ -73,9 +92,10 @@ function ProfileMediaBox({
           </>
         )}
         {editing && (
-          <ProfileBoxModifyingButton
+          <ProfileBoxModificationButtons
             modifying={modifying}
             handleEndEdit={handleEndEdit}
+            handleDelete={() => handleDelete(index)}
           />
         )}
       </div>
