@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TagList from "../../PostElements/TagList";
 import UserProfileInfo from "../../UserProfileInfo";
-import ProfileBoxModifyingButton from "./ProfileBoxModifyingButton";
+import ProfileBoxModificationButtons from "./ProfileBoxModificationButtons";
 import { IProfileEditableBox } from "./ProfileBoxes";
 import TextInput from "../../Inputs/TextInput";
 import Button from "../../Button";
@@ -17,6 +17,7 @@ function ProfilePostBox({
   editing,
   index,
   handleDataChange,
+  handleDelete,
 }: ProfilePostBoxProps) {
   const [modifying, setModifying] = useState(false);
   const handleEndEdit = () => {
@@ -26,10 +27,28 @@ function ProfilePostBox({
     setModifying(!modifying);
   };
 
+  const divRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (divRef.current) {
+      if (
+        modifying &&
+        divRef.current.parentElement &&
+        divRef.current.parentElement.draggable
+      ) {
+        divRef.current.parentElement!.draggable = false;
+      } else if (
+        divRef.current.parentElement &&
+        !divRef.current.parentElement.draggable
+      ) {
+        divRef.current.parentElement.draggable = true;
+      }
+    }
+  }, [modifying]);
+
   const [editedPost] = useState(post);
 
   return (
-    <div className="rounded-xl border border-black50 p-4">
+    <div ref={divRef} className="rounded-xl border border-black50 p-4">
       {editing && modifying ? (
         <div className="flex flex-col flex-wrap gap-4">
           <TextInput placeholder="Enter post id..." />
@@ -44,9 +63,10 @@ function ProfilePostBox({
         </div>
       )}
       {editing && (
-        <ProfileBoxModifyingButton
+        <ProfileBoxModificationButtons
           modifying={modifying}
           handleEndEdit={handleEndEdit}
+          handleDelete={() => handleDelete(index)}
         />
       )}
     </div>

@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextAreaInput from "../../Inputs/TextAreaInput";
 import TextInput from "../../Inputs/TextInput";
 import { IProfileEditableBox } from "./ProfileBoxes";
-import ProfileBoxModifyingButton from "./ProfileBoxModifyingButton";
+import ProfileBoxModificationButtons from "./ProfileBoxModificationButtons";
 
 type ProfileTextBoxProps = IProfileEditableBox & IProfileTextBoxData;
 
@@ -17,6 +17,7 @@ function ProfileTextBox({
   editing,
   index,
   handleDataChange,
+  handleDelete,
 }: ProfileTextBoxProps) {
   const [modifying, setModifying] = useState(false);
   const handleEndEdit = () => {
@@ -26,11 +27,32 @@ function ProfileTextBox({
     setModifying(!modifying);
   };
 
+  const divRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (divRef.current) {
+      if (
+        modifying &&
+        divRef.current.parentElement &&
+        divRef.current.parentElement.draggable
+      ) {
+        divRef.current.parentElement!.draggable = false;
+      } else if (
+        divRef.current.parentElement &&
+        !divRef.current.parentElement.draggable
+      ) {
+        divRef.current.parentElement.draggable = true;
+      }
+    }
+  }, [modifying]);
+
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedText, setEditedText] = useState(text);
 
   return (
-    <div className="relative flex min-h-[16rem] flex-col gap-4 rounded-xl border border-black50 p-4">
+    <div
+      ref={divRef}
+      className="relative flex min-h-[16rem] flex-col gap-4 rounded-xl border border-black50 p-4"
+    >
       {editing && modifying ? (
         <>
           <TextInput
@@ -50,9 +72,10 @@ function ProfileTextBox({
         </>
       )}
       {editing && (
-        <ProfileBoxModifyingButton
+        <ProfileBoxModificationButtons
           modifying={modifying}
           handleEndEdit={handleEndEdit}
+          handleDelete={() => handleDelete(index)}
         />
       )}
     </div>
