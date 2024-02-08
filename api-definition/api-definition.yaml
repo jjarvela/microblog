@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.7.3"
+  version: "0.7.4"
 
 servers:
   - url: https://api.microblog.fi
@@ -346,6 +346,7 @@ components:
           type: number
           enum:
             - 400
+            - 401
             - 500
           description: Status of response.
         err:
@@ -369,6 +370,8 @@ tags:
     description: Tag-management related functions.
   - name: login
     description: User authentication related functions.
+  - name: logout
+    description: User session logout related functions.
   - name: group
     description: Groups related functions.
   - name: user
@@ -816,11 +819,24 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/OK"
+        "401":
+          $ref: "#/components/responses/errorResponse"
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/userAuth"
+  /logout:
+    get:
+      summary: Logout user and destroy the session.
+      operationId: "logoutUser"
+      tags:
+        - logout
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "500":
+          $ref: "#/components/responses/errorResponse"
 
   /conversation:
     post:
@@ -1009,4 +1025,3 @@ paths:
           schema:
             type: string
           required: true
-
