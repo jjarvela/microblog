@@ -6,27 +6,29 @@ export const userdata = [
     {
         uid: userid1,
         username: "Jane",
-        password: "somepass",
+        // Clear text: somepass
+        password: "$argon2id$v=19$m=65536,t=3,p=4$DnnPcb9QqOiSjwthZ1+5jg$xla6n2awJ945pGKCTIwJbefX08hMxb4KUkvekO/jkCc",
         email: "jane@mail.com",
         admin: true,
         location: "Finland",
         birthday: new Date("1970-12-31"),
-        joined: new Date("2024-01-01T10:00:00Z"), 
-        timezone: "UTC+02:00", 
-        last_login: new Date("2024-01-04T08:13:00Z"), 
+        joined: new Date("2024-01-01T10:00:00Z"),
+        timezone: "UTC+02:00",
+        last_login: new Date("2024-01-04T08:13:00Z"),
     },
-  
+
     // User 2
     {
         uid: userid2,
         username: "John",
-        password: "mypassword",
+        // Clear text: mypassword
+        password: "$argon2id$v=19$m=65536,t=3,p=4$1GjjBY0fPUWDCS21PPbt4g$vVOx28HI25g2csK+37uaugWrBUtBtVgYC5tb5KoqCnI",
         email: "user@mail.com",
         admin: false,
         location: "Finland",
         birthday: new Date("1999-09-09"),
         joined: new Date("2023-10-08T19:00:00Z"),
-        timezone: "UTC+02:00", 
-        last_login: new Date("2024-01-11T22:00:00Z"), 
+        timezone: "UTC+02:00",
+        last_login: new Date("2024-01-11T22:00:00Z"),
     }
-  ];
+];

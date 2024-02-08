@@ -5,40 +5,33 @@ import MaterialSymbolsMarkEmailUnreadRounded from "../../Icons/MaterialSymbolsMa
 import MaterialSymbolsMarkEmailReadRounded from "../../Icons/MaterialSymbolsMarkEmailReadRounded";
 import MaterialSymbolsBlock from "../../Icons/MaterialSymbolsBlock";
 import MaterialSymbolsDeleteForeverOutlineRounded from "../../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../../../UserWrapper";
+import ConfirmModal from "../Modals/ConfirmModal";
+import { useMutation } from "@tanstack/react-query";
+import conversationService from "../../../Services/conversationService";
+import { queryClient } from "../../../main";
+import { testUserId } from "../../../globalData";
 
 type ConversationThumbProps = {
-  id: string;
-  recipientName: string;
-  recipientHandle: string;
+  conversation: Conversation;
   readStatus: boolean;
   setClosed: React.Dispatch<React.SetStateAction<boolean>>;
-  openMessage: {
-    recipientName: string;
-    recipientHandle: string;
-    messages: never[];
-  };
-  setOpenMessage: React.Dispatch<
-    React.SetStateAction<{
-      id: string;
-      recipientName: string;
-      recipientHandle: string;
-      messages: never[];
-    }>
-  >;
 };
 
 export default function ConversationThumb({
-  id,
-  recipientName,
-  recipientHandle,
+  conversation,
   readStatus,
-  openMessage,
-  setOpenMessage,
   setClosed,
 }: ConversationThumbProps) {
   const [showContextMenu, setShowContextMenu] = useState(false);
+  const user = useUser().user;
 
+  /**
+   * Hook that checks for clicks outside element
+   * @param callback : what happens when click outside element detected
+   * @returns : React reference to the HTML Div element
+   */
   const useClickOutside = (callback: () => void) => {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -51,27 +44,38 @@ export default function ConversationThumb({
       document.addEventListener("click", handleClick, true);
 
       return () => document.removeEventListener("click", handleClick, true);
-    }, [ref]);
+    }, [ref, callback]);
 
     return ref;
   };
 
   const ref = useClickOutside(() => setShowContextMenu(false));
+  const confirmModal = useRef<HTMLDialogElement>(null);
+  const navigate = useNavigate();
+
+  /**
+   * Delete query
+   */
+  const deleteConversationMutation = useMutation({
+    mutationKey: ["deleteConversation", conversation.id],
+    mutationFn: () => {
+      return conversationService.deleteConversation(conversation.id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["conversations", testUserId],
+      });
+      setClosed(false);
+      navigate("/messages");
+    },
+  });
 
   return (
     <div className="relative">
       <Link
-        to={`/messages/${id}`}
-        state={{ conversation: { id, recipientName, recipientHandle } }}
+        to={`/messages/${conversation.id}`}
         className=" relative flex w-full flex-col overflow-hidden border-[1px] border-solid border-black50 p-2"
         onClick={() => {
-          !showContextMenu &&
-            setOpenMessage({
-              ...openMessage,
-              id,
-              recipientName,
-              recipientHandle,
-            });
           !showContextMenu && setClosed(false);
         }}
         onContextMenu={(e) => {
@@ -79,22 +83,46 @@ export default function ConversationThumb({
           setShowContextMenu(true);
         }}
       >
+        {/**
+         * Recipient info
+         */}
         <div className="items-between flex w-full flex-row gap-2">
           <div className="flex flex-row items-center gap-2 text-left">
             <div className="">
               <ProfilePicture width={50} />
             </div>
             <div className="flex w-20 flex-col sm:w-60 xl:w-40">
-              <p className="truncate">{recipientName}</p>
-              <small className="text-black50">{recipientHandle}</small>
+              <p className="truncate">
+                {conversation.users_conversations_participant_1Tousers
+                  .username === user?.screenName
+                  ? conversation.users_conversations_participant_2Tousers
+                      .username
+                  : conversation.users_conversations_participant_1Tousers
+                      .username}
+              </p>
+              <small className="text-black50">
+                {"@"}
+                {conversation.users_conversations_participant_1Tousers
+                  .username === user?.userName
+                  ? conversation.users_conversations_participant_2Tousers
+                      .username
+                  : conversation.users_conversations_participant_1Tousers
+                      .username}
+              </small>
             </div>
           </div>
+          {/**
+           * Timestamp
+           */}
           <div className="flex-1 flex-grow self-start text-end">
             <p className="text-xs text-black50">
-              {new Date().toLocaleString()}
+              {new Date(Date.parse(conversation.timestamp)).toLocaleString()}
             </p>
           </div>
         </div>
+        {/**
+         * Latest message
+         */}
         <div className="max-h-[50%] max-w-[80%]">
           <small
             className={`line-clamp-2 px-1 pt-2 text-left ${
@@ -118,7 +146,7 @@ export default function ConversationThumb({
             className="absolute right-0 top-2 z-20 flex flex-col justify-center rounded-xl border border-black50 bg-white p-2 dark:border-white50 dark:bg-black dark:text-white"
           >
             <a
-              className="flex gap-2  border-b-[1px] border-b-black50 py-1 text-xs"
+              className="flex cursor-pointer gap-2  border-b-[1px] border-b-black50 py-1 text-xs"
               onClick={() => setShowContextMenu(false)}
             >
               {readStatus ? (
@@ -129,14 +157,14 @@ export default function ConversationThumb({
               <span>Mark as {readStatus ? "unread" : "read"}</span>
             </a>
             <a
-              className="flex gap-2 border-b-[1px] border-b-black50 py-1 text-xs"
-              onClick={() => setShowContextMenu(false)}
+              className="flex cursor-pointer gap-2 border-b-[1px] border-b-black50 py-1 text-xs"
+              onClick={() => confirmModal.current?.showModal()}
             >
               <MaterialSymbolsDeleteForeverOutlineRounded />
               <span>Delete</span>
             </a>
             <a
-              className="flex gap-2 border-b-[1px] border-b-black50 py-1 text-xs"
+              className="flex cursor-pointer gap-2 border-b-[1px] border-b-black50 py-1 text-xs"
               onClick={() => setShowContextMenu(false)}
             >
               <MaterialSymbolsBlock /> <span>Block</span>
@@ -144,6 +172,13 @@ export default function ConversationThumb({
           </div>
         </>
       )}
+      <ConfirmModal
+        refObject={confirmModal}
+        message="Are you sure you wish to delete these messages forever?"
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmCallback={() => deleteConversationMutation.mutate()}
+      />
     </div>
   );
 }

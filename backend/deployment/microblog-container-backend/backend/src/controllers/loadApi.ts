@@ -2,6 +2,8 @@ import OpenAPIBackend from 'openapi-backend';
 import { Request, Response } from "express";
 import { Context } from 'openapi-backend';
 import * as handlers from "./blogHandlers";
+import * as followHandlers from "./FollowHandlers";
+import * as conversationHandlers from "./conversationHandlers"
 import Ajv from "ajv"
 import addFormats from "ajv-formats"
 
@@ -46,6 +48,22 @@ api.register("addBlogPost", handlers.addBlogPost);
 api.register("getBlogPost", handlers.getBlogPost);
 api.register("updateBlogPost", handlers.updateBlogPost);
 api.register("deleteBlogPost", handlers.deleteBlogPost);
+
+// Followings handlers
+api.register("addFollowing", followHandlers.addFollowing);
+api.register("getFollowings", followHandlers.getFollowings);
+api.register("getGroupFollowings", followHandlers.getGroupFollowings);
+api.register("getFollowers", followHandlers.getFollowers);
+api.register("deleteFollowing", followHandlers.deleteFollowing);
+
+//Conversation handlers
+api.register("getConversations", conversationHandlers.getUserConversations);
+api.register("getConversationMessages", conversationHandlers.getConversation);
+api.register("createConversation", conversationHandlers.createConversation);
+api.register("deleteConversation", conversationHandlers.deleteConversation);
+api.register("sendDirectMessage", conversationHandlers.postMessage);
+api.register("editDirectMessage", conversationHandlers.editMessage);
+api.register("deleteDirectMessage", conversationHandlers.deleteMessage);
 
 
 export default api

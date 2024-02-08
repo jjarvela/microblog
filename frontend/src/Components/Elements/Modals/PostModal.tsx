@@ -1,22 +1,75 @@
-import { useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import Button from "../Button";
 import TagInput from "../Inputs/TagInput";
 import TextAreaInput from "../Inputs/TextAreaInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
 import TextInput from "../Inputs/TextInput";
 import UserProfileInfo from "../UserProfileInfo";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import postService from "../../../Services/postService";
+import { testUserId } from "../../../globalData";
 
 type NewPostProps = {
   user: User;
+  id?: number;
   text: string;
   tags: string[];
   refObject: React.MutableRefObject<HTMLDialogElement | null>;
   mode: "post" | "edit";
 };
 
-function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
+function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
+  const queryClient = useQueryClient();
+  const form = useRef<HTMLFormElement>(null);
   const [postText, setPostText] = useState(text);
   const [newTags, setNewTags] = useState<string[]>(tags);
+  const [files, setFiles] = useState<File[]>([]);
+
+  const mutateAddPost = useMutation({
+    mutationFn: (post: BlogToServer) =>
+      postService.addNewPost(post, testUserId),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+    },
+  });
+
+  const mutateEditPost = useMutation({
+    mutationFn: (post: BlogToServer) =>
+      postService.editPost(post, testUserId, id!), // FIX ME: id optional for now because of rewriting
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+    },
+  });
+
+  const mutateSendMedia = useMutation({
+    mutationKey: ["post-modal-files"],
+    mutationFn: () => postService.sendPostMedia(testUserId, testUserId, files),
+  });
+
+  const handleSubmit = (e: FormEvent, mode: NewPostProps["mode"]) => {
+    e.preventDefault();
+    if (mode === "post") {
+      const newPost: BlogToServer = {
+        text: postText,
+        date: new Date().toISOString(),
+        hashtags: newTags,
+      };
+      mutateAddPost.mutate(newPost);
+    } else if (mode === "edit") {
+      const editedPost: BlogToServer = {
+        id: id,
+        text: postText,
+        date: new Date().toISOString(),
+        hashtags: newTags,
+      };
+      mutateEditPost.mutate(editedPost);
+    }
+    if (files.length > 0) {
+      mutateSendMedia.mutate();
+    }
+    refObject.current?.close();
+  };
+
   return (
     <dialog
       ref={refObject}
@@ -34,11 +87,9 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
           </div>
         )}
         <form
+          ref={form}
           className="flex flex-col gap-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            refObject.current?.close();
-          }}
+          onSubmit={(e) => handleSubmit(e, mode)}
         >
           <TextAreaInput
             value={postText}
@@ -48,19 +99,44 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
             className="min-h-[20rem] w-full"
             onChange={(e) => setPostText(e.target.value)}
             autofocus={true}
+            // Put text cursor at the end on autofocus.
+            onFocus={(e) =>
+              e.currentTarget.setSelectionRange(
+                e.currentTarget.value.length,
+                e.currentTarget.value.length,
+              )
+            }
           />
-          <Button
-            type="button"
-            className="btn-primary flex w-fit flex-row items-center gap-2 px-4"
+          <label
+            htmlFor="post-media"
+            className="btn-primary mt-2 flex w-fit flex-row items-center gap-2 px-4"
           >
             <span className="text-lg">
               <MaterialSymbolsAddPhotoAlternateOutlineRounded />
             </span>
             Add media...
-          </Button>
+          </label>
+          <input
+            id="post-media"
+            name="user-media"
+            className="collapse h-0 w-0"
+            type="file"
+            accept=".jpg, .jpeg, .png, .gif, .svg, .mp4, .mpeg, .avi"
+            multiple
+            max={4}
+            onChange={(e) => {
+              if (e.target.files) {
+                const files = [];
+                for (let i = 0; i < e.target.files.length; i++) {
+                  files.push(e.target.files[i]);
+                }
+                setFiles(files);
+              }
+            }}
+          />
           <TagInput
             tags={newTags}
-            onTagsChanged={(tags) => setNewTags(tags)}
+            onTagsChanged={(tag) => setNewTags(tag)}
             maxTagLength={20}
             maxTags={20}
             showCount
@@ -73,7 +149,7 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
               placeholder="Group name..."
             />
           </div>
-          <div className="flex flex-row justify-between">
+          <div className="mt-2 flex flex-row justify-between">
             <Button
               className="btn-secondary"
               onClick={() => refObject.current?.close()}
@@ -81,7 +157,7 @@ function PostModal({ user, text, tags, refObject, mode }: NewPostProps) {
             >
               Cancel
             </Button>
-            <Button className="btn-primary" type="submit">
+            <Button className="btn-primary">
               {mode === "post" && "Post"}
               {mode === "edit" && "Edit"}
             </Button>
