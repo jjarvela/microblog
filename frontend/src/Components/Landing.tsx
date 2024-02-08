@@ -37,12 +37,12 @@ function Landing() {
   };
 
   useEffect(() => {
-    if (passwordInput !== passwordConfirmInput) {
+    if (passwordInput !== passwordConfirmInput && register) {
       setErrorMessage("Passwords do not match!");
     } else {
       setErrorMessage("");
     }
-  }, [passwordInput, passwordConfirmInput]);
+  }, [passwordInput, passwordConfirmInput, register]);
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
