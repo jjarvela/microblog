@@ -18,6 +18,15 @@ export async function getUserMedia(c: Context, _req: Request, res: Response) {
             console.log(e);
             res.status(500).json({ status: 500, err: [{ message: "Unidentified error" }] });
         }
+    } else if (query.mediaId !== undefined ) {
+        const mediaId = Number(query.mediaId);
+        try {
+            const result = await queries.selectOneMedia({ media_id: mediaId as number});
+            res.status(200).json(result);
+        } catch (e) {
+            console.log(e);
+            res.status(500).json({ status: 500, err: [{ message: "Unidentified error" }] });
+        }
     } else {
         try {
             const result = await queries.selectMediaByUser({ user_id: userId as string});

@@ -21,14 +21,18 @@ const upload = multer({
     ) {
       /*get userId and fileId from either request parametres or body
       (may need to put fileId into req body before calling upload)*/
+      console.log("************MULTER START****************");
       const userId = req.params.userId;
-      const fileId = req.body.fileId;
+      console.log(userId);
       const fileType = path.extname(file.originalname);
-      const filename = parseName(userId, fileId, fileType);
+      const filename = parseName(userId, Date.now().toString(), fileType);
+      console.log(filename);
 
       /* apply file path to request body */
       req.body.filePath =
         "./src/user-media/" + req.body.user_id + "/" + filename;
+      console.log(req.body);
+      console.log("************MULTER END****************");
 
       callback(null, filename);
     }
@@ -56,4 +60,4 @@ function parseName(userId: string | number, fileId: string, filetype: string) {
 /*user-media is the required name for the file upload form field in the FRONTEND
 For upload to work, FRONTEND axios request needs to have "Content-Type": "multipart/form-data" in its request header
 upload is called by upload(req, res, err => {-error and response handling-})*/
-export default upload.array("user-media", 4);
+export default upload.single("user-media");

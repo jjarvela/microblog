@@ -456,9 +456,9 @@ paths:
           multipart/formdata:
             schema:
               $ref: "#/components/schemas/multipleFiles"
-            # encoding:
-            #   multipleFiles:
-            #     contentType: image/png, image/jpeg
+            encoding:
+              multipleFiles:
+                contentType: image/png, image/jpeg
 
     get:
       summary: Get list of user's media files and their location.
@@ -488,6 +488,10 @@ paths:
             type: string
         - in: query
           name: postId
+          schema:
+            type: integer
+        - in: query
+          name: mediaId
           schema:
             type: integer
 

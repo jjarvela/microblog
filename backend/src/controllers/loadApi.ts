@@ -6,6 +6,7 @@ import * as followHandlers from "./FollowHandlers";
 import Ajv from "ajv"
 import addFormats from "ajv-formats"
 import { addUserMedia } from './mediaController';
+import * as mediaHandlers from "./mediaHandlers";
 
 // Check working directory and form path to api-definition.
 
@@ -56,6 +57,10 @@ api.register("getGroupFollowings", followHandlers.getGroupFollowings);
 api.register("getFollowers", followHandlers.getFollowers);
 api.register("deleteFollowing", followHandlers.deleteFollowing);
 
+// media handlers
 api.register("addUserMedia", addUserMedia)
+api.register("getUserMedia", mediaHandlers.getUserMedia)
+api.register("delUserMedia", mediaHandlers.delUserMedia)
+
 
 export default api
