@@ -1,4 +1,13 @@
 POST http://localhost:9000/login
 Content-Type: application/json
 
-< ./userAuth.json
+< ./userAuth_fail.json
+
+POST http://localhost:9000/login
+Content-Type: application/json
+
+< ./userAuth_ok.json
+
+GET http://localhost:9000/blog/22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b
+
+GET http://localhost:9000/logout
