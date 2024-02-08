@@ -48,20 +48,22 @@ function ProfilePostBox({
   const [editedPost] = useState(post);
 
   return (
-    <div ref={divRef} className="rounded-xl border border-black50 p-4">
-      {editing && modifying ? (
-        <div className="flex flex-col flex-wrap gap-4">
-          <TextInput placeholder="Enter post id..." />
-          <Button className="btn-primary">Apply</Button>
-          <p className="text-sm italic opacity-50">Not implemented yet...</p>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-4">
-          <UserProfileInfo user={post.postOwner} />
-          <p>{post.text}</p>
-          <TagList tags={post.tags} />
-        </div>
-      )}
+    <div ref={divRef} className="rounded-xl border border-black50">
+      <div className="p-4">
+        {editing && modifying ? (
+          <div className="flex flex-col flex-wrap gap-4">
+            <TextInput placeholder="Enter post id..." />
+            <Button className="btn-primary">Apply</Button>
+            <p className="text-sm italic opacity-50">Not implemented yet...</p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-4">
+            <UserProfileInfo user={post.postOwner} />
+            <p>{post.text}</p>
+            <TagList tags={post.tags} />
+          </div>
+        )}
+      </div>
       {editing && (
         <ProfileBoxModificationButtons
           modifying={modifying}

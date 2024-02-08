@@ -6,21 +6,29 @@ type ProfileBoxModificationButtonsProps = {
   modifying: boolean;
   handleEndEdit: () => void;
   handleDelete: () => void;
+  class?: string;
 };
 
 function ProfileBoxModificationButtons({
   modifying,
   handleEndEdit,
   handleDelete,
+  class: classAdd,
 }: ProfileBoxModificationButtonsProps) {
   return (
-    <>
+    <div
+      className={
+        "flex flex-row justify-between border-t border-black50 border-t-white75 p-2 dark:border-t-black75" +
+        " " +
+        classAdd
+      }
+    >
       <div
         onClick={(e) => {
           handleDelete();
           e.stopPropagation();
         }}
-        className="absolute bottom-2 left-2 flex h-10 w-10 items-center justify-center rounded-full border border-warning text-xl text-warning opacity-25 hover:opacity-75 dark:border-warningDark dark:text-warningDark"
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-warning text-xl text-warning opacity-25 hover:opacity-75 dark:border-warningDark dark:text-warningDark"
       >
         <MaterialSymbolsDeleteForeverOutlineRounded />
       </div>
@@ -29,7 +37,7 @@ function ProfileBoxModificationButtons({
           handleEndEdit();
           e.stopPropagation();
         }}
-        className="absolute bottom-2 right-2 flex h-10 w-10 items-center justify-center rounded-full border border-black50 text-xl opacity-25 hover:opacity-75"
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-black50 text-xl opacity-25 hover:opacity-75"
       >
         {modifying ? (
           <IonCheckmarkRound />
@@ -37,7 +45,7 @@ function ProfileBoxModificationButtons({
           <MaterialSymbolsEditOutlineRounded />
         )}
       </div>
-    </>
+    </div>
   );
 }
 

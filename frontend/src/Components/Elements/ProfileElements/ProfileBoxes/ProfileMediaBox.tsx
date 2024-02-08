@@ -96,6 +96,7 @@ function ProfileMediaBox({
             modifying={modifying}
             handleEndEdit={handleEndEdit}
             handleDelete={() => handleDelete(index)}
+            class="bg-white dark:bg-black"
           />
         )}
       </div>

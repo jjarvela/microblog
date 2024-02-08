@@ -325,7 +325,7 @@ function ProfileBoxes({
               className="btn-primary"
               onClick={() => handleAddBox(currentNewType as ProfileBox["type"])}
             >
-              <span className="font-bold">+ </span>Add new
+              <span className="font-bold">+ </span>Add New
             </Button>
           </div>
         )}
