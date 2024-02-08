@@ -93,7 +93,6 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
         >
           <TextAreaInput
             value={postText}
-            defaultValue={postText}
             placeholder="Post text..."
             showCount
             maxLength={500}
