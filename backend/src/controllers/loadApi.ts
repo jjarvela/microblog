@@ -1,11 +1,14 @@
 import OpenAPIBackend from "openapi-backend";
 import { Request, Response } from "express";
-import { Context } from "openapi-backend";
+import { Context } from 'openapi-backend';
+import { PoolConfig } from 'pg'
 import * as handlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
+import * as followHandlers from "./FollowHandlers";
 import * as profileElementHandlers from "./profileElementHandlers";
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
+import * as authHandler from "./authHandler";
+import Ajv from "ajv"
+import addFormats from "ajv-formats"
 
 // Check working directory and form path to api-definition.
 
@@ -22,6 +25,14 @@ export const api = new OpenAPIBackend({
   customizeAjv: () => ajv,
 });
 
+// Export DB configuration object
+export const dbConfig: PoolConfig = {
+  host: process.env.DB_HOST,
+  port: 5432,
+  database: process.env.POSTGRES_DB,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+}
 // Default handlers for errors.
 
 function validationFailHandler(c: Context, req: Request, res: Response) {
@@ -55,8 +66,16 @@ api.register("getGroupFollowings", followHandlers.getGroupFollowings);
 api.register("getFollowers", followHandlers.getFollowers);
 api.register("deleteFollowing", followHandlers.deleteFollowing);
 
+// Authentication handlers
+api.register("loginUser", authHandler.loginUser)
+api.register("logoutUser", authHandler.logoutUser)
+
+// Security handler
+api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
+
 // Profile element handlers
 api.register("getProfileElements", profileElementHandlers.getProfileElements);
 api.register("editProfileElements", profileElementHandlers.editProfileElements);
 
-export default api;
+export default api
+
