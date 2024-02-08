@@ -2,8 +2,12 @@ import TextInput from "../Inputs/TextInput.tsx";
 import MaterialSymbolsChatAddOnRounded from "../../Icons/MaterialSymbolsChatAddOnRounded.tsx";
 import Button from "../Button.tsx";
 import { MaterialSymbolsChevronLeftRounded } from "../../Icons/MaterialSymbolsChevronLeftRounded";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useBreakpoint } from "../../../Hooks/BreakpointHook.tsx";
+import { useMutation } from "@tanstack/react-query";
+import conversationService from "../../../Services/conversationService.ts";
+import { recipientUser1, testUserId } from "../../../globalData.ts";
+import { queryClient } from "../../../main.tsx";
 
 type NoMessageOpenProps = {
   setClosed: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,8 +15,27 @@ type NoMessageOpenProps = {
 
 export default function NoMessageOpen({ setClosed }: NoMessageOpenProps) {
   const { isXl } = useBreakpoint("xl");
+  const navigate = useNavigate();
+
+  const newConversationMutation = useMutation({
+    mutationKey: ["newConversation"],
+    mutationFn: () => {
+      return conversationService.createConversation({
+        participant_1: testUserId,
+        participant_2: recipientUser1.id!,
+      });
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["conversations", testUserId],
+      });
+      console.log(data);
+      navigate(`/messages/${(data as Conversation).id}`);
+    },
+  });
+
   return (
-    <div className=" flex h-[70%] flex-col">
+    <div className=" flex flex-col">
       {!isXl && (
         <Link
           to={"/messages"}
@@ -26,7 +49,9 @@ export default function NoMessageOpen({ setClosed }: NoMessageOpenProps) {
       <div className="flex justify-center gap-2">
         <TextInput placeholder="Search for users..." />
         <Button className="btn-primary text-2xl">
-          <MaterialSymbolsChatAddOnRounded />
+          <MaterialSymbolsChatAddOnRounded
+            onClick={() => newConversationMutation.mutate()}
+          />
         </Button>
       </div>
     </div>

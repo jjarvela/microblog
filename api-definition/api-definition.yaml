@@ -868,18 +868,18 @@ paths:
   /conversation/{conversationId}:
     get:
       summary: Get conversation by id.
-      operationId: getConversationMessages
+      operationId: getConversationDetails
       tags:
         - conversation
       responses:
         "200":
-          description: A list of messages in a conversation
+          description: Details of conversation by id
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/conversation_messages"
+                  $ref: "#/components/schemas/conversations"
         "400":
           description: Error object.
           content:
@@ -912,11 +912,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/errorResponse"
       parameters:
-        - name: conversation_id
+        - name: conversationId
           in: path
           schema:
             type: string
-            format: uuid
           required: true
       requestBody:
         content:
@@ -940,6 +939,34 @@ paths:
           schema:
             type: string
           required: true
+
+  /conversation/{conversationId}/messages:
+    get:
+      summary: Get messages by conversation id.
+      operationId: getConversationMessages
+      tags:
+        - conversation
+      responses:
+        "200":
+          description: Messages matching the conversation Id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/conversation_messages"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: conversationId
+          required: true
+          in: path
+          schema:
+            type: string
 
   /conversation/{conversationId}/{messageId}:
     put:

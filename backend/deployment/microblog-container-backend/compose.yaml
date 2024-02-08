@@ -1,33 +1,35 @@
 version: "3.9" # specify the version of the compose file format
 
 services: # define the services or containers that make up your application
-
   db: # name of the third service
     image: postgres:15 # name of the image to use for this service
     hostname: mbdb
-    ports: 
+    ports:
       - "5432:5432"
-    env_file:
-      - path: ./.env
+    env_file: ./.env
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     networks:
       - default
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "mbdb"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   mb-backend: # name of the second service
     image: microblog-backend
     hostname: mbapp
-    env_file:
-      - path: ./.env
+    env_file: ./.env
     environment:
       - DATABASE_URL=${DATABASE_URL}
-    build: 
+    build:
       context: . # path to the directory containing the Dockerfile for this service
       dockerfile: ./backend/Dockerfile
       # additional_contexts:
-      #  resources: ./api-definition/  
+      #  resources: ./api-definition/
       args:
         - DB_HOST=${DB_HOST}
         - DATABASE_URL=${DATABASE_URL}
@@ -38,7 +40,7 @@ services: # define the services or containers that make up your application
       - "9000:9000"
     depends_on: # list of services that this service depends on
       db:
-        condition: service_started
+        condition: service_healthy
         restart: true
     networks:
       - default

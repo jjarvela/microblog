@@ -1,14 +1,14 @@
 import OpenAPIBackend from "openapi-backend";
 import { Request, Response } from "express";
-import { Context } from 'openapi-backend';
-import { PoolConfig } from 'pg'
+import { Context } from "openapi-backend";
+import { PoolConfig } from "pg";
 import * as handlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
-import * as followHandlers from "./FollowHandlers";
 import * as profileElementHandlers from "./profileElementHandlers";
+import * as conversationHandlers from "./conversationHandlers";
 import * as authHandler from "./authHandler";
-import Ajv from "ajv"
-import addFormats from "ajv-formats"
+import Ajv from "ajv";
+import addFormats from "ajv-formats";
 
 // Check working directory and form path to api-definition.
 
@@ -32,7 +32,7 @@ export const dbConfig: PoolConfig = {
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
-}
+};
 // Default handlers for errors.
 
 function validationFailHandler(c: Context, req: Request, res: Response) {
@@ -67,8 +67,8 @@ api.register("getFollowers", followHandlers.getFollowers);
 api.register("deleteFollowing", followHandlers.deleteFollowing);
 
 // Authentication handlers
-api.register("loginUser", authHandler.loginUser)
-api.register("logoutUser", authHandler.logoutUser)
+api.register("loginUser", authHandler.loginUser);
+api.register("logoutUser", authHandler.logoutUser);
 
 // Security handler
 api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
@@ -77,5 +77,18 @@ api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
 api.register("getProfileElements", profileElementHandlers.getProfileElements);
 api.register("editProfileElements", profileElementHandlers.editProfileElements);
 
-export default api
+//Conversation handlers
+api.register("getConversations", conversationHandlers.getUserConversations);
+api.register("getConversationDetails", conversationHandlers.getConversation);
+api.register(
+  "getConversationMessages",
+  conversationHandlers.getConversationMessages
+);
+api.register("createConversation", conversationHandlers.createConversation);
+api.register("deleteConversation", conversationHandlers.deleteConversation);
+api.register("sendDirectMessage", conversationHandlers.postMessage);
+api.register("editDirectMessage", conversationHandlers.editMessage);
+api.register("deleteDirectMessage", conversationHandlers.deleteMessage);
+
+export default api;
 
