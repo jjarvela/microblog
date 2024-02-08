@@ -15,7 +15,6 @@ type ConversationProps = {
 };
 
 export default function Conversation({ setClosed }: ConversationProps) {
-  setClosed(false);
   const id = useParams().id || "0";
   const user = useUser().user;
   const scrollTop = useRef<HTMLDivElement>(null);
@@ -24,6 +23,10 @@ export default function Conversation({ setClosed }: ConversationProps) {
   const [messageText, setMessageText] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setClosed(false);
+  }, []);
 
   /**
    * Conversation getter
