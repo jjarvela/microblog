@@ -141,7 +141,24 @@ export async function deleteConversation(
 }
 
 export async function postMessage(c: Context, _req: Request, res: Response) {
-  res.json({ status: 201 });
+  const conversationId = c.request.params.conversationId;
+  const newMessage = c.request.body;
+
+  if (typeof conversationId !== "string") {
+    res.status(401).json({ message: "Invalid parametres" });
+    return;
+  }
+
+  try {
+    const newEntry = await queries.createMessage({...newMessage, timestamp: new Date(Date.now()).toISOString()});
+    res.status(201).json(newEntry);
+  } catch (e){
+    console.log(e);
+    res
+      .status(500)
+      .json({ status: 500, err: [{ message: "Unidentified error" }] });
+  }
+
 }
 
 export async function editMessage(c: Context, _req: Request, res: Response) {
