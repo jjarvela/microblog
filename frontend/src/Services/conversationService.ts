@@ -28,7 +28,7 @@ function getMessages(conversationId: number) {
 }
 
 function addNewMessage(
-  conversationId: number,
+  conversationId: string,
   message: NewConversationMessage,
 ) {
   return axios

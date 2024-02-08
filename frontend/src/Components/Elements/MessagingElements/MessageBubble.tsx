@@ -22,7 +22,7 @@ export default function MessageBubble({ sender, message }: MessageBubbleProps) {
       <small
         className={`my-1 text-black50 ${sender ? "self-start" : "self-end"}`}
       >
-        {Date.parse(message.timestamp).toLocaleString()}
+        {new Date(Date.parse(message.timestamp)).toLocaleString()}
       </small>
     </div>
   );

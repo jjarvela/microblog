@@ -2,55 +2,28 @@ import React, { useEffect, useRef, useState } from "react";
 import { ProfilePicture } from "../ProfilePicture";
 import MessageBubble from "./MessageBubble";
 import { MaterialSymbolsChevronLeftRounded } from "../../Icons/MaterialSymbolsChevronLeftRounded";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import conversationService from "../../../Services/conversationService";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { testUserId } from "../../../globalData";
 import { useUser } from "../../../UserWrapper";
-import EmojiPicker, { Theme, EmojiStyle } from "emoji-picker-react";
-import Button from "../Button.tsx";
-import TextAreaInput from "../Inputs/TextAreaInput.tsx";
-import MaterialSymbolsSentimentSatisfiedOutline from "../../Icons/MaterialSymbolsSentimentSatisfiedOutline";
-import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
-import MaterialSymbolsSendRounded from "../../Icons/MaterialSymbolsSendRounded";
 import { queryClient } from "../../../main.tsx";
+import Chatbox from "./Chatbox.tsx";
 
 type ConversationProps = {
   setClosed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function Conversation({ setClosed }: ConversationProps) {
+  setClosed(false);
   const id = useParams().id || "0";
   const user = useUser().user;
+  const scrollTop = useRef<HTMLDivElement>(null);
+  const scrollref = useRef<HTMLSpanElement>(null);
 
   const [messageText, setMessageText] = useState("");
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  /**
-   * Hook that checks for clicks outside element
-   * @param callback : what happens when click outside element detected
-   * @returns : React reference to the HTML Div element
-   */
-  const useClickOutside = (callback: () => void) => {
-    const ref = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-      const handleClick = (event: MouseEvent) => {
-        if (ref.current && !ref.current.contains(event.target as Node))
-          callback();
-      };
-
-      document.addEventListener("click", handleClick, true);
-
-      return () => document.removeEventListener("click", handleClick, true);
-    }, [ref, callback]);
-
-    return ref;
-  };
-
-  /**
-   * useClickOutside hook falicitates closing of emoji picker upon clicking outside of it
-   */
-  const emojiRef = useClickOutside(() => setShowEmojiPicker(false));
+  const navigate = useNavigate();
 
   /**
    * Conversation getter
@@ -72,6 +45,14 @@ export default function Conversation({ setClosed }: ConversationProps) {
     },
   });
 
+  useEffect(() => {
+    scrollref.current &&
+      scrollTop.current?.scrollTo({
+        top: scrollref.current.offsetTop,
+        behavior: "instant",
+      });
+  }, [messageQuery.data]);
+
   /***
    * New message mutation
    */
@@ -79,13 +60,13 @@ export default function Conversation({ setClosed }: ConversationProps) {
   const sendMessageMutation = useMutation({
     mutationKey: ["sendMessage", id],
     mutationFn: () => {
-      return conversationService.addNewMessage(parseInt(id), {
+      return conversationService.addNewMessage(id, {
         conversation_id: parseInt(id),
         sender_userid: testUserId,
         message: messageText,
       });
     },
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["messages", id] });
       setMessageText("");
     },
@@ -115,7 +96,10 @@ export default function Conversation({ setClosed }: ConversationProps) {
         <Link
           to={"/messages"}
           className="text-3xl text-black50"
-          onClick={() => setClosed(true)}
+          onClick={() => {
+            navigate("/messages");
+            setClosed(true);
+          }}
         >
           <MaterialSymbolsChevronLeftRounded />
         </Link>
@@ -143,7 +127,10 @@ export default function Conversation({ setClosed }: ConversationProps) {
         </div>
       </div>
 
-      <div className="scrollbar-thin flex h-[80%] flex-col overflow-y-scroll p-2">
+      <div
+        ref={scrollTop}
+        className="scrollbar-thin flex h-[62%] flex-col overflow-y-scroll p-2"
+      >
         {messageQuery.isError && (
           <div className="flex h-full flex-col">
             <p className="p-4 text-center text-warning">
@@ -161,60 +148,24 @@ export default function Conversation({ setClosed }: ConversationProps) {
         )}
         {messageQuery.isSuccess && (
           <>
-            {messageQuery.data[0].conversation_messages
-              ? (
-                  messageQuery.data[0]
-                    .conversation_messages as ConversationMessage[]
-                ).map((message) => (
+            {messageQuery.data
+              ? (messageQuery.data as ConversationMessage[]).map((message) => (
                   <MessageBubble
+                    key={message.id + Date.parse(message.timestamp)}
                     sender={testUserId === message.sender_userid}
                     message={message}
                   />
                 ))
               : ""}
+            <span ref={scrollref} className="h-0 w-full"></span>
           </>
         )}
       </div>
-      <div className="flex flex-row justify-center gap-2 border-t-[1px] border-solid border-black50 p-2 text-center">
-        <span className="px-auto flex flex-row justify-center self-center text-xl text-black50">
-          {showEmojiPicker && (
-            <div
-              ref={emojiRef}
-              className="absolute bottom-[6em] left-0 z-[100]"
-            >
-              <EmojiPicker
-                onEmojiClick={(emoji) => {
-                  const newText = messageText + emoji.emoji;
-                  setMessageText(newText);
-                }}
-                emojiStyle={EmojiStyle.TWITTER}
-                theme={Theme.AUTO}
-              />
-            </div>
-          )}
-          <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-            <MaterialSymbolsSentimentSatisfiedOutline />
-          </button>
-          <button>
-            <MaterialSymbolsAddPhotoAlternateOutlineRounded />
-          </button>
-        </span>
-        <span className="flex-grow">
-          <TextAreaInput
-            className="w-full"
-            value={messageText}
-            onChange={(e) => setMessageText(e.target.value)}
-          />
-        </span>
-        <span className="self-center">
-          <Button
-            className="btn-primary aspect-square p-[0.5em] text-lg"
-            onClick={() => sendMessageMutation.mutate()}
-          >
-            <MaterialSymbolsSendRounded />
-          </Button>
-        </span>
-      </div>
+      <Chatbox
+        messageText={messageText}
+        setMessageText={setMessageText}
+        sendMessageMutation={sendMessageMutation}
+      />
     </div>
   );
 }

@@ -48,10 +48,10 @@ const UserMessages = () => {
           </Link>
         </div>
       </div>
-      <div className="w-full xl:flex xl:flex-row">
+      <div className="h-full w-full xl:flex xl:flex-row">
         <div
           className={`${
-            !isXl && !closed ? "collapse h-0" : "h-[32em]"
+            !isXl && !closed ? "hidden h-0" : "h-[32em]"
           } scrollbar-thin w-full overflow-y-auto border-b-[1px] border-solid border-black50 xl:w-[50%] xl:border-b-0 xl:border-r-[1px]`}
         >
           {
@@ -70,7 +70,11 @@ const UserMessages = () => {
              * Conversation query is loading
              */
             conversationQuery.isLoading && (
-              <p className="p-4 text-center">Loading conversations</p>
+              <div className="mt-2 flex h-full flex-col gap-1">
+                <p className="mx-auto h-[11%] w-[96%] animate-pulse bg-black75"></p>
+                <p className="mx-auto h-[11%] w-[96%] animate-pulse bg-black75"></p>
+                <p className="mx-auto h-[11%] w-[96%] animate-pulse bg-black75"></p>
+              </div>
             )
           }
 
@@ -102,7 +106,7 @@ const UserMessages = () => {
         <div
           className={`${
             !isXl && closed && "collapse"
-          } relative flex h-full flex-grow flex-col`}
+          } relative flex h-full flex-grow flex-col xl:h-[91%]`}
         >
           <Routes>
             <Route path="" element={<NoMessageOpen setClosed={setClosed} />} />
