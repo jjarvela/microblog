@@ -63,7 +63,6 @@ function ProfileTextBox({
             />
             <TextAreaInput
               value={editedText}
-              defaultValue={editedText}
               onChange={(e) => setEditedText(e.target.value)}
               className="h-max max-h-[20rem] min-h-[4rem] w-full"
               grow

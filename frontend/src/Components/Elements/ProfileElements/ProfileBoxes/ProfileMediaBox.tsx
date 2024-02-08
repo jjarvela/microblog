@@ -51,6 +51,8 @@ function ProfileMediaBox({
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [height, setHeight] = useState(newHeight || 0);
 
+  const [sourceMissing, setSourceMissing] = useState(false);
+
   // These two try to cleanup unused height property
   window.addEventListener("resize", () => {
     setHeight(0);
@@ -67,27 +69,39 @@ function ProfileMediaBox({
         onClick={() => dialogRef.current?.showModal()}
         style={height ? { minHeight: height } : {}}
       >
-        {editing && modifying ? (
-          <div className="flex flex-col flex-wrap gap-4 bg-white p-2 dark:bg-black">
-            <TextInput placeholder="Enter media id..." />
-            <Button className="btn-primary">Apply</Button>
-            <p className="text-sm italic opacity-50">
-              Replace eventually with an actual media picker...
-            </p>
-          </div>
+        {sourceMissing ? (
+          <h6 className="absolute left-1/2 top-1/2 min-h-fit -translate-x-1/2 -translate-y-1/2 opacity-50">
+            Failed to load media!
+          </h6>
         ) : (
           <>
-            {media.type === "img" && (
-              <img
-                src={media.source}
-                className="pointer-events-none h-full w-full bg-cover object-cover object-center"
-              />
-            )}
-            {media.type === "vid" && (
-              <video
-                src={media.source}
-                className="pointer-events-none h-full w-full bg-cover object-contain object-center"
-              />
+            {editing && modifying ? (
+              <div className="flex flex-col flex-wrap gap-4 bg-white p-2 dark:bg-black">
+                <TextInput placeholder="Enter media id..." />
+                <Button className="btn-primary">Apply</Button>
+                <p className="text-sm italic opacity-50">
+                  Replace eventually with an actual media picker...
+                </p>
+              </div>
+            ) : (
+              <>
+                {media.type === "img" && (
+                  <img
+                    src={media.source}
+                    className="pointer-events-none h-full w-full bg-cover object-cover object-center"
+                    onError={() => setSourceMissing(true)}
+                    onLoadedData={() => setSourceMissing(false)}
+                  />
+                )}
+                {media.type === "vid" && (
+                  <video
+                    src={media.source}
+                    className="pointer-events-none h-full w-full bg-cover object-contain object-center"
+                    onError={() => setSourceMissing(true)}
+                    onLoadedData={() => setSourceMissing(false)}
+                  />
+                )}
+              </>
             )}
           </>
         )}
