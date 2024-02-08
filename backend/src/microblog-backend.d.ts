@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type {
   OpenAPIClient,
   Parameters,
@@ -904,3 +905,5 @@ export interface PathsDictionary {
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>;
 
+=======
+>>>>>>> 04cb3ea (Container init)

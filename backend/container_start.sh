@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 DB_INIT="DB_INIT_DONE"
 
 if [ ! -e "$DB_INIT" ] && [ -n "$DATABASE_URL" ]; then
