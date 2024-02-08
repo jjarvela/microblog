@@ -54,8 +54,6 @@ export default function Chatbox({
           <div ref={emojiRef} className="absolute bottom-[6em] left-0 z-[100]">
             <EmojiPicker
               onEmojiClick={(emoji) => {
-                console.log("Clicked emoji");
-                console.log(emoji);
                 const newText = messageText + emoji.emoji;
                 setMessageText(newText);
               }}

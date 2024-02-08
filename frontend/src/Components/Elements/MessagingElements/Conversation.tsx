@@ -25,10 +25,6 @@ export default function Conversation({ setClosed }: ConversationProps) {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("Message text use effect: " + messageText);
-  }, [messageText]);
-
   /**
    * Conversation getter
    */
