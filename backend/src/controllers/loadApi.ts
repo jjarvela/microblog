@@ -1,19 +1,21 @@
-import OpenAPIBackend from 'openapi-backend';
+import OpenAPIBackend from "openapi-backend";
 import { Request, Response } from "express";
 import { Context } from 'openapi-backend';
 import { PoolConfig } from 'pg'
 import * as handlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
+import * as followHandlers from "./FollowHandlers";
+import * as profileElementHandlers from "./profileElementHandlers";
 import * as authHandler from "./authHandler";
 import Ajv from "ajv"
 import addFormats from "ajv-formats"
 
 // Check working directory and form path to api-definition.
 
-const base_dir = process.cwd()
-const api_def = `${base_dir}/../api-definition/api-definition.yaml`
+const base_dir = process.cwd();
+const api_def = `${base_dir}/../api-definition/api-definition.yaml`;
 // Init custom configuration for ajv validator.
-const ajv = new Ajv()
+const ajv = new Ajv();
 ajv.addVocabulary(["example", "content"]);
 addFormats(ajv);
 
@@ -71,4 +73,9 @@ api.register("logoutUser", authHandler.logoutUser)
 // Security handler
 api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
 
+// Profile element handlers
+api.register("getProfileElements", profileElementHandlers.getProfileElements);
+api.register("editProfileElements", profileElementHandlers.editProfileElements);
+
 export default api
+

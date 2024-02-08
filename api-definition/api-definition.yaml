@@ -237,14 +237,18 @@ components:
             type: string
             description: The folder media file is related to.
 
-    portfolioRes:
+    profileElements:
       type: array
       items:
         type: object
         properties:
-          userId:
+          type:
             type: string
-            description: User uuid
+            description: Profile element type.
+          data:
+            type: object
+            additionalProperties: true
+            description: Profile element data object.
 
     userProfile:
       type: object
@@ -362,8 +366,6 @@ tags:
     description: Blog post related functions.
   - name: media
     description: User media related functions.
-  - name: portfolio
-    description: User portfolio related functions.
   - name: usertags
     description: Tag-management related functions.
   - name: login
@@ -574,26 +576,6 @@ paths:
           schema:
             type: string
 
-  /portfolio/{userId}/public:
-    get:
-      summary: List public portfolio items.
-      tags:
-        - portfolio
-      responses:
-        "200":
-          description: Response contains user's portfolio items and their location.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/portfolioRes"
-
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
-
   /user/{userId}/profile:
     get:
       summary: Get user profile atributes.
@@ -609,13 +591,46 @@ paths:
           in: path
           schema:
             type: string
-    patch:
-      summary: Update user profile elements.
+
+  /user/{userId}/profile/elements:
+    get:
+      operationId: getProfileElements
+      summary: Get profile elements.
+      tags:
+        - user
+      responses:
+        "200":
+          description: Response contains user's profile elements as a JSON array.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/profileElements"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+    post:
+      operationId: editProfileElements
+      summary: Update profile elements.
       tags:
         - user
       responses:
         "200":
           $ref: "#/components/responses/OK"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
       parameters:
         - name: userId
           required: true
@@ -626,7 +641,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/userProfile"
+              $ref: "#/components/schemas/profileElements"
 
   /user/{userId}/following:
     get:

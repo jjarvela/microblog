@@ -68,12 +68,13 @@ export async function getBlogPost(c: Context, _req: Request, res: Response) {
 
 export async function updateBlogPost(c: Context, _req: Request, res: Response) {
 
-    const blogObj: BlogPost = c.request.requestBody
     const params = c.request.params
+    const blogObj: BlogPost = c.request.requestBody
+    const post = { user_uuid: params.userId as string, text: blogObj.text as string, timestamp: new Date(), hashtags: blogObj.hashtags as string[] };
 
     try {
         const postId = Number(params.postId) // Convert params.id to a number
-        const result = await queries.updatePost({ id: postId, blogtext: blogObj.text })
+        const result = await queries.updatePost({ id: postId, post: post })
         res.status(200).json({ status: 200, itemId: result.id })
     } catch (e) {
         console.log(e);

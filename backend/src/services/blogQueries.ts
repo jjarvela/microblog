@@ -94,14 +94,36 @@ export const selectPosts = async (param: { user_uuid: string; startdate: Date; e
     return result;
 };
 
-export const updatePost = async (param: { id: number; blogtext: string}) => {  
+export const updatePost = async (param: { id: number; post: { user_uuid: string; text: string; timestamp: Date; hashtags: string[] }}) => {
+    const deleted = prisma.item_properties.deleteMany({ // Delete existing post hashtags
+        where: {
+          blogpost_id: param.id
+        }
+    });
+    console.log("Deleted " + (await deleted).count + " tags");
+    
+    const createdObjects = [];
+
+    for (let i = 0; i < param.post.hashtags.length; i++) {
+        createdObjects.push({ 
+            creator_user_id: param.post.user_uuid,
+            value: param.post.hashtags[i],
+            context_id: 1,
+            time: param.post.timestamp,
+        });
+    }
+    
     const result: blog_posts | null = await prisma.blog_posts.update({
         where: {
             id: param.id,
         },
         data: {
-            blog_text: param.blogtext,
+            blog_text: param.post.text,
+            item_properties: {
+                create: createdObjects,
+            },
         },
+        include: { item_properties: true },
     });
     console.log(result);
     return result;
