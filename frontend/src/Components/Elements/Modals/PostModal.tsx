@@ -8,6 +8,7 @@ import UserProfileInfo from "../UserProfileInfo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postService from "../../../Services/postService";
 import { testUserId } from "../../../globalData";
+import FormMediaPreview from "../Inputs/FormMediaPreview";
 
 type NewPostProps = {
   user: User;
@@ -23,6 +24,8 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
   const form = useRef<HTMLFormElement>(null);
   const [postText, setPostText] = useState(text);
   const [newTags, setNewTags] = useState<string[]>(tags);
+
+  const fileInput = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
 
   const mutateAddPost = useMutation({
@@ -67,7 +70,17 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
     if (files.length > 0) {
       mutateSendMedia.mutate();
     }
+    setFiles([]);
+    form.current?.reset();
     refObject.current?.close();
+  };
+
+  const handleDelete = (file: File) => {
+    const deleteIndex = files.indexOf(file);
+    const newFiles: File[] = files.filter(
+      (_file, index) => index !== deleteIndex,
+    );
+    setFiles(newFiles);
   };
 
   return (
@@ -100,33 +113,49 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
             onChange={(e) => setPostText(e.target.value)}
             autofocus={true}
           />
-          <label
-            htmlFor="post-media"
-            className="btn-primary mt-2 flex w-fit flex-row items-center gap-2 px-4"
-          >
-            <span className="text-lg">
-              <MaterialSymbolsAddPhotoAlternateOutlineRounded />
-            </span>
-            Add media...
-          </label>
-          <input
-            id="post-media"
-            name="user-media"
-            className="collapse h-0 w-0"
-            type="file"
-            accept=".jpg, .jpeg, .png, .gif, .svg, .mp4, .mpeg, .avi"
-            multiple
-            max={4}
-            onChange={(e) => {
-              if (e.target.files) {
-                const files = [];
-                for (let i = 0; i < e.target.files.length; i++) {
-                  files.push(e.target.files[i]);
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="post-media"
+              className="btn-primary flex w-fit cursor-pointer flex-row items-center gap-2 px-4"
+            >
+              <span className="text-lg">
+                <MaterialSymbolsAddPhotoAlternateOutlineRounded />
+              </span>
+              Add media...
+            </label>
+            <input
+              ref={fileInput}
+              id="post-media"
+              name="user-media"
+              className="collapse h-0 w-0"
+              type="file"
+              accept=".jpg, .jpeg, .png, .gif, .svg, .mp4, .mpeg, .avi"
+              multiple
+              max={4}
+              onChange={(e) => {
+                if (e.target.files) {
+                  console.log(e.target.files);
+                  const newFiles = [];
+                  for (let i = 0; i < e.target.files.length; i++) {
+                    newFiles.push(e.target.files[i]);
+                  }
+                  setFiles(newFiles);
                 }
-                setFiles(files);
-              }
-            }}
-          />
+              }}
+            />
+
+            {files.length > 0 && (
+              <div className="flex flex-row gap-1">
+                {files.map((file) => (
+                  <FormMediaPreview
+                    key={Math.floor(Math.random() * 10000)}
+                    file={file}
+                    handleDelete={handleDelete}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
           <TagInput
             tags={newTags}
             onTagsChanged={(tag) => setNewTags(tag)}
@@ -142,10 +171,14 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
               placeholder="Group name..."
             />
           </div>
-          <div className="mt-2 flex flex-row justify-between">
+          <div className="flex flex-row justify-between">
             <Button
               className="btn-secondary"
-              onClick={() => refObject.current?.close()}
+              onClick={() => {
+                setFiles([]);
+                form.current?.reset();
+                refObject.current?.close();
+              }}
               type="button"
             >
               Cancel
