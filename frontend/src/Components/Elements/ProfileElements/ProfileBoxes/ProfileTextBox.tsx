@@ -59,17 +59,22 @@ function ProfileTextBox({
             <TextInput
               value={editedTitle}
               onChange={(e) => setEditedTitle(e.target.value)}
+              maxLength={50}
             />
             <TextAreaInput
               value={editedText}
+              defaultValue={editedText}
               onChange={(e) => setEditedText(e.target.value)}
-              className="h-max w-full"
+              className="h-max max-h-[20rem] min-h-[4rem] w-full"
+              grow
+              maxLength={1000}
+              showCount
             />
           </>
         ) : (
           <>
-            <h4>{title}</h4>
-            <p>{text}</p>
+            <h4 className="break-words">{title}</h4>
+            <p className="whitespace-pre-wrap">{text}</p>
           </>
         )}
       </div>
