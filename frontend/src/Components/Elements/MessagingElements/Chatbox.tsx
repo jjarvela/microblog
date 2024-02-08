@@ -18,10 +18,9 @@ export default function Chatbox({
   setMessageText,
   sendMessageMutation,
 }: ChatboxProps) {
-
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-   /**
+  /**
    * Hook that checks for clicks outside element
    * @param callback : what happens when click outside element detected
    * @returns : React reference to the HTML Div element
@@ -49,46 +48,44 @@ export default function Chatbox({
   const emojiRef = useClickOutside(() => setShowEmojiPicker(false));
 
   return (
-        <div className="flex flex-row justify-center gap-2 border-t-[1px] border-solid border-black50 p-2 text-center">
-        <span className="px-auto flex flex-row justify-center self-center text-xl text-black50">
-          {showEmojiPicker && (
-            <div
-              ref={emojiRef}
-              className="absolute bottom-[6em] left-0 z-[100]"
-            >
-              <EmojiPicker
-                onEmojiClick={(emoji) => {
-                  console.log("Clicked emoji");
-                  const newText = messageText + emoji.emoji;
-                  setMessageText(newText);
-                }}
-                emojiStyle={EmojiStyle.TWITTER}
-                theme={Theme.AUTO}
-              />
-            </div>
-          )}
-          <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-            <MaterialSymbolsSentimentSatisfiedOutline />
-          </button>
-          <button>
-            <MaterialSymbolsAddPhotoAlternateOutlineRounded />
-          </button>
-        </span>
-          <span className="flex-grow">
-            <TextAreaInput
-              className="w-full"
-              value={messageText}
-              onChange={(e) => setMessageText(e.target.value)}
+    <div className="flex flex-row justify-center gap-2 border-t-[1px] border-solid border-black50 p-2 text-center">
+      <span className="px-auto flex flex-row justify-center self-center text-xl text-black50">
+        {showEmojiPicker && (
+          <div ref={emojiRef} className="absolute bottom-[6em] left-0 z-[100]">
+            <EmojiPicker
+              onEmojiClick={(emoji) => {
+                console.log("Clicked emoji");
+                console.log(emoji);
+                const newText = messageText + emoji.emoji;
+                setMessageText(newText);
+              }}
+              emojiStyle={EmojiStyle.TWITTER}
+              theme={Theme.AUTO}
             />
-          </span>
-          <span className="self-center">
-            <Button
-              className="btn-primary aspect-square p-[0.5em] text-lg"
-              onClick={() => sendMessageMutation.mutate()}
-            >
-              <MaterialSymbolsSendRounded />
-            </Button>
-          </span>
-        </div>
+          </div>
+        )}
+        <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+          <MaterialSymbolsSentimentSatisfiedOutline />
+        </button>
+        <button>
+          <MaterialSymbolsAddPhotoAlternateOutlineRounded />
+        </button>
+      </span>
+      <span className="flex-grow">
+        <TextAreaInput
+          className="w-full"
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
+        />
+      </span>
+      <span className="self-center">
+        <Button
+          className="btn-primary aspect-square p-[0.5em] text-lg"
+          onClick={() => sendMessageMutation.mutate()}
+        >
+          <MaterialSymbolsSendRounded />
+        </Button>
+      </span>
+    </div>
   );
 }

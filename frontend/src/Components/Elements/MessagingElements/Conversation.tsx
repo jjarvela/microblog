@@ -25,6 +25,10 @@ export default function Conversation({ setClosed }: ConversationProps) {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log("Message text use effect: " + messageText);
+  }, [messageText]);
+
   /**
    * Conversation getter
    */
@@ -66,9 +70,10 @@ export default function Conversation({ setClosed }: ConversationProps) {
         message: messageText,
       });
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["messages", id] });
+    onSuccess: () => {
       setMessageText("");
+      console.log("mutated");
+      queryClient.invalidateQueries({ queryKey: ["messages", id] });
     },
   });
 
