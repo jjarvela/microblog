@@ -35,22 +35,18 @@ export const dbConfig: PoolConfig = {
   password: process.env.POSTGRES_PASSWORD
 };
 
-api.registerSecurityHandler(
-  "mbCookieAuth",
-  (c: Context, req: Request, res: Response) => {
-    console.log("security handler called");
-    if (
-      req.session.user?.authenticated !== true &&
-      req.path !== "/login" &&
-      req.path !== "/logout"
-    ) {
-      console.log("session not valid.");
-      return false;
-    } else {
-      return true;
-    }
+api.registerSecurityHandler("mbCookieAuth", (c: Context, req: Request, res: Response) => {
+
+  console.log("security handler called");
+
+  if (req.session.user?.authenticated !== true && req.path !== "/login" && req.path !== "/logout") {
+    console.log("session not valid.");
+    return false
+  } else {
+    return true
   }
-);
+
+})
 
 // Default blogHandlers for errors.
 
@@ -98,6 +94,8 @@ api.register("deleteFollowing", followHandlers.deleteFollowing);
 // Authentication handlers
 api.register("loginUser", authHandler.loginUser);
 api.register("logoutUser", authHandler.logoutUser);
+
+
 
 // Profile element handlers
 api.register("getProfileElements", profileElementHandlers.getProfileElements);
