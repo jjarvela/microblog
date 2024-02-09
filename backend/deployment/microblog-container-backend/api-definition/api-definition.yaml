@@ -46,7 +46,7 @@ components:
     mbCookieAuth:
       type: apiKey
       in: cookie
-      name: MBSESSION
+      name: mbCookieAuth
 
   schemas:
     blogPost:

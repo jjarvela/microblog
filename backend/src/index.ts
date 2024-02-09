@@ -10,11 +10,6 @@ const db_client = new Pool(dbConfig)
 
 const app = Express();
 app.use(Express.json());
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL,
-  })
-);
 
 app.use(session({
   store: new (connectPgSimple(session))({
@@ -27,11 +22,19 @@ app.use(session({
   resave: false,
   name: 'mbCookieAuth',
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: false, sameSite: 'lax' }
 }))
 
-api.init();
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+  })
+);
 
-app.use((req, res) => api.handleRequest(req as Request, req, res));
+
+app.use((req, res, next) => api.handleRequest(req as Request, req, res, next));
+
+api.init();
 
 app.listen(9000, () => console.info("api listening at http://localhost:9000"));
