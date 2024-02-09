@@ -27,8 +27,8 @@ export default function GroupJoinRequest({
         }}
       >
         <TextAreaInput
-          value={`Dear ${groupAdmin}... Can i haz azzez?? ^__^`}
-          placeholder="Post text..."
+          value={``}
+          placeholder="Dear Admin... Could I have access? I'm a really nice person."
           showCount
           maxLength={200}
           className="min-h-[10rem] w-full"
