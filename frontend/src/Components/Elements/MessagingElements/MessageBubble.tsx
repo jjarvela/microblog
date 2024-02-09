@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import MaterialSymbolsBlock from "../../Icons/MaterialSymbolsBlock";
 import MaterialSymbolsCloseSmallRounded from "../../Icons/MaterialSymbolsCloseSmallRounded";
 import MaterialSymbolsDeleteForeverOutlineRounded from "../../Icons/MaterialSymbolsDeleteForeverOutlineRounded";
 import ConfirmModal from "../Modals/ConfirmModal";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import conversationService from "../../../Services/conversationService";
+import MaterialSymbolsEditOutlineRounded from "../../Icons/MaterialSymbolsEditOutlineRounded";
+import { useParams } from "react-router";
 
 type MessageBubbleProps = {
   sender: boolean;
@@ -12,7 +13,11 @@ type MessageBubbleProps = {
 };
 
 export default function MessageBubble({ sender, message }: MessageBubbleProps) {
+  const id = useParams().id || "0";
   const [showContextMenu, setShowContextMenu] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [updatedText, setUpdatedText] = useState(message.message);
+  const queryClient = useQueryClient();
 
   /**
    * Hook that checks for clicks outside element
@@ -39,10 +44,29 @@ export default function MessageBubble({ sender, message }: MessageBubbleProps) {
   const ref = useClickOutside(() => setShowContextMenu(false));
   const confirmModal = useRef<HTMLDialogElement>(null);
 
+  const editMessageMutation = useMutation({
+    mutationKey: ["editMessage", message.id],
+    mutationFn: () => {
+      return conversationService.editMessage(
+        parseInt(id),
+        message.id,
+        updatedText,
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["messages", id] });
+      setEdit(false);
+    },
+  });
+
   const deleteMessageMutation = useMutation({
     mutationKey: ["deleteMessage", message.id],
     mutationFn: () => {
-      return conversationService.deleteMessage(message.id);
+      console.log("delete mutation");
+      return conversationService.deleteMessage(parseInt(id), message.id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["messages", id] });
     },
   });
 
@@ -58,11 +82,26 @@ export default function MessageBubble({ sender, message }: MessageBubbleProps) {
             ? "justify-self-end  rounded-br-sm bg-primary"
             : "dark:  justify-self-start rounded-bl-sm bg-black25 dark:bg-black50"
         }`}
-        onContextMenu={() => {
+        onContextMenu={(e) => {
+          e.preventDefault();
           setShowContextMenu(true);
         }}
       >
-        <p>{message.message}</p>
+        {edit ? (
+          <textarea
+            style={{ resize: "none" }}
+            className="h-max border-none bg-transparent outline-none focus:border-none focus:outline-none"
+            value={updatedText}
+            onChange={(e) => setUpdatedText(e.target.value)}
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter") editMessageMutation.mutate();
+              if (e.key === "Escape") setEdit(false);
+            }}
+          ></textarea>
+        ) : (
+          <p>{message.message}</p>
+        )}
       </div>
       <small
         className={`my-1 text-black50 ${sender ? "self-start" : "self-end"}`}
@@ -84,17 +123,34 @@ export default function MessageBubble({ sender, message }: MessageBubbleProps) {
           >
             <a
               className="flex cursor-pointer gap-2 border-b-[1px] border-b-black50 py-1 text-xs"
-              onClick={() => confirmModal.current?.showModal()}
+              onClick={() => {
+                navigator.clipboard.writeText(message.message);
+                setShowContextMenu(false);
+              }}
             >
-              <MaterialSymbolsDeleteForeverOutlineRounded />
-              <span>Delete</span>
+              Copy
             </a>
-            <a
-              className="flex cursor-pointer gap-2 border-b-[1px] border-b-black50 py-1 text-xs"
-              onClick={() => setShowContextMenu(false)}
-            >
-              <MaterialSymbolsBlock /> <span>Block</span>
-            </a>
+            {sender && (
+              <>
+                <a
+                  className="flex cursor-pointer gap-2 border-b-[1px] border-b-black50 py-1 text-xs"
+                  onClick={() => {
+                    setEdit(true);
+                    setShowContextMenu(false);
+                  }}
+                >
+                  <MaterialSymbolsEditOutlineRounded />
+                  Edit
+                </a>
+                <a
+                  className="flex cursor-pointer gap-2 border-b-[1px] border-b-black50 py-1 text-xs"
+                  onClick={() => deleteMessageMutation.mutate()}
+                >
+                  <MaterialSymbolsDeleteForeverOutlineRounded />
+                  <span>Delete</span>
+                </a>
+              </>
+            )}
           </div>
 
           <ConfirmModal

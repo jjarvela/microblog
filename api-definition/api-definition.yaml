@@ -1002,7 +1002,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/newConversationMessage"
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
 
     delete:
       summary: Delete message by ID

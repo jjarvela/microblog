@@ -46,9 +46,13 @@ function addNewMessage(
     .then((res) => res.data);
 }
 
-function editMessage(conversationId: number, messageId: number) {
+function editMessage(
+  conversationId: number,
+  messageId: number,
+  message: string,
+) {
   return axios.put(`${serverUrl}/conversation/${conversationId}/${messageId}`, {
-    withCredentials: true,
+    message: message,
   });
 }
 
@@ -60,10 +64,13 @@ function deleteConversation(conversationId: number) {
     .then((res) => res.data);
 }
 
-function deleteMessage(conversationId: number) {
-  return axios.delete(`${serverUrl}/conversation/${conversationId}`, {
-    withCredentials: true,
-  });
+function deleteMessage(conversationId: number, messageId: number) {
+  return axios.delete(
+    `${serverUrl}/conversation/${conversationId}/${messageId}`,
+    {
+      withCredentials: true,
+    },
+  );
 }
 
 export default {
