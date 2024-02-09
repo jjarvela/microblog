@@ -48,7 +48,6 @@ export async function logoutUser(c: Context, req: Request, res: Response) {
   })
 }
 
-async function sessionDestroy() { }
 
 export function securityHandler(c: Context, req: Request, res: Response, next: NextFunction) {
   // Handle every query session check and return 401 if no valid session is found.
