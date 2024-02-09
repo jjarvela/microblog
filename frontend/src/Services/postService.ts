@@ -1,7 +1,7 @@
 import axios from "axios";
 import { serverUrl } from "../globalData";
 
-function getPosts(userId: string, postId?: string) {
+function getPosts(userId: string, postId?: number) {
   return axios
     .get(`${serverUrl}/blog/${userId}` + (postId ? `?postId=${postId}` : ""))
     .then((res) => res.data);
