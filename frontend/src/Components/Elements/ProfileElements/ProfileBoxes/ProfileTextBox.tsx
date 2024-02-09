@@ -51,26 +51,32 @@ function ProfileTextBox({
   return (
     <div
       ref={divRef}
-      className="relative flex min-h-[16rem] flex-col gap-4 rounded-xl border border-black50 p-4"
+      className="relative flex flex-col rounded-xl border border-black50"
     >
-      {editing && modifying ? (
-        <>
-          <TextInput
-            value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
-          />
-          <TextAreaInput
-            value={editedText}
-            onChange={(e) => setEditedText(e.target.value)}
-            className="h-max w-full"
-          />
-        </>
-      ) : (
-        <>
-          <h4>{title}</h4>
-          <p>{text}</p>
-        </>
-      )}
+      <div className="flex flex-col gap-4 p-4">
+        {editing && modifying ? (
+          <>
+            <TextInput
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              maxLength={50}
+            />
+            <TextAreaInput
+              value={editedText}
+              onChange={(e) => setEditedText(e.target.value)}
+              className="h-max max-h-[20rem] min-h-[4rem] w-full"
+              grow
+              maxLength={1000}
+              showCount
+            />
+          </>
+        ) : (
+          <>
+            <h4 className="break-words">{title}</h4>
+            <p className="whitespace-pre-wrap">{text}</p>
+          </>
+        )}
+      </div>
       {editing && (
         <ProfileBoxModificationButtons
           modifying={modifying}
