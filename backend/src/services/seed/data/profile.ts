@@ -10,10 +10,8 @@ export const elementTypes = [
 export const userProfiles = [
   {
     user_id: userid1,
-    screen_name: "Jane",
-    profile_image: 0,
-    profile_text: "",
+    profile_text: "Hello! My name is Jane.",
     header_media_id: 0,
-    homepage: "",
+    homepage: "microblog.com",
   },
 ];

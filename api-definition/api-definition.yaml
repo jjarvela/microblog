@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.7.3"
+  version: "0.7.4"
 
 servers:
   - url: https://api.microblog.fi
@@ -346,6 +346,7 @@ components:
           type: number
           enum:
             - 400
+            - 401
             - 500
           description: Status of response.
         err:
@@ -369,6 +370,8 @@ tags:
     description: Tag-management related functions.
   - name: login
     description: User authentication related functions.
+  - name: logout
+    description: User session logout related functions.
   - name: group
     description: Groups related functions.
   - name: user
@@ -669,9 +672,9 @@ paths:
             type: string
 
     post:
-      summary: Add the user's id and a user or a group they are following      
+      summary: Add the user's id and a user or a group they are following
       operationId: addFollowing
-      tags: 
+      tags:
         - user
       responses:
         "200":
@@ -816,11 +819,24 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/OK"
+        "401":
+          $ref: "#/components/responses/errorResponse"
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/userAuth"
+  /logout:
+    get:
+      summary: Logout user and destroy the session.
+      operationId: "logoutUser"
+      tags:
+        - logout
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "500":
+          $ref: "#/components/responses/errorResponse"
 
   /conversation:
     post:
@@ -852,18 +868,18 @@ paths:
   /conversation/{conversationId}:
     get:
       summary: Get conversation by id.
-      operationId: getConversationMessages
+      operationId: getConversationDetails
       tags:
         - conversation
       responses:
         "200":
-          description: A list of messages in a conversation
+          description: Details of conversation by id
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/conversation_messages"
+                  $ref: "#/components/schemas/conversations"
         "400":
           description: Error object.
           content:
@@ -896,11 +912,10 @@ paths:
               schema:
                 $ref: "#/components/schemas/errorResponse"
       parameters:
-        - name: conversation_id
+        - name: conversationId
           in: path
           schema:
             type: string
-            format: uuid
           required: true
       requestBody:
         content:
@@ -924,6 +939,34 @@ paths:
           schema:
             type: string
           required: true
+
+  /conversation/{conversationId}/messages:
+    get:
+      summary: Get messages by conversation id.
+      operationId: getConversationMessages
+      tags:
+        - conversation
+      responses:
+        "200":
+          description: Messages matching the conversation Id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/conversation_messages"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: conversationId
+          required: true
+          in: path
+          schema:
+            type: string
 
   /conversation/{conversationId}/{messageId}:
     put:
@@ -982,4 +1025,3 @@ paths:
           schema:
             type: string
           required: true
-

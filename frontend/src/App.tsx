@@ -15,13 +15,17 @@ import RightSidebar from "./Components/RightSidebar";
 import { SetTheme } from "./Components/Elements/SettingsElements/ThemeSelector";
 import PostPage from "./Components/PostPage";
 import HashtagSearch from "./Components/HashtagSearch";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNotificationCenter } from "react-toastify/addons/use-notification-center";
 
 const UserLayout = () => {
+  const { unreadCount } = useNotificationCenter();
   return (
     <>
       <Header />
       <div className="flex h-full w-full flex-row overflow-hidden">
-        <LeftSidebar />
+        <LeftSidebar unreadCount={unreadCount} />
         <main className="scrollbar-thin h-full w-full overflow-y-auto pb-4">
           <Outlet />
         </main>
@@ -74,6 +78,7 @@ function App() {
           <Route path="/:username/post/:postid" element={<PostPage />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </div>
   );
 }

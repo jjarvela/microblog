@@ -43,6 +43,7 @@ function TextAreaInput({
           " " +
           className
         }
+        value={value}
         maxLength={maxLength}
         autoFocus={autofocus || false}
         {...rest}

@@ -157,11 +157,17 @@ declare namespace Components {
             location?: string;
             birthday: string; // date
         }
-        export type PortfolioRes = {
+        export type ProfileElements = {
             /**
-             * User uuid
+             * Profile element type.
              */
-            userId?: string;
+            type?: string;
+            /**
+             * Profile element data object.
+             */
+            data?: {
+                [name: string]: any;
+            };
         }[];
         /**
          * Blog post that can be referred with an id.
@@ -358,6 +364,19 @@ declare namespace Paths {
             export type $400 = Components.Schemas.ErrorResponse;
         }
     }
+    namespace EditProfileElements {
+        namespace Parameters {
+            export type UserId = string;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+        }
+        export type RequestBody = Components.Schemas.ProfileElements;
+        namespace Responses {
+            export type $200 = Components.Responses.OK;
+            export type $400 = Components.Schemas.ErrorResponse;
+        }
+    }
     namespace GetBlogPost {
         namespace Parameters {
             export type EndDate = Components.Schemas.Date /* date */;
@@ -375,6 +394,18 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = /* Blog post that can be referred with an id. */ Components.Schemas.RefPost[];
+            export type $400 = Components.Schemas.ErrorResponse;
+        }
+    }
+    namespace GetConversationDetails {
+        namespace Parameters {
+            export type ConversationId = string;
+        }
+        export interface PathParameters {
+            conversationId: Parameters.ConversationId;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Conversations[];
             export type $400 = Components.Schemas.ErrorResponse;
         }
     }
@@ -446,6 +477,18 @@ declare namespace Paths {
             export type $200 = Components.Responses.OK;
         }
     }
+    namespace GetProfileElements {
+        namespace Parameters {
+            export type UserId = string;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ProfileElements;
+            export type $400 = Components.Schemas.ErrorResponse;
+        }
+    }
     namespace GetUserMedia {
         namespace Parameters {
             export type UserId = string;
@@ -463,19 +506,6 @@ declare namespace Paths {
             export type $200 = Components.Responses.OK;
         }
     }
-    namespace Portfolio$UserIdPublic {
-        namespace Get {
-            namespace Parameters {
-                export type UserId = string;
-            }
-            export interface PathParameters {
-                userId: Parameters.UserId;
-            }
-            namespace Responses {
-                export type $200 = Components.Schemas.PortfolioRes;
-            }
-        }
-    }
     namespace RegisterUser {
         export type RequestBody = /* Schema to create new user. */ Components.Schemas.NewUserObject;
         namespace Responses {
@@ -484,10 +514,10 @@ declare namespace Paths {
     }
     namespace SendDirectMessage {
         namespace Parameters {
-            export type ConversationId = string; // uuid
+            export type ConversationId = string;
         }
         export interface PathParameters {
-            conversation_id: Parameters.ConversationId /* uuid */;
+            conversationId: Parameters.ConversationId;
         }
         export type RequestBody = Components.Schemas.NewConversationMessage;
         namespace Responses {
@@ -507,20 +537,6 @@ declare namespace Paths {
         export type RequestBody = /* Blog post that can be referred with an id. */ Components.Schemas.RefPost;
         namespace Responses {
             export type $200 = Components.Responses.OK;
-        }
-    }
-    namespace User$UserIdProfile {
-        namespace Patch {
-            namespace Parameters {
-                export type UserId = string;
-            }
-            export interface PathParameters {
-                userId: Parameters.UserId;
-            }
-            export type RequestBody = Components.Schemas.UserProfile;
-            namespace Responses {
-                export type $200 = Components.Responses.OK;
-            }
         }
     }
 }
@@ -590,6 +606,22 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetProfile.Responses.$200>
+  /**
+   * getProfileElements - Get profile elements.
+   */
+  'getProfileElements'(
+    parameters?: Parameters<Paths.GetProfileElements.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetProfileElements.Responses.$200>
+  /**
+   * editProfileElements - Update profile elements.
+   */
+  'editProfileElements'(
+    parameters?: Parameters<Paths.EditProfileElements.PathParameters> | null,
+    data?: Paths.EditProfileElements.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.EditProfileElements.Responses.$200>
   /**
    * getFollowings - Get list of users the person is following.
    */
@@ -663,13 +695,13 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateConversation.Responses.$200>
   /**
-   * getConversationMessages - Get conversation by id.
+   * getConversationDetails - Get conversation by id.
    */
-  'getConversationMessages'(
-    parameters?: Parameters<Paths.GetConversationMessages.PathParameters> | null,
+  'getConversationDetails'(
+    parameters?: Parameters<Paths.GetConversationDetails.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetConversationMessages.Responses.$200>
+  ): OperationResponse<Paths.GetConversationDetails.Responses.$200>
   /**
    * sendDirectMessage - Add a new message to the conversation
    */
@@ -686,6 +718,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DeleteConversation.Responses.$200>
+  /**
+   * getConversationMessages - Get messages by conversation id.
+   */
+  'getConversationMessages'(
+    parameters?: Parameters<Paths.GetConversationMessages.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetConversationMessages.Responses.$200>
   /**
    * editDirectMessage - Edit message in a conversation
    */
@@ -771,8 +811,6 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.DelUserMedia.Responses.$200>
   }
-  ['/portfolio/{userId}/public']: {
-  }
   ['/user/{userId}/profile']: {
     /**
      * getProfile - Get user profile atributes.
@@ -782,6 +820,24 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetProfile.Responses.$200>
+  }
+  ['/user/{userId}/profile/elements']: {
+    /**
+     * getProfileElements - Get profile elements.
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetProfileElements.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetProfileElements.Responses.$200>
+    /**
+     * editProfileElements - Update profile elements.
+     */
+    'post'(
+      parameters?: Parameters<Paths.EditProfileElements.PathParameters> | null,
+      data?: Paths.EditProfileElements.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.EditProfileElements.Responses.$200>
   }
   ['/user/{userId}/following']: {
     /**
@@ -871,13 +927,13 @@ export interface PathsDictionary {
   }
   ['/conversation/{conversationId}']: {
     /**
-     * getConversationMessages - Get conversation by id.
+     * getConversationDetails - Get conversation by id.
      */
     'get'(
-      parameters?: Parameters<Paths.GetConversationMessages.PathParameters> | null,
+      parameters?: Parameters<Paths.GetConversationDetails.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetConversationMessages.Responses.$200>
+    ): OperationResponse<Paths.GetConversationDetails.Responses.$200>
     /**
      * sendDirectMessage - Add a new message to the conversation
      */
@@ -894,6 +950,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.DeleteConversation.Responses.$200>
+  }
+  ['/conversation/{conversationId}/messages']: {
+    /**
+     * getConversationMessages - Get messages by conversation id.
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetConversationMessages.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetConversationMessages.Responses.$200>
   }
   ['/conversation/{conversationId}/{messageId}']: {
     /**
