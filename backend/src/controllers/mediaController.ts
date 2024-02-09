@@ -9,13 +9,13 @@ export async function addUserMedia(c: Context, req: Request, res: Response) {
   console.log(userId);
   const query = c.request.query;
   const blogObj = c.request.body;
-  console.log(req.files);
   console.log(req.body.formData);
+  console.log(c.request.body.formData);
   console.log(blogObj);
   if (blogObj.files) {
     console.log(blogObj.files);
     try {
-  if(blogObj.files.length < 1 || req.body.formData.files.length < 1) throw new Error("No files!")
+  //if(blogObj.files.length < 1 || req.body.formData.files.length < 1) throw new Error("No files!")
       upload(req, res, (err) => {
         if (err instanceof MulterError) {
           //A multer error occurred when uploading

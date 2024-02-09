@@ -47,9 +47,10 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
   const mutateSendMedia = useMutation({
     mutationKey: ["post-modal-files"],
     mutationFn: () => {
-      return postService.sendPostMedia(testUserId, files);
+      const formData = new FormData();
+      files.forEach((file) => formData.append(file.name, file));
+      return postService.sendPostMedia(testUserId, formData);
     },
-    onSettled: (data) => console.log(data)
   });
 
   const handleSubmit = (e: FormEvent, mode: NewPostProps["mode"]) => {

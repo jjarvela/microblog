@@ -455,12 +455,13 @@ paths:
         content:
           multipart/formdata:
             schema:
+              type: object
               properties:
+                filename:
+                  type: string
                 file:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
+                  type: string
+                  format: binary
             #   $ref: "#/components/schemas/multipleFiles"
             # encoding:
             #   multipleFiles:

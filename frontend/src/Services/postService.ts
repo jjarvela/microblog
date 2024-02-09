@@ -21,7 +21,7 @@ function deletePost(postIds: number[], userId: string) {
   }); // DELETE request does not necessarily support a request body
 }
 
-function sendPostMedia(userId: string, files: File[]) {
+function sendPostMedia(userId: string, files: FormData) {
   return axios
     .post(`${serverUrl}/media/${userId}`, files, {
       headers: { "Content-Type": "multipart/form-data" },
