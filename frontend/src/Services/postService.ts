@@ -3,7 +3,7 @@ import { serverUrl } from "../globalData";
 
 function getPosts(userId: string, postId?: string) {
   return axios
-    .get(`${serverUrl}/blog/${userId}` + (postId ? `/${postId}` : ""))
+    .get(`${serverUrl}/blog/${userId}` + (postId ? `?postId=${postId}` : ""))
     .then((res) => res.data);
 }
 
