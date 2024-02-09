@@ -20,4 +20,4 @@ declare module 'express-session' {
 // User authentication
 export type authObj = Components.Schemas.UserAuth;
 
-// export type UserRegBody = Paths.UserRegister.Post.RequestBody;
+export type UserRegData = Components.Schemas.NewUserObject;
