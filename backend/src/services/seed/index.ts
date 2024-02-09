@@ -75,11 +75,11 @@ async function runSeeders() {
   );
 
   await Promise.all(
-    userProfiles.map(async (user) =>
+    userProfiles.map(async (profile) =>
       prisma.user_profiles.upsert({
-        where: { user_id: user.user_id },
+        where: { user_id: profile.user_id },
         update: {},
-        create: user,
+        create: profile,
       })
     )
   );
@@ -90,6 +90,7 @@ async function runSeeders() {
   await prisma.$queryRaw`SELECT setval('public.blog_posts_id_seq', 20, true)`;
   await prisma.$queryRaw`SELECT setval('public.item_properties_id_seq', 20, true)`;
   await prisma.$queryRaw`SELECT setval('public.groups_id_seq', 20, true)`;
+  await prisma.$queryRaw`SELECT setval('public.profile_elements_id_seq', 20, true)`;
 }
 
 runSeeders()
