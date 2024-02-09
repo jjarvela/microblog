@@ -35,17 +35,13 @@ export const dbConfig: PoolConfig = {
 };
 
 api.registerSecurityHandler("mbCookieAuth", (c: Context, req: Request, res: Response) => {
-
   console.log("security handler called");
-
   if (req.session.user?.authenticated !== true && req.path !== "/login" && req.path !== "/logout") {
     console.log("session not valid.");
     return false
   } else {
     return true
   }
-
-  return false
 })
 
 // Default handlers for errors.
@@ -93,19 +89,19 @@ api.register("logoutUser", authHandler.logoutUser);
 
 
 // Profile element handlers
-//api.register("getProfileElements", profileElementHandlers.getProfileElements);
-//api.register("editProfileElements", profileElementHandlers.editProfileElements);
+api.register("getProfileElements", profileElementHandlers.getProfileElements);
+api.register("editProfileElements", profileElementHandlers.editProfileElements);
 
 //Conversation handlers
-/*
+
 api.register("getConversations", conversationHandlers.getUserConversations);
 api.register("getConversationDetails", conversationHandlers.getConversation);
-api.register("getConversationMessages",conversationHandlers.getConversationMessages);
+api.register("getConversationMessages", conversationHandlers.getConversationMessages);
 api.register("createConversation", conversationHandlers.createConversation);
 api.register("deleteConversation", conversationHandlers.deleteConversation);
 api.register("sendDirectMessage", conversationHandlers.postMessage);
 api.register("editDirectMessage", conversationHandlers.editMessage);
 api.register("deleteDirectMessage", conversationHandlers.deleteMessage);
-*/
+
 export default api;
 
