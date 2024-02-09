@@ -98,9 +98,6 @@ export async function getConversationMessages(
     const messages = await queries.selectMessages({
       conversation_id: parseInt(conversationId)
     });
-    console.log("***********************MESSAGES**************************");
-    console.log(messages);
-    console.log("***********************MESSAGES**************************");
     res.status(200).json(messages);
   } catch (e) {
     console.log(e);
@@ -150,21 +147,49 @@ export async function postMessage(c: Context, _req: Request, res: Response) {
   }
 
   try {
-    const newEntry = await queries.createMessage({...newMessage, timestamp: new Date(Date.now()).toISOString()});
+    const newEntry = await queries.createMessage({
+      ...newMessage,
+      timestamp: new Date(Date.now()).toISOString()
+    });
     res.status(201).json(newEntry);
-  } catch (e){
+  } catch (e) {
     console.log(e);
     res
       .status(500)
       .json({ status: 500, err: [{ message: "Unidentified error" }] });
   }
-
 }
 
 export async function editMessage(c: Context, _req: Request, res: Response) {
-  res.json({ status: 201 });
+  const messageId = c.request.params.messageId;
+  const newInfo = c.request.body.message;
+
+  try {
+    const updatedMessage = await queries.updateMessage({
+      id: parseInt(messageId as string),
+      message: newInfo
+    });
+    res.status(200).json(updatedMessage);
+  } catch (e) {
+    console.log(e);
+    res
+      .status(500)
+      .json({ status: 500, err: [{ message: "Unidentified error" }] });
+  }
 }
 
 export async function deleteMessage(c: Context, _req: Request, res: Response) {
-  res.json({ status: 201 });
+  const messageId = c.request.params.messageId;
+
+  try {
+    const deletedMessage = await queries.deleteMessage({
+      id: parseInt(messageId as string)
+    });
+    res.status(200).json(deletedMessage);
+  } catch (e) {
+    console.log(e);
+    res
+      .status(500)
+      .json({ status: 500, err: [{ message: "Unidentified error" }] });
+  }
 }

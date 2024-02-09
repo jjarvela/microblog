@@ -1,12 +1,12 @@
-import Express from 'express';
-import { api, dbConfig } from "./controllers/loadApi"
-import { Pool } from 'pg'
-import session from 'express-session'
-import connectPgSimple from 'connect-pg-simple';
-import type { Request } from 'openapi-backend'
+import Express from "express";
+import { api, dbConfig } from "./controllers/loadApi";
+import { Pool } from "pg";
+import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
+import type { Request } from "openapi-backend";
 import cors from "cors";
 
-const db_client = new Pool(dbConfig)
+const db_client = new Pool(dbConfig);
 
 const app = Express();
 app.use(Express.json());
@@ -28,10 +28,9 @@ app.use(session({
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
-    credentials: true
+    credentials: true,
   })
 );
-
 
 app.use((req, res, next) => api.handleRequest(req as Request, req, res, next));
 
