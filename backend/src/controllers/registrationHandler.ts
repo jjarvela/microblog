@@ -7,5 +7,5 @@ import type { UserRegData } from "./types"
 
 export async function registerUser(c: Context<UserRegData>, req: Request, res: Response
 ) {
-  c.request.requestBody.
+  //c.request.requestBody.
 }
