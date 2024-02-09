@@ -10,6 +10,21 @@ const db_client = new Pool(dbConfig);
 
 const app = Express();
 app.use(Express.json());
+
+app.use(session({
+  store: new (connectPgSimple(session))({
+    pool: db_client,
+    tableName: 'mbsession',
+    createTableIfMissing: true,
+    ttl: 900,
+  }),
+  secret: 'fnrj4736eFMEJFUHEE472yr234723FNpjormdNwjg',
+  resave: false,
+  name: 'mbCookieAuth',
+  saveUninitialized: true,
+  cookie: { secure: false, sameSite: 'lax' }
+}))
+
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -17,24 +32,8 @@ app.use(
   })
 );
 
-app.use(
-  session({
-    store: new (connectPgSimple(session))({
-      pool: db_client,
-      tableName: "mbsession",
-      createTableIfMissing: true,
-      ttl: 900,
-    }),
-    secret: "fnrj4736eFMEJFUHEE472yr234723FNpjormdNwjg",
-    resave: false,
-    name: "mbCookieAuth",
-    saveUninitialized: true,
-    cookie: { secure: false },
-  })
-);
+app.use((req, res, next) => api.handleRequest(req as Request, req, res, next));
 
 api.init();
-
-app.use((req, res) => api.handleRequest(req as Request, req, res));
 
 app.listen(9000, () => console.info("api listening at http://localhost:9000"));

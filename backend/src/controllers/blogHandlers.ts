@@ -22,16 +22,17 @@ export async function addBlogPost(
 
     try {
         const result = await queries.insertPost(post);
-        res.status(200).json({ status: 200, itemId: result.id });
+        return res.status(200).json({ status: 200, itemId: result.id })
     }
     catch (e) {
         console.log(e)
         console.log(post)
-        res.status(500).json({ status: 500, err: [{ message: "Unidentified error" }] })
+        return res.status(500).json({ status: 500, err: [{ message: "Unidentified error" }] })
     }
 }
 
 export async function getBlogPost(c: Context, _req: Request, res: Response) {
+    console.log("Get post");
 
     const query = c.request.query
     const userId = c.request.params.user_id
@@ -42,10 +43,10 @@ export async function getBlogPost(c: Context, _req: Request, res: Response) {
         const postId = Number(query.postId) // Convert params.id to a number
         try {
             const result = await queries.selectOnePost({ blog_post_id: postId })
-            res.status(200).json(result)
+            return res.status(200).json(result)
         } catch (e) {
             console.log(e)
-            res.status(500).json({ status: 500, err: [{ message: "Unidentified error" }] })
+            return res.status(500).json({ status: 500, err: [{ message: "Unidentified error" }] })
         }
     } else {
 
@@ -57,10 +58,10 @@ export async function getBlogPost(c: Context, _req: Request, res: Response) {
             }
 
             const result = await queries.selectPosts({ user_uuid: userId as string, startdate: startDate, enddate: endDate });
-            res.status(200).json(result)
+            return res.status(200).json(result)
         } catch (e) {
             console.log(e)
-            res.status(500).json({ status: 500, err: [{ message: "Unidentified error" }] })
+            return res.status(500).json({ status: 500, err: [{ message: "Unidentified error" }] })
         }
 
     }

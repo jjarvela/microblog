@@ -4,7 +4,7 @@ import { Context } from "openapi-backend";
 import { PoolConfig } from "pg";
 import * as handlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
-import * as profileElementHandlers from "./profileElementHandlers";
+//import * as profileElementHandlers from "./profileElementHandlers";
 import * as conversationHandlers from "./conversationHandlers";
 import * as authHandler from "./authHandler";
 import Ajv from "ajv";
@@ -33,7 +33,22 @@ export const dbConfig: PoolConfig = {
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD
 };
+
+api.registerSecurityHandler("mbCookieAuth", (c: Context, req: Request, res: Response) => {
+  console.log("security handler called");
+  if (req.session.user?.authenticated !== true && req.path !== "/login" && req.path !== "/logout") {
+    console.log("session not valid.");
+    return false
+  } else {
+    return true
+  }
+})
+
 // Default handlers for errors.
+
+export function unAuthHandler(c: Context, _req: Request, res: Response) {
+  return res.status(401).json({ status: 401, err: [{ message: "Authentication failed." }] })
+}
 
 function validationFailHandler(c: Context, req: Request, res: Response) {
   return res.status(400).json({ status: 400, err: c.validation.errors });
@@ -45,10 +60,11 @@ function notFound(c: Context, req: Request, res: Response) {
 
 function notImplementedHandler(c: Context, req: Request, res: Response) {
   return res
-    .status(404)
+    .status(501)
     .json({ status: 501, err: "No handler registered for operation" });
 }
 
+api.register("unauthorizedHandler", unAuthHandler);
 api.register("notImplemented", notImplementedHandler);
 api.register("notFound", notFound);
 api.register("validationFail", validationFailHandler);
@@ -70,20 +86,15 @@ api.register("deleteFollowing", followHandlers.deleteFollowing);
 api.register("loginUser", authHandler.loginUser);
 api.register("logoutUser", authHandler.logoutUser);
 
-// Security handler
-//api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
-
 // Profile element handlers
 api.register("getProfileElements", profileElementHandlers.getProfileElements);
 api.register("editProfileElements", profileElementHandlers.editProfileElements);
 
 //Conversation handlers
+
 api.register("getConversations", conversationHandlers.getUserConversations);
 api.register("getConversationDetails", conversationHandlers.getConversation);
-api.register(
-  "getConversationMessages",
-  conversationHandlers.getConversationMessages
-);
+api.register("getConversationMessages", conversationHandlers.getConversationMessages);
 api.register("createConversation", conversationHandlers.createConversation);
 api.register("deleteConversation", conversationHandlers.deleteConversation);
 api.register("sendDirectMessage", conversationHandlers.postMessage);
