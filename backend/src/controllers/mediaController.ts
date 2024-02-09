@@ -9,7 +9,8 @@ export async function addUserMedia(c: Context, req: Request, res: Response) {
   console.log(userId);
   const query = c.request.query;
   const blogObj = c.request.body;
-  console.log(c.request.body)
+  console.log(req.files);
+  console.log(req.body.formData);
   console.log(blogObj);
   if (blogObj.files) {
     console.log(blogObj.files);

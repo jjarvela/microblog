@@ -70,7 +70,9 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
       };
       mutateEditPost.mutate(editedPost);
     }
-    if (files.length > 0) {
+    if (files.length > 0) {   
+      console.log(files[0]); 
+      console.log(files);
       console.log("calling send media");
       mutateSendMedia.mutate();
     }

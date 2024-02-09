@@ -60,4 +60,4 @@ function parseName(userId: string | number, fileId: string, filetype: string) {
 /*user-media is the required name for the file upload form field in the FRONTEND
 For upload to work, FRONTEND axios request needs to have "Content-Type": "multipart/form-data" in its request header
 upload is called by upload(req, res, err => {-error and response handling-})*/
-export default upload.single("user-media");
+export default upload.array("user-media", 4);
