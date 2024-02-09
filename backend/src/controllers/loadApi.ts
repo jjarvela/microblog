@@ -22,7 +22,7 @@ addFormats(ajv);
 // Load Api definition and init OpenAPI with customized ajv configuration.
 export const api = new OpenAPIBackend({
   definition: api_def,
-  customizeAjv: () => ajv,
+  customizeAjv: () => ajv
 });
 
 // Export DB configuration object
@@ -31,7 +31,7 @@ export const dbConfig: PoolConfig = {
   port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
+  password: process.env.POSTGRES_PASSWORD
 };
 // Default handlers for errors.
 
@@ -71,7 +71,7 @@ api.register("loginUser", authHandler.loginUser);
 api.register("logoutUser", authHandler.logoutUser);
 
 // Security handler
-api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
+//api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
 
 // Profile element handlers
 api.register("getProfileElements", profileElementHandlers.getProfileElements);
@@ -91,4 +91,3 @@ api.register("editDirectMessage", conversationHandlers.editMessage);
 api.register("deleteDirectMessage", conversationHandlers.deleteMessage);
 
 export default api;
-

@@ -74,6 +74,9 @@ export default function Chatbox({
           className="w-full"
           value={messageText}
           onChange={(e) => setMessageText(e.target.value)}
+          onKeyDown={(e) => {
+            if (!e.shiftKey && e.key === "Enter") sendMessageMutation.mutate();
+          }}
         />
       </span>
       <span className="self-center">
