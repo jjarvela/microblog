@@ -8,7 +8,7 @@ import DropdownInput from "./Elements/Inputs/DropdownInput";
 import { locationList } from "../globalData";
 
 function Landing() {
-  const [register, setRegister] = useState(true);
+  const [register, setRegister] = useState(false);
   const navigate = useNavigate();
   const user = useUser();
   const [usernameInput, setUsernameInput] = useState("");
