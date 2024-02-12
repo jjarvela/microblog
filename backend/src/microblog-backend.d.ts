@@ -153,7 +153,8 @@ declare namespace Components {
         export interface NewUserObject {
             screenName: string;
             userName: string;
-            email: string;
+            email: string; // email
+            password: string; // password
             location?: string;
             birthday: string; // date
         }
@@ -358,7 +359,9 @@ declare namespace Paths {
             conversationId: Parameters.ConversationId;
             messageId: Parameters.MessageId;
         }
-        export type RequestBody = Components.Schemas.NewConversationMessage;
+        export interface RequestBody {
+            message: string;
+        }
         namespace Responses {
             export type $201 = Components.Schemas.ConversationMessages;
             export type $400 = Components.Schemas.ErrorResponse;

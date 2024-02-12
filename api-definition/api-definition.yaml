@@ -153,6 +153,7 @@ components:
       required:
         - userName
         - screenName
+        - password
         - email
         - birthday
       properties:
@@ -162,6 +163,10 @@ components:
           type: string
         email:
           type: string
+          format: email
+        password:
+          type: string
+          format: password
         location:
           type: string
         birthday:
