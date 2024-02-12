@@ -2,9 +2,10 @@ import OpenAPIBackend from "openapi-backend";
 import { Request, Response } from "express";
 import { Context } from "openapi-backend";
 import { PoolConfig } from "pg";
-import * as handlers from "./blogHandlers";
+import * as userHandlers from "./userHandler";
+import * as blogHandlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
-//import * as profileElementHandlers from "./profileElementHandlers";
+import * as profileElementHandlers from "./profileElementHandlers";
 import * as conversationHandlers from "./conversationHandlers";
 import * as authHandler from "./authHandler";
 import Ajv from "ajv";
@@ -34,20 +35,29 @@ export const dbConfig: PoolConfig = {
   password: process.env.POSTGRES_PASSWORD
 };
 
-api.registerSecurityHandler("mbCookieAuth", (c: Context, req: Request, res: Response) => {
-  console.log("security handler called");
-  if (req.session.user?.authenticated !== true && req.path !== "/login" && req.path !== "/logout") {
-    console.log("session not valid.");
-    return false
-  } else {
-    return true
+api.registerSecurityHandler(
+  "mbCookieAuth",
+  (c: Context, req: Request, res: Response) => {
+    console.log("security handler called");
+    if (
+      req.session.user?.authenticated !== true &&
+      req.path !== "/login" &&
+      req.path !== "/logout"
+    ) {
+      console.log("session not valid.");
+      return false;
+    } else {
+      return true;
+    }
   }
-})
+);
 
-// Default handlers for errors.
+// Default blogHandlers for errors.
 
 export function unAuthHandler(c: Context, _req: Request, res: Response) {
-  return res.status(401).json({ status: 401, err: [{ message: "Authentication failed." }] })
+  return res
+    .status(401)
+    .json({ status: 401, err: [{ message: "Authentication failed." }] });
 }
 
 function validationFailHandler(c: Context, req: Request, res: Response) {
@@ -69,11 +79,14 @@ api.register("notImplemented", notImplementedHandler);
 api.register("notFound", notFound);
 api.register("validationFail", validationFailHandler);
 
+//user information handler
+api.register("getUserInfo", userHandlers.getUserThumbInfo);
+
 // Blog post handlers
-api.register("addBlogPost", handlers.addBlogPost);
-api.register("getBlogPost", handlers.getBlogPost);
-api.register("updateBlogPost", handlers.updateBlogPost);
-api.register("deleteBlogPost", handlers.deleteBlogPost);
+api.register("addBlogPost", blogHandlers.addBlogPost);
+api.register("getBlogPost", blogHandlers.getBlogPost);
+api.register("updateBlogPost", blogHandlers.updateBlogPost);
+api.register("deleteBlogPost", blogHandlers.deleteBlogPost);
 
 // Followings handlers
 api.register("addFollowing", followHandlers.addFollowing);
@@ -94,7 +107,10 @@ api.register("editProfileElements", profileElementHandlers.editProfileElements);
 
 api.register("getConversations", conversationHandlers.getUserConversations);
 api.register("getConversationDetails", conversationHandlers.getConversation);
-api.register("getConversationMessages", conversationHandlers.getConversationMessages);
+api.register(
+  "getConversationMessages",
+  conversationHandlers.getConversationMessages
+);
 api.register("createConversation", conversationHandlers.createConversation);
 api.register("deleteConversation", conversationHandlers.deleteConversation);
 api.register("sendDirectMessage", conversationHandlers.postMessage);

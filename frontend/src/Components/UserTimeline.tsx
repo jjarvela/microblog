@@ -8,9 +8,22 @@ import MaterialSymbolsPersonCheck from "./Icons/MaterialSymbolsPersonCheck";
 import IonRibbonB from "./Icons/IonRibbonB";
 import MaterialSymbolsTagRounded from "./Icons/MaterialSymbolsTagRounded";
 import { useUser } from "../UserWrapper";
+import { useQuery } from "@tanstack/react-query";
+import { serverUrl, testUserId } from "../globalData";
+import axios from "axios";
 
 const UserTimeline = () => {
   const user = useUser().user;
+
+  const userInfoQuery = useQuery({
+    queryKey: ["userInfo", testUserId],
+    queryFn: async () => {
+      const result = await axios.get(`${serverUrl}/user/${testUserId}/details`);
+      console.log(result.data);
+      return result.data;
+    },
+  });
+
   const placeholderPosts: Post[] = [
     {
       postOwner: {
@@ -214,6 +227,7 @@ const UserTimeline = () => {
         />
       </div>
       <h2 className="my-4 text-center">Timeline</h2>
+      {userInfoQuery.data && <p>Check console</p>}
       <div className="flex flex-col gap-4">
         {placeholderPosts.map((post) => {
           return (
