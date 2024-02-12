@@ -19,7 +19,6 @@ export const insertUser = async (param: {
       joined: param.joined
     }
   });
-  console.log(result);
   return result;
 };
 
@@ -41,7 +40,6 @@ export const selectUser = async ({
         password: true
       }
     });
-    console.log(result);
     return result;
   } else if (uid) {
     const result: object | null = await prisma.users.findUnique({
@@ -55,7 +53,6 @@ export const selectUser = async ({
         profile_image: true
       }
     });
-    console.log(result);
     return result;
   }
 };
@@ -66,7 +63,6 @@ export const deleteUser = async (param: { uid: string }) => {
       uid: param.uid
     }
   });
-  console.log(result);
   return result;
 };
 
@@ -96,6 +92,30 @@ export const updateUser = async (param: {
       last_login: param.last_login
     }
   });
-  console.log(result);
   return result;
+};
+
+export const getSocket = async (userId: string) => {
+  const result: object | null = await prisma.users.findUnique({
+    where: {
+      uid: userId
+    },
+    select: {
+      uid: true,
+      socket_id: true
+    }
+  });
+  return result;
+};
+
+export const updateSocket = async (userId: string, socketId: string | null) => {
+  const result: users | null = await prisma.users.update({
+    where: {
+      uid: userId
+    },
+    data: {
+      socket_id: socketId
+    }
+  });
+  console.log(result);
 };

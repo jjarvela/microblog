@@ -5,35 +5,41 @@ import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import type { Request } from "openapi-backend";
 import cors from "cors";
+import { io } from "./socket/socketIndex";
 
 const db_client = new Pool(dbConfig);
 
 const app = Express();
+
 app.use(Express.json());
 
-app.use(session({
-  store: new (connectPgSimple(session))({
-    pool: db_client,
-    tableName: 'mbsession',
-    createTableIfMissing: true,
-    ttl: 900,
-  }),
-  secret: 'fnrj4736eFMEJFUHEE472yr234723FNpjormdNwjg',
-  resave: false,
-  name: 'mbCookieAuth',
-  saveUninitialized: true,
-  cookie: { secure: false, sameSite: 'lax' }
-}))
+app.use(
+  session({
+    store: new (connectPgSimple(session))({
+      pool: db_client,
+      tableName: "mbsession",
+      createTableIfMissing: true,
+      ttl: 900
+    }),
+    secret: "fnrj4736eFMEJFUHEE472yr234723FNpjormdNwjg",
+    resave: false,
+    name: "mbCookieAuth",
+    saveUninitialized: true,
+    cookie: { secure: false, sameSite: "lax" }
+  })
+);
 
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
-    credentials: true,
+    credentials: true
   })
 );
 
 app.use((req, res, next) => api.handleRequest(req as Request, req, res, next));
 
 api.init();
+
+io.listen(8800);
 
 app.listen(9000, () => console.info("api listening at http://localhost:9000"));

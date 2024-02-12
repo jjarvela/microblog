@@ -221,6 +221,7 @@ model users {
   email                                            String?           @db.VarChar(50)
   screen_name                                      String?
   profile_image                                    Int?
+  socket_id                                        String?
   admin                                            Boolean?
   location                                         String?
   birthday                                         DateTime?         @db.Date
