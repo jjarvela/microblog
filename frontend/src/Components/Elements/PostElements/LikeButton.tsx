@@ -8,7 +8,7 @@ export default function LikeButton() {
   return (
     <button
       onClick={() => {
-        socket.emit("send-notification", testUserId);
+        if (!liked) socket.emit("send-notification", testUserId);
         setLiked(!liked);
       }}
     >
