@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import userService from "./Services/userService";
 
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -58,12 +59,12 @@ function UserWrapper({ children }: UserWrapperProps) {
           password: user.password,
         })
         .then((res) => {
-          return res.data as User;
+          return res.data as string;
         });
     },
     onError: (error) => console.error(error),
-    onSuccess: (data: User) => {
-      setCurrentUser({ ...tempUser, ...data });
+    onSuccess: (uid: string) => {
+      setCurrentUser({ ...tempUser, id: uid });
     },
   });
 
@@ -88,8 +89,28 @@ function UserWrapper({ children }: UserWrapperProps) {
     },
   });
 
+  const userQuery = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: () => {
+      if (currentUser?.id) return userService.getUser(currentUser.id);
+    },
+    enabled: !!currentUser?.id,
+  });
+
   const handleLogin = async (username: string, password: string) => {
     loginMutation.mutate({ username: username, password: password });
+    const queryData = await userQuery.data;
+    const userData: User = {
+      id: queryData.uid,
+      userName: queryData.username,
+      screenName: queryData.screen_name,
+      profileImage: queryData.profile_image,
+      email: queryData.email,
+      birthday: new Date(queryData.birthday),
+      joined: new Date(queryData.joined),
+      location: queryData.location,
+    };
+    setCurrentUser({ ...currentUser, ...userData });
   };
 
   const handleLogout = () => {

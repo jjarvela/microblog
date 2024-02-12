@@ -16,8 +16,8 @@ export const insertUser = async (param: {
       username: param.username,
       email: param.email,
       password: param.passwordHash,
-      joined: param.joined
-    }
+      joined: param.joined,
+    },
   });
   console.log(result);
   return result;
@@ -25,7 +25,7 @@ export const insertUser = async (param: {
 
 export const selectUser = async ({
   username,
-  uid
+  uid,
 }: {
   username?: string;
   uid?: string;
@@ -33,27 +33,31 @@ export const selectUser = async ({
   if (username) {
     const result: object | null = await prisma.users.findUnique({
       where: {
-        username: username
+        username: username,
       },
       select: {
         uid: true,
         username: true,
-        password: true
-      }
+        password: true,
+      },
     });
     console.log(result);
     return result;
   } else if (uid) {
     const result: object | null = await prisma.users.findUnique({
       where: {
-        uid: uid
+        uid: uid,
       },
       select: {
         uid: true,
         username: true,
         screen_name: true,
-        profile_image: true
-      }
+        profile_image: true,
+        email: true,
+        birthday: true,
+        joined: true,
+        location: true,
+      },
     });
     console.log(result);
     return result;
@@ -63,8 +67,8 @@ export const selectUser = async ({
 export const deleteUser = async (param: { uid: string }) => {
   const result: object = await prisma.users.delete({
     where: {
-      uid: param.uid
-    }
+      uid: param.uid,
+    },
   });
   console.log(result);
   return result;
@@ -83,7 +87,7 @@ export const updateUser = async (param: {
 }) => {
   const result: users | null = await prisma.users.update({
     where: {
-      uid: param.uid
+      uid: param.uid,
     },
     data: {
       password: param.password,
@@ -93,8 +97,8 @@ export const updateUser = async (param: {
       birthday: param.birthday,
       joined: param.joined,
       timezone: param.timezone,
-      last_login: param.last_login
-    }
+      last_login: param.last_login,
+    },
   });
   console.log(result);
   return result;

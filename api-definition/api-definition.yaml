@@ -639,6 +639,22 @@ paths:
           schema:
             type: string
 
+  /user/{userId}:
+    get:
+      summary: Get logged in user's data.
+      operationId: getUser
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
   /user/{userId}/details:
     get:
       summary: Get user's details to show to other users
@@ -658,22 +674,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/errorResponse"
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
-
-  /user/{userId}/profile:
-    get:
-      summary: Get user profile atributes.
-      operationId: getProfile
-      tags:
-        - user
-      responses:
-        "200":
-          $ref: "#/components/responses/OK"
       parameters:
         - name: userId
           required: true

@@ -11,6 +11,19 @@ type User = {
   profile_image: number | null;
 };
 
+export async function getUser(c: Context, _req: Request, res: Response) {
+  const userId = c.request.params.userId;
+
+  try {
+    const result = await userQueries.selectUser({ uid: userId.toString() });
+    console.log(result);
+    res.status(200).json(result);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export async function getUserThumbInfo(
   c: Context,
   _req: Request,
@@ -21,13 +34,13 @@ export async function getUserThumbInfo(
   try {
     const user = await userQueries.selectUser({ uid: userId.toString() });
     const following = await followingQueries.selectFollowingUsers({
-      user_id: userId.toString()
+      user_id: userId.toString(),
     });
     const followers = await followingQueries.selectFollowers({
-      user_id: userId.toString()
+      user_id: userId.toString(),
     });
     const profile = await userProfileQueries.selectProfile({
-      user_id: userId.toString()
+      user_id: userId.toString(),
     });
 
     if (!user || !following || !followers || !profile)
@@ -40,7 +53,7 @@ export async function getUserThumbInfo(
       profileImage: (user as User).profile_image || "",
       following: following,
       followers: followers,
-      description: profile.profile_text || ""
+      description: profile.profile_text || "",
     };
     console.log(result);
     res.status(200).json(result);
