@@ -55,11 +55,12 @@ export function securityHandler(c: Context, req: Request, res: Response, next: N
   // db_client
   //res.status(401).json({ status: 401, err: [{ message: "No authorization." }] })
   console.log("security handler called");
-  console.log(req.path);
+  console.log("request object");
+  console.log(c.request.path);
 
-  if (req.session.user?.authenticated !== true && req.path !== "/login" && req.path !== "/logout") {
+  if (req.session.user?.authenticated !== true && (req.path !== "/user/register" && req.path !== "/login" && req.path !== "/logout")) {
     console.log("session not valid.");
-    //return res.status(401).json({ status: 401, err: [{ message: "Session not valid. Authentication failed." }] })
+
     return false
   } else {
     return true

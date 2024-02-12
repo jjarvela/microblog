@@ -414,6 +414,7 @@ components:
           type: number
           enum:
             - 400
+            - 409
             - 401
             - 500
           description: Status of response.

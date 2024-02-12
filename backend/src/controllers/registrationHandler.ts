@@ -6,24 +6,36 @@ import { Context } from "openapi-backend";
 import { UUID, randomUUID } from 'crypto';
 import type { UserRegData, ErrorObject } from "./types"
 import * as argon from "argon2";
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 export async function registerUser(c: Context<UserRegData>, req: Request, res: Response
 ) {
-
+  console.log(randomUUID().toString());
   try {
-    const userData = c.request.requestBody
+    const userData: UserRegData = c.request.requestBody
     await insertUser({
-      uid: randomUUID.toString(),
+      uid: randomUUID(),
       username: userData.userName,
       email: userData.email,
       passwordHash: await argon.hash(userData.password),
-      joined: new Date(Date.now()) as Date
+      joined: new Date(Date.now()) as Date,
+      location: userData.location as string,
+      disabled: false,
+      verified: false
     })
     res.sendStatus(200);
-  } catch (e) {
+  } catch (e: unknown) {
     console.log(e);
-    const error: ErrorObject = { status: 500, err: [{ message: "Internal Server Error" }] }
-    res.status(500).json;
+    if (e instanceof PrismaClientKnownRequestError && e.code === 'P2002') {
+
+      const error: ErrorObject = { status: 409, err: [{ message: "Username or email already registered." }] }
+      return res.status(409).json(error)
+
+    } else {
+      const error: ErrorObject = { status: 500, err: [{ message: "Internal Server Error." }] }
+      res.status(500).json(error);
+
+    }
 
   }
 }

@@ -8,6 +8,9 @@ export const insertUser = async (param: {
   email: string;
   passwordHash: string;
   joined: Date;
+  location: string;
+  disabled: boolean;
+  verified: boolean;
 }) => {
   //register: username, email and password from user
   const result = await prisma.users.create({
@@ -15,8 +18,11 @@ export const insertUser = async (param: {
       uid: param.uid,
       username: param.username,
       email: param.email,
+      location: param.location,
       password: param.passwordHash,
-      joined: param.joined
+      joined: param.joined,
+      disabled: param.disabled,
+      verified: param.verified
     }
   });
   console.log(result);

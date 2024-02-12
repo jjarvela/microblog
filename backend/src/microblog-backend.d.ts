@@ -74,7 +74,7 @@ declare namespace Components {
             /**
              * Status of response.
              */
-            status?: 400 | 401 | 500;
+            status?: 400 | 409 | 401 | 500;
             err?: {
                 /**
                  * Class of error
@@ -208,6 +208,25 @@ declare namespace Components {
             user_id: string; // uuid
             follows_user: string; // uuid
             follows_group: number;
+        }
+        export interface UserInfo {
+            id: string; // uuid
+            username: string;
+            screenName?: string;
+            profileImage?: number;
+            description?: string;
+            following: {
+                id: number;
+                user_id: string; // uuid
+                follows_user: string; // uuid
+                follows_group: number;
+            }[];
+            followers: {
+                id: number;
+                user_id: string; // uuid
+                follows_user: string; // uuid
+                follows_group: number;
+            }[];
         }
         export interface UserObject {
             screenName?: string;
@@ -492,6 +511,18 @@ declare namespace Paths {
             export type $400 = Components.Schemas.ErrorResponse;
         }
     }
+    namespace GetUserInfo {
+        namespace Parameters {
+            export type UserId = string;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.UserInfo;
+            export type $400 = Components.Schemas.ErrorResponse;
+        }
+    }
     namespace GetUserMedia {
         namespace Parameters {
             export type UserId = string;
@@ -608,6 +639,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DelUserMedia.Responses.$200>
+  /**
+   * getUserInfo - Get user's details to show to other users
+   */
+  'getUserInfo'(
+    parameters?: Parameters<Paths.GetUserInfo.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetUserInfo.Responses.$200>
   /**
    * getProfile - Get user profile atributes.
    */
@@ -828,6 +867,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.DelUserMedia.Responses.$200>
+  }
+  ['/user/{userId}/details']: {
+    /**
+     * getUserInfo - Get user's details to show to other users
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetUserInfo.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetUserInfo.Responses.$200>
   }
   ['/user/{userId}/profile']: {
     /**
