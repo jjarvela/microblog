@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { socket, testUserId } from "./globalData";
 
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -15,6 +16,7 @@ type LoginUser = {
 
 interface IUserContext {
   user: User | null;
+  socketId: string;
   setUser: (user: User) => void;
   onLogin: (username: string, password: string) => void;
   onLogout: () => void;
@@ -29,6 +31,7 @@ interface IUserContext {
 }
 
 const tempUser: User = {
+  id: "22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b",
   userName: "@dickerson99",
   screenName: "Dickerson",
   followers: 420,
@@ -63,12 +66,20 @@ function UserWrapper({ children }: UserWrapperProps) {
     },
     onError: (error) => console.error(error),
     onSuccess: (data: User) => {
+      socket.emit("add-user", testUserId);
       setCurrentUser({ ...tempUser, ...data });
     },
   });
 
   const registerMutation = useMutation({
-    mutationFn: (user: User) => {
+    mutationFn: (user: {
+      userName: string;
+      password: string;
+      screenName: string;
+      email: string;
+      location: string;
+      birthday: Date;
+    }) => {
       return axios
         .post(`${baseURL}/register`, {
           username: user.userName,
@@ -90,9 +101,11 @@ function UserWrapper({ children }: UserWrapperProps) {
 
   const handleLogin = async (username: string, password: string) => {
     loginMutation.mutate({ username: username, password: password });
+    console.log(socket);
   };
 
   const handleLogout = () => {
+    socket.disconnect();
     setCurrentUser(null);
   };
 
@@ -118,6 +131,7 @@ function UserWrapper({ children }: UserWrapperProps) {
     <UserContext.Provider
       value={{
         user: currentUser,
+        socketId: socket.id || "",
         setUser: setCurrentUser,
         onLogin: handleLogin,
         onLogout: handleLogout,
