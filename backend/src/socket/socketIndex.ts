@@ -16,7 +16,7 @@ export const io = new Server(httpsServer, {
   }
 });
 
-type User = { userId: string; socketId: string };
+type User = { userId: string; socket_id: string };
 
 io.on("connection", (socket) => {
   console.log("connected to socket " + socket.id);
@@ -35,15 +35,17 @@ io.on("connection", (socket) => {
   socket.on("send-notification", async (userId) => {
     console.log("Notification processing");
     const user = await getSocket(userId);
-    (user as User).socketId &&
-      socket.to((user as User).socketId).emit("received-notification");
+    console.log(user);
+    (user as User).socket_id &&
+      socket.to((user as User).socket_id).emit("received-notification");
   });
 
   socket.on("send-message", async (userId) => {
     console.log("Message processing");
     const user = await getSocket(userId);
-    (user as User).socketId &&
-      socket.to((user as User).socketId).emit("received-message");
+    console.log(user);
+    (user as User).socket_id &&
+      socket.to((user as User).socket_id).emit("received-message");
   });
 
   socket.on("disconnect", () => {
