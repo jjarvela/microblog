@@ -222,6 +222,8 @@ model users {
   screen_name                                      String?
   profile_image                                    Int?
   admin                                            Boolean?
+  disabled                                         Boolean?
+  verified                                         Boolean?
   location                                         String?
   birthday                                         DateTime?         @db.Date
   joined                                           DateTime?         @db.Timestamp(6)

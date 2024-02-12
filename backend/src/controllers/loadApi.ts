@@ -7,6 +7,7 @@ import * as blogHandlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
 import * as profileElementHandlers from "./profileElementHandlers";
 import * as conversationHandlers from "./conversationHandlers";
+import * as userRegHandler from "./registrationHandler"
 import * as authHandler from "./authHandler";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -95,7 +96,8 @@ api.register("deleteFollowing", followHandlers.deleteFollowing);
 api.register("loginUser", authHandler.loginUser);
 api.register("logoutUser", authHandler.logoutUser);
 
-
+// User registration
+api.register("registerUser", userRegHandler.registerUser)
 
 // Profile element handlers
 api.register("getProfileElements", profileElementHandlers.getProfileElements);

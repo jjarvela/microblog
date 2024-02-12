@@ -140,6 +140,7 @@ components:
         - screenName
         - email
         - birthday
+        - password
 
       properties:
         screenName:
@@ -148,11 +149,14 @@ components:
           type: string
         email:
           type: string
+          format: email
         location:
           type: string
         birthday:
           type: string
           format: date
+        password:
+          type: string
 
     userObject:
       type: object
