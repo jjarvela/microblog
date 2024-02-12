@@ -219,6 +219,69 @@ components:
         follows_group:
           type: integer
 
+    userInfo:
+      type: object
+      required:
+        - id
+        - username
+        - following
+        - followers
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        screenName:
+          type: string
+        profileImage:
+          type: number
+        description:
+          type: string
+        following:
+          type: array
+          items:
+            type: object
+            description: User following other user or group.
+            required:
+              - id
+              - user_id
+              - follows_user
+              - follows_group
+            properties:
+              id:
+                type: integer
+              user_id:
+                type: string
+                format: uuid
+              follows_user:
+                type: string
+                format: uuid
+              follows_group:
+                type: integer
+
+        followers:
+          type: array
+          items:
+            type: object
+            description: User following other user or group.
+            required:
+              - id
+              - user_id
+              - follows_user
+              - follows_group
+            properties:
+              id:
+                type: integer
+              user_id:
+                type: string
+                format: uuid
+              follows_user:
+                type: string
+                format: uuid
+              follows_group:
+                type: integer
+
     mediaRes:
       type: array
       items:
@@ -571,6 +634,32 @@ paths:
           schema:
             type: string
         - name: mediaId
+          required: true
+          in: path
+          schema:
+            type: string
+
+  /user/{userId}/details:
+    get:
+      summary: Get user's details to show to other users
+      operationId: getUserInfo
+      tags:
+        - user
+      responses:
+        "200":
+          description: Response contains user's detailed information as a JSON object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userInfo"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userId
           required: true
           in: path
           schema:
