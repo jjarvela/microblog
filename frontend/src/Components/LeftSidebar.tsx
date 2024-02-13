@@ -132,14 +132,9 @@ function LeftSidebar({ unreadCount }: LeftSidebarProps) {
         )}
         <PostModal
           user={
-            user?.user || {
+            user?.details || {
               userName: "",
               screenName: "",
-              birthday: new Date(),
-              email: "",
-              id: "",
-              joined: new Date(),
-              location: "",
             }
           }
           text=""

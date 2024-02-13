@@ -71,12 +71,14 @@ export default function PostPage() {
           {showCommentForm ? (
             <PostCommentForm
               recipient={post.postOwner}
-              commenter={{
-                userName: user.user?.userName || "",
-                screenName: user.user?.screenName || "",
-                followers: [],
-                following: [],
-              }}
+              commenter={
+                user.details || {
+                  userName: user.user?.userName || "",
+                  screenName: user.user?.screenName || "",
+                  followers: [],
+                  following: [],
+                }
+              }
               setShowCommentForm={setShowCommentForm}
             />
           ) : (

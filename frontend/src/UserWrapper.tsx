@@ -16,6 +16,7 @@ type LoginUser = {
 
 interface IUserContext {
   user: User | null;
+  details: UserDetails | null;
   setUser: (user: User) => void;
   onLogin: (username: string, password: string) => void;
   onLogout: () => void;
@@ -123,10 +124,19 @@ function UserWrapper({ children }: UserWrapperProps) {
     });
   };
 
+  const userDetailsQuery = useQuery({
+    queryKey: ["details", currentUid],
+    queryFn: () => {
+      if (currentUid) return userService.getUserDetails(currentUid);
+    },
+    enabled: !!currentUid,
+  });
+
   return (
     <UserContext.Provider
       value={{
         user: currentUser,
+        details: userDetailsQuery.data,
         setUser: setCurrentUser,
         onLogin: handleLogin,
         onLogout: handleLogout,
