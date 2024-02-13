@@ -70,13 +70,13 @@ function UserWrapper({ children }: UserWrapperProps) {
   const registerMutation = useMutation({
     mutationFn: (user: User) => {
       return axios
-        .post(`${baseURL}/register`, {
-          username: user.userName,
+        .post(`${baseURL}/user/register`, {
+          userName: user.userName,
           password: user.password,
           screenName: user.screenName,
           email: user.email,
           location: user.location,
-          birthday: user.birthday?.toString(),
+          birthday: user.birthday?.toISOString(),
         })
         .then((res) => {
           return res.data as User;
