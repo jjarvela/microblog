@@ -76,7 +76,7 @@ function UserWrapper({ children }: UserWrapperProps) {
           screenName: user.screenName,
           email: user.email,
           location: user.location,
-          birthday: user.birthday?.toISOString(),
+          birthday: user.birthday?.toISOString().split("T")[0],
         })
         .then((res) => {
           return res.data as User;
