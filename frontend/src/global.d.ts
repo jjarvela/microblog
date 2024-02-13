@@ -24,11 +24,6 @@ type UserDetails = {
   userName: string;
   screenName: string;
   profileImage?: number;
-  description?: string;
-  location?: string; // Missing from endpoint
-  email?: string; // Missing from endpoint
-  joinDate?: Date;
-  birthday?: Date;
   followers?: {
     id: number;
     user_id: string;
