@@ -7,8 +7,8 @@ import InReplyTo from "./Elements/PostElements/InReplyTo";
 import UserProfileInfo from "./Elements/UserProfileInfo";
 
 type PostCommentFormProps = {
-  recipient: User;
-  commenter: User;
+  recipient: UserDetails;
+  commenter: UserDetails;
   setShowCommentForm: React.Dispatch<React.SetStateAction<boolean>>;
   text?: string;
   tags?: string[];

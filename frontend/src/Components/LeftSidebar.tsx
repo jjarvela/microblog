@@ -135,8 +135,11 @@ function LeftSidebar({ unreadCount }: LeftSidebarProps) {
             user?.user || {
               userName: "",
               screenName: "",
-              followers: 0,
-              following: 0,
+              birthday: new Date(),
+              email: "",
+              id: "",
+              joined: new Date(),
+              location: "",
             }
           }
           text=""

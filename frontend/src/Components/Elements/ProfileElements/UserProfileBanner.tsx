@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { UserProfileContext } from "../../UserPage";
 import UserProfileInfo from "../UserProfileInfo";
 import ProfileButton from "./ProfileButton";
 import MaterialSymbolsAccountCircle from "../../Icons/MaterialSymbolsAccountCircle";
@@ -8,13 +6,14 @@ import MaterialSymbolsImageOutlineRounded from "../../Icons/MaterialSymbolsImage
 import MaterialSymbolsFavoriteOutlineRounded from "../../Icons/MaterialSymbolsFavoriteOutlineRounded";
 import { useBreakpoint } from "../../../Hooks/BreakpointHook";
 import Button from "../Button";
+import { useUser } from "../../../UserWrapper";
 
 type UserProfileBannerProps = {
   bannerImage?: string;
 };
 
 function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
-  const user = useContext(UserProfileContext);
+  const user = useUser().user;
   const { isSm } = useBreakpoint("sm");
   return (
     <div>
@@ -42,17 +41,13 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
         <div className="flex flex-col lg:flex-row">
           <div className="flex-shrink border-b border-black25 p-6 pt-10 dark:border-white25">
             <ul className="mb-4">
-              <li>Location: {user.location}</li>
-              <li>Joined: {user.joinDate?.toDateString()}</li>
-              <li>Birthday: {user.birthday?.toDateString()}</li>
+              <li>Location: {user?.location}</li>
+              <li>Joined: {user?.joined?.toDateString()}</li>
+              <li>Birthday: {user?.birthday?.toDateString()}</li>
             </ul>
             <div className="flex max-w-fit flex-shrink flex-row flex-wrap justify-around gap-6 whitespace-nowrap text-secondary">
-              <p className="text-[1.2rem] font-bold">
-                Followers: {user.followers}
-              </p>
-              <p className="text-[1.2rem] font-bold">
-                Following: {user.following}
-              </p>
+              <p className="text-[1.2rem] font-bold">Followers: {[]}</p>
+              <p className="text-[1.2rem] font-bold">Following: {[]}</p>
             </div>
           </div>
           <div className="min-w-[50%] flex-1 border-b border-black25 p-6 dark:border-white25 lg:border-l xl:border-x">

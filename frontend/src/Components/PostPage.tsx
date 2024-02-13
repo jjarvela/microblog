@@ -71,14 +71,12 @@ export default function PostPage() {
           {showCommentForm ? (
             <PostCommentForm
               recipient={post.postOwner}
-              commenter={
-                user?.user || {
-                  userName: "",
-                  screenName: "",
-                  followers: 0,
-                  following: 0,
-                }
-              }
+              commenter={{
+                userName: user.user?.userName || "",
+                screenName: user.user?.screenName || "",
+                followers: [],
+                following: [],
+              }}
               setShowCommentForm={setShowCommentForm}
             />
           ) : (
@@ -86,7 +84,8 @@ export default function PostPage() {
               className="flex w-full gap-2"
               onClick={() => setShowCommentForm(true)}
             >
-              <ProfilePicture width={50} image={user.user?.profileImage} />
+              {/* FIX ME! Replace with data from media endpoint */}
+              <ProfilePicture width={50} image={""} />
               <div className="flex-grow">
                 <TextAreaInput
                   className="w-full"
