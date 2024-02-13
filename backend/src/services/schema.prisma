@@ -15,7 +15,7 @@ model blog_posts {
   timestamp       DateTime?         @db.Timestamp(6)
   users           users?            @relation(fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
   item_properties item_properties[]
-  reactions           reactions[]
+  reactions       reactions[]
   post_medias     post_medias[]
 }
 
@@ -38,14 +38,14 @@ model contexts {
 }
 
 model conversation_messages {
-  id                Int            @id @default(autoincrement())
-  conversation_id   Int?
-  sender_userid     String?        @db.Uuid
-  recipient_userid  String         @db.Uuid
-  message           String?
-  timestamp         DateTime?      @db.Timestamp(6)
-  notification      Boolean?
-  conversations     conversations? @relation(fields: [conversation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id               Int            @id @default(autoincrement())
+  conversation_id  Int?
+  sender_userid    String?        @db.Uuid
+  recipient_userid String         @db.Uuid
+  message          String?
+  timestamp        DateTime?      @db.Timestamp(6)
+  notification     Boolean?
+  conversations    conversations? @relation(fields: [conversation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model conversations {
@@ -141,15 +141,15 @@ model item_properties {
 }
 
 model reactions {
-  id                Int          @id @default(autoincrement())
-  type              String
-  recipient_userid  String       @db.Uuid
-  sender_userid     String       @db.Uuid
-  media_id          Int?
-  blogpost_id       Int?
-  blog_posts        blog_posts?  @relation(fields: [blogpost_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  users             users        @relation(fields: [recipient_userid], references: [uid], onDelete: Cascade, onUpdate: NoAction)
-  user_medias       user_medias? @relation(fields: [media_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id               Int          @id @default(autoincrement())
+  type             String
+  recipient_userid String       @db.Uuid
+  sender_userid    String       @db.Uuid
+  media_id         Int?
+  blogpost_id      Int?
+  blog_posts       blog_posts?  @relation(fields: [blogpost_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users            users        @relation(fields: [recipient_userid], references: [uid], onDelete: Cascade, onUpdate: NoAction)
+  user_medias      user_medias? @relation(fields: [media_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique(name: "creator_media", [recipient_userid, media_id])
   @@unique(name: "creator_post", [recipient_userid, blogpost_id])
@@ -196,7 +196,7 @@ model user_medias {
   user_id                                                  String?           @unique @db.Uuid
   foldermedia                                              foldermedia[]
   item_properties                                          item_properties[]
-  reactions                                                    reactions[]
+  reactions                                                reactions[]
   post_medias                                              post_medias[]
   users                                                    users?            @relation(fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
   user_profiles_user_profiles_header_media_idTouser_medias user_profiles[]   @relation("user_profiles_header_media_idTouser_medias")
@@ -231,8 +231,6 @@ model users {
   joined                                           DateTime?         @db.Timestamp(6)
   timezone                                         String?           @db.VarChar
   last_login                                       DateTime?         @db.Timestamp(6)
-  profile_image                                    Int?
-  screen_name                                      String?
   disabled                                         Boolean?
   verified                                         Boolean?
   blog_posts                                       blog_posts[]
@@ -244,7 +242,7 @@ model users {
   groupmembers                                     groupmembers[]
   groups                                           groups[]
   item_properties                                  item_properties[]
-  reactions                                            reactions[]
+  reactions                                        reactions[]
   meetings                                         meetings[]
   user_medias                                      user_medias?
   user_profiles                                    user_profiles?
