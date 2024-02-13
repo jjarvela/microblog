@@ -18,6 +18,7 @@ export async function registerUser(c: Context<UserRegData>, req: Request, res: R
       username: userData.userName,
       screen_name: userData.screenName,
       email: userData.email,
+      birthday: new Date(userData.birthday),
       passwordHash: await argon.hash(userData.password),
       joined: new Date(Date.now()) as Date,
       location: userData.location as string,
