@@ -29,18 +29,6 @@ interface IUserContext {
   ) => void;
 }
 
-const tempUser: User = {
-  userName: "@dickerson99",
-  screenName: "Dickerson",
-  followers: 420,
-  following: 666,
-  birthday: new Date(1999, 0, 1),
-  email: "dickerson99@webmail.com",
-  joinDate: new Date(2023, 11, 16),
-  location: "Finland",
-  profileImage: "/temp/pfp.jpg",
-};
-
 const UserContext = createContext<IUserContext | null>(null);
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -49,7 +37,8 @@ export function useUser() {
 }
 
 function UserWrapper({ children }: UserWrapperProps) {
-  const [currentUser, setCurrentUser] = useState<User | null>(tempUser);
+  const [currentUid, setCurrentUid] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const loginMutation = useMutation({
     mutationFn: (user: LoginUser) => {
@@ -64,12 +53,12 @@ function UserWrapper({ children }: UserWrapperProps) {
     },
     onError: (error) => console.error(error),
     onSuccess: (uid: string) => {
-      setCurrentUser({ ...tempUser, id: uid });
+      setCurrentUid(uid);
     },
   });
 
   const registerMutation = useMutation({
-    mutationFn: (user: User) => {
+    mutationFn: (user: RegisterUser) => {
       return axios
         .post(`${baseURL}/register`, {
           username: user.userName,
@@ -84,33 +73,32 @@ function UserWrapper({ children }: UserWrapperProps) {
         });
     },
     onError: (error) => console.error(error),
-    onSuccess: (data: User) => {
-      setCurrentUser({ ...tempUser, ...data });
-    },
   });
 
-  const userQuery = useQuery({
+  useQuery({
     queryKey: ["userProfile"],
-    queryFn: () => {
-      if (currentUser?.id) return userService.getUser(currentUser.id);
+    queryFn: async () => {
+      if (currentUid) {
+        const queryData = await userService.getUser(currentUid);
+        const userData: User = {
+          id: queryData.uid,
+          userName: queryData.username,
+          screenName: queryData.screen_name,
+          profileImage: queryData.profile_image,
+          email: queryData.email,
+          birthday: new Date(queryData.birthday),
+          joined: new Date(queryData.joined),
+          location: queryData.location,
+        };
+        setCurrentUser(userData);
+        return queryData;
+      }
     },
-    enabled: !!currentUser?.id,
+    enabled: !!currentUid,
   });
 
-  const handleLogin = async (username: string, password: string) => {
+  const handleLogin = (username: string, password: string) => {
     loginMutation.mutate({ username: username, password: password });
-    const queryData = await userQuery.data;
-    const userData: User = {
-      id: queryData.uid,
-      userName: queryData.username,
-      screenName: queryData.screen_name,
-      profileImage: queryData.profile_image,
-      email: queryData.email,
-      birthday: new Date(queryData.birthday),
-      joined: new Date(queryData.joined),
-      location: queryData.location,
-    };
-    setCurrentUser({ ...currentUser, ...userData });
   };
 
   const handleLogout = () => {
@@ -131,7 +119,7 @@ function UserWrapper({ children }: UserWrapperProps) {
       screenName: screenName,
       email: email,
       location: location,
-      birthday: birthday,
+      birthday: birthday.toISOString().split("T")[0],
     });
   };
 

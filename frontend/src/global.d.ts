@@ -7,6 +7,16 @@ type User = {
   birthday: Date;
   joined: Date;
   location: string;
+  password?: string;
+};
+
+type RegisterUser = {
+  userName: string;
+  password: string;
+  screenName: string;
+  email: string;
+  location: string;
+  birthday: string;
 };
 
 type UserDetails = {
@@ -54,7 +64,7 @@ type Media = {
 
 type Post = {
   id?: number;
-  postOwner: User;
+  postOwner: UserDetails;
   reposter?: string | undefined; //change to User when data starts coming in
   replyingTo?: string | undefined; //change to User when data starts coming in
   text: string;
