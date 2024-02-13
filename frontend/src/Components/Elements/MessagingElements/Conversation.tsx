@@ -66,7 +66,9 @@ export default function Conversation({ setClosed }: ConversationProps) {
       return conversationService.addNewMessage(id, {
         conversation_id: parseInt(id),
         sender_userid: testUserId,
+        recipient_userid: testUserId,
         message: messageText,
+        notification: true,
       });
     },
     onSuccess: () => {

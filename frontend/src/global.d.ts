@@ -85,13 +85,14 @@ interface Conversation extends NewConversation {
 interface NewConversationMessage {
   conversation_id: number;
   sender_userid: string;
+  recipient_userid: string;
   message: string;
+  notification: boolean;
 }
 
 interface ConversationMessage extends NewConversationMessage {
   id: number;
   timestamp: string;
-  notification?: boolean;
   conversations?: Conversation[];
 }
 
