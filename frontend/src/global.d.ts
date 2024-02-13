@@ -1,5 +1,5 @@
 type User = {
-  id?: string,
+  id: string;
   userName: string;
   screenName: string;
   password?: string;
@@ -15,16 +15,17 @@ type User = {
 
 type UserTouser = {
   admin?: boolean;
-  birthday: string,
-  email: string,
-  joined: string,
-  last_login: string,
-  location: string,
-  password: string,
-  timezone: string,
-  uid: string,
-  username: string
-}
+  birthday: string;
+  email: string;
+  joined: string;
+  last_login: string;
+  location: string;
+  password: string;
+  timezone: string;
+  uid: string;
+  username: string;
+  screen_name: string;
+};
 
 type Media = {
   id: string;
@@ -70,29 +71,30 @@ type Group = {
 };
 
 interface NewConversation {
-  participant_1: string,
-  participant_2: string
+  participant_1: string;
+  participant_2: string;
 }
 
 interface Conversation extends NewConversation {
-  id: number,
-  timestamp: string,
-  conversation_messages: ConversationMessage[],
-  users_conversations_participant_1Tousers: UserTouser,
-  users_conversations_participant_2Tousers: UserTouser
+  id: number;
+  timestamp: string;
+  conversation_messages: ConversationMessage[];
+  users_conversations_participant_1Tousers: UserTouser;
+  users_conversations_participant_2Tousers: UserTouser;
 }
 
 interface NewConversationMessage {
-  conversation_id: number,
-  sender_userid: string,
-  message: string
+  conversation_id: number;
+  sender_userid: string;
+  recipient_userid: string;
+  message: string;
+  notification: boolean;
 }
 
 interface ConversationMessage extends NewConversationMessage {
-  id: number,
-  timestamp: string,
-  notification?: boolean,
-  conversations?: Conversation[]
+  id: number;
+  timestamp: string;
+  conversations?: Conversation[];
 }
 
 type Theme = "system" | "light" | "dark";

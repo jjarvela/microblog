@@ -42,7 +42,6 @@ export async function getUserThumbInfo(
       followers: followers,
       description: profile.profile_text || ""
     };
-    console.log(result);
     res.status(200).json(result);
   } catch (e) {
     console.log(e);
