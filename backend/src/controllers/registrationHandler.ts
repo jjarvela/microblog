@@ -16,6 +16,7 @@ export async function registerUser(c: Context<UserRegData>, req: Request, res: R
     await insertUser({
       uid: randomUUID(),
       username: userData.userName,
+      screen_name: userData.screenName,
       email: userData.email,
       passwordHash: await argon.hash(userData.password),
       joined: new Date(Date.now()) as Date,

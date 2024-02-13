@@ -6,6 +6,7 @@ export const insertUser = async (param: {
   uid: string;
   username: string;
   email: string;
+  screen_name: string;
   passwordHash: string;
   joined: Date;
   location: string;
@@ -16,6 +17,7 @@ export const insertUser = async (param: {
   const result = await prisma.users.create({
     data: {
       uid: param.uid,
+      screen_name: param.screenName,
       username: param.username,
       email: param.email,
       location: param.location,
