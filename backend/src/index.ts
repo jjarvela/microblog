@@ -28,9 +28,10 @@ app.use(session({
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
-    credentials: true,
+    credentials: true
   })
 );
+
 
 app.use((req, res, next) => api.handleRequest(req as Request, req, res, next));
 

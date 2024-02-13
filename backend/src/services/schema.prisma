@@ -89,8 +89,8 @@ model followings {
   users_followings_follows_userTousers users?  @relation("followings_follows_userTousers", fields: [follows_user], references: [uid], onDelete: Cascade, onUpdate: NoAction)
   users_followings_user_idTousers      users?  @relation("followings_user_idTousers", fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
 
-  @@unique(name: "user_foluser", [user_id, follows_user])
-  @@unique(name: "user_folgroup", [user_id, follows_group])
+  @@unique([user_id, follows_user], name: "user_foluser")
+  @@unique([user_id, follows_group], name: "user_folgroup")
 }
 
 model groupmembers {
@@ -148,8 +148,8 @@ model likes {
   users           users        @relation(fields: [creator_user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
   user_medias     user_medias? @relation(fields: [media_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@unique(name: "creator_media", [creator_user_id, media_id])
-  @@unique(name: "creator_post", [creator_user_id, blogpost_id])
+  @@unique([creator_user_id, media_id], name: "creator_media")
+  @@unique([creator_user_id, blogpost_id], name: "creator_post")
 }
 
 model meetings {
@@ -171,12 +171,12 @@ model post_medias {
 }
 
 model profile_elements {
-  id            Int            @id @default(autoincrement())
-  profile_id    String         @db.Uuid
+  id            Int           @id @default(autoincrement())
+  profile_id    String        @db.Uuid
   type_id       Int
   data          Json
-  user_profiles user_profiles? @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  element_types element_types? @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_profiles user_profiles @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  element_types element_types @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model social_links {
@@ -211,22 +211,24 @@ model user_profiles {
   profile_elements                                       profile_elements[]
   social_links                                           social_links[]
   user_medias_user_profiles_header_media_idTouser_medias user_medias?       @relation("user_profiles_header_media_idTouser_medias", fields: [header_media_id], references: [id], onUpdate: NoAction)
-  users                                                  users?             @relation(fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
+  users                                                  users              @relation(fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model users {
   uid                                              String            @id @db.Uuid
   username                                         String            @unique @db.VarChar(50)
   password                                         String            @db.VarChar
-  email                                            String?           @db.VarChar(50)
-  screen_name                                      String?
-  profile_image                                    Int?
+  email                                            String?           @db.VarChar(50) @unique
   admin                                            Boolean?
   location                                         String?
   birthday                                         DateTime?         @db.Date
   joined                                           DateTime?         @db.Timestamp(6)
   timezone                                         String?           @db.VarChar
   last_login                                       DateTime?         @db.Timestamp(6)
+  profile_image                                    Int?
+  screen_name                                      String?
+  disabled                                         Boolean?
+  verified                                         Boolean?
   blog_posts                                       blog_posts[]
   contacts                                         contacts[]
   conversations_conversations_participant_1Tousers conversations[]   @relation("conversations_participant_1Tousers")
@@ -238,7 +240,15 @@ model users {
   item_properties                                  item_properties[]
   likes                                            likes[]
   meetings                                         meetings[]
-  user_medias                                      user_medias[]
-  user_profiles                                    user_profiles[]
+  user_medias                                      user_medias?
+  user_profiles                                    user_profiles?
   user_medias_profile_image                        user_medias?      @relation("user_medias_profile_image", fields: [profile_image], references: [id])
+}
+
+model mbsession {
+  sid    String   @id(map: "session_pkey") @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
 }

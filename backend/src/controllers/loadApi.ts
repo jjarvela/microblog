@@ -7,6 +7,7 @@ import * as blogHandlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
 import * as profileElementHandlers from "./profileElementHandlers";
 import * as conversationHandlers from "./conversationHandlers";
+import * as userRegHandler from "./registrationHandler"
 import * as authHandler from "./authHandler";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -35,22 +36,7 @@ export const dbConfig: PoolConfig = {
   password: process.env.POSTGRES_PASSWORD
 };
 
-api.registerSecurityHandler(
-  "mbCookieAuth",
-  (c: Context, req: Request, res: Response) => {
-    console.log("security handler called");
-    if (
-      req.session.user?.authenticated !== true &&
-      req.path !== "/login" &&
-      req.path !== "/logout"
-    ) {
-      console.log("session not valid.");
-      return false;
-    } else {
-      return true;
-    }
-  }
-);
+api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler)
 
 // Default blogHandlers for errors.
 
@@ -61,6 +47,7 @@ export function unAuthHandler(c: Context, _req: Request, res: Response) {
 }
 
 function validationFailHandler(c: Context, req: Request, res: Response) {
+  console.log(c.request.requestBody);
   return res.status(400).json({ status: 400, err: c.validation.errors });
 }
 
@@ -98,6 +85,9 @@ api.register("deleteFollowing", followHandlers.deleteFollowing);
 // Authentication handlers
 api.register("loginUser", authHandler.loginUser);
 api.register("logoutUser", authHandler.logoutUser);
+
+// User registration
+api.register("registerUser", userRegHandler.registerUser)
 
 // Profile element handlers
 api.register("getProfileElements", profileElementHandlers.getProfileElements);
