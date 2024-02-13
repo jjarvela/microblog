@@ -36,6 +36,7 @@ app.use(
   })
 );
 
+
 app.use((req, res, next) => api.handleRequest(req as Request, req, res, next));
 
 api.init();
