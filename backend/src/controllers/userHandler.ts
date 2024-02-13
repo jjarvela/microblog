@@ -48,7 +48,7 @@ export async function getUserThumbInfo(
 
     const result = {
       id: (user as User).uid,
-      username: (user as User).username,
+      userName: (user as User).username,
       screenName: (user as User).screen_name || (user as User).username,
       profileImage: (user as User).profile_image || "",
       following: following,

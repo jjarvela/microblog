@@ -21,7 +21,7 @@ type RegisterUser = {
 
 type UserDetails = {
   id?: string;
-  username: string;
+  userName: string;
   screenName: string;
   profileImage?: number;
   description?: string;

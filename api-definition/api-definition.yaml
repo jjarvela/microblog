@@ -230,7 +230,7 @@ components:
         id:
           type: string
           format: uuid
-        username:
+        userName:
           type: string
         screenName:
           type: string
