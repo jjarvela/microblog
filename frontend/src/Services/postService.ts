@@ -22,8 +22,13 @@ function deletePost(postIds: number[], userId: string) {
 }
 
 function sendPostMedia(userId: string, files: FormData) {
-  return axios
-    .post(`${serverUrl}/media/${userId}`, files, {
+  console.log("here");
+  console.log(typeof(files));
+  for (const [key, value] of files) {
+    console.log(`${key}: ${value}\n`);
+  }
+  
+  return axios.post(`${serverUrl}/media/${userId}`, {data: files, 
       headers: { "Content-Type": "multipart/form-data" },
     })
     .then((res) => res.data);

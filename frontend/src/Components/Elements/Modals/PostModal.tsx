@@ -46,9 +46,13 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
 
   const mutateSendMedia = useMutation({
     mutationKey: ["post-modal-files"],
-    mutationFn: () => {
+    mutationFn: (files: File[]) => {
       const formData = new FormData();
       files.forEach((file) => formData.append(file.name, file));
+      console.log(`form`);
+      for (const [key, value] of formData) {
+        console.log(`${key}: ${value}\n`);
+      }
       return postService.sendPostMedia(testUserId, formData);
     },
   });
@@ -71,11 +75,12 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
       };
       mutateEditPost.mutate(editedPost);
     }
-    if (files.length > 0) {   
+    if (files.length > 0) {  
+      console.log("file");
       console.log(files[0]); 
       console.log(files);
       console.log("calling send media");
-      mutateSendMedia.mutate();
+      mutateSendMedia.mutate(files);
     }
     setFiles([]);
     form.current?.reset();

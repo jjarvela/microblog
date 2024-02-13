@@ -7,9 +7,12 @@ import * as queries from "../services/mediaQueries";
 export async function addUserMedia(c: Context, req: Request, res: Response) {
   const userId = c.request.params.userId;
   console.log(userId);
+
   const query = c.request.query;
-  const blogObj = c.request.body;
-  console.log(req.body.formData);
+  const blogObj = c.request.requestBody;
+  console.log(blogObj.length);
+  console.log(c.request.requestBody.data);
+  //console.log(req.body.formData);
   console.log(c.request.body.formData);
   console.log(blogObj);
   if (blogObj.files) {
@@ -31,7 +34,7 @@ export async function addUserMedia(c: Context, req: Request, res: Response) {
         }
         //everything worked and Multer has recorded the filepath in req.body.filePath
         console.log("everything worked");
-        console.log(req.body);
+        //console.log(req.body);
       });
       if (query.postId !== undefined ) {
         const postId = Number(query.postId);
