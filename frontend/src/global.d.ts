@@ -24,6 +24,7 @@ type UserTouser = {
   timezone: string;
   uid: string;
   username: string;
+  screen_name: string;
 };
 
 type Media = {

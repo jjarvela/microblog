@@ -89,7 +89,6 @@ const UserMessages = () => {
                     <ConversationThumb
                       key={conversation.id}
                       conversation={conversation}
-                      readStatus={false}
                       setClosed={setClosed}
                     />
                   ),

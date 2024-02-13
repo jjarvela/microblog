@@ -8,24 +8,23 @@ import MaterialSymbolsDeleteForeverOutlineRounded from "../../Icons/MaterialSymb
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../../UserWrapper";
 import ConfirmModal from "../Modals/ConfirmModal";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import conversationService from "../../../Services/conversationService";
 import { queryClient } from "../../../main";
 import { testUserId } from "../../../globalData";
 
 type ConversationThumbProps = {
   conversation: Conversation;
-  readStatus: boolean;
   setClosed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function ConversationThumb({
   conversation,
-  readStatus,
   setClosed,
 }: ConversationThumbProps) {
   const [showContextMenu, setShowContextMenu] = useState(false);
   const user = useUser().user;
+  const [readStatus, setReadStatus] = useState(false);
 
   /**
    * Hook that checks for clicks outside element
@@ -52,6 +51,24 @@ export default function ConversationThumb({
   const ref = useClickOutside(() => setShowContextMenu(false));
   const confirmModal = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();
+
+  /**
+   * Message getter
+   */
+  const messageQuery = useQuery({
+    queryKey: ["messages", conversation.id],
+    queryFn: async () => {
+      const messages = await conversationService.getMessages(conversation.id);
+      if (messages.length > 0) {
+        setReadStatus(
+          !messages[(messages as ConversationMessage[]).length - 1]
+            .notification,
+        );
+        return messages;
+      }
+      return [];
+    },
+  });
 
   /**
    * Delete query
@@ -96,9 +113,9 @@ export default function ConversationThumb({
                 {conversation.users_conversations_participant_1Tousers
                   .username === user?.screenName
                   ? conversation.users_conversations_participant_2Tousers
-                      .username
+                      .screen_name
                   : conversation.users_conversations_participant_1Tousers
-                      .username}
+                      .screen_name}
               </p>
               <small className="text-black50">
                 {"@"}
@@ -116,7 +133,13 @@ export default function ConversationThumb({
            */}
           <div className="flex-1 flex-grow self-start text-end">
             <p className="text-xs text-black50">
-              {new Date(Date.parse(conversation.timestamp)).toLocaleString()}
+              {messageQuery.data && messageQuery.data.length > 0
+                ? new Date(
+                    Date.parse(
+                      messageQuery.data[messageQuery.data.length - 1].timestamp,
+                    ),
+                  ).toLocaleString()
+                : ""}
             </p>
           </div>
         </div>
@@ -129,7 +152,11 @@ export default function ConversationThumb({
               readStatus && "text-black50"
             }`}
           >
-            Here we have the latest message in the conversation
+            {messageQuery.data && messageQuery.data.length > 0
+              ? (messageQuery.data as ConversationMessage[])[
+                  messageQuery.data.length - 1
+                ].message
+              : ""}
           </small>
         </div>
       </Link>
