@@ -106,9 +106,18 @@ function UserWrapper({ children }: UserWrapperProps) {
     console.log(socket);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async async () => {
     socket.disconnect();
     setCurrentUser(null);
+    try {
+      const logoutQuery = await axios.get(`${baseURL}/logout`);
+      if (logoutQuery.status === 200) {
+        console.log("Logout successful!");
+      }
+    } catch (err) {
+      console.log("Logout failed!");
+      console.error(err);
+    }
   };
 
   const handleRegister = async (
