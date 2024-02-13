@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import userService from "./Services/userService";
+import { socket, testUserId } from "./globalData";
 
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -17,6 +18,7 @@ type LoginUser = {
 interface IUserContext {
   user: User | null;
   details: UserDetails | null;
+  socketId: string;
   setUser: (user: User) => void;
   onLogin: (username: string, password: string) => void;
   onLogout: () => void;
@@ -54,6 +56,7 @@ function UserWrapper({ children }: UserWrapperProps) {
     },
     onError: (error) => console.error(error),
     onSuccess: (uid: string) => {
+      socket.emit("add-user", testUserId);
       setCurrentUid(uid);
     },
   });
@@ -61,13 +64,13 @@ function UserWrapper({ children }: UserWrapperProps) {
   const registerMutation = useMutation({
     mutationFn: (user: RegisterUser) => {
       return axios
-        .post(`${baseURL}/register`, {
-          username: user.userName,
+        .post(`${baseURL}/user/register`, {
+          userName: user.userName,
           password: user.password,
           screenName: user.screenName,
           email: user.email,
           location: user.location,
-          birthday: user.birthday?.toString(),
+          birthday: user.birthday?.toISOString().split("T")[0],
         })
         .then((res) => {
           return res.data as User;
@@ -100,9 +103,11 @@ function UserWrapper({ children }: UserWrapperProps) {
 
   const handleLogin = (username: string, password: string) => {
     loginMutation.mutate({ username: username, password: password });
+    console.log(socket);
   };
 
   const handleLogout = () => {
+    socket.disconnect();
     setCurrentUser(null);
   };
 
@@ -137,6 +142,7 @@ function UserWrapper({ children }: UserWrapperProps) {
       value={{
         user: currentUser,
         details: userDetailsQuery.data,
+        socketId: socket.id || "",
         setUser: setCurrentUser,
         onLogin: handleLogin,
         onLogout: handleLogout,

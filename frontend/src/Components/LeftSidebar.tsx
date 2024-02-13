@@ -14,6 +14,7 @@ import PhHashStraightBold from "./Icons/PhHashStraightBold";
 import { useBreakpoint } from "../Hooks/BreakpointHook";
 import MdiDotsVertical from "./Icons/MdiDotsVertical";
 import { useUser } from "../UserWrapper";
+import { socket } from "../globalData";
 
 type LeftSidebarProps = {
   unreadCount: number;
@@ -30,6 +31,14 @@ function LeftSidebar({ unreadCount }: LeftSidebarProps) {
     if (isXs) setShowSidebar(true);
     else setShowSidebar(false);
   }, [isXs]);
+
+  socket.on("received-notification", () => {
+    console.log("Received notification");
+  });
+
+  socket.on("received-message", () => {
+    console.log("Received message");
+  });
 
   return (
     <>
