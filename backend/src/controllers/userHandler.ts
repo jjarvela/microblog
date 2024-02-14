@@ -24,6 +24,32 @@ export async function getUser(c: Context, _req: Request, res: Response) {
   }
 }
 
+export async function editUser(c: Context, _req: Request, res: Response) {
+  const userId = c.request.params.userId;
+  const userObj = c.request.requestBody;
+
+  try {
+    const result = await userQueries.updateUser({ uid: userId, ...userObj });
+    console.log(result);
+    res.sendStatus(200);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function deleteUser(c: Context, _req: Request, res: Response) {
+  const userId = c.request.params.userId as string;
+  try {
+    const result = await userQueries.deleteUser({ uid: userId });
+    console.log("Deleted user id: " + userId);
+    res.sendStatus(200);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export async function getUserThumbInfo(
   c: Context,
   _req: Request,

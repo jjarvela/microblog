@@ -82,6 +82,8 @@ export const deleteUser = async (param: { uid: string }) => {
 
 export const updateUser = async (param: {
   uid: string;
+  userName?: string;
+  screenName?: string;
   password?: string;
   email?: string;
   admin?: boolean;
@@ -96,6 +98,8 @@ export const updateUser = async (param: {
       uid: param.uid,
     },
     data: {
+      username: param.userName,
+      screen_name: param.screenName,
       password: param.password,
       email: param.email,
       admin: param.admin,

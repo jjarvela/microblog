@@ -191,6 +191,23 @@ components:
           type: string
           format: date
 
+    editUserObject:
+      type: object
+      properties:
+        screenName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        location:
+          type: string
+        birthday:
+          type: string
+          format: date-time
+        password:
+          type: string
+
     userFollow:
       type: object
       description: User following other user or group.
@@ -719,13 +736,68 @@ paths:
         - user
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          description: Returns the user's data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userObject"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
       parameters:
         - name: userId
           required: true
           in: path
           schema:
             type: string
+    put:
+      summary: Update the logged in user's data.
+      operationId: editUser
+      tags:
+        - user
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editUserObject"
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+    delete:
+      summary: Delete the logged in user.
+      operationId: deleteUser
+      tags:
+        - user
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
 
   /user/{userId}/details:
     get:

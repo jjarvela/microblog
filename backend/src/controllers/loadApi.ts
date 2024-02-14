@@ -7,7 +7,7 @@ import * as blogHandlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
 import * as profileElementHandlers from "./profileElementHandlers";
 import * as conversationHandlers from "./conversationHandlers";
-import * as userRegHandler from "./registrationHandler"
+import * as userRegHandler from "./registrationHandler";
 import * as authHandler from "./authHandler";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -36,7 +36,7 @@ export const dbConfig: PoolConfig = {
   password: process.env.POSTGRES_PASSWORD,
 };
 
-api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler)
+api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
 
 // Default blogHandlers for errors.
 
@@ -68,6 +68,8 @@ api.register("validationFail", validationFailHandler);
 
 // User handlers
 api.register("getUser", userHandlers.getUser);
+api.register("editUser", userHandlers.editUser);
+api.register("deleteUser", userHandlers.deleteUser);
 
 //user information handler
 api.register("getUserInfo", userHandlers.getUserThumbInfo);
@@ -90,7 +92,7 @@ api.register("loginUser", authHandler.loginUser);
 api.register("logoutUser", authHandler.logoutUser);
 
 // User registration
-api.register("registerUser", userRegHandler.registerUser)
+api.register("registerUser", userRegHandler.registerUser);
 
 // Profile element handlers
 api.register("getProfileElements", profileElementHandlers.getProfileElements);
