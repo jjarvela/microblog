@@ -178,9 +178,10 @@ function UserWrapper({ children }: UserWrapperProps) {
   const userDetailsQuery = useQuery({
     queryKey: ["details", currentUid],
     queryFn: () => {
-      if (currentUid) return userService.getUserDetails(currentUid);
+      if (currentUser && currentUid)
+        return userService.getUserDetails(currentUser.userName);
     },
-    enabled: !!currentUid,
+    enabled: !!currentUser,
   });
 
   return (

@@ -727,7 +727,7 @@ paths:
           schema:
             type: string
 
-  /user/{userId}/details:
+  /user/{username}/details:
     get:
       summary: Get user's details to show to other users
       operationId: getUserInfo
@@ -747,9 +747,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/errorResponse"
       parameters:
-        - name: userId
+        - in: path
           required: true
-          in: path
+          name: username
           schema:
             type: string
 

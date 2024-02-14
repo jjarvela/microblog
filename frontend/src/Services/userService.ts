@@ -11,8 +11,8 @@ async function getUser(userId: string) {
   return res.data;
 }
 
-async function getUserDetails(userId: string) {
-  const res = await axios.get(`${serverUrl}/user/${userId}/details`);
+async function getUserDetails(username: string) {
+  const res = await axios.get(`${serverUrl}/user/${username}/details`);
   return res.data;
 }
 
