@@ -6,22 +6,35 @@ import MaterialSymbolsImageOutlineRounded from "../../Icons/MaterialSymbolsImage
 import MaterialSymbolsFavoriteOutlineRounded from "../../Icons/MaterialSymbolsFavoriteOutlineRounded";
 import { useBreakpoint } from "../../../Hooks/BreakpointHook";
 import Button from "../Button";
-import { useUser } from "../../../UserWrapper";
+import { useContext } from "react";
+import { ownerContext } from "../../UserPage";
+import { useQuery } from "@tanstack/react-query";
+import userService from "../../../Services/userService";
 
 type UserProfileBannerProps = {
   bannerImage?: string;
 };
 
 function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
-  const user = useUser().user;
+  const owner = useContext(ownerContext);
+  console.log(owner);
   const { isSm } = useBreakpoint("sm");
+
+  const ownerDetails = useQuery({
+    queryKey: ["profileDetails", owner!.id],
+    queryFn: async () => {
+      const result = userService.getUser(owner!.id!);
+      return result;
+    },
+  });
+
   return (
     <div>
       <div className="relative h-80 sm:h-60">
         <div className="absolute left-0 top-0 h-full w-full">
           <div className="z-10 mx-4 mt-4 flex flex-row justify-between">
             <UserProfileInfo
-              user={user}
+              user={owner}
               profileImageSize={150}
               class=" text-white"
               nameClass="text-xl font-bold md:text-2xl"
@@ -41,13 +54,29 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
         <div className="flex flex-col lg:flex-row">
           <div className="flex-shrink border-b border-black25 p-6 pt-10 dark:border-white25">
             <ul className="mb-4">
-              <li>Location: {user?.location}</li>
-              <li>Joined: {user?.joined?.toDateString()}</li>
-              <li>Birthday: {user?.birthday?.toDateString()}</li>
+              <li>
+                Location: {ownerDetails.data && ownerDetails.data.location}
+              </li>
+              <li>
+                Joined:{" "}
+                {ownerDetails.data &&
+                  new Date(Date.parse(ownerDetails.data.joined)).toDateString()}
+              </li>
+              <li>
+                Birthday:{" "}
+                {ownerDetails.data &&
+                  new Date(
+                    Date.parse(ownerDetails.data.birthday),
+                  ).toDateString()}
+              </li>
             </ul>
-            <div className="flex max-w-fit flex-shrink flex-row flex-wrap justify-around gap-6 whitespace-nowrap text-secondary">
-              <p className="text-[1.2rem] font-bold">Followers: {[]}</p>
-              <p className="text-[1.2rem] font-bold">Following: {[]}</p>
+            <div className="flex max-w-fit flex-shrink flex-col flex-wrap justify-around gap-6 whitespace-nowrap text-secondary xl:flex-row">
+              <p className="text-[1.2rem] font-bold">
+                Followers: {owner?.followers?.length || 0}
+              </p>
+              <p className="text-[1.2rem] font-bold">
+                Following: {owner?.following?.length || 0}
+              </p>
             </div>
           </div>
           <div className="min-w-[50%] flex-1 border-b border-black25 p-6 dark:border-white25 lg:border-l xl:border-x">
