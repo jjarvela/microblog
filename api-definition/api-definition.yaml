@@ -235,7 +235,7 @@ components:
         id:
           type: string
           format: uuid
-        username:
+        userName:
           type: string
         screenName:
           type: string
@@ -645,6 +645,22 @@ paths:
           schema:
             type: string
 
+  /user/{userId}:
+    get:
+      summary: Get logged in user's data.
+      operationId: getUser
+      tags:
+        - user
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+
   /user/{userId}/details:
     get:
       summary: Get user's details to show to other users
@@ -664,22 +680,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/errorResponse"
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
-
-  /user/{userId}/profile:
-    get:
-      summary: Get user profile atributes.
-      operationId: getProfile
-      tags:
-        - user
-      responses:
-        "200":
-          $ref: "#/components/responses/OK"
       parameters:
         - name: userId
           required: true
@@ -913,7 +913,12 @@ paths:
         - login
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          description: The logged in user's id
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: "a4cbcc87-33a8-4e95-bb97-6afa767e107b"
         "401":
           $ref: "#/components/responses/errorResponse"
       requestBody:
