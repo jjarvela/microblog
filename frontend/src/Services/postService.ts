@@ -7,11 +7,11 @@ function getPosts(userId: string, postId?: number) {
     .then((res) => res.data);
 }
 
-function addNewPost(newPost: BlogToServer, userId: string) {
+function addNewPost(newPost: BlogPostToServer, userId: string) {
   return axios.post(`${serverUrl}/blog/${userId}`, newPost);
 }
 
-function editPost(newPost: BlogToServer, userId: string, postId: number) {
+function editPost(newPost: BlogPostToServer, userId: string, postId: number) {
   return axios.put(`${serverUrl}/blog/${userId}/${postId}`, newPost);
 }
 
@@ -29,6 +29,22 @@ function sendPostMedia(userId: string, folderId: string, files: File[]) {
     .then((res) => res.data);
 }
 
+function addReaction(reaction: ReactionToServer) {
+  if (reaction.blogpost_id) {
+    return axios
+      .post(`${serverUrl}/blog/${reaction.blogpost_id}/reactions`, reaction)
+      .then((res) => res.data);
+  } else if (reaction.media_id) {
+    return "under construction";
+  } else {
+    return { error: "One reaction target must be specified" };
+  }
+}
+
+function deleteReaction(postId: number, reactionId: number) {
+  return axios.delete(`${serverUrl}/blog/${postId}/reactions/${reactionId}`);
+}
+
 export default {
   getUserPosts: getPosts,
   getPosts,
@@ -36,4 +52,6 @@ export default {
   editPost,
   deletePost,
   sendPostMedia,
+  addReaction,
+  deleteReaction,
 };
