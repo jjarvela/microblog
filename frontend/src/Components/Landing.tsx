@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Button from "./Elements/Button";
 import TextInput from "./Elements/Inputs/TextInput";
 import "./Landing.css";
@@ -19,7 +19,10 @@ function Landing() {
   const [birthdayInput, setBirthdayInput] = useState("");
   const [locationInput, setLocationInput] = useState(locationList[0]);
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [formErrorMessage, setFormErrorMessage] = useState("");
+
+  const loginErrorDialog = useRef<HTMLDialogElement>(null);
+  const [loginErrorMessage, setLoginErrorMessage] = useState("");
 
   const handleLogin = () => {
     user?.onLogin(usernameInput, passwordInput);
@@ -38,18 +41,32 @@ function Landing() {
 
   useEffect(() => {
     if (passwordInput !== passwordConfirmInput && register) {
-      setErrorMessage("Passwords do not match!");
+      setFormErrorMessage("Passwords do not match!");
     } else {
-      setErrorMessage("");
+      setFormErrorMessage("");
     }
   }, [passwordInput, passwordConfirmInput, register]);
 
   const handleFormSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (register) handleRegister();
-    else handleLogin();
-    navigate("/home");
+    if (register) {
+      handleRegister();
+      setLoginErrorMessage("Registeration failed!");
+    } else {
+      handleLogin();
+      setLoginErrorMessage("Login failed!");
+    }
+    // navigate("/home");
   };
+
+  useEffect(() => {
+    if (user.loginStatus === "fail") {
+      loginErrorDialog.current?.showModal();
+    } else if (user.loginStatus === "success") {
+      user.setLoginStatus("idle");
+      navigate("/home");
+    }
+  }, [navigate, user, user.loginStatus]);
 
   return (
     <div className="h-full">
@@ -98,7 +115,7 @@ function Landing() {
             {register && (
               <>
                 <label htmlFor="birthday" className="[webkit] -mb-3 text-sm">
-                  birthday
+                  Birthday
                 </label>
                 <input
                   id="birthday"
@@ -114,15 +131,17 @@ function Landing() {
                 onChange={(v) => setLocationInput(v)}
               />
             )}
-            {errorMessage && (
+            {formErrorMessage && (
               <p className="text-center text-sm text-warning dark:text-warningDark">
-                {errorMessage}
+                {formErrorMessage}
               </p>
             )}
             <Button
               type="submit"
               className="btn-primary"
-              disabled={Boolean(errorMessage)}
+              disabled={
+                Boolean(formErrorMessage) || user.loginStatus === "loading"
+              }
             >
               {register ? "Register" : "Log in"}
             </Button>
@@ -143,6 +162,23 @@ function Landing() {
           </form>
         </div>
       </div>
+      <dialog
+        ref={loginErrorDialog}
+        className="rounded-xl border border-black50 bg-white p-8 backdrop:bg-[#000] backdrop:opacity-50 dark:border-white50 dark:bg-black dark:text-white"
+      >
+        <div className="flex flex-col items-center gap-8">
+          <h4>{loginErrorMessage}</h4>
+          <Button
+            className="btn-primary w-fit"
+            onClick={() => {
+              loginErrorDialog.current?.close();
+              user.setLoginStatus("idle");
+            }}
+          >
+            Okay
+          </Button>
+        </div>
+      </dialog>
     </div>
   );
 }

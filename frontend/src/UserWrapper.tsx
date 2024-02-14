@@ -30,6 +30,8 @@ interface IUserContext {
     location: string,
     birthday: Date,
   ) => void;
+  loginStatus: "idle" | "loading" | "success" | "fail";
+  setLoginStatus: (status: IUserContext["loginStatus"]) => void;
 }
 
 const UserContext = createContext<IUserContext | null>(null);
@@ -42,6 +44,16 @@ export function useUser() {
 function UserWrapper({ children }: UserWrapperProps) {
   const [currentUid, setCurrentUid] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loginStatus, setLoginStatus] =
+    useState<IUserContext["loginStatus"]>("idle");
+
+  if (
+    localStorage.getItem("userId") &&
+    typeof localStorage.getItem("userId") === "string" &&
+    currentUid === null
+  ) {
+    setCurrentUid(localStorage.getItem("userId"));
+  }
 
   const loginMutation = useMutation({
     mutationFn: (user: LoginUser) => {
@@ -51,13 +63,19 @@ function UserWrapper({ children }: UserWrapperProps) {
           password: user.password,
         })
         .then((res) => {
+          if (res.status !== 200) throw Error("Login failed!");
           return res.data as string;
         });
     },
-    onError: (error) => console.error(error),
+    onError: (error) => {
+      console.log(error);
+      setLoginStatus("fail");
+    },
     onSuccess: (uid: string) => {
+      setLoginStatus("success");
       socket.emit("add-user", testUserId);
       setCurrentUid(uid);
+      localStorage.setItem("userId", uid);
     },
   });
 
@@ -73,10 +91,20 @@ function UserWrapper({ children }: UserWrapperProps) {
           birthday: user.birthday,
         })
         .then((res) => {
-          return res.data as User;
+          if (res.status !== 200) throw Error("Register failed!");
+          return res.data as string;
         });
     },
-    onError: (error) => console.error(error),
+    onError: (error) => {
+      console.error(error);
+      setLoginStatus("fail");
+    },
+    onSuccess(uid: string) {
+      setLoginStatus("success");
+      setCurrentUid(uid);
+      localStorage.setItem("userId", uid);
+      console.log("Register successful");
+    },
   });
 
   useQuery({
@@ -102,13 +130,25 @@ function UserWrapper({ children }: UserWrapperProps) {
   });
 
   const handleLogin = (username: string, password: string) => {
+    setLoginStatus("loading");
     loginMutation.mutate({ username: username, password: password });
     console.log(socket);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     socket.disconnect();
+    localStorage.removeItem("userId");
+    setCurrentUid(null);
     setCurrentUser(null);
+    try {
+      const logoutQuery = await axios.get(`${baseURL}/logout`);
+      if (logoutQuery.status === 200) {
+        console.log("Logout successful!");
+      }
+    } catch (err) {
+      console.log("Logout failed!");
+      console.error(err);
+    }
   };
 
   const handleRegister = async (
@@ -119,6 +159,12 @@ function UserWrapper({ children }: UserWrapperProps) {
     location: string,
     birthday: Date,
   ) => {
+    setLoginStatus("loading");
+    if (!Date.parse(birthday.toString())) {
+      setLoginStatus("fail");
+      console.log("Invalid date");
+      return;
+    }
     registerMutation.mutate({
       userName: username,
       password: password,
@@ -147,6 +193,8 @@ function UserWrapper({ children }: UserWrapperProps) {
         onLogin: handleLogin,
         onLogout: handleLogout,
         onRegister: handleRegister,
+        loginStatus: loginStatus,
+        setLoginStatus: setLoginStatus,
       }}
     >
       {children}
