@@ -6,8 +6,13 @@ async function getUserFollowing(userId: string) {
   return res.data;
 }
 
-async function getUserProfile(userId: string) {
-  const res = await axios.get(`${serverUrl}/user/${userId}/profile`);
+async function getUser(userId: string) {
+  const res = await axios.get(`${serverUrl}/user/${userId}`);
+  return res.data;
+}
+
+async function getUserDetails(userId: string) {
+  const res = await axios.get(`${serverUrl}/user/${userId}/details`);
   return res.data;
 }
 
@@ -44,7 +49,8 @@ async function addUser() {
 
 export default {
   getUserFollowing,
-  getUserProfile,
+  getUser,
+  getUserDetails,
   addUserFollowing,
   deleteUserFollowing,
   getUserFollowers,

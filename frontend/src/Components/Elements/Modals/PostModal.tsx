@@ -10,7 +10,7 @@ import postService from "../../../Services/postService";
 import { testUserId } from "../../../globalData";
 
 type NewPostProps = {
-  user: User;
+  user: UserDetails;
   id?: number;
   text: string;
   tags: string[];

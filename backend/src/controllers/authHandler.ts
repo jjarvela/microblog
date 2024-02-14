@@ -22,7 +22,7 @@ export async function loginUser(c: Context, req: Request, res: Response) {
 
       // Set session & cookies. 
       req.session.user = { authenticated: true };
-      return res.sendStatus(200)
+      return res.status(200).send(result.uid);
 
     } else {
       req.session.user = { authenticated: false };

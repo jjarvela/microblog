@@ -2,24 +2,24 @@ import ProfileBoxes, {
   ProfileBox,
 } from "./Elements/ProfileElements/ProfileBoxes/ProfileBoxes";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { testUserId } from "../globalData";
 import profileService from "../Services/profileService";
+import { useUser } from "../UserWrapper";
 
 function UserProfile() {
   const owned = true; // Implement later to check if logged in user is the profile owner
-
+  const user = useUser().user;
   const queryClient = useQueryClient();
 
   const boxesQuery = useQuery({
-    queryKey: ["boxes", testUserId],
-    queryFn: () => profileService.getProfileElements(testUserId),
+    queryKey: ["boxes", user?.id],
+    queryFn: () => profileService.getProfileElements(user?.id || ""),
   });
 
   const mutateBoxes = useMutation({
     mutationFn: (boxes: ProfileBox[]) =>
-      profileService.editProfileElements(testUserId, boxes),
+      profileService.editProfileElements(user?.id || "", boxes),
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["boxes", testUserId] });
+      queryClient.invalidateQueries({ queryKey: ["boxes", user?.id] });
     },
   });
 
@@ -48,7 +48,7 @@ function UserProfile() {
         setBoxes={(boxes) => mutateBoxes.mutate(boxes)}
         owned={owned}
         onEditCancel={() => {
-          queryClient.invalidateQueries({ queryKey: ["boxes", testUserId] });
+          queryClient.invalidateQueries({ queryKey: ["boxes", user?.id] });
           console.log("Cancelled");
         }}
       />
