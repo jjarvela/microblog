@@ -5,7 +5,7 @@ import Button from "./Button";
 import { useUser } from "../../UserWrapper";
 
 type UserProfileInfoProps = {
-  user: User;
+  user: UserDetails | null;
   profileImageSize?: number;
   class?: string;
   nameClass?: string;
@@ -30,14 +30,14 @@ function UserProfileInfo({
   return (
     <div className={"relative z-[90] mr-auto" + " " + classAdd}>
       <Link
-        to={"/user/" + user.userName}
+        to={"/user/" + user?.userName}
         className="flex flex-row flex-wrap items-center gap-4"
       >
         <div className="mx-auto">
-          {"profileImage" in user ? (
+          {user?.profileImage ? (
             <ProfilePicture
               width={profileImageSize ? profileImageSize : 80}
-              image={user.profileImage}
+              image={""} // FIX ME! Load the image from media endpoint!
             />
           ) : (
             <ProfilePicture width={profileImageSize ? profileImageSize : 80} />
@@ -71,9 +71,9 @@ function UserProfileInfo({
               !disablePopup && setShowPopup(true);
             }}
           >
-            {user.screenName}
+            {user?.screenName}
           </h5>
-          <p className={"text-black50" + " " + handleClass}>{user.userName}</p>
+          <p className={"text-black50" + " " + handleClass}>{user?.userName}</p>
         </div>
       </Link>
 
@@ -88,24 +88,25 @@ function UserProfileInfo({
           <div className="mt-[3rem] rounded-xl border border-black50 bg-white dark:border-white50 dark:bg-black dark:text-white">
             <div className="flex flex-col gap-2 p-4">
               <div className="flex flex-row justify-between">
-                <ProfilePicture image={user.profileImage} width={60} />
-                {self?.userName !== user.userName && (
+                {/* FIX ME! Load the image from media endpoint! */}
+                <ProfilePicture image={""} width={60} />
+                {self?.userName !== user?.userName && (
                   <Button className="btn-primary h-[max-content]">
                     <p>Follow</p>
                   </Button>
                 )}
               </div>
-              <Link to={"/user/" + user.userName} className="flex flex-col">
+              <Link to={"/user/" + user?.userName} className="flex flex-col">
                 <h5 className="hover:underline hover:underline-offset-2 ">
-                  {user.screenName}
+                  {user?.screenName}
                 </h5>
-                <small>{user.userName}</small>
+                <small>{user?.userName}</small>
               </Link>
               <p>Fetch user about at some point</p>
               {/*Add proper follower counts once we get them*/}
               <div className="bold flex flex-row gap-2 text-lg text-secondary">
-                <p>{3} Followers</p>
-                <p>{5} Following</p>
+                <p>{user?.followers?.length} Followers</p>
+                <p>{user?.following?.length} Following</p>
               </div>
             </div>
           </div>

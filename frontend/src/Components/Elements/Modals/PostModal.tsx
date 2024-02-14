@@ -11,7 +11,7 @@ import { testUserId } from "../../../globalData";
 import FormMediaPreview from "../Inputs/FormMediaPreview";
 
 type NewPostProps = {
-  user: User;
+  user: UserDetails;
   id?: number;
   text: string;
   tags: string[];

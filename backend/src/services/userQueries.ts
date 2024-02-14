@@ -26,15 +26,15 @@ export const insertUser = async (param: {
       password: param.passwordHash,
       joined: param.joined,
       disabled: param.disabled,
-      verified: param.verified
-    }
+      verified: param.verified,
+    },
   });
   return result;
 };
 
 export const selectUser = async ({
   username,
-  uid
+  uid,
 }: {
   username?: string;
   uid?: string;
@@ -42,26 +42,30 @@ export const selectUser = async ({
   if (username) {
     const result: object | null = await prisma.users.findUnique({
       where: {
-        username: username
+        username: username,
       },
       select: {
         uid: true,
         username: true,
-        password: true
-      }
+        password: true,
+      },
     });
     return result;
   } else if (uid) {
     const result: object | null = await prisma.users.findUnique({
       where: {
-        uid: uid
+        uid: uid,
       },
       select: {
         uid: true,
         username: true,
         screen_name: true,
-        profile_image: true
-      }
+        profile_image: true,
+        email: true,
+        birthday: true,
+        joined: true,
+        location: true,
+      },
     });
     return result;
   }
@@ -70,8 +74,8 @@ export const selectUser = async ({
 export const deleteUser = async (param: { uid: string }) => {
   const result: object = await prisma.users.delete({
     where: {
-      uid: param.uid
-    }
+      uid: param.uid,
+    },
   });
   return result;
 };
@@ -89,7 +93,7 @@ export const updateUser = async (param: {
 }) => {
   const result: users | null = await prisma.users.update({
     where: {
-      uid: param.uid
+      uid: param.uid,
     },
     data: {
       password: param.password,
@@ -99,8 +103,8 @@ export const updateUser = async (param: {
       birthday: param.birthday,
       joined: param.joined,
       timezone: param.timezone,
-      last_login: param.last_login
-    }
+      last_login: param.last_login,
+    },
   });
   return result;
 };
@@ -108,12 +112,12 @@ export const updateUser = async (param: {
 export const getSocket = async (userId: string) => {
   const result: object | null = await prisma.users.findUnique({
     where: {
-      uid: userId
+      uid: userId,
     },
     select: {
       uid: true,
-      socket_id: true
-    }
+      socket_id: true,
+    },
   });
   return result;
 };
@@ -121,11 +125,11 @@ export const getSocket = async (userId: string) => {
 export const updateSocket = async (userId: string, socketId: string | null) => {
   const result: users | null = await prisma.users.update({
     where: {
-      uid: userId
+      uid: userId,
     },
     data: {
-      socket_id: socketId
-    }
+      socket_id: socketId,
+    },
   });
   console.log(result);
 };

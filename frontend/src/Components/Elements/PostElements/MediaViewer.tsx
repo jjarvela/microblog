@@ -155,11 +155,11 @@ export default function MediaViewer({
             <PostCommentForm
               recipient={post.postOwner}
               commenter={
-                user?.user || {
+                user?.details || {
                   userName: "",
                   screenName: "",
-                  followers: 0,
-                  following: 0,
+                  followers: [],
+                  following: [],
                 }
               }
               setShowCommentForm={setShowCommentForm}

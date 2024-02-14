@@ -2,15 +2,40 @@ type User = {
   id: string;
   userName: string;
   screenName: string;
+  profileImage?: number;
+  email: string;
+  birthday: Date;
+  joined: Date;
+  location: string;
   password?: string;
-  profileImage?: string;
-  location?: string;
-  email?: string;
-  joinDate?: Date;
-  birthday?: Date;
-  followers?: number; //change to User[] when data starts coming in
-  following?: number; //change to User[] when data starts coming in
-  jwt?: string;
+};
+
+type RegisterUser = {
+  userName: string;
+  password: string;
+  screenName: string;
+  email: string;
+  location: string;
+  birthday: string;
+};
+
+type UserDetails = {
+  id?: string;
+  userName: string;
+  screenName: string;
+  profileImage?: number;
+  followers?: {
+    id: number;
+    user_id: string;
+    follows_user: string;
+    follows_group: number;
+  }[];
+  following?: {
+    id: number;
+    user_id: string;
+    follows_user: string;
+    follows_group: number;
+  }[];
 };
 
 type UserTouser = {
@@ -35,7 +60,7 @@ type Media = {
 
 type Post = {
   id?: number;
-  postOwner: User;
+  postOwner: UserDetails;
   reposter?: string | undefined; //change to User when data starts coming in
   replyingTo?: string | undefined; //change to User when data starts coming in
   text: string;
