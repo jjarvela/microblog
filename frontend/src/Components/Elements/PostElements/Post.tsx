@@ -23,7 +23,7 @@ import postService from "../../../Services/postService";
 import { testUserId } from "../../../globalData";
 
 export const PostContext = createContext<Post>({
-  postOwner: { userName: "", screenName: "", followers: 0, following: 0 },
+  postOwner: { userName: "", screenName: "", followers: [], following: [] },
   text: "",
   reactions: 0,
   tags: [],
@@ -134,11 +134,11 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
           <PostCommentForm
             recipient={post.postOwner}
             commenter={
-              user?.user || {
+              user?.details || {
                 userName: "",
                 screenName: "",
-                followers: 0,
-                following: 0,
+                followers: [],
+                following: [],
               }
             }
             setShowCommentForm={setShowCommentForm}

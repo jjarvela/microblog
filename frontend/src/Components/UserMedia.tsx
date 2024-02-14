@@ -1,7 +1,6 @@
-import { useContext } from "react";
-import { UserProfileContext } from "./UserPage";
 import PostMedia from "./Elements/PostElements/PostMedia";
 import { PostContext } from "./Elements/PostElements/Post";
+import { useUser } from "../UserWrapper";
 
 const mockMediaList: Media[] = [
   {
@@ -24,12 +23,15 @@ const mockMediaList: Media[] = [
 ];
 
 function UserMedia() {
-  const user = useContext(UserProfileContext);
+  const user = useUser().user;
 
   return (
     <PostContext.Provider
       value={{
-        postOwner: user,
+        postOwner: {
+          screenName: user?.screenName || "",
+          userName: user?.screenName || "",
+        },
         tags: [],
         time: new Date(),
         media: [],
@@ -38,7 +40,7 @@ function UserMedia() {
       }}
     >
       <div className="m-4">
-        <h2 className="my-4 text-center">{user.screenName}'s Media</h2>
+        <h2 className="my-4 text-center">{user?.screenName}'s Media</h2>
         <div className="grid grid-flow-row grid-cols-2 gap-4">
           {mockMediaList.map((media, i) => {
             return (

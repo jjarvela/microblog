@@ -1,12 +1,11 @@
-import { useContext } from "react";
-import { UserProfileContext } from "./UserPage";
 import Post from "./Elements/PostElements/Post";
 import { useQuery } from "@tanstack/react-query";
 import { testUserId } from "../globalData";
 import postService from "../Services/postService";
+import { useUser } from "../UserWrapper";
 
 function UserPosts() {
-  const user = useContext(UserProfileContext);
+  const user = useUser().user;
   const userPostsQuery = useQuery({
     queryKey: ["posts", testUserId],
     queryFn: () => postService.getUserPosts(testUserId),
@@ -32,7 +31,7 @@ function UserPosts() {
 
   return (
     <div className="my-4">
-      <h2 className="my-4 text-center">{user.screenName}'s Posts</h2>
+      <h2 className="my-4 text-center">{user?.screenName}'s Posts</h2>
       <div className="flex flex-col gap-4">
         {(userPostsQuery.data as BlogFromServer[]).map(
           (post: BlogFromServer) => {
@@ -42,7 +41,7 @@ function UserPosts() {
                 post={{
                   id: post.id,
                   text: post.blog_text,
-                  postOwner: user,
+                  postOwner: user || { userName: "", screenName: "" },
                   reactions: 0,
                   media: [],
                   tags: post.item_properties.map((item) => item.value),
@@ -52,8 +51,6 @@ function UserPosts() {
             );
           },
         )}
-
-        {user.featuredPost && <Post post={user.featuredPost} />}
       </div>
     </div>
   );
