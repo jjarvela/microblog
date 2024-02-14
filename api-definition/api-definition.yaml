@@ -898,7 +898,12 @@ paths:
         - user
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          description: The registered user's id
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: "a4cbcc87-33a8-4e95-bb97-6afa767e107b"
       requestBody:
         content:
           application/json:

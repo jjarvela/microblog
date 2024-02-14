@@ -13,7 +13,7 @@ export async function registerUser(c: Context<UserRegData>, req: Request, res: R
   console.log(randomUUID().toString());
   try {
     const userData: UserRegData = c.request.requestBody
-    await insertUser({
+    const result = await insertUser({
       uid: randomUUID(),
       username: userData.userName,
       screen_name: userData.screenName,
@@ -25,7 +25,8 @@ export async function registerUser(c: Context<UserRegData>, req: Request, res: R
       disabled: false,
       verified: false
     })
-    res.sendStatus(200);
+    req.session.user = { authenticated: true };
+    res.status(200).send(result.uid);
   } catch (e: unknown) {
     console.log(e);
     if (e instanceof PrismaClientKnownRequestError && e.code === 'P2002') {
