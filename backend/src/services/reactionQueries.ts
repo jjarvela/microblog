@@ -2,27 +2,81 @@ import { PrismaClient, reactions } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const insertReactions = async (param: {
+export const selectUnread = async (param: {
+  user_id: string;
+  type?: string[];
+}) => {
+  if (!param.type) {
+    const result: reactions[] | null = await prisma.reactions.findMany({
+      where: {
+        recipient_userid: param.user_id,
+        read: false
+      }
+    });
+    console.log(result);
+    return result;
+  } else {
+    const resultArray: reactions[] = [];
+    param.type.forEach(async (item) => {
+      const result = await prisma.reactions.findMany({
+        where: {
+          recipient_userid: param.user_id,
+          type: item,
+          read: false
+        }
+      });
+      result && resultArray.concat(result);
+      console.log(resultArray);
+    });
+    return resultArray;
+  }
+};
+
+export const selectReactions = async (
+  condition: { [key: string]: unknown },
+  type?: string[]
+) => {
+  if (!type) {
+    const result: reactions[] | null = await prisma.reactions.findMany({
+      where: condition
+    });
+    console.log(result);
+    return result;
+  } else {
+    const resultArray: reactions[] = [];
+    type.forEach(async (item) => {
+      const result = await prisma.reactions.findMany({
+        where: { ...condition, type: item }
+      });
+      result && resultArray.concat(result);
+      console.log(resultArray);
+    });
+    return resultArray;
+  }
+};
+
+export const insertReaction = async (param: {
   recipient_userid: string;
   sender_userid: string;
   type: string;
   media_id?: number;
   blogpost_id?: number;
+  read: boolean;
 }) => {
   let condition: any = {};
   if (param.media_id) {
     condition = {
       creator_media: {
-        creator_user_id: param.recipient_userid,
-        media_id: param.media_id,
-      },
+        recipient_userid: param.recipient_userid,
+        media_id: param.media_id
+      }
     };
   } else if (param.blogpost_id) {
     condition = {
       creator_post: {
-        creator_user_id: param.recipient_userid,
-        blogpost_id: param.media_id,
-      },
+        recipient_userid: param.recipient_userid,
+        blogpost_id: param.media_id
+      }
     };
   } else {
     return null;
@@ -37,38 +91,11 @@ export const insertReactions = async (param: {
       type: param.type,
       media_id: param.media_id,
       blogpost_id: param.blogpost_id,
-    },
+      read: param.read
+    }
   });
   console.log(result);
   return result;
-};
-
-export const selectReactions = async (param: {
-  user_id: string;
-  type: Array<"like" | "repost" | "comment">;
-}) => {
-  if (param.type.length < 1) {
-    const result: reactions[] | null = await prisma.reactions.findMany({
-      where: {
-        recipient_userid: param.user_id,
-      },
-    });
-    console.log(result);
-    return result;
-  } else {
-    const resultArray: reactions[] = [];
-    param.type.forEach(async (item) => {
-      const result = await prisma.reactions.findMany({
-        where: {
-          recipient_userid: param.user_id,
-          type: item,
-        },
-      });
-      result && resultArray.concat(result);
-      console.log(resultArray);
-    });
-    return resultArray;
-  }
 };
 
 export const deleteReaction = async (param: { reaction_id: number }) => {
@@ -93,35 +120,30 @@ export const deleteReaction = async (param: { reaction_id: number }) => {
 
   const result: reactions | null = await prisma.reactions.delete({
     where: {
-      id: param.reaction_id,
-    },
+      id: param.reaction_id
+    }
   });
   console.log(result);
   return result;
 };
 
-// const like = {
-//         creator_user_id: '641ae1b3-d5bf-4058-b8d8-2e9e6023114d',
-//         media_id: 1,
-//     };
-
-//     insertLikes(like)
-//       .then(async () => {
-//         await prisma.$disconnect()
-//       })
-//       .catch(async (e) => {
-//         console.error(e)
-//         await prisma.$disconnect()
-//         process.exit(1)
-//       });
-
-// deleteLike(like)
-//   .then(async () => {
-//     await prisma.$disconnect()
-//   })
-//   .catch(async (e) => {
-//     console.error(e)
-//     await prisma.$disconnect()
-//     process.exit(1)
-//   });
-
+export const updateReadStatus = async (
+  reactions: number[],
+  userId: string,
+  status: boolean
+) => {
+  const results: reactions[] = [];
+  reactions.map(async (reaction) => {
+    const updated = await prisma.reactions.update({
+      where: {
+        id: reaction,
+        recipient_userid: userId
+      },
+      data: {
+        read: status
+      }
+    });
+    results.push(updated);
+  });
+  return results;
+};

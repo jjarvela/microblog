@@ -7,7 +7,8 @@ import * as blogHandlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
 import * as profileElementHandlers from "./profileElementHandlers";
 import * as conversationHandlers from "./conversationHandlers";
-import * as userRegHandler from "./registrationHandler"
+import * as reactionHandlers from "./reactionHandlers";
+import * as userRegHandler from "./registrationHandler";
 import * as authHandler from "./authHandler";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -24,7 +25,7 @@ addFormats(ajv);
 // Load Api definition and init OpenAPI with customized ajv configuration.
 export const api = new OpenAPIBackend({
   definition: api_def,
-  customizeAjv: () => ajv,
+  customizeAjv: () => ajv
 });
 
 // Export DB configuration object
@@ -33,10 +34,10 @@ export const dbConfig: PoolConfig = {
   port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
+  password: process.env.POSTGRES_PASSWORD
 };
 
-api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler)
+api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
 
 // Default blogHandlers for errors.
 
@@ -90,7 +91,7 @@ api.register("loginUser", authHandler.loginUser);
 api.register("logoutUser", authHandler.logoutUser);
 
 // User registration
-api.register("registerUser", userRegHandler.registerUser)
+api.register("registerUser", userRegHandler.registerUser);
 
 // Profile element handlers
 api.register("getProfileElements", profileElementHandlers.getProfileElements);
@@ -109,5 +110,12 @@ api.register("deleteConversation", conversationHandlers.deleteConversation);
 api.register("sendDirectMessage", conversationHandlers.postMessage);
 api.register("editDirectMessage", conversationHandlers.editMessage);
 api.register("deleteDirectMessage", conversationHandlers.deleteMessage);
+
+//reaction handlers
+api.register("getPostReactions", reactionHandlers.getPostReactions);
+api.register("addPostReaction", reactionHandlers.addReaction);
+api.register("deletePostReaction", reactionHandlers.deleteReaction);
+api.register("getUserNotifications", reactionHandlers.getUserNotifications);
+api.register("handleReactionReadStatus", reactionHandlers.updateReadStatus);
 
 export default api;
