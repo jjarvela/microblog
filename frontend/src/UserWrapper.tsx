@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import userService from "./Services/userService";
-import { socket, testUserId } from "./globalData";
+import { socket } from "./globalData";
 
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -73,7 +73,8 @@ function UserWrapper({ children }: UserWrapperProps) {
     },
     onSuccess: (uid: string) => {
       setLoginStatus("success");
-      socket.emit("add-user", testUserId);
+      socket.connect();
+      socket.emit("add-user", uid);
       setCurrentUid(uid);
       localStorage.setItem("userId", uid);
     },
@@ -102,6 +103,8 @@ function UserWrapper({ children }: UserWrapperProps) {
     onSuccess(uid: string) {
       setLoginStatus("success");
       setCurrentUid(uid);
+      socket.connect();
+      socket.emit("add-user", uid);
       localStorage.setItem("userId", uid);
       console.log("Register successful");
     },
@@ -136,6 +139,7 @@ function UserWrapper({ children }: UserWrapperProps) {
   };
 
   const handleLogout = async () => {
+    socket.emit("remove-active-user", currentUid);
     socket.disconnect();
     localStorage.removeItem("userId");
     setCurrentUid(null);
