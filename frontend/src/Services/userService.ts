@@ -21,6 +21,11 @@ async function deleteUser(userId: string) {
   return res.data;
 }
 
+async function getUserId(userName: string) {
+  const res = await axios.get(`${serverUrl}/user/id/${userName}`);
+  return res.data;
+}
+
 async function getUserDetails(userId: string) {
   const res = await axios.get(`${serverUrl}/user/${userId}/details`);
   return res.data;
@@ -62,6 +67,7 @@ export default {
   getUser,
   editUser,
   deleteUser,
+  getUserId,
   getUserDetails,
   addUserFollowing,
   deleteUserFollowing,

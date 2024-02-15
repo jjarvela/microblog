@@ -6,8 +6,14 @@ import MaterialSymbolsImageOutlineRounded from "../../Icons/MaterialSymbolsImage
 import MaterialSymbolsFavoriteOutlineRounded from "../../Icons/MaterialSymbolsFavoriteOutlineRounded";
 import { useBreakpoint } from "../../../Hooks/BreakpointHook";
 import Button from "../Button";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ProfileContext } from "../../UserPage";
+import TextAreaInput from "../Inputs/TextAreaInput";
+import MaterialSymbolsEditOutlineRounded from "../../Icons/MaterialSymbolsEditOutlineRounded";
+import IonCheckmarkRound from "../../Icons/IonCheckmarkRound";
+import { useUser } from "../../../UserWrapper";
+import { useMutation } from "@tanstack/react-query";
+import profileService from "../../../Services/profileService";
 
 type UserProfileBannerProps = {
   bannerImage?: string;
@@ -15,7 +21,23 @@ type UserProfileBannerProps = {
 
 function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
   const profile = useContext(ProfileContext);
+  const user = useUser();
+  const [editingText, setEditingText] = useState(false);
+  const [newText, setNewText] = useState(profile.profile?.profile_text || "");
   const { isSm } = useBreakpoint("sm");
+  const owned = profile.userId === user.user?.id;
+
+  const profileMutation = useMutation({
+    mutationKey: ["profileText", profile.userId],
+    mutationFn: (obj: Partial<UserProfile>) =>
+      profileService.editUserProfile(profile.userId || "", obj),
+  });
+
+  const handleEndEdit = () => {
+    profileMutation.mutate({ profile_text: newText });
+    setEditingText(false);
+  };
+
   return (
     <div>
       <div className="relative h-80 sm:h-60">
@@ -38,8 +60,8 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
           }}
         />
       </div>
-      <div className="flex flex-col border-black50 xl:flex-row">
-        <div className="flex flex-col lg:flex-row">
+      <div className="flex w-full flex-col border-black50 xl:flex-row">
+        <div className="flex w-full flex-col lg:flex-row">
           <div className="flex-shrink border-b border-black25 p-6 pt-10 dark:border-white25">
             <ul className="mb-4">
               <li>Location: {profile.user?.location}</li>
@@ -47,7 +69,7 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
                 Joined: {new Date(profile.user?.joined || "").toDateString()}
               </li>
               <li>
-                Birthday:{" "}
+                Birthday:
                 {new Date(profile.user?.birthday || "").toDateString()}
               </li>
             </ul>
@@ -60,8 +82,30 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
               </p>
             </div>
           </div>
-          <div className="min-w-[50%] flex-1 border-b border-black25 p-6 dark:border-white25 lg:border-l xl:border-x">
-            <p>{profile.profile?.profile_text}</p>
+          <div className="relative w-full min-w-[50%] flex-1 border-b border-black25 p-6 dark:border-white25 lg:border-l xl:border-x">
+            {editingText ? (
+              <TextAreaInput
+                className="min-h-[8rem] w-[calc(100%_-_3rem)]"
+                value={newText}
+                onChange={(e) => setNewText(e.target.value)}
+              />
+            ) : (
+              <p className="w-full">{newText}</p>
+            )}
+            {owned && (
+              <Button
+                className="absolute bottom-4 right-4 rounded-full border border-black50 bg-black bg-opacity-0 p-2 text-lg hover:bg-opacity-25 dark:bg-white dark:bg-opacity-0 dark:hover:bg-opacity-25"
+                onClick={() =>
+                  editingText ? handleEndEdit() : setEditingText(true)
+                }
+              >
+                {editingText ? (
+                  <IonCheckmarkRound />
+                ) : (
+                  <MaterialSymbolsEditOutlineRounded />
+                )}
+              </Button>
+            )}
           </div>
         </div>
         <div className="flex w-full flex-row self-stretch border-black25 dark:border-white25 xl:w-auto xl:flex-shrink xl:flex-col xl:border-0">

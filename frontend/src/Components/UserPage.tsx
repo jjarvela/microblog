@@ -6,10 +6,9 @@ import UserPosts from "./UserPosts";
 import UserMedia from "./UserMedia";
 import UserLikes from "./UserLikes";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { serverUrl } from "../globalData";
 import { createContext } from "react";
 import userService from "../Services/userService";
+import profileService from "../Services/profileService";
 
 interface IProfileContext {
   userId: string | null;
@@ -30,16 +29,12 @@ function UserPage() {
 
   const userId = useQuery({
     queryKey: ["uid", username],
-    queryFn: () =>
-      axios.get(`${serverUrl}/user/id/${username}`).then((res) => res.data),
+    queryFn: () => userService.getUserId(username || ""),
   });
 
   const profile = useQuery({
     queryKey: ["profile", username],
-    queryFn: () =>
-      axios
-        .get(`${serverUrl}/user/${userId.data}/profile`)
-        .then((res) => res.data),
+    queryFn: () => profileService.getUserProfile(userId.data),
     enabled: userId.isSuccess,
   });
 
