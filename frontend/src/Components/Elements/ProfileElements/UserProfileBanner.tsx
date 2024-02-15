@@ -6,14 +6,15 @@ import MaterialSymbolsImageOutlineRounded from "../../Icons/MaterialSymbolsImage
 import MaterialSymbolsFavoriteOutlineRounded from "../../Icons/MaterialSymbolsFavoriteOutlineRounded";
 import { useBreakpoint } from "../../../Hooks/BreakpointHook";
 import Button from "../Button";
-import { useUser } from "../../../UserWrapper";
+import { useContext } from "react";
+import { ProfileContext } from "../../UserPage";
 
 type UserProfileBannerProps = {
   bannerImage?: string;
 };
 
 function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
-  const user = useUser().user;
+  const profile = useContext(ProfileContext);
   const { isSm } = useBreakpoint("sm");
   return (
     <div>
@@ -21,7 +22,7 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
         <div className="absolute left-0 top-0 h-full w-full">
           <div className="z-10 mx-4 mt-4 flex flex-row justify-between">
             <UserProfileInfo
-              user={user}
+              user={profile.details}
               profileImageSize={150}
               class=" text-white"
               nameClass="text-xl font-bold md:text-2xl"
@@ -41,22 +42,26 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
         <div className="flex flex-col lg:flex-row">
           <div className="flex-shrink border-b border-black25 p-6 pt-10 dark:border-white25">
             <ul className="mb-4">
-              <li>Location: {user?.location}</li>
-              <li>Joined: {user?.joined?.toDateString()}</li>
-              <li>Birthday: {user?.birthday?.toDateString()}</li>
+              <li>Location: {profile.user?.location}</li>
+              <li>
+                Joined: {new Date(profile.user?.joined || "").toDateString()}
+              </li>
+              <li>
+                Birthday:{" "}
+                {new Date(profile.user?.birthday || "").toDateString()}
+              </li>
             </ul>
             <div className="flex max-w-fit flex-shrink flex-row flex-wrap justify-around gap-6 whitespace-nowrap text-secondary">
-              <p className="text-[1.2rem] font-bold">Followers: {[]}</p>
-              <p className="text-[1.2rem] font-bold">Following: {[]}</p>
+              <p className="text-[1.2rem] font-bold">
+                Followers: {profile.details?.followers?.length}
+              </p>
+              <p className="text-[1.2rem] font-bold">
+                Following: {profile.details?.following?.length}
+              </p>
             </div>
           </div>
           <div className="min-w-[50%] flex-1 border-b border-black25 p-6 dark:border-white25 lg:border-l xl:border-x">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore
-              mollitia iusto id distinctio eaque repellat in sunt vero ea
-              explicabo cum asperiores illum reprehenderit hic numquam tempora,
-              molestias neque nobis.
-            </p>
+            <p>{profile.profile?.profile_text}</p>
           </div>
         </div>
         <div className="flex w-full flex-row self-stretch border-black25 dark:border-white25 xl:w-auto xl:flex-shrink xl:flex-col xl:border-0">
