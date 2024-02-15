@@ -307,6 +307,8 @@ components:
       type: array
       items:
         type: object
+        required:
+          - "mediaId"
         properties:
           fileUrl:
             type: string
@@ -316,6 +318,7 @@ components:
             description: Mime type string for the media file.
           mediaId:
             type: string
+            format: uuid
             description: Unique id for media file.
           folderId:
             type: string
@@ -655,7 +658,7 @@ paths:
       operationId: addUserMedia
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          $ref: "#/components/responses/mediaRes"
       tags:
         - media
       summary: Upload a media files to server.
