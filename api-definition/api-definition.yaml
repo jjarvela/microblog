@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.7.4"
+  version: "0.7.5"
 
 servers:
   - url: https://api.microblog.fi
@@ -423,6 +423,62 @@ components:
         message:
           type: string
 
+    reaction:
+      type: object
+      required:
+        - id
+        - type
+        - recipient_userid
+        - sender_userid
+        - read
+      properties:
+        id:
+          type: integer
+          description: reaction id
+        type:
+          type: string
+          description: reaction type (like/repost/comment)
+        recipient_userid:
+          type: string
+          format: uuid
+          description: who received reaction
+        sender_userid:
+          type: string
+          format: uuid
+          description: who reacted
+        media_id:
+          type: integer
+          description: media target of reaction
+        blogpost_id:
+          type: integer
+          description: post target of reaction
+
+    newReaction:
+      type: object
+      required:
+        - type
+        - recipient_userid
+        - sender_userid
+        - read
+      properties:
+        type:
+          type: string
+          description: reaction type (like/repost/comment)
+        recipient_userid:
+          type: string
+          format: uuid
+          description: who received reaction
+        sender_userid:
+          type: string
+          format: uuid
+          description: who reacted
+        media_id:
+          type: integer
+          description: media target of reaction
+        blogpost_id:
+          type: integer
+          description: post target of reaction
+
     errorResponse:
       type: object
       properties:
@@ -446,6 +502,8 @@ components:
                 type: string
                 description: Description of error
 
+###### TAGS ######
+
 tags:
   - name: blog
     description: Blog post related functions.
@@ -463,8 +521,12 @@ tags:
     description: User profile related functions.
   - name: conversation
     description: Direct messaging related functions.
+  - name: reaction
+    description: Reactions-related functions
 
 paths:
+  ###### POSTS ######
+
   /blog/{userId}:
     x-router-controller: BlogController
     get:
@@ -654,6 +716,8 @@ paths:
           schema:
             type: string
 
+  ###### USER INFORMATION ######
+
   /user/{userId}:
     get:
       summary: Get logged in user's data.
@@ -695,6 +759,8 @@ paths:
           in: path
           schema:
             type: string
+
+  ###### PROFILE ELEMENTS ######
 
   /user/{userId}/profile/elements:
     get:
@@ -746,6 +812,8 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/profileElements"
+
+  ###### FOLLOWING ######
 
   /user/{userId}/following:
     get:
@@ -876,28 +944,7 @@ paths:
           schema:
             type: string
 
-  /user/{userId}/conversations:
-    get:
-      summary: Get list of user's active conversations.
-      operationId: getConversations
-      tags:
-        - user
-        - conversation
-      responses:
-        "200":
-          description: A list of the user's active conversations
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/conversations"
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          schema:
-            type: string
+  ###### USER CREATION & AUTHENTICATION ######
 
   /user/register:
     post:
@@ -907,7 +954,12 @@ paths:
         - user
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          description: The registered user's id
+          content:
+            text/plain:
+              schema:
+                type: string
+              example: "a4cbcc87-33a8-4e95-bb97-6afa767e107b"
       requestBody:
         content:
           application/json:
@@ -946,6 +998,31 @@ paths:
           $ref: "#/components/responses/OK"
         "500":
           $ref: "#/components/responses/errorResponse"
+
+  ###### CONVERSATIONS ######
+
+  /user/{userId}/conversations:
+    get:
+      summary: Get list of user's active conversations.
+      operationId: getConversations
+      tags:
+        - user
+        - conversation
+      responses:
+        "200":
+          description: A list of the user's active conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/conversations"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
 
   /conversation:
     post:
@@ -1139,3 +1216,158 @@ paths:
           schema:
             type: string
           required: true
+
+  ###### REACTIONS ######
+
+  /blog/{postId}/reactions{?type}:
+    get:
+      operationId: getPostReactions
+      summary: get list of reactions on a post
+      tags:
+        - blog
+        - reaction
+      responses:
+        "200":
+          description: Return a list of reactions on a post.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/reaction"
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: type
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+
+  /blog/{postId}/reactions:
+    post:
+      operationId: addPostReaction
+      summary: add new reaction on a post
+      tags:
+        - blog
+        - reaction
+      responses:
+        "200":
+          description: Return the new reaction.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/reaction"
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/newReaction"
+
+  /blog/{postId}/reactions/{reactionId}:
+    delete:
+      operationId: deletePostReaction
+      summary: delete reaction from a post
+      tags:
+        - blog
+        - reaction
+      responses:
+        "200":
+          description: Return deleted reaction details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/reaction"
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: reactionId
+          required: true
+          schema:
+            type: integer
+
+  /user/{userId}/notifications{?unread}{?type}:
+    get:
+      operationId: getUserNotifications
+      summary: get list of reactions a user has received across all their posts
+      tags:
+        - user
+        - reaction
+      responses:
+        "200":
+          description: Return a list of reactions a user has received.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/reaction"
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: unread
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: type
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+
+  /user/{userId}/notifications/{reactionId}{?readStatus}:
+    put:
+      operationId: handleReactionReadStatus
+      summary: Change the read status of a reaction a user has received
+      tags:
+        - user
+        - reaction
+      responses:
+        "200":
+          description: Return the affected reactions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/reaction"
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: reactionId
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+            minItems: 1
+        - in: query
+          name: readStatus
+          required: true
+          schema:
+            type: string
