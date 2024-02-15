@@ -50,6 +50,17 @@ export async function deleteUser(c: Context, _req: Request, res: Response) {
   }
 }
 
+export async function getUserId(c: Context, _req: Request, res: Response) {
+  const userName = c.request.params.userName;
+  try {
+    const user = await userQueries.getUserIdByName(userName as string);
+    res.status(200).send(user?.uid);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export async function getUserThumbInfo(
   c: Context,
   _req: Request,

@@ -1,4 +1,5 @@
 import { PrismaClient, users } from "@prisma/client";
+import { validate as validateUuid } from "uuid";
 
 const prisma = new PrismaClient();
 
@@ -51,7 +52,7 @@ export const selectUser = async ({
       },
     });
     return result;
-  } else if (uid) {
+  } else if (validateUuid(uid || "")) {
     const result: object | null = await prisma.users.findUnique({
       where: {
         uid: uid,
@@ -110,6 +111,15 @@ export const updateUser = async (param: {
       last_login: param.last_login,
     },
   });
+  return result;
+};
+
+export const getUserIdByName = async (userName: string) => {
+  const result = await prisma.users.findUnique({
+    where: { username: userName },
+    select: { uid: true },
+  });
+  console.log("Got user id " + result?.uid + " for user " + userName);
   return result;
 };
 

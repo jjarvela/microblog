@@ -5,7 +5,7 @@ import { PoolConfig } from "pg";
 import * as userHandlers from "./userHandler";
 import * as blogHandlers from "./blogHandlers";
 import * as followHandlers from "./FollowHandlers";
-import * as profileElementHandlers from "./profileElementHandlers";
+import * as profileHandlers from "./profileHandlers";
 import * as conversationHandlers from "./conversationHandlers";
 import * as userRegHandler from "./registrationHandler";
 import * as authHandler from "./authHandler";
@@ -72,6 +72,7 @@ api.register("editUser", userHandlers.editUser);
 api.register("deleteUser", userHandlers.deleteUser);
 
 //user information handler
+api.register("getUserId", userHandlers.getUserId);
 api.register("getUserInfo", userHandlers.getUserThumbInfo);
 
 // Blog post handlers
@@ -94,9 +95,11 @@ api.register("logoutUser", authHandler.logoutUser);
 // User registration
 api.register("registerUser", userRegHandler.registerUser);
 
-// Profile element handlers
-api.register("getProfileElements", profileElementHandlers.getProfileElements);
-api.register("editProfileElements", profileElementHandlers.editProfileElements);
+// Profile handlers
+api.register("getProfile", profileHandlers.getProfile);
+api.register("editProfile", profileHandlers.editProfile);
+api.register("getProfileElements", profileHandlers.getProfileElements);
+api.register("editProfileElements", profileHandlers.editProfileElements);
 
 //Conversation handlers
 

@@ -2,6 +2,49 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+export const getProfile = async (param: { uid: string }) => {
+  const profile_id = await findProfileIdWithUserId(param.uid);
+
+  const profile = await prisma.user_profiles.findUnique({
+    where: {
+      id: profile_id,
+    },
+  });
+  const result = {
+    user_id: profile?.user_id,
+    profile_text: profile?.profile_text,
+    header_media_id: profile?.header_media_id,
+    homepage: profile?.homepage,
+  };
+  console.log(result);
+  return result;
+};
+
+export const editProfile = async (param: {
+  uid: string;
+  data: {
+    user_id: string;
+    profile_text: string;
+    header_media_id: number;
+    homepage: string;
+  };
+}) => {
+  const profile_id = await findProfileIdWithUserId(param.uid);
+
+  const profile = await prisma.user_profiles.update({
+    where: { id: profile_id },
+    data: param.data,
+  });
+  const result = {
+    user_id: profile?.user_id,
+    profile_text: profile?.profile_text,
+    header_media_id: profile?.header_media_id,
+    homepage: profile?.homepage,
+  };
+  console.log(result);
+  return result;
+};
+
 export const getProfileElements = async (param: { uid: string }) => {
   const profile_id = await findProfileIdWithUserId(param.uid);
 
