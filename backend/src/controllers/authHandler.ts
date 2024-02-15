@@ -21,7 +21,7 @@ export async function loginUser(c: Context, req: Request, res: Response) {
     if (await argon.verify(result.password, userObj.password as string) === true) {
 
       // Set session & cookies. 
-      req.session.user = { authenticated: true };
+      req.session.user = { authenticated: true, uid: result.uid as UUID };
       return res.status(200).send(result.uid);
 
     } else {

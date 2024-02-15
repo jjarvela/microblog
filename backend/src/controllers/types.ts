@@ -1,3 +1,4 @@
+import { UUID } from "crypto";
 import type { Components, Paths } from "../microblog-backend";
 import type { Express } from "express"
 import type { FileArray } from "express-fileupload";
@@ -15,6 +16,7 @@ declare module 'express-session' {
 
     user: {
       authenticated: boolean,
+      uid?: UUID,
       [key: string]: any
     };
   }
