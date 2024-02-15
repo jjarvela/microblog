@@ -111,7 +111,7 @@ export default function ConversationThumb({
             <div className="flex w-20 flex-col sm:w-60 xl:w-40">
               <p className="truncate">
                 {conversation.users_conversations_participant_1Tousers
-                  .username === user?.screenName
+                  .username === user?.userName
                   ? conversation.users_conversations_participant_2Tousers
                       .screen_name
                   : conversation.users_conversations_participant_1Tousers
