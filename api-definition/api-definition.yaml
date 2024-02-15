@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.7.5"
+  version: "0.7.6"
 
 servers:
   - url: https://api.microblog.fi
@@ -321,7 +321,24 @@ components:
           folderId:
             type: string
             description: The folder media file is related to.
-
+    
+    profile:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: User uuid
+        profile_text:
+          type: string
+          description: User's profile text
+        header_media_id:
+          type: integer
+          description: Id for user's header image
+        homepage:
+          type: string
+          description: Address for user's homepage
+        
+    
     profileElements:
       type: array
       items:
@@ -824,8 +841,90 @@ paths:
           in: path
           schema:
             type: string
+  
+  /user/id/{userName}:
+    get:
+      summary: Get user's id based on user name
+      operationId: getUserId
+      tags:
+        - user
+      responses:
+        "200":
+          description: The requested user's id.
+          content:
+            text/plain:
+              schema:
+                type: string
+              
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userName
+          required: true
+          in: path
+          schema:
+            type: string
 
-  ###### PROFILE ELEMENTS ######
+  ###### PROFILE ######
+
+  /user/{userId}/profile:
+    get:
+      operationId: getProfile
+      summary: Get user's profile.
+      tags:
+        - user
+      responses:
+        "200":
+          description: Response contains user's profile information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/profile"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+    put:
+      operationId: editProfile
+      summary: Edit user's profile.
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/profile"
+      responses:
+        "200":
+          description: Response contains user's profile information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/profile"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
 
   /user/{userId}/profile/elements:
     get:
