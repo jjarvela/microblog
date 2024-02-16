@@ -1,4 +1,7 @@
+import { UUID } from "crypto";
 import type { Components, Paths } from "../microblog-backend";
+import type { Express } from "express"
+import type { FileArray } from "express-fileupload";
 
 // Blog entries
 export type BlogPost = Components.Schemas.BlogPost;
@@ -13,6 +16,7 @@ declare module 'express-session' {
 
     user: {
       authenticated: boolean,
+      uid?: UUID,
       [key: string]: any
     };
   }
@@ -21,3 +25,7 @@ declare module 'express-session' {
 export type authObj = Components.Schemas.UserAuth;
 
 export type UserRegData = Components.Schemas.NewUserObject;
+
+export type fileObject = {
+  imagefile?: FileArray[];
+}
