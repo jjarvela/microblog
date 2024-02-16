@@ -11,7 +11,7 @@ import { ProfileContext } from "../../UserPage";
 import TextAreaInput from "../Inputs/TextAreaInput";
 import MaterialSymbolsEditOutlineRounded from "../../Icons/MaterialSymbolsEditOutlineRounded";
 import IonCheckmarkRound from "../../Icons/IonCheckmarkRound";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import profileService from "../../../Services/profileService";
 import { useUser } from "../../../UserWrapper";
 
@@ -26,11 +26,16 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
   const [newText, setNewText] = useState(profile.profile?.profile_text || "");
   const { isSm } = useBreakpoint("sm");
   const owned = profile.details?.id === user.user?.id;
+  const queryClient = useQueryClient();
 
   const profileMutation = useMutation({
     mutationKey: ["profileText", profile.details?.id],
     mutationFn: (obj: Partial<UserProfile>) =>
       profileService.editUserProfile(profile.details?.id || "", obj),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["profile", profile.details?.userName],
+      }),
   });
 
   const handleEndEdit = () => {
@@ -89,9 +94,14 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
                 className="min-h-[8rem] w-[calc(100%_-_3rem)]"
                 value={newText}
                 onChange={(e) => setNewText(e.target.value)}
+                maxLength={500}
+                showCount
+                countClass="right-14"
               />
             ) : (
-              <p className="w-full">{newText}</p>
+              <p className="scrollbar-thin max-h-[16rem] w-full overflow-y-scroll whitespace-pre-wrap">
+                {newText}
+              </p>
             )}
             {owned && (
               <Button
