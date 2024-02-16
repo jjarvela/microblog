@@ -1307,7 +1307,7 @@ paths:
           schema:
             type: string
         - in: query
-          name: unread
+          name: read
           required: false
           schema:
             type: boolean
