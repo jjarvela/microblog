@@ -4,6 +4,7 @@ import { Context } from "openapi-backend";
 import { PoolConfig } from "pg";
 import * as userHandlers from "./userHandler";
 import * as blogHandlers from "./blogHandlers";
+import * as mediaHandler from "./mediaController";
 import * as followHandlers from "./FollowHandlers";
 import * as profileElementHandlers from "./profileElementHandlers";
 import * as conversationHandlers from "./conversationHandlers";
@@ -39,7 +40,7 @@ export const dbConfig: PoolConfig = {
 
 api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
 
-// Default blogHandlers for errors.
+// Default handlers for errors.
 
 export function unAuthHandler(c: Context, _req: Request, res: Response) {
   return res
@@ -78,6 +79,9 @@ api.register("addBlogPost", blogHandlers.addBlogPost);
 api.register("getBlogPost", blogHandlers.getBlogPost);
 api.register("updateBlogPost", blogHandlers.updateBlogPost);
 api.register("deleteBlogPost", blogHandlers.deleteBlogPost);
+
+// Media upload handler
+api.register("addUserMedia", mediaHandler.addUserMedia);
 
 // Followings handlers
 api.register("addFollowing", followHandlers.addFollowing);

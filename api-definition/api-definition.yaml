@@ -145,7 +145,23 @@ components:
         properties:
           imagefile:
             type: string
-            format: base64
+            format: binary
+
+    fileObject:
+      type: object
+      properties:
+        imagefile:
+          $ref: "#/components/schemas/imagefile"
+
+    imagefile:
+      type: object
+      properties:
+        name:
+          type: string
+        size:
+          type: number
+        md5:
+          type: string
 
     newUserObject:
       type: object
@@ -291,6 +307,8 @@ components:
       type: array
       items:
         type: object
+        required:
+          - "mediaId"
         properties:
           fileUrl:
             type: string
@@ -300,6 +318,7 @@ components:
             description: Mime type string for the media file.
           mediaId:
             type: string
+            format: uuid
             description: Unique id for media file.
           folderId:
             type: string
@@ -632,18 +651,15 @@ paths:
             schema:
               $ref: "#/components/schemas/refPost"
 
-  ###### MEDIA ######
-
-  /media/{userId}/{folderId}:
-    x-router-controller: mediaController
+  /media/{userId}:
     post:
       operationId: addUserMedia
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          $ref: "#/components/responses/mediaRes"
       tags:
         - media
-      summary: Upload a media files to selected folder.
+      summary: Upload a media files to server.
       parameters:
         - name: userId
           required: true
@@ -651,11 +667,6 @@ paths:
           schema:
             type: string
 
-        - name: folderId
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         description: Array of multipart/formdata in base64 encoding.
         content:
@@ -666,7 +677,6 @@ paths:
               multipleFiles:
                 contentType: image/png, image/jpeg
 
-  /media/{userId}:
     get:
       operationId: getUserMedia
       summary: Get list of media files and their location.

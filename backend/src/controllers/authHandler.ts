@@ -21,7 +21,7 @@ export async function loginUser(c: Context, req: Request, res: Response) {
     if (await argon.verify(result.password, userObj.password as string) === true) {
 
       // Set session & cookies. 
-      req.session.user = { authenticated: true };
+      req.session.user = { authenticated: true, uid: result.uid as UUID };
       return res.status(200).send(result.uid);
 
     } else {
@@ -55,8 +55,6 @@ export function securityHandler(c: Context, req: Request, res: Response, next: N
   // db_client
   //res.status(401).json({ status: 401, err: [{ message: "No authorization." }] })
   console.log("security handler called");
-  console.log("request object");
-  console.log(c.request.path);
 
   if (req.session.user?.authenticated !== true && (req.path !== "/user/register" && req.path !== "/login" && req.path !== "/logout")) {
     console.log("session not valid.");
