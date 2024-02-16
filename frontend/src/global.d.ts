@@ -51,24 +51,18 @@ type Media = {
   type: "img" | "vid";
 };
 
-type Post = {
-  id?: number;
-  postOwner: UserDetails;
-  reposter?: UserDetails;
-  replyingTo?: UserDetails;
-  text: string;
-  media: Array<Media>;
-  reactions: number;
-  tags: string[];
-  time: Date;
-};
-
 type BlogPostFromServer = {
-  blog_text: string;
   id: number;
+  blogpost_uid: string;
+  user_id: string; //original poster
+  blog_text: string;
   timestamp: string;
-  user_id: string;
+  reposter_id?: string;
+  commenter_id?: string;
   item_properties: { blogpost_id: number; context_id: number; value: string }[];
+  user_idTousers: UserTouser;
+  reposter_idTousers?: UserTouser;
+  commenter_idTousers?: UserTouser;
 };
 
 type BlogPostToServer = {
@@ -76,6 +70,25 @@ type BlogPostToServer = {
   text: string;
   date: string;
   hashtags: string[];
+};
+
+type RepostToServer = {
+  blogpost_uid: string;
+  user_id: string; //original poster
+  blog_text: string;
+  timestamp: string;
+  reposter_id: string;
+  commenter_id?: string;
+  item_properties: { blogpost_id: number; context_id: number; value: string }[];
+};
+
+type CommentToServer = {
+  blogpost_uid: string;
+  user_id: string; //original poster
+  blog_text: string;
+  timestamp: string;
+  commenter_id: string;
+  item_properties: { blogpost_id: number; context_id: number; value: string }[];
 };
 
 type UserProfile = {

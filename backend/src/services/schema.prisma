@@ -9,14 +9,19 @@ datasource db {
 }
 
 model blog_posts {
-  id              Int               @id @default(autoincrement())
-  user_id         String?           @db.Uuid
-  blog_text       String?
-  timestamp       DateTime?         @db.Timestamp(6)
-  users           users?            @relation(fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
-  item_properties item_properties[]
-  post_medias     post_medias[]
-  reactions       reactions[]
+  id                  Int               @id @default(autoincrement())
+  blogpost_uid        String?           @db.Uuid
+  user_id             String?           @db.Uuid
+  blog_text           String?
+  timestamp           DateTime?         @db.Timestamp(6)
+  reposter_id         String?           @db.Uuid
+  commenter_id        String?           @db.Uuid
+  item_properties     item_properties[]
+  post_medias         post_medias[]
+  reactions           reactions[]
+  user_idTousers      users?            @relation("user_idTousers", fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
+  reposter_idTousers  users?            @relation("reposter_idTousers ", fields: [reposter_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
+  commenter_idTousers users?            @relation("commenter_idTousers", fields: [commenter_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model contacts {
@@ -145,7 +150,7 @@ model reactions {
   type                    String
   recipient_userid        String       @db.Uuid
   sender_userid           String       @db.Uuid
-  timestamp               DateTime?         @db.Timestamp(6)
+  timestamp               DateTime?    @db.Timestamp(6)
   read                    Boolean
   media_id                Int?
   blogpost_id             Int?
@@ -236,7 +241,6 @@ model users {
   last_login                                       DateTime?         @db.Timestamp(6)
   disabled                                         Boolean?
   verified                                         Boolean?
-  blog_posts                                       blog_posts[]
   contacts                                         contacts[]
   conversations_conversations_participant_1Tousers conversations[]   @relation("conversations_participant_1Tousers")
   conversations_conversations_participant_2Tousers conversations[]   @relation("conversations_participant_2Tousers")
@@ -244,6 +248,9 @@ model users {
   followings_followings_user_idTousers             followings[]      @relation("followings_user_idTousers")
   reactions_recipient_useridTousers                reactions[]       @relation("recipient_useridTousers")
   reactions_sender_useridTousers                   reactions[]       @relation("sender_useridTousers")
+  blog_posts_user_idTousers                        blog_posts[]      @relation("user_idTousers")
+  blog_posts_reposter_idTousers                    blog_posts[]      @relation("reposter_idTousers ")
+  blog_posts_commenter_idTousers                   blog_posts[]      @relation("commenter_idTousers")
   groupmembers                                     groupmembers[]
   groups                                           groups[]
   item_properties                                  item_properties[]
