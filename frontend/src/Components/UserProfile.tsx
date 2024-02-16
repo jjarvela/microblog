@@ -11,19 +11,21 @@ function UserProfile() {
   const queryClient = useQueryClient();
   const profile = useContext(ProfileContext);
   const user = useUser();
-  const owned = profile.userId === user.user?.id;
+  const owned = profile.details?.id === user.user?.id;
 
   const boxesQuery = useQuery({
-    queryKey: ["boxes", profile.userId],
-    queryFn: () => profileService.getProfileElements(profile.userId || ""),
-    enabled: !!profile.userId,
+    queryKey: ["boxes", profile.details?.id],
+    queryFn: () => profileService.getProfileElements(profile.details?.id || ""),
+    enabled: !!profile.details?.id,
   });
 
   const mutateBoxes = useMutation({
     mutationFn: (boxes: ProfileBox[]) =>
-      profileService.editProfileElements(profile.userId || "", boxes),
+      profileService.editProfileElements(profile.details?.id || "", boxes),
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["boxes", profile.userId] });
+      queryClient.invalidateQueries({
+        queryKey: ["boxes", profile.details?.id],
+      });
     },
   });
 
@@ -53,7 +55,7 @@ function UserProfile() {
         owned={owned}
         onEditCancel={() => {
           queryClient.invalidateQueries({
-            queryKey: ["boxes", profile.userId],
+            queryKey: ["boxes", profile.details?.id],
           });
           console.log("Cancelled");
         }}

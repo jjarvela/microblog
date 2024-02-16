@@ -11,12 +11,9 @@ import { ProfileContext } from "../../UserPage";
 import TextAreaInput from "../Inputs/TextAreaInput";
 import MaterialSymbolsEditOutlineRounded from "../../Icons/MaterialSymbolsEditOutlineRounded";
 import IonCheckmarkRound from "../../Icons/IonCheckmarkRound";
-import { useContext } from "react";
-import { ownerContext } from "../../UserPage";
-import { useQuery } from "@tanstack/react-query";
-import userService from "../../../Services/userService";
 import { useMutation } from "@tanstack/react-query";
 import profileService from "../../../Services/profileService";
+import { useUser } from "../../../UserWrapper";
 
 type UserProfileBannerProps = {
   bannerImage?: string;
@@ -28,26 +25,18 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
   const [editingText, setEditingText] = useState(false);
   const [newText, setNewText] = useState(profile.profile?.profile_text || "");
   const { isSm } = useBreakpoint("sm");
-  const owned = profile.userId === user.user?.id;
+  const owned = profile.details?.id === user.user?.id;
 
   const profileMutation = useMutation({
-    mutationKey: ["profileText", profile.userId],
+    mutationKey: ["profileText", profile.details?.id],
     mutationFn: (obj: Partial<UserProfile>) =>
-      profileService.editUserProfile(profile.userId || "", obj),
+      profileService.editUserProfile(profile.details?.id || "", obj),
   });
 
   const handleEndEdit = () => {
     profileMutation.mutate({ profile_text: newText });
     setEditingText(false);
   };
-
-  const ownerDetails = useQuery({
-    queryKey: ["profileDetails", owner!.id],
-    queryFn: async () => {
-      const result = userService.getUser(owner!.id!);
-      return result;
-    },
-  });
 
   return (
     <div>

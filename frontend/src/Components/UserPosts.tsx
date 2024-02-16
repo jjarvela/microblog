@@ -8,8 +8,8 @@ function UserPosts() {
   const profile = useContext(ProfileContext);
 
   const userPostsQuery = useQuery({
-    queryKey: ["posts", profile.userId],
-    queryFn: () => postService.getUserPosts(profile.userId || ""),
+    queryKey: ["posts", profile.details?.id],
+    queryFn: () => postService.getUserPosts(profile.details?.id || ""),
   });
 
   if (userPostsQuery.isLoading) {
@@ -20,7 +20,7 @@ function UserPosts() {
     );
   }
 
-  if (userPostsQuery.isError || !owner) {
+  if (userPostsQuery.isError) {
     return (
       <div className="my-4">
         <h4 className="my-4 text-center text-warning dark:text-warningDark">
