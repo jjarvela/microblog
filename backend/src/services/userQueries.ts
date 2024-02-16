@@ -137,13 +137,15 @@ export const getSocket = async (userId: string) => {
 };
 
 export const updateSocket = async (userId: string, socketId: string | null) => {
-  const result: users | null = await prisma.users.update({
-    where: {
-      uid: userId,
-    },
-    data: {
-      socket_id: socketId,
-    },
-  });
-  console.log(result);
+  if (await prisma.users.findUnique({ where: { uid: userId } })) {
+    const result: users | null = await prisma.users.update({
+      where: {
+        uid: userId,
+      },
+      data: {
+        socket_id: socketId,
+      },
+    });
+    console.log(result);
+  }
 };
