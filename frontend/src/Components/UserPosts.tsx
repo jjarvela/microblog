@@ -20,7 +20,7 @@ function UserPosts() {
     );
   }
 
-  if (userPostsQuery.isError) {
+  if (userPostsQuery.isError || !owner) {
     return (
       <div className="my-4">
         <h4 className="my-4 text-center text-warning dark:text-warningDark">
@@ -36,8 +36,8 @@ function UserPosts() {
         {profile.details?.screenName}'s Posts
       </h2>
       <div className="flex flex-col gap-4">
-        {(userPostsQuery.data as BlogFromServer[]).map(
-          (post: BlogFromServer) => {
+        {(userPostsQuery.data as BlogPostFromServer[]).map(
+          (post: BlogPostFromServer) => {
             return (
               <Post
                 key={post.id + Math.floor(Math.random() * 10000)}

@@ -26,8 +26,23 @@ async function getUserId(userName: string) {
   return res.data;
 }
 
-async function getUserDetails(userId: string) {
-  const res = await axios.get(`${serverUrl}/user/${userId}/details`);
+async function editUser(userId: string, userObj: Partial<User>) {
+  const res = await axios.put(`${serverUrl}/user/${userId}`, userObj);
+  return res.data;
+}
+
+async function deleteUser(userId: string) {
+  const res = await axios.delete(`${serverUrl}/user/${userId}`);
+  return res.data;
+}
+
+async function getUserId(userName: string) {
+  const res = await axios.get(`${serverUrl}/user/id/${userName}`);
+  return res.data;
+}
+
+async function getUserDetails(username: string) {
+  const res = await axios.get(`${serverUrl}/user/${username}/details`);
   return res.data;
 }
 

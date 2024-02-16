@@ -1,17 +1,19 @@
-import Express from "express";
+import Express, { NextFunction, Request, Response, response } from "express";
 import { api, dbConfig } from "./controllers/loadApi";
 import { Pool } from "pg";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
-import type { Request } from "openapi-backend";
+import type { Request as oaReq } from "openapi-backend";
 import cors from "cors";
 import { io } from "./socket/socketIndex";
+import fileUpload from "express-fileupload";
 
 const db_client = new Pool(dbConfig);
 
 const app = Express();
 
 app.use(Express.json());
+// app.use(fileUpload());
 
 app.use(
   session({
@@ -36,8 +38,9 @@ app.use(
   })
 );
 
-
-app.use((req, res, next) => api.handleRequest(req as Request, req, res, next));
+// Media upload handler for files
+app.post('/media/:userId', fileUpload({ debug: true }))
+app.use((req: Request, res: Response, next: NextFunction) => api.handleRequest(req as oaReq, req, res, next));
 
 api.init();
 

@@ -61,8 +61,8 @@ type Media = {
 type Post = {
   id?: number;
   postOwner: UserDetails;
-  reposter?: string | undefined; //change to User when data starts coming in
-  replyingTo?: string | undefined; //change to User when data starts coming in
+  reposter?: UserDetails;
+  replyingTo?: UserDetails;
   text: string;
   media: Array<Media>;
   reactions: number;
@@ -70,7 +70,7 @@ type Post = {
   time: Date;
 };
 
-type BlogFromServer = {
+type BlogPostFromServer = {
   blog_text: string;
   id: number;
   timestamp: string;
@@ -78,7 +78,7 @@ type BlogFromServer = {
   item_properties: { blogpost_id: number; context_id: number; value: string }[];
 };
 
-type BlogToServer = {
+type BlogPostToServer = {
   id?: number;
   text: string;
   date: string;
@@ -127,6 +127,19 @@ interface ConversationMessage extends NewConversationMessage {
   id: number;
   timestamp: string;
   conversations?: Conversation[];
+}
+
+interface ReactionToServer {
+  type: "like" | "repost" | "comment";
+  recipient_userid: string;
+  sender_userid: string;
+  read: boolean;
+  media_id?: number;
+  blogpost_id?: number;
+}
+
+interface ReactionFromServer extends reactionToServer {
+  id: number;
 }
 
 type Theme = "system" | "light" | "dark";

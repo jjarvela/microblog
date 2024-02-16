@@ -145,7 +145,23 @@ components:
         properties:
           imagefile:
             type: string
-            format: base64
+            format: binary
+
+    fileObject:
+      type: object
+      properties:
+        imagefile:
+          $ref: "#/components/schemas/imagefile"
+
+    imagefile:
+      type: object
+      properties:
+        name:
+          type: string
+        size:
+          type: number
+        md5:
+          type: string
 
     newUserObject:
       type: object
@@ -308,6 +324,8 @@ components:
       type: array
       items:
         type: object
+        required:
+          - "mediaId"
         properties:
           fileUrl:
             type: string
@@ -317,6 +335,7 @@ components:
             description: Mime type string for the media file.
           mediaId:
             type: string
+            format: uuid
             description: Unique id for media file.
           folderId:
             type: string
@@ -458,11 +477,9 @@ components:
           description: reaction type (like/repost/comment)
         recipient_userid:
           type: string
-          format: uuid
           description: who received reaction
         sender_userid:
           type: string
-          format: uuid
           description: who reacted
         media_id:
           type: integer
@@ -668,18 +685,15 @@ paths:
             schema:
               $ref: "#/components/schemas/refPost"
 
-  ###### MEDIA ######
-
-  /media/{userId}/{folderId}:
-    x-router-controller: mediaController
+  /media/{userId}:
     post:
       operationId: addUserMedia
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          $ref: "#/components/responses/mediaRes"
       tags:
         - media
-      summary: Upload a media files to selected folder.
+      summary: Upload a media files to server.
       parameters:
         - name: userId
           required: true
@@ -687,11 +701,6 @@ paths:
           schema:
             type: string
 
-        - name: folderId
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         description: Array of multipart/formdata in base64 encoding.
         content:
@@ -702,7 +711,6 @@ paths:
               multipleFiles:
                 contentType: image/png, image/jpeg
 
-  /media/{userId}:
     get:
       operationId: getUserMedia
       summary: Get list of media files and their location.
@@ -816,7 +824,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/errorResponse"
 
-  /user/{userId}/details:
+  /user/{username}/details:
     get:
       summary: Get user's details to show to other users
       operationId: getUserInfo
@@ -836,9 +844,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/errorResponse"
       parameters:
-        - name: userId
+        - in: path
           required: true
-          in: path
+          name: username
           schema:
             type: string
   
@@ -1382,37 +1390,6 @@ paths:
           required: true
 
   ###### REACTIONS ######
-
-  /blog/{postId}/reactions{?type}:
-    get:
-      operationId: getPostReactions
-      summary: get list of reactions on a post
-      tags:
-        - blog
-        - reaction
-      responses:
-        "200":
-          description: Return a list of reactions on a post.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/reaction"
-      parameters:
-        - in: path
-          name: postId
-          required: true
-          schema:
-            type: integer
-        - in: query
-          name: type
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-
   /blog/{postId}/reactions:
     post:
       operationId: addPostReaction
@@ -1432,12 +1409,37 @@ paths:
           name: postId
           required: true
           schema:
-            type: integer
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/newReaction"
+    get:
+      operationId: getPostReactions
+      summary: get list of reactions on a post
+      tags:
+        - blog
+        - reaction
+      responses:
+        "200":
+          description: Return a list of reactions on a post.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/reaction"
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: type
+          schema:
+            type: array
+            items:
+              type: string
 
   /blog/{postId}/reactions/{reactionId}:
     delete:
@@ -1458,14 +1460,14 @@ paths:
           name: postId
           required: true
           schema:
-            type: integer
+            type: string
         - in: path
           name: reactionId
           required: true
           schema:
-            type: integer
+            type: string
 
-  /user/{userId}/notifications{?unread}{?type}:
+  /user/{userId}/notifications:
     get:
       operationId: getUserNotifications
       summary: get list of reactions a user has received across all their posts
@@ -1478,9 +1480,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/reaction"
+                $ref: "#/components/schemas/reaction"
       parameters:
         - in: path
           name: userId
@@ -1488,19 +1488,17 @@ paths:
           schema:
             type: string
         - in: query
-          name: unread
-          required: false
+          name: readStatus
           schema:
-            type: boolean
+            type: string
         - in: query
           name: type
-          required: false
           schema:
             type: array
             items:
               type: string
 
-  /user/{userId}/notifications/{reactionId}{?readStatus}:
+  /user/{userId}/notifications/{reactionId}:
     put:
       operationId: handleReactionReadStatus
       summary: Change the read status of a reaction a user has received
@@ -1513,22 +1511,20 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/reaction"
+                $ref: "#/components/schemas/reaction"
       parameters:
         - in: path
           name: userId
           required: true
           schema:
-            type: integer
+            type: string
         - in: path
           name: reactionId
           required: true
           schema:
             type: array
             items:
-              type: integer
+              type: string
             minItems: 1
         - in: query
           name: readStatus

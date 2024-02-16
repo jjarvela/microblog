@@ -1,0 +1,29 @@
+
+POST http://localhost:9000/login
+Content-Type: application/json
+
+< ./userAuth_ok.json
+
+POST http://localhost:9000/media/641ae1b3-d5bf-4058-b8d8-2e9e6023114d
+Content-Type: multipart/form-data; boundary=MBF123
+
+--MBF123
+Content-Disposition: form-data; name="imagefile"; filename="virityskuva.png"
+Content-Type: image/png
+
+< ./virityskuva.png
+--MBF123--
+POST http://localhost:9000/media/641ae1b3-d5bf-4058-b8d8-2e9e6023114d
+Content-Type: multipart/form-data; boundary=MBF123
+
+--MBF123
+Content-Disposition: form-data; name="imagefile"; filename="virityskuva.png"
+Content-Type: image/png
+
+< ./virityskuva.png
+--MBF123
+Content-Disposition: form-data; name="imagefile"; filename="virityskuva2.png"
+Content-Type: image/png
+
+< ./virityskuva2.png
+--MBF123--

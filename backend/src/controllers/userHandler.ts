@@ -3,6 +3,7 @@ import * as userQueries from "../services/userQueries";
 import * as userProfileQueries from "../services/userProfileQueries";
 import * as followingQueries from "../services/followingQueries";
 import { Context } from "openapi-backend";
+import { users } from "@prisma/client";
 
 type User = {
   uid: string;
@@ -66,18 +67,19 @@ export async function getUserThumbInfo(
   _req: Request,
   res: Response
 ) {
-  const userId = c.request.params.userId;
+  const username = c.request.params.username.toString();
 
   try {
-    const user = await userQueries.selectUser({ uid: userId.toString() });
+    const user = await userQueries.selectUser({ username: username });
+    if (!user) throw new Error("User does not exist");
     const following = await followingQueries.selectFollowingUsers({
-      user_id: userId.toString(),
+      user_id: (user as users).uid
     });
     const followers = await followingQueries.selectFollowers({
-      user_id: userId.toString(),
+      user_id: (user as users).uid
     });
     const profile = await userProfileQueries.selectProfile({
-      user_id: userId.toString(),
+      user_id: (user as users).uid
     });
 
     if (!user || !following || !followers || !profile)
@@ -90,7 +92,7 @@ export async function getUserThumbInfo(
       profileImage: (user as User).profile_image || "",
       following: following,
       followers: followers,
-      description: profile.profile_text || "",
+      description: profile.profile_text || ""
     };
     res.status(200).json(result);
   } catch (e) {

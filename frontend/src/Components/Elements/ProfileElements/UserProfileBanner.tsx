@@ -11,7 +11,10 @@ import { ProfileContext } from "../../UserPage";
 import TextAreaInput from "../Inputs/TextAreaInput";
 import MaterialSymbolsEditOutlineRounded from "../../Icons/MaterialSymbolsEditOutlineRounded";
 import IonCheckmarkRound from "../../Icons/IonCheckmarkRound";
-import { useUser } from "../../../UserWrapper";
+import { useContext } from "react";
+import { ownerContext } from "../../UserPage";
+import { useQuery } from "@tanstack/react-query";
+import userService from "../../../Services/userService";
 import { useMutation } from "@tanstack/react-query";
 import profileService from "../../../Services/profileService";
 
@@ -37,6 +40,14 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
     profileMutation.mutate({ profile_text: newText });
     setEditingText(false);
   };
+
+  const ownerDetails = useQuery({
+    queryKey: ["profileDetails", owner!.id],
+    queryFn: async () => {
+      const result = userService.getUser(owner!.id!);
+      return result;
+    },
+  });
 
   return (
     <div>

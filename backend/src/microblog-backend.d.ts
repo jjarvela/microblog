@@ -86,6 +86,9 @@ declare namespace Components {
                 message?: string;
             }[];
         }
+        export interface FileObject {
+            imagefile?: Imagefile;
+        }
         /**
          * numerical id.
          */
@@ -97,6 +100,11 @@ declare namespace Components {
          */
         export interface IdList {
             itemIds: number[];
+        }
+        export interface Imagefile {
+            name?: string;
+            size?: number;
+            md5?: string;
         }
         export type MediaRes = {
             /**
@@ -110,14 +118,14 @@ declare namespace Components {
             /**
              * Unique id for media file.
              */
-            mediaId?: string;
+            mediaId: string; // uuid
             /**
              * The folder media file is related to.
              */
             folderId?: string;
         }[];
         export type MultipleFiles = {
-            imagefile?: string; // base64
+            imagefile?: string; // binary
         }[];
         export interface NewConversation {
             /**
@@ -147,6 +155,28 @@ declare namespace Components {
             follows_user: string; // uuid
             follows_group: number;
         }
+        export interface NewReaction {
+            /**
+             * reaction type (like/repost/comment)
+             */
+            type: string;
+            /**
+             * who received reaction
+             */
+            recipient_userid: string; // uuid
+            /**
+             * who reacted
+             */
+            sender_userid: string; // uuid
+            /**
+             * media target of reaction
+             */
+            media_id?: number;
+            /**
+             * post target of reaction
+             */
+            blogpost_id?: number;
+        }
         /**
          * Schema to create new user.
          */
@@ -170,6 +200,32 @@ declare namespace Components {
                 [name: string]: any;
             };
         }[];
+        export interface Reaction {
+            /**
+             * reaction id
+             */
+            id: number;
+            /**
+             * reaction type (like/repost/comment)
+             */
+            type: string;
+            /**
+             * who received reaction
+             */
+            recipient_userid: string; // uuid
+            /**
+             * who reacted
+             */
+            sender_userid: string; // uuid
+            /**
+             * media target of reaction
+             */
+            media_id?: number;
+            /**
+             * post target of reaction
+             */
+            blogpost_id?: number;
+        }
         /**
          * Blog post that can be referred with an id.
          */
@@ -211,7 +267,7 @@ declare namespace Components {
         }
         export interface UserInfo {
             id: string; // uuid
-            username: string;
+            userName?: string;
             screenName?: string;
             profileImage?: number;
             description?: string;
@@ -284,17 +340,27 @@ declare namespace Paths {
             export type $400 = Components.Schemas.ErrorResponse;
         }
     }
+    namespace AddPostReaction {
+        namespace Parameters {
+            export type PostId = number;
+        }
+        export interface PathParameters {
+            postId: Parameters.PostId;
+        }
+        export type RequestBody = Components.Schemas.NewReaction;
+        namespace Responses {
+            export type $200 = Components.Schemas.Reaction;
+        }
+    }
     namespace AddUserMedia {
         namespace Parameters {
-            export type FolderId = string;
             export type UserId = string;
         }
         export interface PathParameters {
             userId: Parameters.UserId;
-            folderId: Parameters.FolderId;
         }
         namespace Responses {
-            export type $200 = Components.Responses.OK;
+            export type $200 = Components.Responses.MediaRes;
         }
     }
     namespace CreateConversation {
@@ -367,6 +433,19 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = Components.Responses.Id;
             export type $400 = Components.Responses.ErrorResponse;
+        }
+    }
+    namespace DeletePostReaction {
+        namespace Parameters {
+            export type PostId = number;
+            export type ReactionId = number;
+        }
+        export interface PathParameters {
+            postId: Parameters.PostId;
+            reactionId: Parameters.ReactionId;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Reaction;
         }
     }
     namespace EditDirectMessage {
@@ -488,15 +567,19 @@ declare namespace Paths {
             export type $200 = /* User following other user or group. */ Components.Schemas.UserFollow[];
         }
     }
-    namespace GetProfile {
+    namespace GetPostReactions {
         namespace Parameters {
-            export type UserId = string;
+            export type PostId = number;
+            export type Type = string[];
         }
         export interface PathParameters {
-            userId: Parameters.UserId;
+            postId: Parameters.PostId;
+        }
+        export interface QueryParameters {
+            type?: Parameters.Type;
         }
         namespace Responses {
-            export type $200 = Components.Responses.OK;
+            export type $200 = Components.Schemas.Reaction[];
         }
     }
     namespace GetProfileElements {
@@ -509,6 +592,17 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = Components.Schemas.ProfileElements;
             export type $400 = Components.Schemas.ErrorResponse;
+        }
+    }
+    namespace GetUser {
+        namespace Parameters {
+            export type UserId = string;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+        }
+        namespace Responses {
+            export type $200 = Components.Responses.OK;
         }
     }
     namespace GetUserInfo {
@@ -534,10 +628,47 @@ declare namespace Paths {
             export type $200 = Components.Responses.MediaRes;
         }
     }
+    namespace GetUserNotifications {
+        namespace Parameters {
+            export type Type = string[];
+            export type Unread = boolean;
+            export type UserId = string;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+        }
+        export interface QueryParameters {
+            unread?: Parameters.Unread;
+            type?: Parameters.Type;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Reaction[];
+        }
+    }
+    namespace HandleReactionReadStatus {
+        namespace Parameters {
+            export type ReactionId = [
+                number,
+                ...number[]
+            ];
+            export type ReadStatus = string;
+            export type UserId = number;
+        }
+        export interface PathParameters {
+            userId: Parameters.UserId;
+            reactionId: Parameters.ReactionId;
+        }
+        export interface QueryParameters {
+            readStatus: Parameters.ReadStatus;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.Reaction[];
+        }
+    }
     namespace LoginUser {
         export type RequestBody = /* User authentication object. */ Components.Schemas.UserAuth;
         namespace Responses {
-            export type $200 = Components.Responses.OK;
+            export type $200 = string;
             export type $401 = Components.Responses.ErrorResponse;
         }
     }
@@ -550,7 +681,7 @@ declare namespace Paths {
     namespace RegisterUser {
         export type RequestBody = /* Schema to create new user. */ Components.Schemas.NewUserObject;
         namespace Responses {
-            export type $200 = Components.Responses.OK;
+            export type $200 = string;
         }
     }
     namespace SendDirectMessage {
@@ -616,14 +747,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateBlogPost.Responses.$200>
   /**
-   * addUserMedia - Upload a media files to selected folder.
-   */
-  'addUserMedia'(
-    parameters?: Parameters<Paths.AddUserMedia.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.AddUserMedia.Responses.$200>
-  /**
    * getUserMedia - Get list of media files and their location.
    */
   'getUserMedia'(
@@ -631,6 +754,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetUserMedia.Responses.$200>
+  /**
+   * addUserMedia - Upload a media files to server.
+   */
+  'addUserMedia'(
+    parameters?: Parameters<Paths.AddUserMedia.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AddUserMedia.Responses.$200>
   /**
    * delUserMedia - Delete refered media file.
    */
@@ -640,6 +771,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DelUserMedia.Responses.$200>
   /**
+   * getUser - Get logged in user's data.
+   */
+  'getUser'(
+    parameters?: Parameters<Paths.GetUser.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetUser.Responses.$200>
+  /**
    * getUserInfo - Get user's details to show to other users
    */
   'getUserInfo'(
@@ -647,14 +786,6 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetUserInfo.Responses.$200>
-  /**
-   * getProfile - Get user profile atributes.
-   */
-  'getProfile'(
-    parameters?: Parameters<Paths.GetProfile.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetProfile.Responses.$200>
   /**
    * getProfileElements - Get profile elements.
    */
@@ -712,14 +843,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetFollowers.Responses.$200>
   /**
-   * getConversations - Get list of user's active conversations.
-   */
-  'getConversations'(
-    parameters?: Parameters<Paths.GetConversations.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetConversations.Responses.$200>
-  /**
    * registerUser - Send user's registration data.
    */
   'registerUser'(
@@ -743,6 +866,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.LogoutUser.Responses.$200>
+  /**
+   * getConversations - Get list of user's active conversations.
+   */
+  'getConversations'(
+    parameters?: Parameters<Paths.GetConversations.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetConversations.Responses.$200>
   /**
    * createConversation - Start new conversation
    */
@@ -799,6 +930,46 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.DeleteDirectMessage.Responses.$200>
+  /**
+   * getPostReactions - get list of reactions on a post
+   */
+  'getPostReactions'(
+    parameters?: Parameters<Paths.GetPostReactions.QueryParameters & Paths.GetPostReactions.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetPostReactions.Responses.$200>
+  /**
+   * addPostReaction - add new reaction on a post
+   */
+  'addPostReaction'(
+    parameters?: Parameters<Paths.AddPostReaction.PathParameters> | null,
+    data?: Paths.AddPostReaction.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AddPostReaction.Responses.$200>
+  /**
+   * deletePostReaction - delete reaction from a post
+   */
+  'deletePostReaction'(
+    parameters?: Parameters<Paths.DeletePostReaction.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DeletePostReaction.Responses.$200>
+  /**
+   * getUserNotifications - get list of reactions a user has received across all their posts
+   */
+  'getUserNotifications'(
+    parameters?: Parameters<Paths.GetUserNotifications.QueryParameters & Paths.GetUserNotifications.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetUserNotifications.Responses.$200>
+  /**
+   * handleReactionReadStatus - Change the read status of a reaction a user has received
+   */
+  'handleReactionReadStatus'(
+    parameters?: Parameters<Paths.HandleReactionReadStatus.QueryParameters & Paths.HandleReactionReadStatus.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.HandleReactionReadStatus.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -838,17 +1009,15 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateBlogPost.Responses.$200>
   }
-  ['/media/{userId}/{folderId}']: {
+  ['/media/{userId}']: {
     /**
-     * addUserMedia - Upload a media files to selected folder.
+     * addUserMedia - Upload a media files to server.
      */
     'post'(
       parameters?: Parameters<Paths.AddUserMedia.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.AddUserMedia.Responses.$200>
-  }
-  ['/media/{userId}']: {
     /**
      * getUserMedia - Get list of media files and their location.
      */
@@ -868,6 +1037,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.DelUserMedia.Responses.$200>
   }
+  ['/user/{userId}']: {
+    /**
+     * getUser - Get logged in user's data.
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetUser.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetUser.Responses.$200>
+  }
   ['/user/{userId}/details']: {
     /**
      * getUserInfo - Get user's details to show to other users
@@ -877,16 +1056,6 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetUserInfo.Responses.$200>
-  }
-  ['/user/{userId}/profile']: {
-    /**
-     * getProfile - Get user profile atributes.
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetProfile.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetProfile.Responses.$200>
   }
   ['/user/{userId}/profile/elements']: {
     /**
@@ -952,16 +1121,6 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetFollowers.Responses.$200>
   }
-  ['/user/{userId}/conversations']: {
-    /**
-     * getConversations - Get list of user's active conversations.
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetConversations.PathParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetConversations.Responses.$200>
-  }
   ['/user/register']: {
     /**
      * registerUser - Send user's registration data.
@@ -991,6 +1150,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.LogoutUser.Responses.$200>
+  }
+  ['/user/{userId}/conversations']: {
+    /**
+     * getConversations - Get list of user's active conversations.
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetConversations.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetConversations.Responses.$200>
   }
   ['/conversation']: {
     /**
@@ -1055,6 +1224,56 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.DeleteDirectMessage.Responses.$200>
+  }
+  ['/blog/{postId}/reactions{?type}']: {
+    /**
+     * getPostReactions - get list of reactions on a post
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetPostReactions.QueryParameters & Paths.GetPostReactions.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetPostReactions.Responses.$200>
+  }
+  ['/blog/{postId}/reactions']: {
+    /**
+     * addPostReaction - add new reaction on a post
+     */
+    'post'(
+      parameters?: Parameters<Paths.AddPostReaction.PathParameters> | null,
+      data?: Paths.AddPostReaction.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AddPostReaction.Responses.$200>
+  }
+  ['/blog/{postId}/reactions/{reactionId}']: {
+    /**
+     * deletePostReaction - delete reaction from a post
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeletePostReaction.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DeletePostReaction.Responses.$200>
+  }
+  ['/user/{userId}/notifications{?unread}{?type}']: {
+    /**
+     * getUserNotifications - get list of reactions a user has received across all their posts
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetUserNotifications.QueryParameters & Paths.GetUserNotifications.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetUserNotifications.Responses.$200>
+  }
+  ['/user/{userId}/notifications/{reactionId}{?readStatus}']: {
+    /**
+     * handleReactionReadStatus - Change the read status of a reaction a user has received
+     */
+    'put'(
+      parameters?: Parameters<Paths.HandleReactionReadStatus.QueryParameters & Paths.HandleReactionReadStatus.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.HandleReactionReadStatus.Responses.$200>
   }
 }
 
