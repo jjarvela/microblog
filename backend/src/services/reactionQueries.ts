@@ -38,6 +38,9 @@ export const selectUnread = async (param: {
               uid: true
             }
           }
+        },
+        orderBy: {
+          timestamp: "desc"
         }
       });
       result && resultArray.concat(result);
