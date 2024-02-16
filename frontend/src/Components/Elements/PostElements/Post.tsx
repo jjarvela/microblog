@@ -18,7 +18,7 @@ import PostCommentForm from "../../PostCommentForm";
 import { useUser } from "../../../UserWrapper";
 import ReportPostModal from "../Modals/ReportPostModal";
 import { Link } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import postService from "../../../Services/postService";
 import { testUserId } from "../../../globalData";
 
@@ -33,8 +33,14 @@ export const PostContext = createContext<Post>({
   replyingTo: undefined,
 });
 
+type Reactions = {
+  likes: ReactionStub[];
+  reposts: ReactionStub[];
+  comments: unknown[];
+};
+
 type PostProps = {
-  post: Post;
+  post: BlogPostFromServer;
   pinnedPost?: boolean;
   topInfo?: string; // This can be used instead of "reposter" for a customized message.
 };
@@ -47,6 +53,28 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
   const [showCommentForm, setShowCommentForm] = useState(false);
   const user = useUser();
   const queryClient = useQueryClient();
+  const [liked, setLiked] = useState(false);
+  const [reposted, setReposted] = useState(false);
+
+  const reactionQuery = useQuery({
+    queryKey: ["post-reaction-query", post.id],
+    queryFn: async () => {
+      const reactions = await postService.getReactions(post.id);
+      if (
+        (reactions as Reactions).likes
+          .map((item) => item.username)
+          .indexOf(user.user!.userName) > -1
+      )
+        setLiked(true);
+      if (
+        (reactions as Reactions).reposts
+          .map((item) => item.username)
+          .indexOf(user.user!.userName) > -1
+      )
+        setReposted(true);
+      return reactions;
+    },
+  });
 
   const mutateDeletePost = useMutation({
     mutationFn: (ids: number[]) => postService.deletePost(ids, testUserId),
@@ -72,7 +100,7 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
 
           {post.reposter && (
             <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 px-6 pb-1 dark:border-white25">
-              <UsernameRepost username={post.reposter} />
+              <UsernameRepost username={post.reposter.userName} />
             </div>
           )}
           {topInfo && (
@@ -101,7 +129,7 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
 
           {post.replyingTo ? (
             <div>
-              <InReplyTo username={post.replyingTo} />
+              <InReplyTo username={post.replyingTo.userName} />
             </div>
           ) : null}
 
@@ -112,8 +140,17 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
 
             <TagList tags={post.tags} />
             <div className="mb-3 flex flex-row justify-center gap-4 text-2xl">
-              <LikeButton />
-              <RepostButton />
+              <span>
+                {reactionQuery.data ? reactionQuery.data.likes.length : 0}
+              </span>
+              <LikeButton liked={liked} />
+              <span>
+                {reactionQuery.data ? reactionQuery.data.reposts.length : 0}
+              </span>
+              <RepostButton reposted={reposted} />
+              <span>
+                {reactionQuery.data ? reactionQuery.data.comments.length : 0}
+              </span>
               <CommentButton setShowCommentForm={setShowCommentForm} />
               <ReportButton onClick={() => reportModal.current?.showModal()} />
             </div>
@@ -126,7 +163,16 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
               <span className="text-lg">
                 <PhFireSimpleBold />
               </span>
-              <p>{post.reactions} Reactions</p>
+              <p>
+                <span>
+                  {reactionQuery.data
+                    ? reactionQuery.data.likes.length +
+                      reactionQuery.data.reposts.length +
+                      reactionQuery.data.comments.length
+                    : 0}
+                </span>
+                Reactions
+              </p>
             </div>
           </Link>
         </div>

@@ -29,6 +29,16 @@ function sendPostMedia(userId: string, folderId: string, files: File[]) {
     .then((res) => res.data);
 }
 
+function getReactions(postId: number, type?: string[]) {
+  return axios
+    .get(
+      `${serverUrl}/blog/${postId}/reactions?type=${
+        type || ["like", "repost", "comment"]
+      }`,
+    )
+    .then((res) => res.data);
+}
+
 function addReaction(reaction: ReactionToServer) {
   if (reaction.blogpost_id) {
     return axios
@@ -48,6 +58,7 @@ function deleteReaction(postId: number, reactionId: number) {
 export default {
   getUserPosts: getPosts,
   getPosts,
+  getReactions,
   addNewPost,
   editPost,
   deletePost,
