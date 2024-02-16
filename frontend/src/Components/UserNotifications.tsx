@@ -1,11 +1,11 @@
 //import { TypeOptions, toast } from "react-toastify";
-import UserNotificationBox from "./Elements/UserNotificationBox";
 //import { useNotificationCenter } from "react-toastify/addons/use-notification-center";
 import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useUser } from "../UserWrapper";
 import notificationService from "../Services/notificationService";
 import { queryClient } from "../main";
+import { NotificationList } from "./Elements/NotificationList";
 
 /*const types = ["success", "info", "warning", "error"];*/
 
@@ -57,7 +57,10 @@ const UserNotifications = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["unread-notifications", "notifications", user?.id],
+        queryKey: ["unread-notifications", user?.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["notifications", user?.id],
       });
     },
   });
@@ -88,17 +91,9 @@ const UserNotifications = () => {
   return (
     <div className="flex flex-col">
       <h2 className="my-4 text-center">Notifications Hub</h2>
-      <div className="flex flex-col">
-        <ul>
-          {notificationQuery.data &&
-            notificationQuery.data.length > 0 &&
-            notificationQuery.data.map((notification: ReactionFromServer) => (
-              <li key={notification.id}>
-                <UserNotificationBox reaction={notification} />
-              </li>
-            ))}
-        </ul>
-      </div>
+      {notificationQuery.data && notificationQuery.data.length > 0 && (
+        <NotificationList notifications={notificationQuery.data} />
+      )}
     </div>
   );
 };
