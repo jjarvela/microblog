@@ -21,6 +21,8 @@ type User = { userId: string; socket_id: string };
 io.on("connection", (socket) => {
   console.log("connected to socket " + socket.id);
 
+  socket.emit("poll-user");
+
   socket.on("add-user", async (userId) => {
     console.log("Adding user");
     const user = await updateSocket(userId, socket.id);

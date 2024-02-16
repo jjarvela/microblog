@@ -188,6 +188,11 @@ function UserWrapper({ children }: UserWrapperProps) {
     enabled: !!currentUser,
   });
 
+  socket.on(
+    "poll-user",
+    () => currentUid && socket.emit("add-user", currentUid),
+  );
+
   return (
     <UserContext.Provider
       value={{
