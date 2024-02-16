@@ -78,6 +78,13 @@ type BlogPostToServer = {
   hashtags: string[];
 };
 
+type UserProfile = {
+  userId: string;
+  profile_text: string;
+  header_media_id: number;
+  homepage: string;
+};
+
 type Group = {
   groupName: string;
   groupAdmin: User;

@@ -1,4 +1,5 @@
 import { PrismaClient, users } from "@prisma/client";
+import { validate as validateUuid } from "uuid";
 
 const prisma = new PrismaClient();
 
@@ -51,7 +52,7 @@ export const selectUser = async ({
       },
     });
     return result;
-  } else if (uid) {
+  } else if (validateUuid(uid || "")) {
     const result: object | null = await prisma.users.findUnique({
       where: {
         uid: uid,
@@ -82,6 +83,8 @@ export const deleteUser = async (param: { uid: string }) => {
 
 export const updateUser = async (param: {
   uid: string;
+  userName?: string;
+  screenName?: string;
   password?: string;
   email?: string;
   admin?: boolean;
@@ -96,6 +99,8 @@ export const updateUser = async (param: {
       uid: param.uid,
     },
     data: {
+      username: param.userName,
+      screen_name: param.screenName,
       password: param.password,
       email: param.email,
       admin: param.admin,
@@ -106,6 +111,15 @@ export const updateUser = async (param: {
       last_login: param.last_login,
     },
   });
+  return result;
+};
+
+export const getUserIdByName = async (userName: string) => {
+  const result = await prisma.users.findUnique({
+    where: { username: userName },
+    select: { uid: true },
+  });
+  console.log("Got user id " + result?.uid + " for user " + userName);
   return result;
 };
 
@@ -123,13 +137,15 @@ export const getSocket = async (userId: string) => {
 };
 
 export const updateSocket = async (userId: string, socketId: string | null) => {
-  const result: users | null = await prisma.users.update({
-    where: {
-      uid: userId,
-    },
-    data: {
-      socket_id: socketId,
-    },
-  });
-  console.log(result);
+  if (await prisma.users.findUnique({ where: { uid: userId } })) {
+    const result: users | null = await prisma.users.update({
+      where: {
+        uid: userId,
+      },
+      data: {
+        socket_id: socketId,
+      },
+    });
+    console.log(result);
+  }
 };

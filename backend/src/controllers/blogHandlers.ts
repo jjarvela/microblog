@@ -35,7 +35,7 @@ export async function getBlogPost(c: Context, _req: Request, res: Response) {
     console.log("Get post");
 
     const query = c.request.query
-    const userId = c.request.params.user_id
+    const userId = c.request.params.userId
     let startDate = new Date("2023-01-01") // Set default date range start.
     let endDate = new Date(Date.now()) // Set default date range end.
 

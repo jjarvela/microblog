@@ -20,7 +20,6 @@ import ReportPostModal from "../Modals/ReportPostModal";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import postService from "../../../Services/postService";
-import { testUserId } from "../../../globalData";
 
 export const PostContext = createContext<Post>({
   postOwner: { userName: "", screenName: "", followers: [], following: [] },
@@ -77,9 +76,10 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
   });
 
   const mutateDeletePost = useMutation({
-    mutationFn: (ids: number[]) => postService.deletePost(ids, testUserId),
+    mutationFn: (ids: number[]) =>
+      postService.deletePost(ids, user.user?.id || ""),
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+      queryClient.invalidateQueries({ queryKey: ["posts", user.user?.id] });
     },
   });
 
