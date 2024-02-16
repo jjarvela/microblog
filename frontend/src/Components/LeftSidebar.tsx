@@ -17,6 +17,7 @@ import { useUser } from "../UserWrapper";
 import { socket } from "../globalData";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import notificationService from "../Services/notificationService";
+import { NotificationDot } from "./Elements/NotificationDot";
 
 /*type LeftSidebarProps = {
   unreadCount: number;
@@ -51,13 +52,17 @@ function LeftSidebar(/*{ unreadCount }: LeftSidebarProps*/) {
 
   socket.on("received-notification", () => {
     queryClient.invalidateQueries({
-      queryKey: ["unread-notifications", "notifications", user.user?.id],
+      queryKey: ["unread-notifications", user.user?.id],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["notifications", user.user?.id],
     });
     console.log("Received notification");
   });
 
   socket.on("received-message", () => {
     console.log("Received message");
+    queryClient.invalidateQueries({ queryKey: ["conversations"] });
     queryClient.invalidateQueries({ queryKey: ["messages"] });
   });
 
@@ -126,9 +131,7 @@ function LeftSidebar(/*{ unreadCount }: LeftSidebarProps*/) {
                 />
                 {notificationQuery.data &&
                   notificationQuery.data.length > 0 && (
-                    <div className="absolute left-8 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                      {notificationQuery.data.length}
-                    </div>
+                    <NotificationDot count={notificationQuery.data.length} />
                   )}
               </div>
               <SidebarLink
