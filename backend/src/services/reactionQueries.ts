@@ -23,6 +23,21 @@ export const selectUnread = async (param: {
           recipient_userid: param.user_id,
           type: item,
           read: false
+        },
+        include: {
+          sender_useridTousers: {
+            select: {
+              uid: true,
+              username: true,
+              screen_name: true,
+              profile_image: true
+            }
+          },
+          recipient_useridTousers: {
+            select: {
+              uid: true
+            }
+          }
         }
       });
       result && resultArray.concat(result);
@@ -37,8 +52,22 @@ export const selectReactions = async (
   type?: string[]
 ) => {
   if (!type) {
-    const result: reactions[] | null = await prisma.reactions.findMany({
-      where: condition
+    const result: object[] | null = await prisma.reactions.findMany({
+      where: condition,
+      include: {
+        sender_useridTousers: {
+          select: {
+            uid: true,
+            username: true,
+            profile_image: true
+          }
+        },
+        recipient_useridTousers: {
+          select: {
+            uid: true
+          }
+        }
+      }
     });
     console.log(result);
     return result;
@@ -46,7 +75,21 @@ export const selectReactions = async (
     const resultArray: reactions[] = [];
     type.forEach(async (item) => {
       const result = await prisma.reactions.findMany({
-        where: { ...condition, type: item }
+        where: { ...condition, type: item },
+        include: {
+          sender_useridTousers: {
+            select: {
+              uid: true,
+              username: true,
+              profile_image: true
+            }
+          },
+          recipient_useridTousers: {
+            select: {
+              uid: true
+            }
+          }
+        }
       });
       result && resultArray.concat(result);
       console.log(resultArray);
@@ -75,7 +118,7 @@ export const insertReaction = async (param: {
     condition = {
       creator_post: {
         recipient_userid: param.recipient_userid,
-        blogpost_id: param.media_id
+        blogpost_id: param.blogpost_id
       }
     };
   } else {
