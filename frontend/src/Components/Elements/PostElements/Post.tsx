@@ -32,12 +32,6 @@ export const PostContext = createContext<Post>({
   replyingTo: undefined,
 });
 
-type Reactions = {
-  likes: ReactionStub[];
-  reposts: ReactionStub[];
-  comments: unknown[];
-};
-
 type PostProps = {
   post: BlogPostFromServer;
   pinnedPost?: boolean;
@@ -52,25 +46,12 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
   const [showCommentForm, setShowCommentForm] = useState(false);
   const user = useUser();
   const queryClient = useQueryClient();
-  const [liked, setLiked] = useState(false);
-  const [reposted, setReposted] = useState(false);
 
   const reactionQuery = useQuery({
     queryKey: ["post-reaction-query", post.id],
     queryFn: async () => {
       const reactions = await postService.getReactions(post.id);
-      if (
-        (reactions as Reactions).likes
-          .map((item) => item.username)
-          .indexOf(user.user!.userName) > -1
-      )
-        setLiked(true);
-      if (
-        (reactions as Reactions).reposts
-          .map((item) => item.username)
-          .indexOf(user.user!.userName) > -1
-      )
-        setReposted(true);
+      console.log(reactions);
       return reactions;
     },
   });
@@ -141,16 +122,44 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
             <TagList tags={post.tags} />
             <div className="mb-3 flex flex-row justify-center gap-4 text-2xl">
               <span>
-                {reactionQuery.data ? reactionQuery.data.likes.length : 0}
+                {reactionQuery.data
+                  ? reactionQuery.data.filter(
+                      (item: ReactionFromServer) => item.type === "like",
+                    ).length
+                  : 0}
               </span>
-              <LikeButton liked={liked} />
+              <LikeButton
+                liked={
+                  (reactionQuery.data &&
+                    reactionQuery.data
+                      .filter(
+                        (item: ReactionFromServer) => item.type === "like",
+                      )
+                      .map((item: ReactionFromServer) => item.sender_userid)
+                      .indexOf(user.user?.id) > -1) ||
+                  false
+                }
+              />
               <span>
-                {reactionQuery.data ? reactionQuery.data.reposts.length : 0}
+                {reactionQuery.data
+                  ? reactionQuery.data.filter(
+                      (item: ReactionFromServer) => item.type === "repost",
+                    ).length
+                  : 0}
               </span>
-              <RepostButton reposted={reposted} />
-              <span>
-                {reactionQuery.data ? reactionQuery.data.comments.length : 0}
-              </span>
+              <RepostButton
+                reposted={
+                  (reactionQuery.data &&
+                    reactionQuery.data
+                      .filter(
+                        (item: ReactionFromServer) => item.type === "repost",
+                      )
+                      .map((item: ReactionFromServer) => item.sender_userid)
+                      .indexOf(user.user?.id) > -1) ||
+                  false
+                }
+              />
+              <span>{0}</span>
               <CommentButton setShowCommentForm={setShowCommentForm} />
               <ReportButton onClick={() => reportModal.current?.showModal()} />
             </div>
@@ -165,11 +174,7 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
               </span>
               <p>
                 <span>
-                  {reactionQuery.data
-                    ? reactionQuery.data.likes.length +
-                      reactionQuery.data.reposts.length +
-                      reactionQuery.data.comments.length
-                    : 0}
+                  {reactionQuery.data ? reactionQuery.data.length : 0}{" "}
                 </span>
                 Reactions
               </p>
