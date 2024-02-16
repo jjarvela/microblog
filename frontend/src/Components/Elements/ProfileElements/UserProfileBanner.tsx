@@ -46,8 +46,9 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
             <UserProfileInfo
               user={profile.details}
               profileImageSize={150}
-              class=" text-white"
+              class=" text-white [text-shadow:_0_0_2rem_#0004]"
               nameClass="text-xl font-bold md:text-2xl"
+              handleClass="text-white75"
               disablePopup={true}
             />
             <Button className="btn-primary h-[max-content]">Follow</Button>
