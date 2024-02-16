@@ -27,7 +27,7 @@ export default function LikeButton({ liked }: { liked: boolean }) {
             queryKey: ["post-reaction-query", post.id],
           });
         } else {
-          await postService.deleteReaction(post.id, 2);
+          await postService.deleteReaction(post.id!, user!.id, "like");
         }
       }}
     >

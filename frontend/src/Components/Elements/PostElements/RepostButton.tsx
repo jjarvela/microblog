@@ -26,8 +26,9 @@ export default function RepostButton({ reposted }: { reposted: boolean }) {
           queryClient.invalidateQueries({
             queryKey: ["post-reaction-query", post.id],
           });
+        } else {
+          await postService.deleteReaction(post.id!, user!.id, "repost");
         }
-        if (!reposted) socket.emit("send-notification", post.postOwner.id!);
       }}
     >
       {reposted ? (
