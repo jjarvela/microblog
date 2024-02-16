@@ -49,7 +49,7 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
     mutationFn: () => {
       const formData = new FormData();
       files.forEach((file) => formData.append(file.name, file));
-      return postService.sendPostMedia(testUserId, testUserId, formData);
+      return postService.sendPostMedia(testUserId, formData);
     },
   });
 
