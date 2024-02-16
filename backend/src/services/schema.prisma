@@ -145,6 +145,7 @@ model reactions {
   type                    String
   recipient_userid        String       @db.Uuid
   sender_userid           String       @db.Uuid
+  timestamp               DateTime?         @db.Timestamp(6)
   read                    Boolean
   media_id                Int?
   blogpost_id             Int?

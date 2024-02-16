@@ -1307,13 +1307,11 @@ paths:
           schema:
             type: string
         - in: query
-          name: read
-          required: false
+          name: readStatus
           schema:
-            type: boolean
+            type: string
         - in: query
           name: type
-          required: false
           schema:
             type: array
             items:
