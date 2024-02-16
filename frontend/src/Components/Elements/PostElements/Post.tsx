@@ -1,5 +1,5 @@
 import PhFireSimpleBold from "../../Icons/PhFireSimpleBold";
-import PostMediaLayout from "./PostMediaLayout";
+//import PostMediaLayout from "./PostMediaLayout";
 import InReplyTo from "./InReplyTo";
 import UsernameRepost from "./UsernameRepost";
 import PostContextMenu from "./PostContextMenu";
@@ -21,15 +21,14 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import postService from "../../../Services/postService";
 
-export const PostContext = createContext<Post>({
-  postOwner: { userName: "", screenName: "", followers: [], following: [] },
-  text: "",
-  reactions: 0,
-  tags: [],
-  time: new Date(),
-  media: [],
-  reposter: undefined,
-  replyingTo: undefined,
+export const PostContext = createContext<BlogPostFromServer>({
+  id: 0,
+  blogpost_uid: "",
+  user_id: "",
+  user_idTousers: { uid: "" },
+  blog_text: "",
+  item_properties: [],
+  timestamp: new Date().toISOString(),
 });
 
 type PostProps = {
@@ -79,9 +78,9 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
             </div>
           ) : null}
 
-          {post.reposter && (
+          {post.reposter_idTousers && (
             <div className="-mx-3 mb-4 flex flex-row justify-end border-b border-black25 px-6 pb-1 dark:border-white25">
-              <UsernameRepost username={post.reposter.userName} />
+              <UsernameRepost username={post.reposter_idTousers.username!} />
             </div>
           )}
           {topInfo && (
@@ -93,33 +92,39 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
           <div className="flex flex-row-reverse flex-wrap items-center gap-4">
             <PostContextMenu
               class="self-start"
-              ownerOptions={user.user?.userName === post.postOwner.userName}
+              ownerOptions={user.user?.id === post.user_idTousers.uid}
               editPostCallback={() => editModal.current?.showModal()}
               deletePostCallback={() => deleteConfirm.current?.showModal()}
             />
             {/*add proper postid to link here and in UserProfileInfo*/}
             <Link
-              to={`/${post.postOwner.userName.substring(1)}/post/${1}`}
+              to={`/${post.user_idTousers.username!.substring(1)}/post/${1}`}
               state={post}
               className="mr-3 self-start underline underline-offset-2"
             >
-              <time>{post.time.toLocaleString()}</time>
+              <time>{new Date(post.timestamp).toLocaleString()}</time>
             </Link>
-            <UserProfileInfo user={post.postOwner} />
+            <UserProfileInfo
+              user={{
+                id: post.user_idTousers.uid,
+                userName: post.user_idTousers.username!,
+                screenName: post.user_idTousers.screen_name!,
+              }}
+            />
           </div>
 
-          {post.replyingTo ? (
+          {post.reposter_idTousers ? (
             <div>
-              <InReplyTo username={post.replyingTo.userName} />
+              <InReplyTo username={post.user_idTousers.username!} />
             </div>
           ) : null}
 
           <div className={`flex flex-col gap-3 ${isSm ? "m-6" : "m-3"}`}>
-            <div>{post.text}</div>
+            <div>{post.blog_text}</div>
 
-            {post.media.length > 0 && <PostMediaLayout media={post.media} />}
+            {/*post.media.length > 0 && <PostMediaLayout media={post.media} />*/}
 
-            <TagList tags={post.tags} />
+            <TagList tags={post.item_properties.map((item) => item.value)} />
             <div className="mb-3 flex flex-row justify-center gap-4 text-2xl">
               <span>
                 {reactionQuery.data
@@ -165,7 +170,7 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
             </div>
           </div>
           <Link
-            to={`/${post.postOwner.userName.substring(1)}/post/${1}`}
+            to={`/${post.user_idTousers.username!}/post/${post.id}`}
             state={post}
           >
             <div className="-m-3 flex flex-row items-center justify-end gap-1 rounded-b-xl bg-black25 px-6 py-3 dark:bg-black75">
@@ -183,7 +188,11 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
         </div>
         {showCommentForm && (
           <PostCommentForm
-            recipient={post.postOwner}
+            recipient={{
+              id: post.user_idTousers.uid,
+              userName: post.user_idTousers.username!,
+              screenName: post.user_idTousers.screen_name!,
+            }}
             commenter={
               user?.details || {
                 userName: "",
@@ -198,9 +207,13 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
       </div>
       <PostModal
         id={post.id}
-        text={post.text}
-        tags={post.tags}
-        user={post.postOwner}
+        text={post.blog_text}
+        tags={post.item_properties.map((item) => item.value)}
+        user={{
+          id: post.user_idTousers.uid,
+          userName: post.user_idTousers.username!,
+          screenName: post.user_idTousers.screen_name!,
+        }}
         refObject={editModal}
         mode="edit"
       />
@@ -220,9 +233,12 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
               WebkitBoxOrient: "vertical",
             }}
           >
-            {post.text}
+            {post.blog_text}
           </p>
-          <TagList tags={post.tags} class="italic" />
+          <TagList
+            tags={post.item_properties.map((item) => item.value)}
+            class="italic"
+          />
         </div>
       </ConfirmModal>
 

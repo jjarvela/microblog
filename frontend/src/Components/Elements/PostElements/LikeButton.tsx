@@ -17,12 +17,12 @@ export default function LikeButton({ liked }: { liked: boolean }) {
         if (!liked) {
           await postService.addReaction({
             type: "like",
-            recipient_userid: post.postOwner.id!,
+            recipient_userid: post.user_idTousers.uid,
             sender_userid: user!.id,
             read: false,
             blogpost_id: post.id,
           });
-          socket.emit("send-notification", post.postOwner.id!);
+          socket.emit("send-notification", post.user_idTousers.uid);
           queryClient.invalidateQueries({
             queryKey: ["post-reaction-query", post.id],
           });
