@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "../../Button";
 import DropdownInput from "../../Inputs/DropdownInput";
 import ProfileLinkBox, { IProfileLinkBoxData } from "./ProfileLinkBox";
@@ -6,7 +6,7 @@ import ProfileMediaBox, { IProfileMediaBoxData } from "./ProfileMediaBox";
 import ProfilePostBox, { IProfilePostBoxData } from "./ProfilePostBox";
 import ProfileTextBox, { IProfileTextBoxData } from "./ProfileTextBox";
 import { emptyPost } from "../../../../globalData";
-import { useUser } from "../../../../UserWrapper";
+import { ProfileContext } from "../../../UserPage";
 
 export type ProfileBox =
   | { type: "text"; data: IProfileTextBoxData }
@@ -63,7 +63,7 @@ function ProfileBoxes({
 
   const [newBoxes, setNewBoxes] = useState(boxes);
   const [isEditing, setIsEditing] = useState(false);
-  const user = useUser();
+  const profile = useContext(ProfileContext);
 
   const handleBoxCommit = (commitBoxes: ProfileBox[]) => {
     setBoxes(commitBoxes);
@@ -180,11 +180,11 @@ function ProfileBoxes({
       <div className="flex flex-row items-center justify-center gap-4">
         {isEditing ? (
           <h3 className="my-[1.31rem] text-center">
-            Editing {user.user?.screenName}'s Profile
+            Editing {profile.details?.screenName}'s Profile
           </h3>
         ) : (
           <h2 className="my-4 text-center">
-            {user.user?.screenName}'s Profile
+            {profile.details?.screenName}'s Profile
           </h2>
         )}
         {owned && !isEditing && (

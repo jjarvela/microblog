@@ -7,7 +7,6 @@ import TextInput from "../Inputs/TextInput";
 import UserProfileInfo from "../UserProfileInfo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postService from "../../../Services/postService";
-import { testUserId } from "../../../globalData";
 import FormMediaPreview from "../Inputs/FormMediaPreview";
 
 type NewPostProps = {
@@ -30,17 +29,17 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
 
   const mutateAddPost = useMutation({
     mutationFn: (post: BlogToServer) =>
-      postService.addNewPost(post, testUserId),
+      postService.addNewPost(post, user.id || ""),
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+      queryClient.invalidateQueries({ queryKey: ["posts", user.id] });
     },
   });
 
   const mutateEditPost = useMutation({
     mutationFn: (post: BlogToServer) =>
-      postService.editPost(post, testUserId, id!), // FIX ME: id optional for now because of rewriting
+      postService.editPost(post, user.id || "", id!), // FIX ME: id optional for now because of rewriting
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+      queryClient.invalidateQueries({ queryKey: ["posts", user.id] });
     },
   });
 
