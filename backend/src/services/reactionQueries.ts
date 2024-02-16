@@ -40,7 +40,7 @@ export const selectUnread = async (param: {
           }
         },
         orderBy: {
-          timestamp: "desc"
+          timestamp: "asc"
         }
       });
       result && resultArray.concat(result);
@@ -137,14 +137,19 @@ export const insertReaction = async (param: {
       type: param.type,
       media_id: param.media_id,
       blogpost_id: param.blogpost_id,
-      read: param.read
+      read: param.read,
+      timestamp: new Date(Date.now())
     }
   });
   console.log(result);
   return result;
 };
 
-export const deleteReaction = async (param: { reaction_id: number }) => {
+export const deleteReaction = async (param: {
+  blogpost_id: number;
+  sender_userid: string;
+  type: string;
+}) => {
   /*let condition: any = {};
   if (param.media_id) {
     condition = {
@@ -164,12 +169,27 @@ export const deleteReaction = async (param: { reaction_id: number }) => {
     return null;
   }*/
 
-  const result: reactions | null = await prisma.reactions.delete({
+  const result: reactions[] = await prisma.reactions.findMany({
     where: {
-      id: param.reaction_id
+      AND: [
+        { blogpost_id: param.blogpost_id },
+        { sender_userid: param.sender_userid },
+        { type: param.type }
+      ]
     }
   });
-  console.log(result);
+
+  if (result.length < 1) {
+    throw new Error("Could not find reaction");
+  }
+
+  const deleted: reactions = await prisma.reactions.delete({
+    where: {
+      id: result[0].id
+    }
+  });
+
+  console.log(deleted);
   return result;
 };
 

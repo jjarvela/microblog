@@ -42,10 +42,14 @@ export const deleteReaction = async (
   _req: Request,
   res: Response
 ) => {
-  const reactionId = c.request.params.reactionId.toString();
+  const blogpost_id = c.request.params.postId.toString();
+  const user_id = c.request.query.userId.toString();
+  const type = c.request.query.type.toString();
   try {
     const result = await queries.deleteReaction({
-      reaction_id: parseInt(reactionId)
+      blogpost_id: parseInt(blogpost_id),
+      sender_userid: user_id,
+      type
     });
     res.status(201).json(result);
   } catch (e) {

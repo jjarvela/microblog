@@ -51,8 +51,10 @@ function addReaction(reaction: ReactionToServer) {
   }
 }
 
-function deleteReaction(postId: number, reactionId: number) {
-  return axios.delete(`${serverUrl}/blog/${postId}/reactions/${reactionId}`);
+function deleteReaction(postId: number, userId: string, type: string) {
+  return axios.delete(
+    `${serverUrl}/blog/${postId}/reactions?userId=${userId}&type=${type}`,
+  );
 }
 
 export default {

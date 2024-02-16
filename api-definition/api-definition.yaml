@@ -340,7 +340,7 @@ components:
           folderId:
             type: string
             description: The folder media file is related to.
-    
+
     profile:
       type: object
       properties:
@@ -356,8 +356,7 @@ components:
         homepage:
           type: string
           description: Address for user's homepage
-        
-    
+
     profileElements:
       type: array
       items:
@@ -849,7 +848,7 @@ paths:
           name: username
           schema:
             type: string
-  
+
   /user/id/{userName}:
     get:
       summary: Get user's id based on user name
@@ -863,7 +862,7 @@ paths:
             text/plain:
               schema:
                 type: string
-              
+
         "400":
           description: Error object.
           content:
@@ -1441,7 +1440,6 @@ paths:
             items:
               type: string
 
-  /blog/{postId}/reactions/{reactionId}:
     delete:
       operationId: deletePostReaction
       summary: delete reaction from a post
@@ -1461,8 +1459,13 @@ paths:
           required: true
           schema:
             type: string
-        - in: path
-          name: reactionId
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: type
           required: true
           schema:
             type: string
