@@ -8,7 +8,7 @@ import { eachItem } from "ajv/dist/compile/util";
 import { mkdir, access } from "node:fs/promises";
 import { UUID } from "node:crypto";
 
-const media_root = '/user_media'
+const media_root = './user_media'
 
 
 
@@ -31,7 +31,7 @@ export async function addUserMedia(c: Context, req: Request, res: Response) {
       await access(dir)
     } catch (e) {
       console.log(`Creating directory for uid ${uid}`)
-      await mkdir(dir)
+      await mkdir(dir, {recursive: true})
     }
 
     try {
