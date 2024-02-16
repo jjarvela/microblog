@@ -15,17 +15,20 @@ import { useBreakpoint } from "../Hooks/BreakpointHook";
 import MdiDotsVertical from "./Icons/MdiDotsVertical";
 import { useUser } from "../UserWrapper";
 import { socket } from "../globalData";
+import { useQueryClient } from "@tanstack/react-query";
 
-type LeftSidebarProps = {
+/*type LeftSidebarProps = {
   unreadCount: number;
-};
+};*/
 
-function LeftSidebar({ unreadCount }: LeftSidebarProps) {
+function LeftSidebar(/*{ unreadCount }: LeftSidebarProps*/) {
   const user = useUser();
   const postModal = useRef<HTMLDialogElement>(null);
   const { isMd } = useBreakpoint("md");
   const { isXs } = useBreakpoint("xs");
   const [showSidebar, setShowSidebar] = useState(false);
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (isXs) setShowSidebar(true);
@@ -38,6 +41,7 @@ function LeftSidebar({ unreadCount }: LeftSidebarProps) {
 
   socket.on("received-message", () => {
     console.log("Received message");
+    queryClient.invalidateQueries({ queryKey: ["messages"] });
   });
 
   return (
@@ -103,11 +107,11 @@ function LeftSidebar({ unreadCount }: LeftSidebarProps) {
                   text="Notifications"
                   icon={<MaterialSymbolsNotificationsRounded />}
                 />
-                {unreadCount > 0 && (
+                {/*unreadCount > 0 && (
                   <div className="absolute left-8 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                     {unreadCount}
                   </div>
-                )}
+                )*/}
               </div>
               <SidebarLink
                 to="/messages"
