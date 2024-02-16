@@ -17,9 +17,15 @@ function getUserNotifications(param: {
     .then((res) => res.data);
 }
 
-function handleNotificationReadStatus(userId: string, read: string[]) {
+function handleNotificationReadStatus(
+  userId: string,
+  reactionId: number[],
+  read: string,
+) {
   return axios
-    .put(`${serverUrl}/user/${userId}/notifications?readStatus=${read}`)
+    .put(
+      `${serverUrl}/user/${userId}/notifications?reactionId=${reactionId}&readStatus=${read}`,
+    )
     .then((res) => res.data);
 }
 

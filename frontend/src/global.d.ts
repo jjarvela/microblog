@@ -39,17 +39,10 @@ type UserDetails = {
 };
 
 type UserTouser = {
-  admin?: boolean;
-  birthday: string;
-  email: string;
-  joined: string;
-  last_login: string;
-  location: string;
-  password: string;
-  timezone: string;
   uid: string;
-  username: string;
-  screen_name: string;
+  username?: string;
+  screen_name?: string;
+  profile_image?: number;
 };
 
 type Media = {
@@ -138,8 +131,12 @@ interface ReactionToServer {
   blogpost_id?: number;
 }
 
-interface ReactionFromServer extends reactionToServer {
+interface ReactionFromServer extends ReactionToServer {
+  type: string;
   id: number;
+  timestamp: string;
+  recipient_useridTousers: UserTouser;
+  sender_useridTousers: UserTouser;
 }
 
 type Theme = "system" | "light" | "dark";

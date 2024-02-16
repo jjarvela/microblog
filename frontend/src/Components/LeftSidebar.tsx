@@ -15,7 +15,9 @@ import { useBreakpoint } from "../Hooks/BreakpointHook";
 import MdiDotsVertical from "./Icons/MdiDotsVertical";
 import { useUser } from "../UserWrapper";
 import { socket } from "../globalData";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import notificationService from "../Services/notificationService";
+import { NotificationDot } from "./Elements/NotificationDot";
 
 /*type LeftSidebarProps = {
   unreadCount: number;
@@ -30,17 +32,37 @@ function LeftSidebar(/*{ unreadCount }: LeftSidebarProps*/) {
 
   const queryClient = useQueryClient();
 
+  const notificationQuery = useQuery({
+    queryKey: ["unread-notifications", user.user?.id],
+    queryFn: () => {
+      if (user.user)
+        return notificationService.getUserNotifications({
+          userId: user.user.id,
+          read: "false",
+        });
+      else return [];
+    },
+    enabled: !!user.user,
+  });
+
   useEffect(() => {
     if (isXs) setShowSidebar(true);
     else setShowSidebar(false);
   }, [isXs]);
 
   socket.on("received-notification", () => {
+    queryClient.invalidateQueries({
+      queryKey: ["unread-notifications", user.user?.id],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["notifications", user.user?.id],
+    });
     console.log("Received notification");
   });
 
   socket.on("received-message", () => {
     console.log("Received message");
+    queryClient.invalidateQueries({ queryKey: ["conversations"] });
     queryClient.invalidateQueries({ queryKey: ["messages"] });
   });
 
@@ -107,11 +129,10 @@ function LeftSidebar(/*{ unreadCount }: LeftSidebarProps*/) {
                   text="Notifications"
                   icon={<MaterialSymbolsNotificationsRounded />}
                 />
-                {/*unreadCount > 0 && (
-                  <div className="absolute left-8 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                    {unreadCount}
-                  </div>
-                )*/}
+                {notificationQuery.data &&
+                  notificationQuery.data.length > 0 && (
+                    <NotificationDot count={notificationQuery.data.length} />
+                  )}
               </div>
               <SidebarLink
                 to="/messages"
