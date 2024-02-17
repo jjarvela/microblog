@@ -4,11 +4,12 @@ export const postdata = [
   // User 1's Post
   {
     id: 1,
-    blogpost_uid: "51c8038b-05ce-46f0-9236-9abc77697248",
     user_id: userid1,
+    original_poster_id: userid1,
     blog_text:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     timestamp: new Date("2024-01-01T13:00:00Z"),
+    original_created: new Date("2024-01-01T13:00:00Z"),
     item_properties: {
       createMany: {
         data: [
@@ -26,9 +27,10 @@ export const postdata = [
   {
     id: 2,
     user_id: userid1,
-    blogpost_uid: "6cfbde03-5a34-4cff-94ba-9a01d1d0a4fb",
+    original_poster_id: userid1,
     blog_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
     timestamp: new Date("2024-01-05T07:55:00Z"),
+    original_created: new Date("2024-01-05T07:55:00Z"),
     item_properties: {
       createMany: {
         data: [
@@ -55,9 +57,10 @@ export const postdata = [
   {
     id: 3,
     user_id: userid2,
-    blogpost_uid: "1ccf0add-a2ca-423d-9374-64a0a3637405",
+    original_poster_id: userid2,
     blog_text: "This is my first post",
     timestamp: new Date("2023-11-20T11:03:53Z"),
+    original_created: new Date("2023-11-20T11:03:53Z"),
     item_properties: {
       createMany: {
         data: [
@@ -75,9 +78,10 @@ export const postdata = [
   {
     id: 4,
     user_id: userid2,
+    original_poster_id: userid2,
     blog_text: "Posting the pictures of the day. ",
-    blogpost_uid: "42ef7662-27b5-453c-a64d-2d74e48e8e11",
     timestamp: new Date("2023-12-06T12:12:00Z"),
+    original_created: new Date("2023-12-06T12:12:00Z"),
     item_properties: {
       createMany: {
         data: [
@@ -104,9 +108,10 @@ export const postdata = [
   {
     id: 5,
     user_id: userid3,
-    blogpost_uid: "3d9ba0ba-f211-48e4-88ee-a4d0e2818dc7",
+    original_poster_id: userid3,
     blog_text: "Hello this is my very cool post!",
     timestamp: new Date("2023-12-06T12:12:00Z"),
+    original_created: new Date("2023-12-06T12:12:00Z"),
     item_properties: {
       createMany: {
         data: [
@@ -138,11 +143,13 @@ export const postdata = [
 
   {
     id: 6,
-    user_id: userid1,
-    blogpost_uid: "6cfbde03-5a34-4cff-94ba-9a01d1d0a4fb",
+    user_id: userid3,
+    original_poster_id: userid1,
+    original_post_id: 2,
     reposter_id: userid3,
     blog_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
-    timestamp: new Date("2024-01-05T07:55:00Z"),
+    timestamp: new Date("2024-02-08T16:01:00Z"),
+    original_created: new Date("2024-01-05T07:55:00Z"),
     item_properties: {
       createMany: {
         data: [
@@ -168,11 +175,13 @@ export const postdata = [
   //User 5 posts
   {
     id: 7,
-    user_id: userid3,
-    blogpost_uid: "3d9ba0ba-f211-48e4-88ee-a4d0e2818dc7",
+    user_id: userid5,
+    original_post_id: 5,
+    original_poster_id: userid3,
     reposter_id: userid5,
     blog_text: "Hello this is my very cool post!",
-    timestamp: new Date("2023-12-06T12:12:00Z"),
+    timestamp: new Date("2024-01-11T08:25:00Z"),
+    original_created: new Date("2023-12-06T12:12:00Z"),
     item_properties: {
       createMany: {
         data: [
@@ -205,10 +214,11 @@ export const postdata = [
   {
     id: 8,
     user_id: userid5,
-    blogpost_uid: "96955bac-bae3-416a-8239-5fccce06a03b",
+    original_poster_id: userid5,
     blog_text:
       "I'm saying something very controversial! You should definitely not share this anywhere online, but we can't understand that because technology melted our collective brains.",
     timestamp: new Date("2023-12-06T12:12:00Z"),
+    original_created: new Date("2023-12-06T12:12:00Z"),
     item_properties: {
       createMany: {
         data: [

@@ -53,14 +53,17 @@ type Media = {
 
 type BlogPostFromServer = {
   id: number;
-  blogpost_uid: string;
-  user_id: string; //original poster
+  original_post_id?: number;
+  original_poster_id: string;
+  user_id: string;
   blog_text: string;
   timestamp: string;
+  original_created: string;
   reposter_id?: string;
   commenter_id?: string;
   item_properties: { blogpost_id: number; context_id: number; value: string }[];
   user_idTousers: UserTouser;
+  original_poster_idTousers: UserTouser;
   reposter_idTousers?: UserTouser;
   commenter_idTousers?: UserTouser;
 };
@@ -136,7 +139,7 @@ interface ConversationMessage extends NewConversationMessage {
 }
 
 interface ReactionToServer {
-  type: "like" | "repost" | "comment";
+  type: "like" | "repost" | "comment" | "like of repost" | "repost of repost";
   recipient_userid: string;
   sender_userid: string;
   read: boolean;

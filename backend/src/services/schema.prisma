@@ -9,19 +9,22 @@ datasource db {
 }
 
 model blog_posts {
-  id                  Int               @id @default(autoincrement())
-  blogpost_uid        String?           @db.Uuid
-  user_id             String?           @db.Uuid
-  blog_text           String?
-  timestamp           DateTime?         @db.Timestamp(6)
-  reposter_id         String?           @db.Uuid
-  commenter_id        String?           @db.Uuid
-  item_properties     item_properties[]
-  post_medias         post_medias[]
-  reactions           reactions[]
-  user_idTousers      users?            @relation("user_idTousers", fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
-  reposter_idTousers  users?            @relation("reposter_idTousers ", fields: [reposter_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
-  commenter_idTousers users?            @relation("commenter_idTousers", fields: [commenter_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
+  id                             Int               @id @default(autoincrement())
+  original_post_id               Int?
+  user_id                        String?           @db.Uuid
+  blog_text                      String?
+  timestamp                      DateTime?         @db.Timestamp(6)
+  original_created               DateTime?         @db.Timestamp(6)
+  original_poster_id             String            @db.Uuid
+  reposter_id                    String?           @db.Uuid
+  commenter_id                   String?           @db.Uuid
+  item_properties                item_properties[]
+  post_medias                    post_medias[]
+  reactions                      reactions[]
+  user_idTousers                 users?            @relation("user_idTousers", fields: [user_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
+  original_poster_idTousers      users?            @relation("original_poster_idTousers", fields: [original_poster_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
+  reposter_idTousers             users?            @relation("reposter_idTousers ", fields: [reposter_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
+  commenter_idTousers            users?            @relation("commenter_idTousers", fields: [commenter_id], references: [uid], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model contacts {
@@ -158,9 +161,6 @@ model reactions {
   user_medias             user_medias? @relation(fields: [media_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   recipient_useridTousers users?       @relation("recipient_useridTousers", fields: [recipient_userid], references: [uid], onDelete: Cascade, onUpdate: NoAction)
   sender_useridTousers    users?       @relation("sender_useridTousers", fields: [sender_userid], references: [uid], onDelete: Cascade, onUpdate: NoAction)
-
-  @@unique(name: "creator_media", [recipient_userid, media_id])
-  @@unique(name: "creator_post", [recipient_userid, blogpost_id])
 }
 
 model meetings {
@@ -249,6 +249,7 @@ model users {
   reactions_recipient_useridTousers                reactions[]       @relation("recipient_useridTousers")
   reactions_sender_useridTousers                   reactions[]       @relation("sender_useridTousers")
   blog_posts_user_idTousers                        blog_posts[]      @relation("user_idTousers")
+  blog_posts_original_poster_idTousers             blog_posts[]      @relation("original_poster_idTousers")
   blog_posts_reposter_idTousers                    blog_posts[]      @relation("reposter_idTousers ")
   blog_posts_commenter_idTousers                   blog_posts[]      @relation("commenter_idTousers")
   groupmembers                                     groupmembers[]

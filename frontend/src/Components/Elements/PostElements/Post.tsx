@@ -23,12 +23,14 @@ import postService from "../../../Services/postService";
 
 export const PostContext = createContext<BlogPostFromServer>({
   id: 0,
-  blogpost_uid: "",
   user_id: "",
+  original_poster_id: "",
   user_idTousers: { uid: "" },
+  original_poster_idTousers: { uid: "" },
   blog_text: "",
   item_properties: [],
   timestamp: new Date().toISOString(),
+  original_created: new Date().toISOString(),
 });
 
 type PostProps = {
@@ -49,9 +51,16 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
   const reactionQuery = useQuery({
     queryKey: ["post-reaction-query", post.id],
     queryFn: async () => {
-      const reactions = await postService.getReactions(post.id);
-      console.log(reactions);
-      return reactions;
+      //reposts fetch the original's reactions
+      if (post.reposter_id && post.original_post_id) {
+        const reactions = await postService.getReactions(post.original_post_id);
+        console.log(reactions);
+        return reactions;
+      } else {
+        const reactions = await postService.getReactions(post.id);
+        console.log(reactions);
+        return reactions;
+      }
     },
   });
 
@@ -67,6 +76,33 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
     if (post.id) mutateDeletePost.mutate([post.id]);
     else console.error("Missing post id for delete request!");
   };
+
+  function selectUser() {
+    if (post.reposter_idTousers) {
+      if (post.commenter_idTousers) {
+        //repost of a comment
+        return {
+          id: post.commenter_idTousers!.uid,
+          userName: post.commenter_idTousers!.username!,
+          screenName: post.commenter_idTousers!.screen_name!,
+        };
+        //repost of an original post
+      } else {
+        return {
+          id: post.original_poster_idTousers.uid,
+          userName: post.original_poster_idTousers.username!,
+          screenName: post.original_poster_idTousers.screen_name!,
+        };
+      }
+      //not a repost
+    } else {
+      return {
+        id: post.user_idTousers.uid,
+        userName: post.user_idTousers.username!,
+        screenName: post.user_idTousers.screen_name!,
+      };
+    }
+  }
 
   return (
     <PostContext.Provider value={post}>
@@ -92,30 +128,26 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
           <div className="flex flex-row-reverse flex-wrap items-center gap-4">
             <PostContextMenu
               class="self-start"
-              ownerOptions={user.user?.id === post.user_idTousers.uid}
+              ownerOptions={user.user?.id === post.original_poster_id}
               editPostCallback={() => editModal.current?.showModal()}
               deletePostCallback={() => deleteConfirm.current?.showModal()}
             />
             {/*add proper postid to link here and in UserProfileInfo*/}
             <Link
-              to={`/${post.user_idTousers.username!.substring(1)}/post/${1}`}
+              to={`/${selectUser().userName!}/post/${
+                post.original_post_id || post.id
+              }`}
               state={post}
               className="mr-3 self-start underline underline-offset-2"
             >
-              <time>{new Date(post.timestamp).toLocaleString()}</time>
+              <time>{new Date(post.original_created).toLocaleString()}</time>
             </Link>
-            <UserProfileInfo
-              user={{
-                id: post.user_idTousers.uid,
-                userName: post.user_idTousers.username!,
-                screenName: post.user_idTousers.screen_name!,
-              }}
-            />
+            <UserProfileInfo user={selectUser()} />
           </div>
 
-          {post.reposter_idTousers ? (
+          {post.commenter_idTousers ? (
             <div>
-              <InReplyTo username={post.user_idTousers.username!} />
+              <InReplyTo username={post.original_poster_idTousers.username!} />
             </div>
           ) : null}
 
@@ -188,11 +220,7 @@ function Post({ post, pinnedPost, topInfo }: PostProps) {
         </div>
         {showCommentForm && (
           <PostCommentForm
-            recipient={{
-              id: post.user_idTousers.uid,
-              userName: post.user_idTousers.username!,
-              screenName: post.user_idTousers.screen_name!,
-            }}
+            recipient={selectUser()}
             commenter={
               user?.details || {
                 userName: "",
