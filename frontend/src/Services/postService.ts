@@ -21,19 +21,18 @@ function deletePost(postIds: number[], userId: string) {
   }); // DELETE request does not necessarily support a request body
 }
 
-function sendPostMedia(userId: string, files: FormData) {
-  return axios
+async function sendPostMedia(userId: string, files: FormData) {
+  return await axios
     .post(`${serverUrl}/media/${userId}`, files, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     .then((res) => res.data);
 }
 
-function getReactions(postId: number, type?: string[]) {
-  return axios
+async function getReactions(postId: number, type?: string[]) {
+  return await axios
     .get(
-      `${serverUrl}/blog/${postId}/reactions?type=${
-        type || ["like", "repost", "comment"]
+      `${serverUrl}/blog/${postId}/reactions?type=${type || ["like", "repost", "comment"]
       }`,
     )
     .then((res) => res.data);
