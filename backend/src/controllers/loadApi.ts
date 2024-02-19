@@ -27,7 +27,7 @@ addFormats(ajv);
 // Load Api definition and init OpenAPI with customized ajv configuration.
 export const api = new OpenAPIBackend({
   definition: api_def,
-  customizeAjv: () => ajv,
+  customizeAjv: () => ajv
 });
 
 // Export DB configuration object
@@ -36,7 +36,7 @@ export const dbConfig: PoolConfig = {
   port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
+  password: process.env.POSTGRES_PASSWORD
 };
 
 api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
@@ -79,6 +79,7 @@ api.register("getUserId", userHandlers.getUserId);
 api.register("getUserInfo", userHandlers.getUserThumbInfo);
 
 // Blog post handlers
+api.register("getAllPosts", blogHandlers.getAllPosts);
 api.register("addBlogPost", blogHandlers.addBlogPost);
 api.register("getBlogPost", blogHandlers.getBlogPost);
 api.register("updateBlogPost", blogHandlers.updateBlogPost);
