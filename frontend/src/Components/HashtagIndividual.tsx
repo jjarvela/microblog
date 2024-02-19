@@ -1,16 +1,23 @@
 import { useLocation } from "react-router";
 import Button from "./Elements/Button";
 import Post from "./Elements/PostElements/Post";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import postService from "../Services/postService";
+import { useEffect } from "react";
 
 export default function HashtagIndividual() {
   const location = useLocation();
   //extract the tag from the pathname
   const tag = location.pathname.substring(9);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    console.log("useEffect");
+    queryClient.invalidateQueries({ queryKey: ["posts"] });
+  }, [tag]);
 
   const postQuery = useQuery({
-    queryKey: ["posts"],
+    queryKey: ["posts", tag],
     queryFn: () => {
       return postService.queryPosts({ hashtags: [tag] });
     },
