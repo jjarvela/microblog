@@ -11,10 +11,10 @@ import { ProfileContext } from "../../UserPage";
 import TextAreaInput from "../Inputs/TextAreaInput";
 import MaterialSymbolsEditOutlineRounded from "../../Icons/MaterialSymbolsEditOutlineRounded";
 import IonCheckmarkRound from "../../Icons/IonCheckmarkRound";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import profileService from "../../../Services/profileService";
 import { useUser } from "../../../UserWrapper";
-import userService from "../../../Services/userService";
+import FollowButton from "../Inputs/FollowButton";
 
 type UserProfileBannerProps = {
   bannerImage?: string;
@@ -39,41 +39,6 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
       }),
   });
 
-  const isFollowingQuery = useQuery({
-    queryKey: ["following", user.user?.id],
-    queryFn: () => userService.getUserFollowing(user.user?.id || ""),
-    enabled: !!user.user?.id,
-  });
-
-  const followMutation = useMutation({
-    mutationKey: ["following", user.user?.id],
-    mutationFn: (follow: boolean) => {
-      // follow true/false => follow/unfollow
-      if (follow) {
-        return userService.addUserFollowing(
-          user.user?.id || "",
-          profile.details?.id,
-        );
-      } else {
-        return userService.deleteUserFollowing(
-          user.user?.id || "",
-          isFollowingQuery.data?.find(
-            (follow: UserFollowing) =>
-              follow.follows_user === profile.details?.id,
-          )?.id,
-        );
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["following", user.user?.id],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["details", profile.details?.userName],
-      });
-    },
-  });
-
   const handleEndEdit = () => {
     profileMutation.mutate({ profile_text: newText });
     setEditingText(false);
@@ -93,28 +58,7 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
               disablePopup={true}
             />
             {!owned && (
-              <>
-                {isFollowingQuery.data &&
-                (isFollowingQuery.data as UserFollowing[]).find(
-                  (follow) => profile.details?.id === follow.follows_user,
-                ) ? (
-                  <Button
-                    className="btn-secondary h-[max-content]"
-                    onClick={() => followMutation.mutate(false)}
-                    disabled={followMutation.isPending}
-                  >
-                    Unfollow
-                  </Button>
-                ) : (
-                  <Button
-                    className="btn-primary h-[max-content]"
-                    onClick={() => followMutation.mutate(true)}
-                    disabled={followMutation.isPending}
-                  >
-                    Follow
-                  </Button>
-                )}
-              </>
+              <FollowButton followUserName={profile.details?.userName || ""} />
             )}
           </div>
         </div>

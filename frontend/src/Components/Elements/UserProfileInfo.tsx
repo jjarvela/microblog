@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { ProfilePicture } from "./ProfilePicture";
 import { useRef, useState } from "react";
-import Button from "./Button";
 import { useUser } from "../../UserWrapper";
+import FollowButton from "./Inputs/FollowButton";
 
 type UserProfileInfoProps = {
   user: UserDetails | null;
@@ -91,9 +91,7 @@ function UserProfileInfo({
                 {/* FIX ME! Load the image from media endpoint! */}
                 <ProfilePicture image={""} width={60} />
                 {self?.userName !== user?.userName && (
-                  <Button className="btn-primary h-[max-content]">
-                    <p>Follow</p>
-                  </Button>
+                  <FollowButton followUserName={user?.userName || ""} />
                 )}
               </div>
               <Link to={"/user/" + user?.userName} className="flex flex-col">
