@@ -7,6 +7,7 @@ import type { Request as oaReq } from "openapi-backend";
 import cors from "cors";
 import { io } from "./socket/socketIndex";
 import fileUpload from "express-fileupload";
+import "dotenv/config";
 
 const db_client = new Pool(dbConfig);
 
@@ -47,3 +48,4 @@ api.init();
 io.listen(8800);
 
 app.listen(9000, () => console.info("api listening at http://localhost:9000"));
+console.log(process.env.DATABASE_URL);

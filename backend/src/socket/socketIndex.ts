@@ -2,6 +2,7 @@ import cors from "cors";
 import { createServer } from "https";
 import { Server } from "socket.io";
 import { getSocket, updateSocket } from "../services/userQueries";
+import "dotenv/config";
 
 /**
  * Set up httpsServer for socket.io

@@ -13,6 +13,7 @@ import * as userRegHandler from "./registrationHandler";
 import * as authHandler from "./authHandler";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import "dotenv/config";
 
 // Check working directory and form path to api-definition.
 

@@ -26,7 +26,7 @@
   "homepage": "https://github.com/jjarvela/microblog#readme",
   "dependencies": {
     "@oas-tools/core": "^3.1.0",
-    "@prisma/client": "~5.8.1",
+    "@prisma/client": "^5.9.1",
     "@types/express-fileupload": "^1.4.4",
     "@types/uuid": "^9.0.7",
     "ajv": "^8.12.0",
@@ -41,7 +41,6 @@
     "node": "^20.10.0",
     "openapi-backend": "^5.10.5",
     "pg": "^8.11.3",
-    "prisma": "^5.8.0",
     "socket.io": "^4.7.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
@@ -56,6 +55,7 @@
     "@types/socket.io": "^3.0.2",
     "cypress": "^13.6.2",
     "eslint": "^8.56.0",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "prisma": "^5.9.1"
   }
 }
