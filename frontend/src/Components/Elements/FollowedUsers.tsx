@@ -44,6 +44,7 @@ export default function FollowedUsers() {
     <div className="flex flex-col gap-3 p-2">
       {userDetailsQueries.map((query) => (
         <UserThumbnail
+          key={query.data.userName}
           profileName={query.data.screenName}
           username={query.data.userName}
           userDescription={""}
