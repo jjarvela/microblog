@@ -12,11 +12,11 @@ axios.defaults.withCredentials = true;
 axios.interceptors.response.use(
   (res) => res,
   (err) => {
+    localStorage.removeItem("userId");
     if (err.response.status === 401 && window.location.pathname !== "/") {
       (
         document.getElementById("session-expire-dialog") as HTMLDialogElement
       ).showModal();
-      localStorage.removeItem("userId");
       return;
     }
     return err;
