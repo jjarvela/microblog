@@ -48,4 +48,3 @@ api.init();
 io.listen(8800);
 
 app.listen(9000, () => console.info("api listening at http://localhost:9000"));
-console.log(process.env.DATABASE_URL);
