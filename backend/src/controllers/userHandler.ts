@@ -25,6 +25,43 @@ export async function getUser(c: Context, _req: Request, res: Response) {
   }
 }
 
+export async function editUser(c: Context, _req: Request, res: Response) {
+  const userId = c.request.params.userId;
+  const userObj = c.request.requestBody;
+
+  try {
+    const result = await userQueries.updateUser({ uid: userId, ...userObj });
+    console.log(result);
+    res.sendStatus(200);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function deleteUser(c: Context, _req: Request, res: Response) {
+  const userId = c.request.params.userId as string;
+  try {
+    const result = await userQueries.deleteUser({ uid: userId });
+    console.log("Deleted user id: " + userId);
+    res.sendStatus(200);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function getUserId(c: Context, _req: Request, res: Response) {
+  const userName = c.request.params.userName;
+  try {
+    const user = await userQueries.getUserIdByName(userName as string);
+    res.status(200).send(user?.uid);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export async function getUserThumbInfo(
   c: Context,
   _req: Request,
@@ -33,16 +70,20 @@ export async function getUserThumbInfo(
   const username = c.request.params.username.toString();
 
   try {
-    const user = await userQueries.selectUser({ username: username });
+    const userByName = await userQueries.selectUser({ username: username });
+    if (!userByName) throw new Error("Couldn't find user by username");
+    const user = await userQueries.selectUser({
+      uid: (userByName as users).uid,
+    });
     if (!user) throw new Error("User does not exist");
     const following = await followingQueries.selectFollowingUsers({
-      user_id: (user as users).uid
+      user_id: (user as users).uid,
     });
     const followers = await followingQueries.selectFollowers({
-      user_id: (user as users).uid
+      user_id: (user as users).uid,
     });
     const profile = await userProfileQueries.selectProfile({
-      user_id: (user as users).uid
+      user_id: (user as users).uid,
     });
 
     if (!user || !following || !followers || !profile)
@@ -51,11 +92,11 @@ export async function getUserThumbInfo(
     const result = {
       id: (user as User).uid,
       userName: (user as User).username,
-      screenName: (user as User).screen_name || (user as User).username,
+      screenName: (user as User).screen_name,
       profileImage: (user as User).profile_image || "",
       following: following,
       followers: followers,
-      description: profile.profile_text || ""
+      description: profile.profile_text || "",
     };
     res.status(200).json(result);
   } catch (e) {

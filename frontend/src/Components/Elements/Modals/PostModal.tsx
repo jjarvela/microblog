@@ -7,7 +7,6 @@ import TextInput from "../Inputs/TextInput";
 import UserProfileInfo from "../UserProfileInfo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postService from "../../../Services/postService";
-import { testUserId } from "../../../globalData";
 import FormMediaPreview from "../Inputs/FormMediaPreview";
 
 type NewPostProps = {
@@ -29,18 +28,18 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
   const [files, setFiles] = useState<File[]>([]);
 
   const mutateAddPost = useMutation({
-    mutationFn: (post: BlogToServer) =>
-      postService.addNewPost(post, testUserId),
+    mutationFn: (post: BlogPostToServer) =>
+      postService.addNewPost(post, user.id || ""),
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+      queryClient.invalidateQueries({ queryKey: ["posts", user.id] });
     },
   });
 
   const mutateEditPost = useMutation({
-    mutationFn: (post: BlogToServer) =>
-      postService.editPost(post, testUserId, id!), // FIX ME: id optional for now because of rewriting
+    mutationFn: (post: BlogPostToServer) =>
+      postService.editPost(post, user.id || "", id!), // FIX ME: id optional for now because of rewriting
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["posts", testUserId] });
+      queryClient.invalidateQueries({ queryKey: ["posts", user.id] });
     },
   });
 
@@ -49,21 +48,21 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
     mutationFn: () => {
       const formData = new FormData();
       files.forEach((file) => formData.append(file.name, file));
-      return postService.sendPostMedia(testUserId, formData);
+      return postService.sendPostMedia(user.id!, formData);
     },
   });
 
   const handleSubmit = (e: FormEvent, mode: NewPostProps["mode"]) => {
     e.preventDefault();
     if (mode === "post") {
-      const newPost: BlogToServer = {
+      const newPost: BlogPostToServer = {
         text: postText,
         date: new Date().toISOString(),
         hashtags: newTags,
       };
       mutateAddPost.mutate(newPost);
     } else if (mode === "edit") {
-      const editedPost: BlogToServer = {
+      const editedPost: BlogPostToServer = {
         id: id,
         text: postText,
         date: new Date().toISOString(),

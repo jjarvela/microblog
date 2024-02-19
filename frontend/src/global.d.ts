@@ -39,17 +39,10 @@ type UserDetails = {
 };
 
 type UserTouser = {
-  admin?: boolean;
-  birthday: string;
-  email: string;
-  joined: string;
-  last_login: string;
-  location: string;
-  password: string;
-  timezone: string;
   uid: string;
-  username: string;
-  screen_name: string;
+  username?: string;
+  screen_name?: string;
+  profile_image?: number;
 };
 
 type Media = {
@@ -58,24 +51,21 @@ type Media = {
   type: "img" | "vid";
 };
 
-type Post = {
-  id?: number;
-  postOwner: UserDetails;
-  reposter?: UserDetails;
-  replyingTo?: UserDetails;
-  text: string;
-  media: Array<Media>;
-  reactions: number;
-  tags: string[];
-  time: Date;
-};
-
 type BlogPostFromServer = {
-  blog_text: string;
   id: number;
-  timestamp: string;
+  original_post_id?: number;
+  original_poster_id: string;
   user_id: string;
+  blog_text: string;
+  timestamp: string;
+  original_created: string;
+  reposter_id?: string;
+  commenter_id?: string;
   item_properties: { blogpost_id: number; context_id: number; value: string }[];
+  user_idTousers: UserTouser;
+  original_poster_idTousers: UserTouser;
+  reposter_idTousers?: UserTouser;
+  commenter_idTousers?: UserTouser;
 };
 
 type BlogPostToServer = {
@@ -83,6 +73,34 @@ type BlogPostToServer = {
   text: string;
   date: string;
   hashtags: string[];
+};
+
+type RepostToServer = {
+  user_id: string;
+  original_post_id?: number;
+  original_poster_id: string;
+  blog_text: string;
+  timestamp: string;
+  reposter_id: string;
+  commenter_id?: string;
+  item_properties: { blogpost_id: number; context_id: number; value: string }[];
+};
+
+type CommentToServer = {
+  user_id: string;
+  original_post_id?: number;
+  original_poster_id: string;
+  blog_text: string;
+  timestamp: string;
+  commenter_id: string;
+  item_properties: { blogpost_id: number; context_id: number; value: string }[];
+};
+
+type UserProfile = {
+  userId: string;
+  profile_text: string;
+  header_media_id: number;
+  homepage: string;
 };
 
 type Group = {
@@ -123,7 +141,7 @@ interface ConversationMessage extends NewConversationMessage {
 }
 
 interface ReactionToServer {
-  type: "like" | "repost" | "comment";
+  type: "like" | "repost" | "comment" | "like of repost" | "repost of repost";
   recipient_userid: string;
   sender_userid: string;
   read: boolean;
@@ -131,8 +149,12 @@ interface ReactionToServer {
   blogpost_id?: number;
 }
 
-interface ReactionFromServer extends reactionToServer {
+interface ReactionFromServer extends ReactionToServer {
+  type: string;
   id: number;
+  timestamp: string;
+  recipient_useridTousers: UserTouser;
+  sender_useridTousers: UserTouser;
 }
 
 type Theme = "system" | "light" | "dark";

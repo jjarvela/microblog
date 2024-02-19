@@ -6,7 +6,7 @@ import * as userHandlers from "./userHandler";
 import * as blogHandlers from "./blogHandlers";
 import * as mediaHandler from "./mediaController";
 import * as followHandlers from "./FollowHandlers";
-import * as profileElementHandlers from "./profileElementHandlers";
+import * as profileHandlers from "./profileHandlers";
 import * as conversationHandlers from "./conversationHandlers";
 import * as reactionHandlers from "./reactionHandlers";
 import * as userRegHandler from "./registrationHandler";
@@ -27,7 +27,7 @@ addFormats(ajv);
 // Load Api definition and init OpenAPI with customized ajv configuration.
 export const api = new OpenAPIBackend({
   definition: api_def,
-  customizeAjv: () => ajv
+  customizeAjv: () => ajv,
 });
 
 // Export DB configuration object
@@ -36,7 +36,7 @@ export const dbConfig: PoolConfig = {
   port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD
+  password: process.env.POSTGRES_PASSWORD,
 };
 
 api.registerSecurityHandler("mbCookieAuth", authHandler.securityHandler);
@@ -71,8 +71,11 @@ api.register("validationFail", validationFailHandler);
 
 // User handlers
 api.register("getUser", userHandlers.getUser);
+api.register("editUser", userHandlers.editUser);
+api.register("deleteUser", userHandlers.deleteUser);
 
 //user information handler
+api.register("getUserId", userHandlers.getUserId);
 api.register("getUserInfo", userHandlers.getUserThumbInfo);
 
 // Blog post handlers
@@ -98,9 +101,11 @@ api.register("logoutUser", authHandler.logoutUser);
 // User registration
 api.register("registerUser", userRegHandler.registerUser);
 
-// Profile element handlers
-api.register("getProfileElements", profileElementHandlers.getProfileElements);
-api.register("editProfileElements", profileElementHandlers.editProfileElements);
+// Profile handlers
+api.register("getProfile", profileHandlers.getProfile);
+api.register("editProfile", profileHandlers.editProfile);
+api.register("getProfileElements", profileHandlers.getProfileElements);
+api.register("editProfileElements", profileHandlers.editProfileElements);
 
 //Conversation handlers
 

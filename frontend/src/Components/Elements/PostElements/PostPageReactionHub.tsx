@@ -6,8 +6,14 @@ import { useState } from "react";
 import { MaterialSymbolsChevronRightRounded } from "../../Icons/MaterialSymbolsChevronRightRounded";
 import { ResizableBox } from "react-resizable";
 import { Link } from "react-router-dom";
+import { useUser } from "../../../UserWrapper";
 
-export default function PostPageReactionHub() {
+export default function PostPageReactionHub({
+  reactions,
+}: {
+  reactions: ReactionFromServer[];
+}) {
+  const user = useUser().user;
   const [showReactionList, setShowReactionList] = useState(false);
   const [innerNav, setInnerNav] = useState("likes");
 
@@ -16,46 +22,34 @@ export default function PostPageReactionHub() {
   }
   const [height, setHeight] = useState(100);
 
-  const reactions: { likes: User[]; reposts: User[]; comments: User[] } = {
-    likes: [
-      {
-        userName: "@anotheruser",
-        screenName: "Another User 🙂",
-        followers: 1,
-        following: 37,
-      },
-      {
-        userName: "@fancyuser",
-        screenName: "Fancy User",
-        followers: 526,
-        following: 1893,
-      },
-      {
-        userName: "@likeyuser",
-        screenName: "Only Likes",
-        followers: 1,
-        following: 435,
-      },
-    ],
-    reposts: [
-      {
-        userName: "@anotheruser",
-        screenName: "Another User 🙂",
-        followers: 1,
-        following: 37,
-      },
-    ],
-    comments: [],
-  };
-
   return (
     <div className="mb-3 flex flex-col">
       <div className="flex flex-row items-center justify-center gap-4 border-y-[1px] border-solid border-black50 text-2xl">
-        <span className="mx-2">{reactions.likes.length}</span>
-        <LikeButton />
-        <span className="mx-2">{reactions.reposts.length}</span>
-        <RepostButton />
-        <span className="mx-2">{reactions.comments.length}</span>
+        <span className="mx-2">
+          {reactions.filter((item) => item.type === "like").length}
+        </span>
+        <LikeButton
+          liked={
+            reactions
+              .filter((item: ReactionFromServer) => item.type === "like")
+              .map((item: ReactionFromServer) => item.sender_userid)
+              .indexOf(user!.id) > -1 || false
+          }
+        />
+        <span className="mx-2">
+          {reactions.filter((item) => item.type === "repost").length}
+        </span>
+        <RepostButton
+          reposted={
+            reactions
+              .filter((item: ReactionFromServer) => item.type === "repost")
+              .map((item: ReactionFromServer) => item.sender_userid)
+              .indexOf(user!.id) > -1 || false
+          }
+        />
+        <span className="mx-2">
+          {reactions.filter((item) => item.type === "comment").length}
+        </span>
         <MaterialSymbolsChatOutlineRounded />
         <MaterialSymbolsChevronRightRounded
           className={`${
@@ -109,49 +103,70 @@ export default function PostPageReactionHub() {
         >
           <div className="h-full w-full">
             {innerNav === "likes" &&
-              reactions.likes.map((item) => {
-                return (
-                  <Link
-                    to={`/user/${item.userName}/profile`}
-                    className="flex gap-1"
-                    key={Math.floor(Math.random() * 1000)}
-                  >
-                    <ProfilePicture width={20} />
-                    <p>{item.screenName}</p>
-                    <p>{item.userName}</p>
-                  </Link>
-                );
-              })}
+              reactions
+                .filter((item) => item.type === "like")
+                .map((item) => {
+                  return (
+                    <Link
+                      to={`/user/${item.sender_useridTousers
+                        .username!}/profile`}
+                      className="flex gap-1"
+                      key={
+                        item.sender_userid + Math.floor(Math.random() * 1000)
+                      }
+                    >
+                      <ProfilePicture width={20} />
+                      <p>{item.sender_useridTousers.screen_name!}</p>
+                      <small className="mt-[0.1em] text-black50">
+                        @{item.sender_useridTousers.username!}
+                      </small>
+                    </Link>
+                  );
+                })}
 
             {innerNav === "reposts" &&
-              reactions.reposts.map((item) => {
-                return (
-                  <Link
-                    to={`/user/${item.userName}/profile`}
-                    className="flex gap-1"
-                    key={Math.floor(Math.random() * 1000)}
-                  >
-                    <ProfilePicture width={20} />
-                    <p>{item.screenName}</p>
-                    <p>{item.userName}</p>
-                  </Link>
-                );
-              })}
+              reactions
+                .filter((item) => item.type === "repost")
+                .map((item) => {
+                  return (
+                    <Link
+                      to={`/user/${item.sender_useridTousers
+                        .username!}/profile`}
+                      className="flex gap-1"
+                      key={
+                        item.sender_userid + Math.floor(Math.random() * 1000)
+                      }
+                    >
+                      <ProfilePicture width={20} />
+                      <p>{item.sender_useridTousers.screen_name!}</p>
+                      <small className="mt-[0.1em] text-black50">
+                        @{item.sender_useridTousers.username!}
+                      </small>
+                    </Link>
+                  );
+                })}
 
             {innerNav === "comments" &&
-              reactions.comments.map((item) => {
-                return (
-                  <Link
-                    to={`/user/${item.userName}/profile`}
-                    className="flex gap-1"
-                    key={Math.floor(Math.random() * 1000)}
-                  >
-                    <ProfilePicture width={20} />
-                    <p>{item.screenName}</p>
-                    <p>{item.userName}</p>
-                  </Link>
-                );
-              })}
+              reactions
+                .filter((item) => item.type === "comment")
+                .map((item) => {
+                  return (
+                    <Link
+                      to={`/user/${item.sender_useridTousers
+                        .username!}/profile`}
+                      className="flex gap-1"
+                      key={
+                        item.sender_userid + Math.floor(Math.random() * 1000)
+                      }
+                    >
+                      <ProfilePicture width={20} />
+                      <p>{item.sender_useridTousers.screen_name!}</p>
+                      <small className="mt-[0.1em] text-black50">
+                        @{item.sender_useridTousers.username!}
+                      </small>
+                    </Link>
+                  );
+                })}
           </div>
         </ResizableBox>
       </div>

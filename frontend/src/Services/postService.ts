@@ -29,6 +29,16 @@ function sendPostMedia(userId: string, files: FormData) {
     .then((res) => res.data);
 }
 
+function getReactions(postId: number, type?: string[]) {
+  return axios
+    .get(
+      `${serverUrl}/blog/${postId}/reactions?type=${
+        type || ["like", "repost", "comment"]
+      }`,
+    )
+    .then((res) => res.data);
+}
+
 function addReaction(reaction: ReactionToServer) {
   if (reaction.blogpost_id) {
     return axios
@@ -41,13 +51,16 @@ function addReaction(reaction: ReactionToServer) {
   }
 }
 
-function deleteReaction(postId: number, reactionId: number) {
-  return axios.delete(`${serverUrl}/blog/${postId}/reactions/${reactionId}`);
+function deleteReaction(postId: number, userId: string, type: string) {
+  return axios.delete(
+    `${serverUrl}/blog/${postId}/reactions?userId=${userId}&type=${type}`,
+  );
 }
 
 export default {
   getUserPosts: getPosts,
   getPosts,
+  getReactions,
   addNewPost,
   editPost,
   deletePost,

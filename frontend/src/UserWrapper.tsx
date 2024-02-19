@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import userService from "./Services/userService";
 import { socket } from "./globalData";
+import { validate as uuidValidate } from "uuid";
 
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -49,7 +50,7 @@ function UserWrapper({ children }: UserWrapperProps) {
 
   if (
     localStorage.getItem("userId") &&
-    typeof localStorage.getItem("userId") === "string" &&
+    uuidValidate(localStorage.getItem("userId") || "") &&
     currentUid === null
   ) {
     setCurrentUid(localStorage.getItem("userId"));
@@ -187,6 +188,11 @@ function UserWrapper({ children }: UserWrapperProps) {
     },
     enabled: !!currentUser,
   });
+
+  socket.on(
+    "poll-user",
+    () => currentUid && socket.emit("add-user", currentUid),
+  );
 
   return (
     <UserContext.Provider

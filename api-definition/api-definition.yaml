@@ -2,7 +2,7 @@ openapi: 3.0.2
 
 info:
   title: Microblog API definition.
-  version: "0.7.5"
+  version: "0.7.6"
 
 servers:
   - url: https://api.microblog.fi
@@ -207,6 +207,23 @@ components:
           type: string
           format: date
 
+    editUserObject:
+      type: object
+      properties:
+        screenName:
+          type: string
+        userName:
+          type: string
+        email:
+          type: string
+        location:
+          type: string
+        birthday:
+          type: string
+          format: date-time
+        password:
+          type: string
+
     userFollow:
       type: object
       description: User following other user or group.
@@ -323,6 +340,22 @@ components:
           folderId:
             type: string
             description: The folder media file is related to.
+
+    profile:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: User uuid
+        profile_text:
+          type: string
+          description: User's profile text
+        header_media_id:
+          type: integer
+          description: Id for user's header image
+        homepage:
+          type: string
+          description: Address for user's homepage
 
     profileElements:
       type: array
@@ -727,13 +760,68 @@ paths:
         - user
       responses:
         "200":
-          $ref: "#/components/responses/OK"
+          description: Returns the user's data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userObject"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
       parameters:
         - name: userId
           required: true
           in: path
           schema:
             type: string
+    put:
+      summary: Update the logged in user's data.
+      operationId: editUser
+      tags:
+        - user
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/editUserObject"
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+    delete:
+      summary: Delete the logged in user.
+      operationId: deleteUser
+      tags:
+        - user
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/OK"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
 
   /user/{username}/details:
     get:
@@ -761,7 +849,89 @@ paths:
           schema:
             type: string
 
-  ###### PROFILE ELEMENTS ######
+  /user/id/{userName}:
+    get:
+      summary: Get user's id based on user name
+      operationId: getUserId
+      tags:
+        - user
+      responses:
+        "200":
+          description: The requested user's id.
+          content:
+            text/plain:
+              schema:
+                type: string
+
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userName
+          required: true
+          in: path
+          schema:
+            type: string
+
+  ###### PROFILE ######
+
+  /user/{userId}/profile:
+    get:
+      operationId: getProfile
+      summary: Get user's profile.
+      tags:
+        - user
+      responses:
+        "200":
+          description: Response contains user's profile information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/profile"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+    put:
+      operationId: editProfile
+      summary: Edit user's profile.
+      tags:
+        - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/profile"
+      responses:
+        "200":
+          description: Response contains user's profile information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/profile"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
 
   /user/{userId}/profile/elements:
     get:
@@ -1270,7 +1440,6 @@ paths:
             items:
               type: string
 
-  /blog/{postId}/reactions/{reactionId}:
     delete:
       operationId: deletePostReaction
       summary: delete reaction from a post
@@ -1290,8 +1459,13 @@ paths:
           required: true
           schema:
             type: string
-        - in: path
-          name: reactionId
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: type
           required: true
           schema:
             type: string
@@ -1326,8 +1500,6 @@ paths:
             type: array
             items:
               type: string
-
-  /user/{userId}/notifications/{reactionId}:
     put:
       operationId: handleReactionReadStatus
       summary: Change the read status of a reaction a user has received
@@ -1347,14 +1519,13 @@ paths:
           required: true
           schema:
             type: string
-        - in: path
+        - in: query
           name: reactionId
           required: true
           schema:
             type: array
             items:
               type: string
-            minItems: 1
         - in: query
           name: readStatus
           required: true

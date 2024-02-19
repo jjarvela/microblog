@@ -45,7 +45,8 @@ function PostContextMenu({
                   <Link
                     to={""}
                     className="context-dropdown flex flex-row items-center gap-1 border-b border-black50 px-3 py-2 last:border-0 hover:bg-black25 dark:hover:bg-white25"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       if (editPostCallback) editPostCallback();
                       setShowMenu(false);
                     }}
@@ -56,7 +57,8 @@ function PostContextMenu({
                   <Link
                     to={""}
                     className="flex flex-row items-center gap-1 border-b border-black50 px-3 py-2 last:border-0 hover:bg-black25 dark:hover:bg-white25"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
                       if (deletePostCallback) deletePostCallback();
                       setShowMenu(false);
                     }}

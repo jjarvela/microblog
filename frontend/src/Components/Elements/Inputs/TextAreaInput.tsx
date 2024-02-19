@@ -14,6 +14,7 @@ interface TextAreaInputProps
   className?: string;
   autofocus?: boolean;
   grow?: boolean;
+  countClass?: string;
 }
 
 function TextAreaInput({
@@ -23,6 +24,7 @@ function TextAreaInput({
   autofocus,
   className: className,
   grow,
+  countClass,
   ...rest
 }: TextAreaInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -49,7 +51,13 @@ function TextAreaInput({
         {...rest}
       />
       {showCount && (
-        <p className="absolute bottom-3 right-2 select-none text-black50">
+        <p
+          className={
+            "absolute bottom-3 right-2 select-none text-black50" +
+            " " +
+            countClass
+          }
+        >
           {typeof value === "string" && value?.length} / {maxLength}
         </p>
       )}

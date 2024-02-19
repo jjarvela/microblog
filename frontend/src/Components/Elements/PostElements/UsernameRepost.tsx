@@ -9,7 +9,8 @@ function UsernameRepost(props: UsernameRepostProps) {
     <div className="mb-1 flex">
       <div>
         <p className="text-black50">
-          <Link to={`/user/${props.username}`}> {props.username}</Link> reposted
+          <Link to={`/user/${props.username}`}> @{props.username}</Link>{" "}
+          reposted
         </p>
       </div>
     </div>
