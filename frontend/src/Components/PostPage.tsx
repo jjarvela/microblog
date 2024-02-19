@@ -42,7 +42,7 @@ export default function PostPage() {
   });
 
   const reactionQuery = useQuery({
-    queryKey: ["post-reaction-query", postId],
+    queryKey: ["post-reaction-query", parseInt(postId)],
     queryFn: async () => {
       //reposts fetch the original's reactions
       if (
@@ -65,12 +65,14 @@ export default function PostPage() {
     enabled: postInfoQuery.isSuccess,
   });
 
-  if (postInfoQuery.isError || !postInfoQuery.data) {
-    return <h5 className="mx-auto text-warning">Error</h5>;
+  if (postInfoQuery.isLoading) {
+    return (
+      <h5 className="mx-auto my-8 w-max animate-pulse text-black50">Loading</h5>
+    );
   }
 
-  if (postInfoQuery.isError) {
-    return <h5 className="mx-auto text-warning">Error</h5>;
+  if (postInfoQuery.isError || !postInfoQuery.data) {
+    return <h5 className="mx-auto my-8 w-max text-warning">Error</h5>;
   }
 
   function selectUser() {
