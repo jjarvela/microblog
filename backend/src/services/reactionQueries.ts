@@ -61,6 +61,7 @@ export const selectReactions = async (
         sender_useridTousers: {
           select: {
             uid: true,
+            screen_name: true,
             username: true,
             profile_image: true
           }
@@ -109,29 +110,8 @@ export const insertReaction = async (param: {
   blogpost_id?: number;
   read: boolean;
 }) => {
-  let condition: any = {};
-  if (param.media_id) {
-    condition = {
-      creator_media: {
-        recipient_userid: param.recipient_userid,
-        media_id: param.media_id
-      }
-    };
-  } else if (param.blogpost_id) {
-    condition = {
-      creator_post: {
-        recipient_userid: param.recipient_userid,
-        blogpost_id: param.blogpost_id
-      }
-    };
-  } else {
-    return null;
-  }
-
-  const result: reactions | null = await prisma.reactions.upsert({
-    where: condition,
-    update: {},
-    create: {
+  const result: reactions | null = await prisma.reactions.create({
+    data: {
       recipient_userid: param.recipient_userid,
       sender_userid: param.sender_userid,
       type: param.type,
@@ -150,25 +130,6 @@ export const deleteReaction = async (param: {
   sender_userid: string;
   type: string;
 }) => {
-  /*let condition: any = {};
-  if (param.media_id) {
-    condition = {
-      creator_media: {
-        creator_user_id: param.creator_user_id,
-        media_id: param.media_id,
-      },
-    };
-  } else if (param.blogpost_id) {
-    condition = {
-      creator_post: {
-        creator_user_id: param.creator_user_id,
-        blogpost_id: param.media_id,
-      },
-    };
-  } else {
-    return null;
-  }*/
-
   const result: reactions[] = await prisma.reactions.findMany({
     where: {
       AND: [
