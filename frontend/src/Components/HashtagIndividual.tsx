@@ -12,7 +12,7 @@ export default function HashtagIndividual() {
   const postQuery = useQuery({
     queryKey: ["posts"],
     queryFn: () => {
-      return postService.queryPosts();
+      return postService.queryPosts({ hashtags: [tag] });
     },
   });
 
