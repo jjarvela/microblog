@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Request, Response } from "express";
 import * as queries from "../services/reactionQueries";
+import * as postQueries from "../services/blogQueries";
 import { Context } from "openapi-backend";
 
 export const getPostReactions = async (
@@ -24,12 +25,46 @@ export const getPostReactions = async (
   }
 };
 
+type BlogPostFromServer = {
+  id: number;
+  original_post_id?: number;
+  original_poster_id: string;
+  user_id: string;
+  blog_text: string;
+  timestamp: Date;
+  original_created: Date;
+  reposter_id?: string;
+  commenter_id?: string;
+  item_properties: { blogpost_id: number; context_id: number; value: string }[];
+};
+
 export const addReaction = async (c: Context, _req: Request, res: Response) => {
   //the post or media Id should already be present in the request body
   const reaction = c.request.body;
   try {
     const result = await queries.insertReaction(reaction);
     if (!result) throw new Error("Could not add reaction");
+    if (reaction.type === "repost" && result.blogpost_id) {
+      const post = await postQueries.selectOnePost({
+        blog_post_id: result.blogpost_id
+      });
+      if (!post) throw new Error("No post data");
+      const repost = await postQueries.insertPost({
+        user_uuid: result.sender_userid,
+        original_post_id:
+          (post as BlogPostFromServer).original_post_id ||
+          (post as BlogPostFromServer).id,
+        original_poster_id: (post as BlogPostFromServer).original_poster_id,
+        text: (post as BlogPostFromServer).blog_text,
+        timestamp: new Date(),
+        original_created: (post as BlogPostFromServer).original_created,
+        hashtags: (post as BlogPostFromServer).item_properties.map(
+          (item) => item.value
+        ),
+        reposter_id: result.sender_userid
+      });
+      console.log(repost);
+    }
     res.status(201).json(result);
   } catch (e) {
     console.log((e as Error).message);

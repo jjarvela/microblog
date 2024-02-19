@@ -7,6 +7,7 @@ import type { Request as oaReq } from "openapi-backend";
 import cors from "cors";
 import { io } from "./socket/socketIndex";
 import fileUpload from "express-fileupload";
+import "dotenv/config";
 
 const db_client = new Pool(dbConfig);
 

@@ -7,800 +7,807 @@ import type {
 } from 'openapi-client-axios';
 
 declare namespace Components {
-    namespace Responses {
-        export type ErrorResponse = Schemas.ErrorResponse;
-        export type Id = /* numerical id. */ Schemas.Id;
-        export type MediaRes = Schemas.MediaRes;
-        export type NewUserId = /**
+  namespace Responses {
+    export type ErrorResponse = Schemas.ErrorResponse;
+    export type Id = /* numerical id. */ Schemas.Id;
+    export type MediaRes = Schemas.MediaRes;
+    export type NewUserId = /**
          * example:
          * d8a935c3-62dd-4315-b4a6-638579214891
          */
-        Schemas.Uuid /* uuid */;
-        export interface OK {
-        }
-        export type PostId = /* List of item ids. */ Schemas.IdList;
+      Schemas.Uuid /* uuid */;
+    export interface OK {
     }
-    namespace Schemas {
-        /**
-         * Blog post that hasn't assigned an id.
-         */
-        export interface BlogPost {
-            /**
-             * example:
-             * Future date for publishing in ISO 8601 UTC datetime eg. 2024-01-10T10:32:00Z
-             */
-            date?: string; // date-time
-            /**
-             * example:
-             * Blog post main text
-             */
-            text: string;
-            hashtags: string[];
-        }
-        export interface ConversationMessages {
-            /**
-             * conversations id
-             */
-            conversation_id: number;
-            /**
-             * User uuid
-             */
-            sender_userid: string;
-            message: string;
-            /**
-             * date
-             */
-            timestamp?: string;
-            notification?: boolean;
-            conversations?: number[];
-        }
-        export interface Conversations {
-            /**
-             * User uuid
-             */
-            participant_1: string;
-            /**
-             * User uuid
-             */
-            participant_2: string;
-            /**
-             * date
-             */
-            timestamp?: string;
-            conversation_messages?: number[];
-        }
-        export type Date = string; // date
-        export interface EditUserObject {
-            screenName?: string;
-            userName?: string;
-            email?: string;
-            location?: string;
-            birthday?: string; // date-time
-            password?: string;
-        }
-        export interface ErrorResponse {
-            /**
-             * Status of response.
-             */
-            status?: 400 | 409 | 401 | 500;
-            err?: {
-                /**
-                 * Class of error
-                 */
-                keyword?: string;
-                /**
-                 * Description of error
-                 */
-                message?: string;
-            }[];
-        }
-        export interface FileObject {
-            imagefile?: Imagefile;
-        }
-        /**
-         * numerical id.
-         */
-        export interface Id {
-            id: number;
-        }
-        /**
-         * List of item ids.
-         */
-        export interface IdList {
-            itemIds: number[];
-        }
-        export interface Imagefile {
-            name?: string;
-            size?: number;
-            md5?: string;
-        }
-        export type MediaRes = {
-            /**
-             * URL to access the media file.
-             */
-            fileUrl?: string;
-            /**
-             * Mime type string for the media file.
-             */
-            mimeType?: string;
-            /**
-             * Unique id for media file.
-             */
-            mediaId: string; // uuid
-            /**
-             * The folder media file is related to.
-             */
-            folderId?: string;
-        }[];
-        export type MultipleFiles = {
-            imagefile?: string; // binary
-        }[];
-        export interface NewConversation {
-            /**
-             * User uuid
-             */
-            participant_1: string;
-            /**
-             * User uuid
-             */
-            participant_2: string;
-        }
-        export interface NewConversationMessage {
-            /**
-             * conversations id
-             */
-            conversation_id: number;
-            /**
-             * User uuid
-             */
-            sender_userid: string;
-            message: string;
-        }
-        /**
-         * For creating new following
-         */
-        export interface NewFollow {
-            follows_user: string; // uuid
-            follows_group: number;
-        }
-        export interface NewReaction {
-            /**
-             * reaction type (like/repost/comment)
-             */
-            type: string;
-            /**
-             * who received reaction
-             */
-            recipient_userid: string; // uuid
-            /**
-             * who reacted
-             */
-            sender_userid: string; // uuid
-            /**
-             * media target of reaction
-             */
-            media_id?: number;
-            /**
-             * post target of reaction
-             */
-            blogpost_id?: number;
-        }
-        /**
-         * Schema to create new user.
-         */
-        export interface NewUserObject {
-            screenName: string;
-            userName: string;
-            email: string; // email
-            password: string; // password
-            location?: string;
-            birthday: string; // date
-        }
-        export interface Profile {
-            /**
-             * User uuid
-             */
-            userId?: string;
-            /**
-             * User's profile text
-             */
-            profile_text?: string;
-            /**
-             * Id for user's header image
-             */
-            header_media_id?: number;
-            /**
-             * Address for user's homepage
-             */
-            homepage?: string;
-        }
-        export type ProfileElements = {
-            /**
-             * Profile element type.
-             */
-            type?: string;
-            /**
-             * Profile element data object.
-             */
-            data?: {
-                [name: string]: any;
-            };
-        }[];
-        export interface Reaction {
-            /**
-             * reaction id
-             */
-            id: number;
-            /**
-             * reaction type (like/repost/comment)
-             */
-            type: string;
-            /**
-             * who received reaction
-             */
-            recipient_userid: string;
-            /**
-             * who reacted
-             */
-            sender_userid: string;
-            /**
-             * media target of reaction
-             */
-            media_id?: number;
-            /**
-             * post target of reaction
-             */
-            blogpost_id?: number;
-        }
-        /**
-         * Blog post that can be referred with an id.
-         */
-        export interface RefPost {
-            /**
-             * Blog post id.
-             */
-            id: number;
-            date?: string; // date-time
-            /**
-             * example:
-             * Blog post main text
-             */
-            text: string;
-            hashtags: string[];
-        }
-        /**
-         * User authentication object.
-         */
-        export interface UserAuth {
-            /**
-             * User id
-             */
-            userId?: string;
-            password?: string;
-            /**
-             * Optional serialized authorization data for client.
-             */
-            jwt?: string;
-        }
-        /**
-         * User following other user or group.
-         */
-        export interface UserFollow {
-            id: number;
-            user_id: string; // uuid
-            follows_user: string; // uuid
-            follows_group: number;
-        }
-        export interface UserInfo {
-            id: string; // uuid
-            userName?: string;
-            screenName?: string;
-            profileImage?: number;
-            description?: string;
-            following: {
-                id: number;
-                user_id: string; // uuid
-                follows_user: string; // uuid
-                follows_group: number;
-            }[];
-            followers: {
-                id: number;
-                user_id: string; // uuid
-                follows_user: string; // uuid
-                follows_group: number;
-            }[];
-        }
-        export interface UserObject {
-            screenName?: string;
-            userName: string;
-            email: string;
-            location?: string;
-            birthday?: string; // date
-        }
-        export interface UserProfile {
-            /**
-             * User uuid
-             */
-            userId: string;
-            /**
-             * Is profile visible to all.
-             */
-            published?: boolean;
-        }
-        /**
-         * example:
-         * d8a935c3-62dd-4315-b4a6-638579214891
-         */
-        export type Uuid = string; // uuid
+    export type PostId = /* List of item ids. */ Schemas.IdList;
+  }
+  namespace Schemas {
+    /**
+     * Blog post that hasn't assigned an id.
+     */
+    export interface BlogPost {
+      /**
+       * example:
+       * Future date for publishing in ISO 8601 UTC datetime eg. 2024-01-10T10:32:00Z
+       */
+      date?: string; // date-time
+      /**
+       * example:
+       * Blog post main text
+       */
+      text: string;
+      hashtags: string[];
     }
+    export interface ConversationMessages {
+      /**
+       * conversations id
+       */
+      conversation_id: number;
+      /**
+       * User uuid
+       */
+      sender_userid: string;
+      message: string;
+      /**
+       * date
+       */
+      timestamp?: string;
+      notification?: boolean;
+      conversations?: number[];
+    }
+    export interface Conversations {
+      /**
+       * User uuid
+       */
+      participant_1: string;
+      /**
+       * User uuid
+       */
+      participant_2: string;
+      /**
+       * date
+       */
+      timestamp?: string;
+      conversation_messages?: number[];
+    }
+    export type Date = string; // date
+    export interface EditUserObject {
+      screenName?: string;
+      userName?: string;
+      email?: string;
+      location?: string;
+      birthday?: string; // date-time
+      password?: string;
+    }
+    export interface ErrorResponse {
+      /**
+       * Status of response.
+       */
+      status?: 400 | 409 | 401 | 500;
+      err?: {
+        /**
+         * Class of error
+         */
+        keyword?: string;
+        /**
+         * Description of error
+         */
+        message?: string;
+      }[];
+    }
+    export interface FileObject {
+      imagefile?: Imagefile;
+    }
+    /**
+     * numerical id.
+     */
+    export interface Id {
+      id: number;
+    }
+    /**
+     * List of item ids.
+     */
+    export interface IdList {
+      itemIds: number[];
+    }
+    export interface Imagefile {
+      name?: string;
+      size?: number;
+      md5?: string;
+    }
+    export type MediaRes = {
+      /**
+       * URL to access the media file.
+       */
+      fileUrl?: string;
+      /**
+       * Mime type string for the media file.
+       */
+      mimeType?: string;
+      /**
+       * Unique id for media file.
+       */
+      mediaId: string; // uuid
+      /**
+       * The folder media file is related to.
+       */
+      folderId?: string;
+    }[];
+    export type MultipleFiles = {
+      imagefile?: string; // binary
+    }[];
+    export interface NewConversation {
+      /**
+       * User uuid
+       */
+      participant_1: string;
+      /**
+       * User uuid
+       */
+      participant_2: string;
+    }
+    export interface NewConversationMessage {
+      /**
+       * conversations id
+       */
+      conversation_id: number;
+      /**
+       * User uuid
+       */
+      sender_userid: string;
+      message: string;
+    }
+    /**
+     * For creating new following
+     */
+    export interface NewFollow {
+      follows_user: string; // uuid
+      follows_group: number;
+    }
+    export interface NewReaction {
+      /**
+       * reaction type (like/repost/comment)
+       */
+      type: string;
+      /**
+       * who received reaction
+       */
+      recipient_userid: string; // uuid
+      /**
+       * who reacted
+       */
+      sender_userid: string; // uuid
+      /**
+       * media target of reaction
+       */
+      media_id?: number;
+      /**
+       * post target of reaction
+       */
+      blogpost_id?: number;
+    }
+    /**
+     * Schema to create new user.
+     */
+    export interface NewUserObject {
+      screenName: string;
+      userName: string;
+      email: string; // email
+      password: string; // password
+      location?: string;
+      birthday: string; // date
+    }
+    export interface Profile {
+      /**
+       * User uuid
+       */
+      userId?: string;
+      /**
+       * User's profile text
+       */
+      profile_text?: string;
+      /**
+       * Id for user's header image
+       */
+      header_media_id?: number;
+      /**
+       * Address for user's homepage
+       */
+      homepage?: string;
+    }
+    export type ProfileElements = {
+      /**
+       * Profile element type.
+       */
+      type?: string;
+      /**
+       * Profile element data object.
+       */
+      data?: {
+        [name: string]: any;
+      };
+    }[];
+    export interface Reaction {
+      /**
+       * reaction id
+       */
+      id: number;
+      /**
+       * reaction type (like/repost/comment)
+       */
+      type: string;
+      /**
+       * who received reaction
+       */
+      recipient_userid: string;
+      /**
+       * who reacted
+       */
+      sender_userid: string;
+      /**
+       * media target of reaction
+       */
+      media_id?: number;
+      /**
+       * post target of reaction
+       */
+      blogpost_id?: number;
+    }
+    /**
+     * Blog post that can be referred with an id.
+     */
+    export interface RefPost {
+      /**
+       * Blog post id.
+       */
+      id: number;
+      date?: string; // date-time
+      /**
+       * example:
+       * Blog post main text
+       */
+      text: string;
+      hashtags: string[];
+    }
+    /**
+     * User authentication object.
+     */
+    export interface UserAuth {
+      /**
+       * User id
+       */
+      userId?: string;
+      password?: string;
+      /**
+       * Optional serialized authorization data for client.
+       */
+      jwt?: string;
+    }
+    /**
+     * User following other user or group.
+     */
+    export interface UserFollow {
+      id: number;
+      user_id: string; // uuid
+      follows_user: string; // uuid
+      follows_group: number;
+    }
+    export interface UserInfo {
+      id: string; // uuid
+      userName?: string;
+      screenName?: string;
+      profileImage?: number;
+      description?: string;
+      following: {
+        id: number;
+        user_id: string; // uuid
+        follows_user: string; // uuid
+        follows_group: number;
+      }[];
+      followers: {
+        id: number;
+        user_id: string; // uuid
+        follows_user: string; // uuid
+        follows_group: number;
+      }[];
+    }
+    export interface UserObject {
+      screenName?: string;
+      userName: string;
+      email: string;
+      location?: string;
+      birthday?: string; // date
+    }
+    export interface UserProfile {
+      /**
+       * User uuid
+       */
+      userId: string;
+      /**
+       * Is profile visible to all.
+       */
+      published?: boolean;
+    }
+    /**
+     * example:
+     * d8a935c3-62dd-4315-b4a6-638579214891
+     */
+    export type Uuid = string; // uuid
+  }
 }
 declare namespace Paths {
-    namespace AddBlogPost {
-        namespace Parameters {
-            export type UserId = string; // uuid
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId /* uuid */;
-        }
-        export type RequestBody = /* Blog post that hasn't assigned an id. */ Components.Schemas.BlogPost;
-        namespace Responses {
-            export type $200 = Components.Responses.PostId;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+  namespace AddBlogPost {
+    namespace Parameters {
+      export type UserId = string; // uuid
     }
-    namespace AddFollowing {
-        namespace Parameters {
-            export type FollowsGroup = string;
-            export type FollowsUser = string; // uuid
-            export type UserId = string; // uuid
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId /* uuid */;
-        }
-        export interface QueryParameters {
-            followsUser?: Parameters.FollowsUser /* uuid */;
-            followsGroup?: Parameters.FollowsGroup;
-        }
-        namespace Responses {
-            export type $200 = /* User following other user or group. */ Components.Schemas.UserFollow;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    export interface PathParameters {
+      userId: Parameters.UserId /* uuid */;
     }
-    namespace AddPostReaction {
-        namespace Parameters {
-            export type PostId = string;
-        }
-        export interface PathParameters {
-            postId: Parameters.PostId;
-        }
-        export type RequestBody = Components.Schemas.NewReaction;
-        namespace Responses {
-            export type $200 = Components.Schemas.Reaction;
-        }
+    export type RequestBody = /* Blog post that hasn't assigned an id. */ Components.Schemas.BlogPost;
+    namespace Responses {
+      export type $200 = Components.Responses.PostId;
+      export type $400 = Components.Schemas.ErrorResponse;
     }
-    namespace AddUserMedia {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = Components.Responses.MediaRes;
-        }
+  }
+  namespace AddFollowing {
+    namespace Parameters {
+      export type FollowsGroup = string;
+      export type FollowsUser = string; // uuid
+      export type UserId = string; // uuid
     }
-    namespace CreateConversation {
-        export type RequestBody = Components.Schemas.NewConversation;
-        namespace Responses {
-            export type $200 = Components.Schemas.Conversations[];
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    export interface PathParameters {
+      userId: Parameters.UserId /* uuid */;
     }
-    namespace DelUserMedia {
-        namespace Parameters {
-            export type MediaId = string;
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-            mediaId: Parameters.MediaId;
-        }
-        namespace Responses {
-            export type $200 = Components.Responses.OK;
-        }
+    export interface QueryParameters {
+      followsUser?: Parameters.FollowsUser /* uuid */;
+      followsGroup?: Parameters.FollowsGroup;
     }
-    namespace DeleteBlogPost {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        export type RequestBody = /* List of item ids. */ Components.Schemas.IdList;
-        namespace Responses {
-            export type $200 = Components.Responses.PostId;
-            export type $400 = Components.Responses.ErrorResponse;
-        }
+    namespace Responses {
+      export type $200 = /* User following other user or group. */ Components.Schemas.UserFollow;
+      export type $400 = Components.Schemas.ErrorResponse;
     }
-    namespace DeleteConversation {
-        namespace Parameters {
-            export type ConversationId = string;
-        }
-        export interface PathParameters {
-            conversationId: Parameters.ConversationId;
-        }
-        namespace Responses {
-            export type $200 = Components.Responses.Id;
-            export type $400 = Components.Responses.ErrorResponse;
-        }
+  }
+  namespace AddPostReaction {
+    namespace Parameters {
+      export type PostId = string;
     }
-    namespace DeleteDirectMessage {
-        namespace Parameters {
-            export type ConversationId = string;
-            export type MessageId = string;
-        }
-        export interface PathParameters {
-            conversationId: Parameters.ConversationId;
-            messageId: Parameters.MessageId;
-        }
-        namespace Responses {
-            export type $200 = Components.Responses.Id;
-            export type $400 = Components.Responses.ErrorResponse;
-        }
+    export interface PathParameters {
+      postId: Parameters.PostId;
     }
-    namespace DeleteFollowing {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        export type RequestBody = /* numerical id. */ Components.Schemas.Id;
-        namespace Responses {
-            export type $200 = Components.Responses.Id;
-            export type $400 = Components.Responses.ErrorResponse;
-        }
+    export type RequestBody = Components.Schemas.NewReaction;
+    namespace Responses {
+      export type $200 = Components.Schemas.Reaction;
     }
-    namespace DeletePostReaction {
-        namespace Parameters {
-            export type PostId = string;
-            export type Type = string;
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            postId: Parameters.PostId;
-        }
-        export interface QueryParameters {
-            userId: Parameters.UserId;
-            type: Parameters.Type;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.Reaction;
-        }
+  }
+  namespace AddUserMedia {
+    namespace Parameters {
+      export type UserId = string;
     }
-    namespace DeleteUser {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = Components.Responses.OK;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    export interface PathParameters {
+      userId: Parameters.UserId;
     }
-    namespace EditDirectMessage {
-        namespace Parameters {
-            export type ConversationId = string;
-            export type MessageId = string;
-        }
-        export interface PathParameters {
-            conversationId: Parameters.ConversationId;
-            messageId: Parameters.MessageId;
-        }
-        export interface RequestBody {
-            message: string;
-        }
-        namespace Responses {
-            export type $201 = Components.Schemas.ConversationMessages;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    namespace Responses {
+      export type $200 = Components.Responses.MediaRes;
     }
-    namespace EditProfile {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        export type RequestBody = Components.Schemas.Profile;
-        namespace Responses {
-            export type $200 = Components.Schemas.Profile;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+  }
+  namespace CreateConversation {
+    export type RequestBody = Components.Schemas.NewConversation;
+    namespace Responses {
+      export type $200 = Components.Schemas.Conversations[];
+      export type $400 = Components.Schemas.ErrorResponse;
     }
-    namespace EditProfileElements {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        export type RequestBody = Components.Schemas.ProfileElements;
-        namespace Responses {
-            export type $200 = Components.Responses.OK;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+  }
+  namespace DelUserMedia {
+    namespace Parameters {
+      export type MediaId = string;
+      export type UserId = string;
     }
-    namespace EditUser {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        export type RequestBody = Components.Schemas.EditUserObject;
-        namespace Responses {
-            export type $200 = Components.Responses.OK;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+      mediaId: Parameters.MediaId;
     }
-    namespace GetBlogPost {
-        namespace Parameters {
-            export type EndDate = Components.Schemas.Date /* date */;
-            export type PostId = string;
-            export type StartDate = Components.Schemas.Date /* date */;
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        export interface QueryParameters {
-            postId?: Parameters.PostId;
-            startDate?: Parameters.StartDate;
-            endDate?: Parameters.EndDate;
-        }
-        namespace Responses {
-            export type $200 = /* Blog post that can be referred with an id. */ Components.Schemas.RefPost[];
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    namespace Responses {
+      export type $200 = Components.Responses.OK;
     }
-    namespace GetConversationDetails {
-        namespace Parameters {
-            export type ConversationId = string;
-        }
-        export interface PathParameters {
-            conversationId: Parameters.ConversationId;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.Conversations[];
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+  }
+  namespace DeleteBlogPost {
+    namespace Parameters {
+      export type UserId = string;
     }
-    namespace GetConversationMessages {
-        namespace Parameters {
-            export type ConversationId = string;
-        }
-        export interface PathParameters {
-            conversationId: Parameters.ConversationId;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.ConversationMessages[];
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    export interface PathParameters {
+      userId: Parameters.UserId;
     }
-    namespace GetConversations {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.Conversations[];
-        }
+    export type RequestBody = /* List of item ids. */ Components.Schemas.IdList;
+    namespace Responses {
+      export type $200 = Components.Responses.PostId;
+      export type $400 = Components.Responses.ErrorResponse;
     }
-    namespace GetFollowers {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = /* User following other user or group. */ Components.Schemas.UserFollow[];
-        }
+  }
+  namespace DeleteConversation {
+    namespace Parameters {
+      export type ConversationId = string;
     }
-    namespace GetFollowings {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = /* User following other user or group. */ Components.Schemas.UserFollow[];
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    export interface PathParameters {
+      conversationId: Parameters.ConversationId;
     }
-    namespace GetGroupFollowings {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = /* User following other user or group. */ Components.Schemas.UserFollow[];
-        }
+    namespace Responses {
+      export type $200 = Components.Responses.Id;
+      export type $400 = Components.Responses.ErrorResponse;
     }
-    namespace GetPostReactions {
-        namespace Parameters {
-            export type PostId = string;
-            export type Type = string[];
-        }
-        export interface PathParameters {
-            postId: Parameters.PostId;
-        }
-        export interface QueryParameters {
-            type?: Parameters.Type;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.Reaction;
-        }
+  }
+  namespace DeleteDirectMessage {
+    namespace Parameters {
+      export type ConversationId = string;
+      export type MessageId = string;
     }
-    namespace GetProfile {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.Profile;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    export interface PathParameters {
+      conversationId: Parameters.ConversationId;
+      messageId: Parameters.MessageId;
     }
-    namespace GetProfileElements {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.ProfileElements;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    namespace Responses {
+      export type $200 = Components.Responses.Id;
+      export type $400 = Components.Responses.ErrorResponse;
     }
-    namespace GetUser {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.UserObject;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+  }
+  namespace DeleteFollowing {
+    namespace Parameters {
+      export type UserId = string;
     }
-    namespace GetUserId {
-        namespace Parameters {
-            export type UserName = string;
-        }
-        export interface PathParameters {
-            userName: Parameters.UserName;
-        }
-        namespace Responses {
-            export type $200 = string;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    export interface PathParameters {
+      userId: Parameters.UserId;
     }
-    namespace GetUserInfo {
-        namespace Parameters {
-            export type Username = string;
-        }
-        export interface PathParameters {
-            username: Parameters.Username;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.UserInfo;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    export type RequestBody = /* numerical id. */ Components.Schemas.Id;
+    namespace Responses {
+      export type $200 = Components.Responses.Id;
+      export type $400 = Components.Responses.ErrorResponse;
     }
-    namespace GetUserMedia {
-        namespace Parameters {
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        namespace Responses {
-            export type $200 = Components.Responses.MediaRes;
-        }
+  }
+  namespace DeletePostReaction {
+    namespace Parameters {
+      export type PostId = string;
+      export type Type = string;
+      export type UserId = string;
+      export type PostId = string;
+      export type ReactionId = string;
     }
-    namespace GetUserNotifications {
-        namespace Parameters {
-            export type ReadStatus = string;
-            export type Type = string[];
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        export interface QueryParameters {
-            readStatus?: Parameters.ReadStatus;
-            type?: Parameters.Type;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.Reaction;
-        }
+    export interface PathParameters {
+      postId: Parameters.PostId;
     }
-    namespace HandleReactionReadStatus {
-        namespace Parameters {
-            export type ReactionId = string[];
-            export type ReadStatus = string;
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-        }
-        export interface QueryParameters {
-            reactionId: Parameters.ReactionId;
-            readStatus: Parameters.ReadStatus;
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.Reaction;
-        }
+    export interface QueryParameters {
+      userId: Parameters.UserId;
+      type: Parameters.Type;
     }
-    namespace LoginUser {
-        export type RequestBody = /* User authentication object. */ Components.Schemas.UserAuth;
-        namespace Responses {
-            export type $200 = string;
-            export type $401 = Components.Responses.ErrorResponse;
-        }
+    namespace Responses {
+      export type $200 = Components.Schemas.Reaction;
     }
-    namespace LogoutUser {
-        namespace Responses {
-            export type $200 = Components.Responses.OK;
-            export type $500 = Components.Responses.ErrorResponse;
-        }
+  }
+  namespace DeleteUser {
+    namespace Parameters {
+      export type UserId = string;
     }
-    namespace RegisterUser {
-        export type RequestBody = /* Schema to create new user. */ Components.Schemas.NewUserObject;
-        namespace Responses {
-            export type $200 = string;
-        }
+    export interface PathParameters {
+      userId: Parameters.UserId;
     }
-    namespace SendDirectMessage {
-        namespace Parameters {
-            export type ConversationId = string;
-        }
-        export interface PathParameters {
-            conversationId: Parameters.ConversationId;
-        }
-        export type RequestBody = Components.Schemas.NewConversationMessage;
-        namespace Responses {
-            export type $201 = Components.Schemas.ConversationMessages;
-            export type $400 = Components.Schemas.ErrorResponse;
-        }
+    namespace Responses {
+      export type $200 = Components.Responses.OK;
+      export type $400 = Components.Schemas.ErrorResponse;
     }
-    namespace UpdateBlogPost {
-        namespace Parameters {
-            export type PostId = string;
-            export type UserId = string;
-        }
-        export interface PathParameters {
-            userId: Parameters.UserId;
-            postId: Parameters.PostId;
-        }
-        export type RequestBody = /* Blog post that can be referred with an id. */ Components.Schemas.RefPost;
-        namespace Responses {
-            export type $200 = Components.Responses.OK;
-        }
+  }
+  namespace EditDirectMessage {
+    namespace Parameters {
+      export type ConversationId = string;
+      export type MessageId = string;
     }
+    export interface PathParameters {
+      conversationId: Parameters.ConversationId;
+      messageId: Parameters.MessageId;
+    }
+    export interface RequestBody {
+      message: string;
+    }
+    namespace Responses {
+      export type $201 = Components.Schemas.ConversationMessages;
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace EditProfile {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    export type RequestBody = Components.Schemas.Profile;
+    namespace Responses {
+      export type $200 = Components.Schemas.Profile;
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace EditProfileElements {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    export type RequestBody = Components.Schemas.ProfileElements;
+    namespace Responses {
+      export type $200 = Components.Responses.OK;
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace EditUser {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    export type RequestBody = Components.Schemas.EditUserObject;
+    namespace Responses {
+      export type $200 = Components.Responses.OK;
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace GetBlogPost {
+    namespace Parameters {
+      export type EndDate = Components.Schemas.Date /* date */;
+      export type PostId = string;
+      export type StartDate = Components.Schemas.Date /* date */;
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    export interface QueryParameters {
+      postId?: Parameters.PostId;
+      startDate?: Parameters.StartDate;
+      endDate?: Parameters.EndDate;
+    }
+    namespace Responses {
+      export type $200 = /* Blog post that can be referred with an id. */ Components.Schemas.RefPost[];
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace GetConversationDetails {
+    namespace Parameters {
+      export type ConversationId = string;
+    }
+    export interface PathParameters {
+      conversationId: Parameters.ConversationId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Conversations[];
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace GetConversationMessages {
+    namespace Parameters {
+      export type ConversationId = string;
+    }
+    export interface PathParameters {
+      conversationId: Parameters.ConversationId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ConversationMessages[];
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace GetConversations {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Conversations[];
+    }
+  }
+  namespace GetFollowers {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    namespace Responses {
+      export type $200 = /* User following other user or group. */ Components.Schemas.UserFollow[];
+    }
+  }
+  namespace GetFollowings {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    namespace Responses {
+      export type $200 = /* User following other user or group. */ Components.Schemas.UserFollow[];
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace GetGroupFollowings {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    namespace Responses {
+      export type $200 = /* User following other user or group. */ Components.Schemas.UserFollow[];
+    }
+  }
+  namespace GetPostReactions {
+    namespace Parameters {
+      export type PostId = string;
+      export type Type = string[];
+    }
+    export interface PathParameters {
+      postId: Parameters.PostId;
+    }
+    export interface QueryParameters {
+      type?: Parameters.Type;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Reaction;
+    }
+  }
+  namespace GetProfile {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Profile;
+      export type $400 = Components.Schemas.ErrorResponse;
+      export type $200 = Components.Schemas.Reaction;
+    }
+  }
+  namespace GetProfileElements {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ProfileElements;
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace GetUser {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.UserObject;
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace GetUserId {
+    namespace Parameters {
+      export type UserName = string;
+    }
+    export interface PathParameters {
+      userName: Parameters.UserName;
+    }
+    namespace Responses {
+      export type $200 = string;
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace GetUserInfo {
+    namespace Parameters {
+      export type Username = string;
+    }
+    export interface PathParameters {
+      username: Parameters.Username;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.UserInfo;
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace GetUserMedia {
+    namespace Parameters {
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    namespace Responses {
+      export type $200 = Components.Responses.MediaRes;
+    }
+  }
+  namespace GetUserNotifications {
+    namespace Parameters {
+      export type ReadStatus = string;
+      export type Type = string[];
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    export interface QueryParameters {
+      readStatus?: Parameters.ReadStatus;
+      type?: Parameters.Type;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Reaction;
+    }
+  }
+  namespace HandleReactionReadStatus {
+    namespace Parameters {
+      export type ReactionId = string[];
+      export type ReactionId = [
+        string,
+        ...string[]
+      ];
+      export type ReadStatus = string;
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+    }
+    export interface QueryParameters {
+      reactionId: Parameters.ReactionId;
+      readStatus: Parameters.ReadStatus;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Reaction;
+    }
+  }
+  namespace LoginUser {
+    export type RequestBody = /* User authentication object. */ Components.Schemas.UserAuth;
+    namespace Responses {
+      export type $200 = string;
+      export type $401 = Components.Responses.ErrorResponse;
+    }
+  }
+  namespace LogoutUser {
+    namespace Responses {
+      export type $200 = Components.Responses.OK;
+      export type $500 = Components.Responses.ErrorResponse;
+    }
+  }
+  namespace RegisterUser {
+    export type RequestBody = /* Schema to create new user. */ Components.Schemas.NewUserObject;
+    namespace Responses {
+      export type $200 = string;
+    }
+  }
+  namespace SendDirectMessage {
+    namespace Parameters {
+      export type ConversationId = string;
+    }
+    export interface PathParameters {
+      conversationId: Parameters.ConversationId;
+    }
+    export type RequestBody = Components.Schemas.NewConversationMessage;
+    namespace Responses {
+      export type $201 = Components.Schemas.ConversationMessages;
+      export type $400 = Components.Schemas.ErrorResponse;
+    }
+  }
+  namespace UpdateBlogPost {
+    namespace Parameters {
+      export type PostId = string;
+      export type UserId = string;
+    }
+    export interface PathParameters {
+      userId: Parameters.UserId;
+      postId: Parameters.PostId;
+    }
+    export type RequestBody = /* Blog post that can be referred with an id. */ Components.Schemas.RefPost;
+    namespace Responses {
+      export type $200 = Components.Responses.OK;
+    }
+  }
 }
 
 export interface OperationMethods {
@@ -810,7 +817,7 @@ export interface OperationMethods {
   'getBlogPost'(
     parameters?: Parameters<Paths.GetBlogPost.QueryParameters & Paths.GetBlogPost.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetBlogPost.Responses.$200>
   /**
    * addBlogPost - Post new post to the user's blog.
@@ -818,7 +825,7 @@ export interface OperationMethods {
   'addBlogPost'(
     parameters?: Parameters<Paths.AddBlogPost.PathParameters> | null,
     data?: Paths.AddBlogPost.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.AddBlogPost.Responses.$200>
   /**
    * deleteBlogPost - Delete one or several blog posts.
@@ -826,7 +833,7 @@ export interface OperationMethods {
   'deleteBlogPost'(
     parameters?: Parameters<Paths.DeleteBlogPost.PathParameters> | null,
     data?: Paths.DeleteBlogPost.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.DeleteBlogPost.Responses.$200>
   /**
    * updateBlogPost - Update blog post.
@@ -834,7 +841,7 @@ export interface OperationMethods {
   'updateBlogPost'(
     parameters?: Parameters<Paths.UpdateBlogPost.PathParameters> | null,
     data?: Paths.UpdateBlogPost.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.UpdateBlogPost.Responses.$200>
   /**
    * getUserMedia - Get list of media files and their location.
@@ -842,7 +849,7 @@ export interface OperationMethods {
   'getUserMedia'(
     parameters?: Parameters<Paths.GetUserMedia.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetUserMedia.Responses.$200>
   /**
    * addUserMedia - Upload a media files to server.
@@ -850,7 +857,7 @@ export interface OperationMethods {
   'addUserMedia'(
     parameters?: Parameters<Paths.AddUserMedia.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.AddUserMedia.Responses.$200>
   /**
    * delUserMedia - Delete refered media file.
@@ -858,7 +865,7 @@ export interface OperationMethods {
   'delUserMedia'(
     parameters?: Parameters<Paths.DelUserMedia.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.DelUserMedia.Responses.$200>
   /**
    * getUser - Get logged in user's data.
@@ -866,7 +873,7 @@ export interface OperationMethods {
   'getUser'(
     parameters?: Parameters<Paths.GetUser.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetUser.Responses.$200>
   /**
    * editUser - Update the logged in user's data.
@@ -874,7 +881,7 @@ export interface OperationMethods {
   'editUser'(
     parameters?: Parameters<Paths.EditUser.PathParameters> | null,
     data?: Paths.EditUser.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.EditUser.Responses.$200>
   /**
    * deleteUser - Delete the logged in user.
@@ -882,7 +889,7 @@ export interface OperationMethods {
   'deleteUser'(
     parameters?: Parameters<Paths.DeleteUser.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.DeleteUser.Responses.$200>
   /**
    * getUserInfo - Get user's details to show to other users
@@ -890,7 +897,7 @@ export interface OperationMethods {
   'getUserInfo'(
     parameters?: Parameters<Paths.GetUserInfo.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetUserInfo.Responses.$200>
   /**
    * getUserId - Get user's id based on user name
@@ -898,7 +905,7 @@ export interface OperationMethods {
   'getUserId'(
     parameters?: Parameters<Paths.GetUserId.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetUserId.Responses.$200>
   /**
    * getProfile - Get user's profile.
@@ -906,7 +913,7 @@ export interface OperationMethods {
   'getProfile'(
     parameters?: Parameters<Paths.GetProfile.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetProfile.Responses.$200>
   /**
    * editProfile - Edit user's profile.
@@ -914,7 +921,7 @@ export interface OperationMethods {
   'editProfile'(
     parameters?: Parameters<Paths.EditProfile.PathParameters> | null,
     data?: Paths.EditProfile.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.EditProfile.Responses.$200>
   /**
    * getProfileElements - Get profile elements.
@@ -922,7 +929,7 @@ export interface OperationMethods {
   'getProfileElements'(
     parameters?: Parameters<Paths.GetProfileElements.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetProfileElements.Responses.$200>
   /**
    * editProfileElements - Update profile elements.
@@ -930,7 +937,7 @@ export interface OperationMethods {
   'editProfileElements'(
     parameters?: Parameters<Paths.EditProfileElements.PathParameters> | null,
     data?: Paths.EditProfileElements.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.EditProfileElements.Responses.$200>
   /**
    * getFollowings - Get list of users the person is following.
@@ -938,7 +945,7 @@ export interface OperationMethods {
   'getFollowings'(
     parameters?: Parameters<Paths.GetFollowings.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetFollowings.Responses.$200>
   /**
    * addFollowing - Add the user's id and a user or a group they are following
@@ -946,7 +953,7 @@ export interface OperationMethods {
   'addFollowing'(
     parameters?: Parameters<Paths.AddFollowing.QueryParameters & Paths.AddFollowing.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.AddFollowing.Responses.$200>
   /**
    * deleteFollowing - Delete one user's following item
@@ -954,7 +961,7 @@ export interface OperationMethods {
   'deleteFollowing'(
     parameters?: Parameters<Paths.DeleteFollowing.PathParameters> | null,
     data?: Paths.DeleteFollowing.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.DeleteFollowing.Responses.$200>
   /**
    * getGroupFollowings - Get list of groups the person is following.
@@ -962,7 +969,7 @@ export interface OperationMethods {
   'getGroupFollowings'(
     parameters?: Parameters<Paths.GetGroupFollowings.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetGroupFollowings.Responses.$200>
   /**
    * getFollowers - Get list of user's followers.
@@ -970,7 +977,7 @@ export interface OperationMethods {
   'getFollowers'(
     parameters?: Parameters<Paths.GetFollowers.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetFollowers.Responses.$200>
   /**
    * registerUser - Send user's registration data.
@@ -978,7 +985,7 @@ export interface OperationMethods {
   'registerUser'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.RegisterUser.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.RegisterUser.Responses.$200>
   /**
    * loginUser - Login using user's credentials.
@@ -986,7 +993,7 @@ export interface OperationMethods {
   'loginUser'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.LoginUser.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.LoginUser.Responses.$200>
   /**
    * logoutUser - Logout user and destroy the session.
@@ -994,7 +1001,7 @@ export interface OperationMethods {
   'logoutUser'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.LogoutUser.Responses.$200>
   /**
    * getConversations - Get list of user's active conversations.
@@ -1002,7 +1009,7 @@ export interface OperationMethods {
   'getConversations'(
     parameters?: Parameters<Paths.GetConversations.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetConversations.Responses.$200>
   /**
    * createConversation - Start new conversation
@@ -1010,7 +1017,7 @@ export interface OperationMethods {
   'createConversation'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.CreateConversation.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.CreateConversation.Responses.$200>
   /**
    * getConversationDetails - Get conversation by id.
@@ -1018,7 +1025,7 @@ export interface OperationMethods {
   'getConversationDetails'(
     parameters?: Parameters<Paths.GetConversationDetails.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetConversationDetails.Responses.$200>
   /**
    * sendDirectMessage - Add a new message to the conversation
@@ -1026,7 +1033,7 @@ export interface OperationMethods {
   'sendDirectMessage'(
     parameters?: Parameters<Paths.SendDirectMessage.PathParameters> | null,
     data?: Paths.SendDirectMessage.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.SendDirectMessage.Responses.$201>
   /**
    * deleteConversation - Delete conversation by ID
@@ -1034,7 +1041,7 @@ export interface OperationMethods {
   'deleteConversation'(
     parameters?: Parameters<Paths.DeleteConversation.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.DeleteConversation.Responses.$200>
   /**
    * getConversationMessages - Get messages by conversation id.
@@ -1042,7 +1049,7 @@ export interface OperationMethods {
   'getConversationMessages'(
     parameters?: Parameters<Paths.GetConversationMessages.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetConversationMessages.Responses.$200>
   /**
    * editDirectMessage - Edit message in a conversation
@@ -1050,7 +1057,7 @@ export interface OperationMethods {
   'editDirectMessage'(
     parameters?: Parameters<Paths.EditDirectMessage.PathParameters> | null,
     data?: Paths.EditDirectMessage.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.EditDirectMessage.Responses.$201>
   /**
    * deleteDirectMessage - Delete message by ID
@@ -1058,7 +1065,7 @@ export interface OperationMethods {
   'deleteDirectMessage'(
     parameters?: Parameters<Paths.DeleteDirectMessage.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.DeleteDirectMessage.Responses.$200>
   /**
    * getPostReactions - get list of reactions on a post
@@ -1066,7 +1073,7 @@ export interface OperationMethods {
   'getPostReactions'(
     parameters?: Parameters<Paths.GetPostReactions.QueryParameters & Paths.GetPostReactions.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetPostReactions.Responses.$200>
   /**
    * addPostReaction - add new reaction on a post
@@ -1074,7 +1081,7 @@ export interface OperationMethods {
   'addPostReaction'(
     parameters?: Parameters<Paths.AddPostReaction.PathParameters> | null,
     data?: Paths.AddPostReaction.RequestBody,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.AddPostReaction.Responses.$200>
   /**
    * deletePostReaction - delete reaction from a post
@@ -1082,7 +1089,7 @@ export interface OperationMethods {
   'deletePostReaction'(
     parameters?: Parameters<Paths.DeletePostReaction.QueryParameters & Paths.DeletePostReaction.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.DeletePostReaction.Responses.$200>
   /**
    * getUserNotifications - get list of reactions a user has received across all their posts
@@ -1090,7 +1097,7 @@ export interface OperationMethods {
   'getUserNotifications'(
     parameters?: Parameters<Paths.GetUserNotifications.QueryParameters & Paths.GetUserNotifications.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.GetUserNotifications.Responses.$200>
   /**
    * handleReactionReadStatus - Change the read status of a reaction a user has received
@@ -1098,7 +1105,7 @@ export interface OperationMethods {
   'handleReactionReadStatus'(
     parameters?: Parameters<Paths.HandleReactionReadStatus.QueryParameters & Paths.HandleReactionReadStatus.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig  
+    config?: AxiosRequestConfig
   ): OperationResponse<Paths.HandleReactionReadStatus.Responses.$200>
 }
 
@@ -1110,7 +1117,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetBlogPost.QueryParameters & Paths.GetBlogPost.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetBlogPost.Responses.$200>
     /**
      * addBlogPost - Post new post to the user's blog.
@@ -1118,7 +1125,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.AddBlogPost.PathParameters> | null,
       data?: Paths.AddBlogPost.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.AddBlogPost.Responses.$200>
     /**
      * deleteBlogPost - Delete one or several blog posts.
@@ -1126,7 +1133,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteBlogPost.PathParameters> | null,
       data?: Paths.DeleteBlogPost.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeleteBlogPost.Responses.$200>
   }
   ['/blog/{userId}/{postId}']: {
@@ -1136,7 +1143,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.UpdateBlogPost.PathParameters> | null,
       data?: Paths.UpdateBlogPost.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.UpdateBlogPost.Responses.$200>
   }
   ['/media/{userId}']: {
@@ -1146,7 +1153,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.AddUserMedia.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.AddUserMedia.Responses.$200>
     /**
      * getUserMedia - Get list of media files and their location.
@@ -1154,7 +1161,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetUserMedia.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetUserMedia.Responses.$200>
   }
   ['/media/{userId}/{mediaId}']: {
@@ -1164,7 +1171,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DelUserMedia.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.DelUserMedia.Responses.$200>
   }
   ['/user/{userId}']: {
@@ -1174,7 +1181,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetUser.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetUser.Responses.$200>
     /**
      * editUser - Update the logged in user's data.
@@ -1182,7 +1189,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.EditUser.PathParameters> | null,
       data?: Paths.EditUser.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.EditUser.Responses.$200>
     /**
      * deleteUser - Delete the logged in user.
@@ -1190,7 +1197,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteUser.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeleteUser.Responses.$200>
   }
   ['/user/{username}/details']: {
@@ -1200,7 +1207,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetUserInfo.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetUserInfo.Responses.$200>
   }
   ['/user/id/{userName}']: {
@@ -1210,7 +1217,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetUserId.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetUserId.Responses.$200>
   }
   ['/user/{userId}/profile']: {
@@ -1220,7 +1227,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetProfile.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetProfile.Responses.$200>
     /**
      * editProfile - Edit user's profile.
@@ -1228,7 +1235,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.EditProfile.PathParameters> | null,
       data?: Paths.EditProfile.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.EditProfile.Responses.$200>
   }
   ['/user/{userId}/profile/elements']: {
@@ -1238,7 +1245,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetProfileElements.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetProfileElements.Responses.$200>
     /**
      * editProfileElements - Update profile elements.
@@ -1246,7 +1253,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.EditProfileElements.PathParameters> | null,
       data?: Paths.EditProfileElements.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.EditProfileElements.Responses.$200>
   }
   ['/user/{userId}/following']: {
@@ -1256,7 +1263,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetFollowings.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetFollowings.Responses.$200>
     /**
      * addFollowing - Add the user's id and a user or a group they are following
@@ -1264,7 +1271,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.AddFollowing.QueryParameters & Paths.AddFollowing.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.AddFollowing.Responses.$200>
     /**
      * deleteFollowing - Delete one user's following item
@@ -1272,7 +1279,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteFollowing.PathParameters> | null,
       data?: Paths.DeleteFollowing.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeleteFollowing.Responses.$200>
   }
   ['/user/{userId}/followingGroups']: {
@@ -1282,7 +1289,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetGroupFollowings.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetGroupFollowings.Responses.$200>
   }
   ['/user/{userId}/followers']: {
@@ -1292,7 +1299,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetFollowers.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetFollowers.Responses.$200>
   }
   ['/user/register']: {
@@ -1302,7 +1309,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.RegisterUser.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.RegisterUser.Responses.$200>
   }
   ['/login']: {
@@ -1312,7 +1319,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.LoginUser.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.LoginUser.Responses.$200>
   }
   ['/logout']: {
@@ -1322,7 +1329,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.LogoutUser.Responses.$200>
   }
   ['/user/{userId}/conversations']: {
@@ -1332,7 +1339,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetConversations.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetConversations.Responses.$200>
   }
   ['/conversation']: {
@@ -1342,7 +1349,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CreateConversation.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.CreateConversation.Responses.$200>
   }
   ['/conversation/{conversationId}']: {
@@ -1352,7 +1359,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetConversationDetails.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetConversationDetails.Responses.$200>
     /**
      * sendDirectMessage - Add a new message to the conversation
@@ -1360,7 +1367,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.SendDirectMessage.PathParameters> | null,
       data?: Paths.SendDirectMessage.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.SendDirectMessage.Responses.$201>
     /**
      * deleteConversation - Delete conversation by ID
@@ -1368,7 +1375,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteConversation.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeleteConversation.Responses.$200>
   }
   ['/conversation/{conversationId}/messages']: {
@@ -1378,7 +1385,7 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetConversationMessages.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetConversationMessages.Responses.$200>
   }
   ['/conversation/{conversationId}/{messageId}']: {
@@ -1388,7 +1395,7 @@ export interface PathsDictionary {
     'put'(
       parameters?: Parameters<Paths.EditDirectMessage.PathParameters> | null,
       data?: Paths.EditDirectMessage.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.EditDirectMessage.Responses.$201>
     /**
      * deleteDirectMessage - Delete message by ID
@@ -1396,7 +1403,7 @@ export interface PathsDictionary {
     'delete'(
       parameters?: Parameters<Paths.DeleteDirectMessage.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeleteDirectMessage.Responses.$200>
   }
   ['/blog/{postId}/reactions']: {
@@ -1406,7 +1413,7 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.AddPostReaction.PathParameters> | null,
       data?: Paths.AddPostReaction.RequestBody,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.AddPostReaction.Responses.$200>
     /**
      * getPostReactions - get list of reactions on a post
@@ -1414,15 +1421,25 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetPostReactions.QueryParameters & Paths.GetPostReactions.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetPostReactions.Responses.$200>
+    /**
+     * getPostReactions - get list of reactions on a post
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetPostReactions.QueryParameters & Paths.GetPostReactions.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.GetPostReactions.Responses.$200>
+  }
+  ['/blog/{postId}/reactions/{reactionId}']: {
     /**
      * deletePostReaction - delete reaction from a post
      */
     'delete'(
       parameters?: Parameters<Paths.DeletePostReaction.QueryParameters & Paths.DeletePostReaction.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeletePostReaction.Responses.$200>
   }
   ['/user/{userId}/notifications']: {
@@ -1432,15 +1449,17 @@ export interface PathsDictionary {
     'get'(
       parameters?: Parameters<Paths.GetUserNotifications.QueryParameters & Paths.GetUserNotifications.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetUserNotifications.Responses.$200>
+  }
+  ['/user/{userId}/notifications/{reactionId}']: {
     /**
      * handleReactionReadStatus - Change the read status of a reaction a user has received
      */
     'put'(
       parameters?: Parameters<Paths.HandleReactionReadStatus.QueryParameters & Paths.HandleReactionReadStatus.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig  
+      config?: AxiosRequestConfig
     ): OperationResponse<Paths.HandleReactionReadStatus.Responses.$200>
   }
 }
