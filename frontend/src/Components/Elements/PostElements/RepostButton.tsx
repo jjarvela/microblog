@@ -50,15 +50,11 @@ export default function RepostButton({ reposted }: { reposted: boolean }) {
   const deleteRepostMutation = useMutation({
     mutationKey: ["repost-delete", post.id],
     mutationFn: async () => {
-      /*await postService.deleteReaction(
+      await postService.deleteReaction(
         post.original_post_id || post.id,
         user!.id,
         "repost",
       );
-      await postService.deletePost([post.id], user!.id);*/
-      console.log(post);
-      console.log(post.id);
-      console.log(post.original_post_id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
