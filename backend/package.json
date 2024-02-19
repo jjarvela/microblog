@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "dbSetup": "prisma generate && prisma db push && prisma db seed"
   },
   "prisma": {
     "seed": "ts-node ./src/services/seed/index.ts",
