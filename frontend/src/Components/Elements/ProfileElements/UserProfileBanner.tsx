@@ -14,6 +14,7 @@ import IonCheckmarkRound from "../../Icons/IonCheckmarkRound";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import profileService from "../../../Services/profileService";
 import { useUser } from "../../../UserWrapper";
+import FollowButton from "../Inputs/FollowButton";
 
 type UserProfileBannerProps = {
   bannerImage?: string;
@@ -56,7 +57,9 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
               handleClass="text-white75"
               disablePopup={true}
             />
-            <Button className="btn-primary h-[max-content]">Follow</Button>
+            {!owned && (
+              <FollowButton followUserName={profile.details?.userName || ""} />
+            )}
           </div>
         </div>
         <div
