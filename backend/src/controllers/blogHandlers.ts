@@ -14,7 +14,6 @@ export async function addBlogPost(c: Context, _req: Request, res: Response) {
   const blogObj = c.request.requestBody;
   const post = {
     user_uuid: params.userId as string,
-    original_post_id: parseInt(params.original_post_id.toString()),
     original_poster_id: params.userId as string,
     text: blogObj.text as string,
     timestamp: new Date(),
