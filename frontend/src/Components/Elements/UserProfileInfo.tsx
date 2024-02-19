@@ -3,6 +3,9 @@ import { ProfilePicture } from "./ProfilePicture";
 import { useRef, useState } from "react";
 import { useUser } from "../../UserWrapper";
 import FollowButton from "./Inputs/FollowButton";
+import { useQuery } from "@tanstack/react-query";
+import userService from "../../Services/userService";
+import profileService from "../../Services/profileService";
 
 type UserProfileInfoProps = {
   user: UserDetails | null;
@@ -26,6 +29,18 @@ function UserProfileInfo({
   const popup = useRef<HTMLDivElement>(null);
   const [floatY, setFloatY] = useState("top-0");
   const [floatX, setFloatX] = useState("left-4");
+
+  const detailQuery = useQuery({
+    queryKey: ["details", user?.id],
+    queryFn: () => userService.getUserDetails(user?.userName || ""),
+    enabled: !!user?.userName,
+  });
+
+  const profileQuery = useQuery({
+    queryKey: ["profile", user?.id],
+    queryFn: () => profileService.getUserProfile(user?.id || ""),
+    enabled: !!user?.id,
+  });
 
   return (
     <div className={"relative z-[90] mr-auto" + " " + classAdd}>
@@ -100,12 +115,29 @@ function UserProfileInfo({
                 </h5>
                 <small>{user?.userName}</small>
               </Link>
-              <p>Fetch user about at some point</p>
-              {/*Add proper follower counts once we get them*/}
-              <div className="bold flex flex-row gap-2 text-lg text-secondary">
-                <p>{user?.followers?.length} Followers</p>
-                <p>{user?.following?.length} Following</p>
-              </div>
+              {detailQuery.data && profileQuery.data && (
+                <>
+                  <p>
+                    {(profileQuery.data as UserProfile).profile_text.substring(
+                      0,
+                      20,
+                    )}
+                    {(profileQuery.data as UserProfile).profile_text.length >
+                      20 && "..."}
+                  </p>
+                  {/*Add proper follower counts once we get them*/}
+                  <div className="bold flex flex-row gap-2 text-lg text-secondary">
+                    <p>
+                      {(detailQuery.data as UserDetails).followers?.length}{" "}
+                      Followers
+                    </p>
+                    <p>
+                      {(detailQuery.data as UserDetails).following?.length}{" "}
+                      Following
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

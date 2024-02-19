@@ -169,12 +169,12 @@ const Search = () => {
         >
           People
         </Link>
-        <Link
+        {/* <Link
           to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=groups`}
           onClick={() => setInnerNav("groups")}
         >
           Groups
-        </Link>
+        </Link> */}
         <Link
           to={`/search${query !== "" ? "?q=" + query + "&" : "?"}f=media`}
           onClick={() => setInnerNav("media")}
