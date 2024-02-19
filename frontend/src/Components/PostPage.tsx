@@ -66,11 +66,11 @@ export default function PostPage() {
   });
 
   if (postInfoQuery.isError || !postInfoQuery.data) {
-    return <h5 className="text-center text-warning">Error</h5>;
+    return <h5 className="mx-auto text-warning">Error</h5>;
   }
 
-  if (postInfoQuery.isLoading) {
-    return <h5 className="animate-pulse text-center">Loading</h5>;
+  if (postInfoQuery.isError) {
+    return <h5 className="mx-auto text-warning">Error</h5>;
   }
 
   function selectUser() {

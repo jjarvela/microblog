@@ -76,8 +76,9 @@ type BlogPostToServer = {
 };
 
 type RepostToServer = {
-  blogpost_uid: string;
-  user_id: string; //original poster
+  user_id: string;
+  original_post_id?: number;
+  original_poster_id: string;
   blog_text: string;
   timestamp: string;
   reposter_id: string;
@@ -86,8 +87,9 @@ type RepostToServer = {
 };
 
 type CommentToServer = {
-  blogpost_uid: string;
-  user_id: string; //original poster
+  user_id: string;
+  original_post_id?: number;
+  original_poster_id: string;
   blog_text: string;
   timestamp: string;
   commenter_id: string;

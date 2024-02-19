@@ -47,8 +47,8 @@ const UserTimeline = () => {
       <h2 className="my-4 text-center">Timeline</h2>
       <div className="flex flex-col gap-4">
         {postQuery.data &&
-          postQuery.data.map((post: BlogPostFromServer) => {
-            return <Post key={post.blogpost_uid} post={post} />;
+          (postQuery.data as BlogPostFromServer[]).map((post) => {
+            return <Post key={Math.floor(Math.random() * 1000)} post={post} />;
           })}
       </div>
       <div className="scrollbar-thin overflow-y-auto">
