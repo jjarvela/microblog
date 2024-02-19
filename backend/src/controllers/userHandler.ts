@@ -70,16 +70,20 @@ export async function getUserThumbInfo(
   const username = c.request.params.username.toString();
 
   try {
-    const user = await userQueries.selectUser({ username: username });
+    const userByName = await userQueries.selectUser({ username: username });
+    if (!userByName) throw new Error("Couldn't find user by username");
+    const user = await userQueries.selectUser({
+      uid: (userByName as users).uid,
+    });
     if (!user) throw new Error("User does not exist");
     const following = await followingQueries.selectFollowingUsers({
-      user_id: (user as users).uid
+      user_id: (user as users).uid,
     });
     const followers = await followingQueries.selectFollowers({
-      user_id: (user as users).uid
+      user_id: (user as users).uid,
     });
     const profile = await userProfileQueries.selectProfile({
-      user_id: (user as users).uid
+      user_id: (user as users).uid,
     });
 
     if (!user || !following || !followers || !profile)
@@ -88,11 +92,11 @@ export async function getUserThumbInfo(
     const result = {
       id: (user as User).uid,
       userName: (user as User).username,
-      screenName: (user as User).screen_name || (user as User).username,
+      screenName: (user as User).screen_name,
       profileImage: (user as User).profile_image || "",
       following: following,
       followers: followers,
-      description: profile.profile_text || ""
+      description: profile.profile_text || "",
     };
     res.status(200).json(result);
   } catch (e) {

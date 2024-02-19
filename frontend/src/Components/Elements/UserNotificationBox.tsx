@@ -83,9 +83,15 @@ const UserNotificationBox = ({ reaction }: UserNotificationBoxProps) => {
       <div className="flex basis-7/12 flex-col">
         <p>
           @{reaction.sender_useridTousers.username!}{" "}
-          {reaction.type === "like" && <span>liked</span>}
-          {reaction.type === "repost" && <span>reposted</span>}
-          {" your post"}
+          {reaction.type === "like" || reaction.type === "like of repost" ? (
+            <span>liked</span>
+          ) : (
+            <span>reposted</span>
+          )}
+          {reaction.type === "like of repost" ||
+          reaction.type === "repost of repost"
+            ? " your repost"
+            : " your post"}
         </p>
       </div>
       <div className="absolute bottom-2 right-2 m-2 flex flex-col">
