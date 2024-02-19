@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router";
+import { Routes, Route, Navigate, useParams } from "react-router";
 import FollowedGroups from "./Elements/FollowedGroups";
 import FollowedHashtags from "./Elements/FollowedHashtags";
 import FollowedUsers from "./Elements/FollowedUsers";
@@ -8,23 +8,38 @@ import MaterialSymbolsPersonCheck from "./Icons/MaterialSymbolsPersonCheck";
 import IonRibbonB from "./Icons/IonRibbonB";
 import MaterialSymbolsTagRounded from "./Icons/MaterialSymbolsTagRounded";
 import { useUser } from "../UserWrapper";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import postService from "../Services/postService";
+import userService from "../Services/userService";
 
 const UserTimeline = () => {
   const user = useUser().user;
 
-  const postQuery = useQuery({
-    queryKey: ["timeline"],
-    queryFn: () => {
-      if (user) {
-        return postService.getPosts(user.id);
-      } else {
-        return [];
-      }
-    },
-    enabled: !!user,
+  const page = useParams()["*"];
+
+  const followingQuery = useQuery({
+    queryKey: ["following"],
+    queryFn: () => userService.getUserFollowing(user?.id || ""),
+    enabled: !!user?.id,
   });
+
+  const followedPostsQueries = useQueries({
+    queries: followingQuery.data
+      ? followingQuery.data.map((follow: UserFollowing) => {
+          return {
+            queryKey: ["posts", follow.follows_user],
+            queryFn: () => postService.getPosts(follow.follows_user),
+            enabled: !!followingQuery.data,
+          };
+        })
+      : [],
+  });
+
+  if (followedPostsQueries.find((query) => query.isLoading)) {
+    return <></>;
+  }
+
+  console.log(followedPostsQueries);
 
   return (
     <>
@@ -47,10 +62,26 @@ const UserTimeline = () => {
       </div>
       <h2 className="my-4 text-center">Timeline</h2>
       <div className="flex flex-col gap-4">
-        {postQuery.data &&
-          (postQuery.data as BlogPostFromServer[]).map((post) => {
-            return <Post key={Math.floor(Math.random() * 1000)} post={post} />;
+        <>
+          {followedPostsQueries.find((query) => query.isLoading) && (
+            <h4>Loading posts...</h4>
+          )}
+          {followedPostsQueries.map((query) => {
+            if (query.data)
+              return (query.data as BlogPostFromServer[])
+                .filter((post) => {
+                  if (page === "originals" && post.original_post_id)
+                    return false;
+                  else return true;
+                })
+                .map((post) => (
+                  <Post
+                    key={(post as BlogPostFromServer).id}
+                    post={post as BlogPostFromServer}
+                  />
+                ));
           })}
+        </>
       </div>
       <div className="scrollbar-thin overflow-y-auto">
         <Routes>

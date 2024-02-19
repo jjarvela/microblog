@@ -45,7 +45,7 @@ function FollowButton({ followUserName }: FollowButtonProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["following", user.user?.id],
+        queryKey: ["following"],
       });
       queryClient.invalidateQueries({
         queryKey: ["details", followUserName],
