@@ -1,6 +1,50 @@
 import axios from "axios";
 import { serverUrl } from "../globalData";
 
+function queryPosts(param?: {
+  hashtags?: string[];
+  usernames?: string[];
+  keyword?: string;
+  startDate?: string;
+  endDate?: string;
+}) {
+  function parseQuery() {
+    let querystring = "";
+    if (param?.hashtags) {
+      querystring += "?hashtags=" + param.hashtags;
+    }
+
+    if (param?.usernames) {
+      querystring += `${param.hashtags ? "&" : "?"}usernames=${
+        param.usernames
+      }`;
+    }
+
+    if (param?.keyword) {
+      querystring += `${param.hashtags || param.usernames ? "&" : "?"}keyword=${
+        param.keyword
+      }`;
+    }
+
+    if (param?.startDate) {
+      querystring += `${
+        param.hashtags || param.usernames || param?.keyword ? "&" : "?"
+      }keyword=${param.startDate}`;
+    }
+
+    if (param?.endDate) {
+      querystring += `${
+        param.hashtags || param.usernames || param?.keyword || param.startDate
+          ? "&"
+          : "?"
+      }keyword=${param.endDate}`;
+    }
+
+    return querystring;
+  }
+  return axios.get(`${serverUrl}/blog${parseQuery()}`).then((res) => res.data);
+}
+
 function getPosts(userId: string, postId?: number) {
   return axios
     .get(`${serverUrl}/blog/${userId}` + (postId ? `?postId=${postId}` : ""))
@@ -58,6 +102,7 @@ function deleteReaction(postId: number, userId: string, type: string) {
 }
 
 export default {
+  queryPosts,
   getUserPosts: getPosts,
   getPosts,
   getReactions,
