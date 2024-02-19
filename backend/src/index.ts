@@ -13,7 +13,7 @@ const db_client = new Pool(dbConfig);
 const app = Express();
 
 app.use(Express.json());
-// app.use(fileUpload());
+console.log(process.env);
 
 app.use(
   session({
