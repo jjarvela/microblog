@@ -1,12 +1,14 @@
 import { PrismaClient, blog_posts } from "@prisma/client";
-import { randomUUID } from "crypto";
 
 const prisma = new PrismaClient();
 
 export const insertPost = async (param: {
   user_uuid: string;
+  original_post_id?: number;
+  original_poster_id: string;
   text: string;
   timestamp: Date;
+  original_created?: Date;
   hashtags: string[];
   reposter_id?: string;
   commenter_id?: string;
@@ -21,13 +23,14 @@ export const insertPost = async (param: {
       time: param.timestamp
     });
   }
-  const newUuid = randomUUID();
   const result = await prisma.blog_posts.create({
     data: {
-      blogpost_uid: newUuid,
+      original_post_id: param.original_post_id || null,
       user_id: param.user_uuid,
+      original_poster_id: param.original_poster_id,
       blog_text: param.text,
       timestamp: param.timestamp,
+      original_created: param.original_created || param.timestamp,
       reposter_id: param.reposter_id || null,
       commenter_id: param.commenter_id || null,
       item_properties: {
@@ -37,6 +40,14 @@ export const insertPost = async (param: {
     include: {
       item_properties: true,
       user_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true
+        }
+      },
+      original_poster_idTousers: {
         select: {
           uid: true,
           username: true,
@@ -83,6 +94,14 @@ export const selectOnePost = async (param: { blog_post_id: number }) => {
         }
       },
       user_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true
+        }
+      },
+      original_poster_idTousers: {
         select: {
           uid: true,
           username: true,
@@ -145,6 +164,14 @@ export const selectPosts = async (param: {
         }
       },
       user_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true
+        }
+      },
+      original_poster_idTousers: {
         select: {
           uid: true,
           username: true,
@@ -225,6 +252,14 @@ export const updatePost = async (param: {
           profile_image: true
         }
       },
+      original_poster_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true
+        }
+      },
       reposter_idTousers: {
         select: {
           uid: true,
@@ -247,12 +282,23 @@ export const updatePost = async (param: {
   return result;
 };
 
-export const deletePost = async (param: { id: number }) => {
-  const result: object | null = await prisma.blog_posts.delete({
-    where: {
-      id: param.id
-    }
-  });
-  console.log(result);
-  return result;
+export const deletePost = async (param: { id: number; user_id?: string }) => {
+  if (param.user_id) {
+    const result: object | null = await prisma.blog_posts.delete({
+      where: {
+        id: param.id,
+        user_id: param.user_id
+      }
+    });
+    console.log(result);
+    return result;
+  } else {
+    const result: object | null = await prisma.blog_posts.delete({
+      where: {
+        id: param.id
+      }
+    });
+    console.log(result);
+    return result;
+  }
 };

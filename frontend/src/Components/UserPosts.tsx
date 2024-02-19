@@ -38,7 +38,7 @@ function UserPosts() {
       <div className="flex flex-col gap-4">
         {(userPostsQuery.data as BlogPostFromServer[]).map(
           (post: BlogPostFromServer) => {
-            return <Post key={post.blogpost_uid} post={post} />;
+            return <Post key={post.id} post={post} />;
           },
         )}
       </div>

@@ -30,24 +30,30 @@ io.on("connection", (socket) => {
   });
 
   socket.on("remove-active-user", async (userId) => {
-    const user = await updateSocket(userId, null);
-    socket.emit("get-active-user", user);
+    if (userId) {
+      const user = await updateSocket(userId, null);
+      socket.emit("get-active-user", user);
+    }
   });
 
   socket.on("send-notification", async (userId) => {
-    console.log("Notification processing");
-    const user = await getSocket(userId);
-    console.log(user);
-    (user as User).socket_id &&
-      socket.to((user as User).socket_id).emit("received-notification");
+    if (userId) {
+      console.log("Notification processing");
+      const user = await getSocket(userId);
+      console.log(user);
+      (user as User).socket_id &&
+        socket.to((user as User).socket_id).emit("received-notification");
+    }
   });
 
   socket.on("send-message", async (userId) => {
-    console.log("Message processing");
-    const user = await getSocket(userId);
-    console.log(user);
-    (user as User).socket_id &&
-      socket.to((user as User).socket_id).emit("received-message");
+    if (userId) {
+      console.log("Message processing");
+      const user = await getSocket(userId);
+      console.log(user);
+      (user as User).socket_id &&
+        socket.to((user as User).socket_id).emit("received-message");
+    }
   });
 
   socket.on("disconnect", () => {
