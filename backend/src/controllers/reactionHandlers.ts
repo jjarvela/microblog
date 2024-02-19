@@ -86,6 +86,22 @@ export const deleteReaction = async (
       sender_userid: user_id,
       type
     });
+
+    if (type === "repost" || type === "repost of repost") {
+      result.forEach(async (item) => {
+        if (item.blogpost_id) {
+          const repost = await postQueries.selectReposts({
+            original_post_id: item.blogpost_id,
+            reposter_id: item.sender_userid
+          });
+
+          await postQueries.deletePost({
+            id: repost[0].id,
+            user_id: item.sender_userid
+          });
+        } else return;
+      });
+    }
     res.status(201).json(result);
   } catch (e) {
     console.log((e as Error).message);
