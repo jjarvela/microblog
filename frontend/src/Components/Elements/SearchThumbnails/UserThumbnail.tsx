@@ -34,7 +34,7 @@ function UserThumbnail({ username }: UserThumbnailProps) {
                   {(userQuery.data?.details as UserDetails).screenName}
                 </h5>
                 <p className="mb-2 text-black50">
-                  {(userQuery.data?.details as UserDetails).userName}
+                  @{(userQuery.data?.details as UserDetails).userName}
                 </p>
               </div>
               <div className="flex h-fit flex-grow justify-start px-4">
