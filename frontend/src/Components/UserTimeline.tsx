@@ -23,6 +23,7 @@ const UserTimeline = () => {
         return [];
       }
     },
+    enabled: !!user,
   });
 
   return (
