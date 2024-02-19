@@ -9,44 +9,25 @@ import SearchUsers from "./SearchUsers";
 import SearchGroups from "./SearchGroups";
 import SearchMedia from "./SearchMedia";
 import SearchPosts from "./SearchPosts";
+import { useQuery } from "@tanstack/react-query";
+import postService from "../Services/postService";
 
 const Search = () => {
-  const userResults: User[] = [
+  const userResults = [
     {
-      userName: "@testuser",
-      screenName: "Test User ✨",
-      followers: 5,
-      following: 23,
+      userName: "Jane",
     },
     {
-      userName: "@dickerson99",
-      screenName: "Dickerson",
-      followers: 420,
-      following: 666,
+      userName: "John",
     },
     {
-      userName: "@spamlord",
-      screenName: "Spammer McSpamface",
-      followers: 2,
-      following: 10678,
+      userName: "fancyuser",
     },
     {
-      userName: "@madasitgets",
-      screenName: "Outraged user 951 😤",
-      followers: 487,
-      following: 794,
+      userName: "anotheruser",
     },
     {
-      userName: "@madasitgets",
-      screenName: "Outraged user 951 😤",
-      followers: 487,
-      following: 794,
-    },
-    {
-      userName: "@madasitgets",
-      screenName: "Outraged user 951 😤",
-      followers: 487,
-      following: 794,
+      userName: "madasitgets",
     },
   ];
 
@@ -147,6 +128,14 @@ const Search = () => {
 
   useEffect(() => {}, [query]);
 
+  const postQuery = useQuery({
+    queryKey: ["search-posts", query],
+    queryFn: () => {
+      if (query !== "") return postService.queryPosts({ keyword: query });
+      else return postService.queryPosts();
+    },
+  });
+
   return (
     <div className="my-1 flex flex-col gap-4">
       <h2 className="my-4 text-center">Search Hub</h2>
@@ -228,11 +217,12 @@ const Search = () => {
         <SearchAll
           postResults={[]}
           userResults={userResults}
-          groupResults={groupResults}
           mediaResults={mediaResult}
         />
       )}
-      {innerNav === "posts" && <SearchPosts results={[]} />}
+      {innerNav === "posts" && (
+        <SearchPosts results={postQuery.data ? postQuery.data : []} />
+      )}
       {innerNav === "people" && <SearchUsers results={userResults} />}
       {innerNav === "groups" && <SearchGroups results={groupResults} />}
       {innerNav === "media" && <SearchMedia results={mediaResult} />}

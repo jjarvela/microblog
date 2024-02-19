@@ -2,7 +2,7 @@ import Post from "./Elements/PostElements/Post";
 import MaterialSymbolsArticleOutlineRounded from "./Icons/MaterialSymbolsArticleOutlineRounded";
 
 type SearchPostsProps = {
-  results: Post[];
+  results: BlogPostFromServer[];
   limit?: number | undefined;
 };
 

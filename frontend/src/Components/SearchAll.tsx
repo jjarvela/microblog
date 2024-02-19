@@ -4,7 +4,7 @@ import SearchPosts from "./SearchPosts";
 import SearchUsers from "./SearchUsers";
 
 type SearchAllProps = {
-  postResults: Post[];
+  postResults: BlogPostFromServer[];
   userResults: User[];
   // groupResults: Group[];
   mediaResults: Media[];
