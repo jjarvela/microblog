@@ -116,8 +116,18 @@ export async function deleteBlogPost(c: Context, _req: Request, res: Response) {
     }
   };
 
-  for (const item of c.request.requestBody.itemIds) {
-    await dbDelete(item as number);
+  const itemArray = c.request.requestBody.itemIds;
+
+  if (!itemArray) return res.status(404).send([]);
+
+  for (const item of itemArray) {
+    console.log(item);
+    if (!item) return res.status(404).send([]);
+    await dbDelete(parseInt(item.toString()));
+    const reposts = await queries.selectReposts({ original_post_id: item });
+    if (reposts.length > 0) {
+      reposts.forEach(async (post) => await dbDelete(post.id));
+    }
   }
 
   if (dataError === 2) {
