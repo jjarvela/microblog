@@ -39,8 +39,6 @@ const UserTimeline = () => {
     return <></>;
   }
 
-  console.log(followedPostsQueries);
-
   return (
     <>
       <div className="flex basis-4/12 justify-center">
