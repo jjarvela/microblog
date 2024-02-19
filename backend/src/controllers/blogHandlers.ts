@@ -9,6 +9,44 @@ import { Context } from "openapi-backend";
 import type { BlogPost } from "./types";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
+export async function getAllPosts(c: Context, _req: Request, res: Response) {
+  const hashtags = c.request.query.hashtags || undefined;
+  const usernames = c.request.query.usernames || undefined;
+  const keyword = c.request.query.keyword || undefined;
+  const startDate = c.request.query.startDate || undefined;
+  const endDate = c.request.query.endDate || undefined;
+
+  console.log(hashtags);
+
+  if (!hashtags && !usernames && !keyword && !startDate && !endDate) {
+    try {
+      const posts = await queries.queryPosts();
+
+      if (!posts) return res.status(404).send([]);
+      else res.status(200).send(posts);
+    } catch (e) {
+      console.log((e as Error).message);
+      return res.status(500).send("Internal server error");
+    }
+  }
+
+  try {
+    const posts = await queries.queryPosts({
+      hashtags,
+      usernames,
+      keyword: keyword ? keyword.toString() : undefined,
+      startDate: startDate ? startDate.toString() : undefined,
+      endDate: endDate ? endDate.toString() : undefined
+    });
+
+    if (!posts) return res.status(200).send([]);
+    else res.status(200).send(posts);
+  } catch (e) {
+    console.log((e as Error).message);
+    return res.status(500).send("Internal server error");
+  }
+}
+
 export async function addBlogPost(c: Context, _req: Request, res: Response) {
   const params = c.request.params;
   const blogObj = c.request.requestBody;

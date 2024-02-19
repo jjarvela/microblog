@@ -561,6 +561,51 @@ tags:
 paths:
   ###### POSTS ######
 
+  /blog:
+    x-router-controller: BlogController
+    get:
+      operationId: getAllPosts
+      tags:
+        - blog
+      summary: Get entries filtered by various queries
+      parameters:
+        - in: query
+          name: hashtags
+          schema:
+            type: string
+        - in: query
+          name: usernames
+          schema:
+            type: string
+        - in: query
+          name: keyword
+          schema:
+            type: string
+        - in: query
+          name: startDate
+          schema:
+            $ref: "#/components/schemas/date"
+        - in: query
+          name: endDate
+          schema:
+            $ref: "#/components/schemas/date"
+
+      responses:
+        "200":
+          description: successfull operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/refPost"
+        "400":
+          description: Error object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+
   /blog/{userId}:
     x-router-controller: BlogController
     get:

@@ -131,6 +131,69 @@ export const selectOnePost = async (param: { blog_post_id: number }) => {
   return result;
 };
 
+export const queryPosts = async (param?: {
+  hashtags?: string | string[];
+  usernames?: string | string[];
+  keyword?: string;
+  startDate?: string;
+  endDate?: string;
+}) => {
+  if (!param) {
+    const result = await prisma.blog_posts.findMany({
+      where: {},
+      include: {
+        item_properties: {
+          select: {
+            blogpost_id: true,
+            value: true,
+            context_id: true
+          },
+          where: {
+            context_id: 1
+          }
+        },
+        user_idTousers: {
+          select: {
+            uid: true,
+            username: true,
+            screen_name: true,
+            profile_image: true
+          }
+        },
+        original_poster_idTousers: {
+          select: {
+            uid: true,
+            username: true,
+            screen_name: true,
+            profile_image: true
+          }
+        },
+        reposter_idTousers: {
+          select: {
+            uid: true,
+            username: true,
+            screen_name: true,
+            profile_image: true
+          }
+        },
+        commenter_idTousers: {
+          select: {
+            uid: true,
+            username: true,
+            screen_name: true,
+            profile_image: true
+          }
+        }
+      },
+      orderBy: {
+        timestamp: "desc"
+      }
+    });
+    return result;
+  }
+  const posts: object[] = [];
+};
+
 export const selectPosts = async (param: {
   user_uuid: string;
   startdate: Date;
