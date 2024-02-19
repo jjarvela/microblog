@@ -1,36 +1,57 @@
+import { useQueries, useQuery } from "@tanstack/react-query";
 import UserThumbnail from "./SearchThumbnails/UserThumbnail";
+import userService from "../../Services/userService";
+import { useUser } from "../../UserWrapper";
 
 export default function FollowedUsers() {
+  const user = useUser();
+
+  const followedQuery = useQuery({
+    queryKey: ["following"],
+    queryFn: () => userService.getUserFollowing(user.user?.id || ""),
+    enabled: !!user.user?.id,
+  });
+
+  const userDetailsQueries = useQueries({
+    queries: followedQuery.data
+      ? (followedQuery.data as UserFollowing[]).map((follow) => {
+          return {
+            queryKey: ["following", follow.follows_user],
+            queryFn: async () =>
+              userService.getUserDetails(
+                await userService
+                  .getUser(follow.follows_user)
+                  .then((res) => res.username),
+              ),
+          };
+        })
+      : [],
+  });
+
+  if (userDetailsQueries.find((query) => query.isLoading)) {
+    return <h4 className="my-4 text-center">Loading users...</h4>;
+  }
+
+  if (userDetailsQueries.find((query) => query.isError)) {
+    return (
+      <h4 className="my-4 text-center text-warning dark:text-warningDark">
+        Error loading users!
+      </h4>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-3 p-2">
-      <UserThumbnail
-        profileName="Test User ✨"
-        username="@testuser"
-        userDescription="this si test"
-        followers={5}
-        following={23}
-      />
-      <UserThumbnail
-        profileName="Another User 🙂"
-        username="@anotheruser"
-        userDescription="Hello! I am new!"
-        followers={1}
-        following={37}
-      />
-      <UserThumbnail
-        profileName="Fancy User"
-        username="@fancyuser"
-        userDescription="UwU"
-        followers={526}
-        following={1893}
-      />
-      <UserThumbnail
-        profileName="Outraged user 951 😤"
-        username="@madasitgets"
-        userDescription="I will physically fight the Sun"
-        followers={487}
-        following={794}
-      />
+      {userDetailsQueries.map((query) => (
+        <UserThumbnail
+          key={query.data.userName}
+          profileName={query.data.screenName}
+          username={query.data.userName}
+          userDescription={""}
+          followers={query.data.followers?.length || 0}
+          following={query.data.following?.length || 0}
+        />
+      ))}
     </div>
   );
 }
