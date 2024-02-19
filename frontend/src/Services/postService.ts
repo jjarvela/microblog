@@ -8,41 +8,21 @@ function queryPosts(param?: {
   startDate?: string;
   endDate?: string;
 }) {
-  function parseQuery() {
-    let querystring = "";
-    if (param?.hashtags) {
-      querystring += "?hashtags=" + param.hashtags;
-    }
-
-    if (param?.usernames) {
-      querystring += `${param.hashtags ? "&" : "?"}usernames=${
-        param.usernames
-      }`;
-    }
-
-    if (param?.keyword) {
-      querystring += `${param.hashtags || param.usernames ? "&" : "?"}keyword=${
-        param.keyword
-      }`;
-    }
-
-    if (param?.startDate) {
-      querystring += `${
-        param.hashtags || param.usernames || param?.keyword ? "&" : "?"
-      }keyword=${param.startDate}`;
-    }
-
-    if (param?.endDate) {
-      querystring += `${
-        param.hashtags || param.usernames || param?.keyword || param.startDate
-          ? "&"
-          : "?"
-      }keyword=${param.endDate}`;
-    }
-
-    return querystring;
-  }
-  return axios.get(`${serverUrl}/blog${parseQuery()}`).then((res) => res.data);
+  return axios
+    .get(
+      `${serverUrl}/blog${param ? "?" : ""}${
+        param?.hashtags ? "hashtags=" + param.hashtags : ""
+      }${param?.hashtags && param.usernames ? "&" : ""}${
+        param?.usernames ? "usernames=" + param.usernames : ""
+      }${param?.usernames && param.keyword ? "&" : ""}${
+        param?.keyword ? "keyword=" + param.keyword : ""
+      }${param?.keyword && param.startDate ? "&" : ""}${
+        param?.startDate && param.endDate ? "startDate=" + param.startDate : ""
+      } ${param?.startDate ? "&" : ""}${
+        param?.endDate ? "endDate=" + param.endDate : ""
+      }`,
+    )
+    .then((res) => res.data);
 }
 
 function getPosts(userId: string, postId?: number) {
