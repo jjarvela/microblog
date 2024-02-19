@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, useParams } from "react-router";
-import FollowedGroups from "./Elements/FollowedGroups";
+// import FollowedGroups from "./Elements/FollowedGroups";
 import FollowedHashtags from "./Elements/FollowedHashtags";
 import FollowedUsers from "./Elements/FollowedUsers";
 import Post from "./Elements/PostElements/Post";
@@ -85,7 +85,7 @@ const UserTimeline = () => {
         <Routes>
           <Route index element={<Navigate to={"following"} />} />
           <Route path="people" element={<FollowedUsers />} />
-          <Route path="groups" element={<FollowedGroups />} />
+          {/* <Route path="groups" element={<FollowedGroups />} /> */}
           <Route path="hashtags" element={<FollowedHashtags />} />
         </Routes>
       </div>

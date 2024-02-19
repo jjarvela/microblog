@@ -3,7 +3,7 @@ import Button from "../Button";
 import TagInput from "../Inputs/TagInput";
 import TextAreaInput from "../Inputs/TextAreaInput";
 import MaterialSymbolsAddPhotoAlternateOutlineRounded from "../../Icons/MaterialSymbolsAddPhotoAlternateOutlineRounded";
-import TextInput from "../Inputs/TextInput";
+// import TextInput from "../Inputs/TextInput";
 import UserProfileInfo from "../UserProfileInfo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postService from "../../../Services/postService";
@@ -174,13 +174,13 @@ function PostModal({ user, id, text, tags, refObject, mode }: NewPostProps) {
             showCount
             class="w-full max-w-[32rem]"
           />
-          <div className="flex flex-row flex-wrap gap-4">
+          {/* <div className="flex flex-row flex-wrap gap-4">
             <h5 className="ml-2">Add to group</h5>
             <TextInput
               className="w-full min-w-fit flex-1"
               placeholder="Group name..."
             />
-          </div>
+          </div> */}
           <div className="flex flex-row justify-between">
             <Button
               className="btn-secondary"
