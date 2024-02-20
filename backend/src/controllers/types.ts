@@ -21,9 +21,10 @@ declare module 'express-session' {
     };
   }
 }
+
 // User authentication
 export type authObj = Components.Schemas.UserAuth;
-
+export type MediaParameters = Paths.AddUserMedia.PathParameters
 export type UserRegData = Components.Schemas.NewUserObject;
 
 export type fileObject = {

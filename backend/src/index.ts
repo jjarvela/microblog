@@ -14,7 +14,8 @@ const db_client = new Pool(dbConfig);
 const app = Express();
 
 app.use(Express.json());
-// app.use(fileUpload());
+
+app.use("/files", Express.static("./user_media/",))
 
 app.use(
   session({
@@ -40,7 +41,7 @@ app.use(
 );
 
 // Media upload handler for files
-app.post('/media/:userId', fileUpload({ debug: true }))
+app.post('/media/:userId/:postId', fileUpload({ debug: true }))
 app.use((req: Request, res: Response, next: NextFunction) => api.handleRequest(req as oaReq, req, res, next));
 
 api.init();

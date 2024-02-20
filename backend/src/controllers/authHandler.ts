@@ -17,8 +17,12 @@ export async function loginUser(c: Context, req: Request, res: Response) {
   try {
 
     const result = await queries.selectUser({ username: userObj.userId as string }) as users
+    console.log("Sent data");
+    console.log(userObj);
+    console.log("DB User Data");
+    console.log(result);
 
-    if (await argon.verify(result.password, userObj.password as string) === true) {
+    if (result !== null && await argon.verify(result.password, userObj.password as string) === true) {
 
       // Set session & cookies. 
       req.session.user = { authenticated: true, uid: result.uid as UUID };

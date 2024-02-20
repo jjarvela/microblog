@@ -1,0 +1,9 @@
+POST http://localhost:9000/login
+Content-Type: application/json
+
+< ./userAuth_ok.json
+
+
+GET http://localhost:9000/media/22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b/21
+
+GET http://localhost:9000/files/641ae1b3-d5bf-4058-b8d8-2e9e6023114d/7a95fd675dfd1e22ebd1e7f0aa1b34f6

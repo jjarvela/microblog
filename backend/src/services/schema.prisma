@@ -199,9 +199,9 @@ model social_links {
 
 model user_medias {
   id                                                       Int               @id @default(autoincrement())
-  filename                                                 String?           @db.VarChar(40)
-  path                                                     String?           @db.VarChar(40)
-  user_id                                                  String?           @unique @db.Uuid
+  filename                                                 String?           @db.VarChar(128)
+  path                                                     String?           @db.VarChar(256)
+  user_id                                                  String            @db.Uuid 
   foldermedia                                              foldermedia[]
   item_properties                                          item_properties[]
   reactions                                                reactions[]
@@ -256,7 +256,7 @@ model users {
   groups                                           groups[]
   item_properties                                  item_properties[]
   meetings                                         meetings[]
-  user_medias                                      user_medias?
+  user_medias                                      user_medias[]
   user_profiles                                    user_profiles?
   user_medias_profile_image                        user_medias?      @relation("user_medias_profile_image", fields: [profile_image], references: [id])
 }
