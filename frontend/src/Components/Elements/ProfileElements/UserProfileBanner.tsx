@@ -99,7 +99,7 @@ function UserProfileBanner({ bannerImage }: UserProfileBannerProps) {
                 onChange={(e) => setNewText(e.target.value)}
                 maxLength={500}
                 showCount
-                countClass="right-14"
+                countClass="right-[3.5rem]"
               />
             ) : (
               <p className="scrollbar-thin max-h-[16rem] w-full overflow-y-scroll whitespace-pre-wrap">
