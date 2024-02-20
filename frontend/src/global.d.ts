@@ -162,6 +162,7 @@ interface ReactionFromServer extends ReactionToServer {
   timestamp: string;
   recipient_useridTousers: UserTouser;
   sender_useridTousers: UserTouser;
+  blog_posts?: { blog_text: string };
 }
 
 type Theme = "system" | "light" | "dark";
