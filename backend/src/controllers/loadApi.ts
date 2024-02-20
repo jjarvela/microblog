@@ -88,7 +88,7 @@ api.register("deleteBlogPost", blogHandlers.deleteBlogPost);
 
 // Media upload handler
 api.register("addUserMedia", mediaHandler.addUserMedia);
-
+api.register("getUserMedia", mediaHandler.getUserMedia)
 // Followings handlers
 api.register("addFollowing", followHandlers.addFollowing);
 api.register("getFollowings", followHandlers.getFollowings);

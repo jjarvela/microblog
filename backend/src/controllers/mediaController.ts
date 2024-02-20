@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { Context } from "openapi-backend";
 import { blake3 } from "hash-wasm";
-import { insertMedia } from "../services/mediaQueries";
-import type { fileObject, MediaParameters } from "./types";
+import { insertMedia, selectMediaByPost } from "../services/mediaQueries";
 import type { FileArray, UploadedFile } from "express-fileupload";
 import { mkdir, access } from "node:fs/promises";
 import { UUID } from "node:crypto";
+import { eachItem } from "ajv/dist/compile/util";
 
 const media_root = './user_media'
 
@@ -68,4 +68,45 @@ export async function addUserMedia(c: Context, req: Request, res: Response) {
     console.log("Payload format checks failed.");
     res.status(500).send();
   }
+}
+
+export async function getUserMedia(c: Context, req: Request, res: Response) {
+
+  const postId = Number(c.request.params.postId);
+
+  if (Number.isInteger(postId) === true) {
+
+    //  const typeDetector = fileTypeFromFile();
+    // Get user by postId
+    const fileRes = await selectMediaByPost({ blogpost_id: postId });
+    const fileResArray = [];
+    let mediaRes = {};
+
+    // Generate virtual path for files and prepare mediaRes object.
+
+    if (fileRes !== null) {
+      for (const [key, value] of Object.entries(fileRes)) {
+
+        const uid = value.user_medias.user_id;
+        const filename = value.user_medias.filename;
+        const virtual_path = `/files/${uid}/${filename}`;
+        const id = value.id;
+
+        mediaRes = {
+          id: id,
+          fileUrl: virtual_path,
+          user_id: uid
+        }
+        fileResArray.push(mediaRes);
+      }
+
+      return res.status(200).json(fileResArray);
+    }
+
+
+
+  }
+
+
+
 }

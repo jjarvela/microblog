@@ -37,6 +37,7 @@ export const selectMediaByPost = async (param: { blogpost_id: number; }) => {
 
     });
     console.log(result);
+    console.log(typeof result);
     return result;
 };
 
@@ -46,7 +47,6 @@ export const selectMediaByUser = async (param: { user_id: string; }) => {
             user_id: param.user_id,
         },
     });
-    console.log(result);
     return result;
 };
 

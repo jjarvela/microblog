@@ -15,6 +15,7 @@ const app = Express();
 
 app.use(Express.json());
 
+app.use("/files", Express.static("./user_media/",))
 
 app.use(
   session({
