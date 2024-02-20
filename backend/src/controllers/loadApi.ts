@@ -51,6 +51,7 @@ export function unAuthHandler(c: Context, _req: Request, res: Response) {
 
 function validationFailHandler(c: Context, req: Request, res: Response) {
   console.log(c.request.requestBody);
+  console.log(c.request.params);
   return res.status(400).json({ status: 400, err: c.validation.errors });
 }
 

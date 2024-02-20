@@ -684,7 +684,7 @@ paths:
             schema:
               $ref: "#/components/schemas/refPost"
 
-  /media/{userId}:
+  /media/{userId}/{postId}:
     post:
       operationId: addUserMedia
       responses:
@@ -695,6 +695,11 @@ paths:
       summary: Upload a media files to server.
       parameters:
         - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: postId
           required: true
           in: path
           schema:

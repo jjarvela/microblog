@@ -4,16 +4,26 @@ Content-Type: application/json
 
 < ./userAuth_ok.json
 
-POST http://localhost:9000/media/641ae1b3-d5bf-4058-b8d8-2e9e6023114d
+
+POST http://localhost:9000/blog/22e61ac8-96cd-49cc-8a25-3f0b4b42eb6b
+Content-Type: application/json
+
+< ./addPost.json
+
+
+{{
+  $global.itemId=response.parsedBody.itemId;
+}}
+POST http://localhost:9000/media/641ae1b3-d5bf-4058-b8d8-2e9e6023114d/{{$global.itemId}}
 Content-Type: multipart/form-data; boundary=MBF123
 
 --MBF123
 Content-Disposition: form-data; name="imagefile"; filename="virityskuva.png"
 Content-Type: image/png
 
-< ./virityskuva.png
+< ./virityskuva2.png
 --MBF123--
-POST http://localhost:9000/media/641ae1b3-d5bf-4058-b8d8-2e9e6023114d
+POST http://localhost:9000/media/641ae1b3-d5bf-4058-b8d8-2e9e6023114d/{{$global.itemId}}
 Content-Type: multipart/form-data; boundary=MBF123
 
 --MBF123
