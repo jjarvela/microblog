@@ -8,11 +8,12 @@ import Button from "../../Button";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { testUserId } from "../../../../globalData";
 import postService from "../../../../Services/postService";
+import userService from "../../../../Services/userService";
 
 type ProfilePostBoxProps = IProfileEditableBox & IProfilePostBoxData;
 
 export interface IProfilePostBoxData {
-  post: Post;
+  post: BlogPostFromServer;
 }
 
 function ProfilePostBox({
@@ -31,11 +32,18 @@ function ProfilePostBox({
     }
     setModifying(!modifying);
     queryClient.invalidateQueries({ queryKey: ["post", testUserId, post.id] });
+    queryClient.invalidateQueries({ queryKey: ["user", "postbox"] });
   };
 
   const postQuery = useQuery({
     queryKey: ["post", testUserId, post.id],
     queryFn: () => postService.getUserPosts(testUserId, post.id),
+  });
+
+  const userQuery = useQuery({
+    queryKey: ["user", "postbox"],
+    queryFn: () => userService.getUser(postQuery.data.original_poster_id),
+    enabled: !!postQuery.data,
   });
 
   const divRef = useRef<HTMLDivElement>(null);
@@ -122,12 +130,19 @@ function ProfilePostBox({
             {" "}
             {postQuery.data && !Array.isArray(postQuery.data) && (
               <div className="flex flex-col gap-4">
-                <UserProfileInfo user={post.postOwner} />
+                <UserProfileInfo
+                  user={
+                    userQuery.data && {
+                      screenName: userQuery.data.screen_name,
+                      userName: userQuery.data.username,
+                    }
+                  }
+                />
                 <p>{postQuery.data.blog_text}</p>
                 <TagList
-                  tags={(postQuery.data as BlogFromServer).item_properties.map(
-                    (item) => item.value,
-                  )}
+                  tags={(
+                    postQuery.data as BlogPostFromServer
+                  ).item_properties.map((item) => item.value)}
                 />
               </div>
             )}
