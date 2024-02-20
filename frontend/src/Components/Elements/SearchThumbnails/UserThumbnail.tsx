@@ -20,7 +20,7 @@ function UserThumbnail({ username }: UserThumbnailProps) {
     },
   });
 
-  if (userQuery.isLoading) return <></>;
+  if (userQuery.isLoading || !userQuery.data) return <></>;
   if (userQuery.isError) return <></>;
   return (
     <div className="timeline-box">

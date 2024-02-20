@@ -7,6 +7,7 @@ import { Request, Response } from "express";
 import * as queries from "../services/reactionQueries";
 import * as postQueries from "../services/blogQueries";
 import { Context } from "openapi-backend";
+import { reactions } from "@prisma/client";
 
 export const getPostReactions = async (
   c: Context,
@@ -16,12 +17,66 @@ export const getPostReactions = async (
   const postId = c.request.params.postId.toString();
   try {
     const results = await queries.selectReactions({
-      blogpost_id: parseInt(postId)
+      blogpost_id: parseInt(postId),
     });
     res.status(200).json(results);
   } catch (e) {
     console.log((e as Error).message);
     res.status(500).send("Internal server error");
+  }
+};
+
+export const getUserReactions = async (
+  c: Context,
+  _req: Request,
+  res: Response
+) => {
+  const userId = c.request.query.userId;
+  const type = c.request.query.type;
+
+  if (type) {
+    try {
+      const reactions = await queries.selectReactions({
+        sender_userid: userId,
+        type: { in: type },
+      });
+      const ids = reactions.map((item) => {
+        if (typeof (item as reactions).blogpost_id === "number")
+          return (item as reactions).blogpost_id;
+        else return -1;
+      });
+
+      const posts = await postQueries.selectPostsById({
+        ids: ids as number[],
+        reposts: null,
+      });
+      res.status(200).json(posts);
+    } catch (e) {
+      console.log((e as Error).message);
+      res.status(500).send("Internal server error");
+    }
+  } else {
+    try {
+      const reactions = await queries.selectReactions({
+        sender_userid: userId,
+      });
+
+      const ids = reactions.map((item) => {
+        if (typeof (item as reactions).blogpost_id === "number")
+          return (item as reactions).blogpost_id;
+        else return -1;
+      });
+
+      const posts = await postQueries.selectPostsById({
+        ids: ids as number[],
+        reposts: null,
+      });
+
+      res.status(200).json(posts);
+    } catch (e) {
+      console.log((e as Error).message);
+      res.status(500).send("Internal server error");
+    }
   }
 };
 
@@ -46,7 +101,7 @@ export const addReaction = async (c: Context, _req: Request, res: Response) => {
     if (!result) throw new Error("Could not add reaction");
     if (reaction.type === "repost" && result.blogpost_id) {
       const post = await postQueries.selectOnePost({
-        blog_post_id: result.blogpost_id
+        blog_post_id: result.blogpost_id,
       });
       if (!post) throw new Error("No post data");
       const repost = await postQueries.insertPost({
@@ -61,7 +116,7 @@ export const addReaction = async (c: Context, _req: Request, res: Response) => {
         hashtags: (post as BlogPostFromServer).item_properties.map(
           (item) => item.value
         ),
-        reposter_id: result.sender_userid
+        reposter_id: result.sender_userid,
       });
       console.log(repost);
     }
@@ -84,7 +139,7 @@ export const deleteReaction = async (
     const result = await queries.deleteReaction({
       blogpost_id: parseInt(blogpost_id),
       sender_userid: user_id,
-      type
+      type,
     });
 
     if (type === "repost" || type === "repost of repost") {
@@ -92,12 +147,12 @@ export const deleteReaction = async (
         if (item.blogpost_id) {
           const repost = await postQueries.selectReposts({
             original_post_id: item.blogpost_id,
-            reposter_id: item.sender_userid
+            reposter_id: item.sender_userid,
           });
 
           await postQueries.deletePost({
             id: repost[0].id,
-            user_id: item.sender_userid
+            user_id: item.sender_userid,
           });
         } else return;
       });
@@ -128,7 +183,7 @@ export const getUserNotifications = async (
 
         const results = await queries.selectUnread({
           user_id: userId,
-          type: type
+          type: type,
         });
         res.status(200).json(results);
       } else {
@@ -156,7 +211,7 @@ export const getUserNotifications = async (
         res.status(200).json(results);
       } else {
         const results = await queries.selectReactions({
-          recipient_userid: userId
+          recipient_userid: userId,
         });
         res.status(200).json(results);
       }

@@ -35,11 +35,12 @@ export default function LikeButton({ liked }: { liked: boolean }) {
     },
     onSuccess: () => {
       socket.emit("send-notification", post.original_poster_id);
-      socket.emit("send-notification", post.reposter_id);
-      if (post.reposter_id)
-        queryClient.invalidateQueries({
-          queryKey: ["post-reaction-query", post.id],
-        });
+      queryClient.invalidateQueries({
+        queryKey: ["post-reaction-query", post.id],
+      });
+      if (post.reposter_id) {
+        socket.emit("send-notification", post.reposter_id);
+      }
       if (post.original_post_id) {
         queryClient.invalidateQueries({
           queryKey: ["post-reaction-query", post.original_post_id],
