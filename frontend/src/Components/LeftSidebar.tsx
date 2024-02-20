@@ -51,10 +51,10 @@ function LeftSidebar(/*{ unreadCount }: LeftSidebarProps*/) {
   }, [isXs]);
 
   socket.on("received-notification", () => {
-    queryClient.invalidateQueries({
+    queryClient.refetchQueries({
       queryKey: ["unread-notifications", user.user?.id],
     });
-    queryClient.invalidateQueries({
+    queryClient.refetchQueries({
       queryKey: ["notifications", user.user?.id],
     });
     console.log("Received notification");
@@ -62,8 +62,8 @@ function LeftSidebar(/*{ unreadCount }: LeftSidebarProps*/) {
 
   socket.on("received-message", () => {
     console.log("Received message");
-    queryClient.invalidateQueries({ queryKey: ["conversations"] });
-    queryClient.invalidateQueries({ queryKey: ["messages"] });
+    queryClient.refetchQueries({ queryKey: ["conversations"] });
+    queryClient.refetchQueries({ queryKey: ["messages"] });
   });
 
   return (
