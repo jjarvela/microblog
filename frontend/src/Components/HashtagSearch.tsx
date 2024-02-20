@@ -8,6 +8,7 @@ import HashtagTrending from "./HashtagTrending";
 import HashtagIndividual from "./HashtagIndividual";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function HashtagSearch() {
   const [searchTag, setSearchTag] = useState("");
@@ -15,6 +16,8 @@ export default function HashtagSearch() {
   const trending = location.pathname === "/hashtag/trending";
 
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
 
   return (
     <div className="my-1 flex flex-col gap-4">
@@ -40,13 +43,17 @@ export default function HashtagSearch() {
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
+                queryClient.invalidateQueries({ queryKey: ["posts"] });
                 navigate(`/hashtag/${searchTag}`);
               }
             }}
           />
           <Button
             className="btn-primary flex-shrink-0"
-            onClick={() => navigate(`/hashtag/${searchTag}`)}
+            onClick={() => {
+              queryClient.invalidateQueries({ queryKey: ["posts"] });
+              navigate(`/hashtag/${searchTag}`);
+            }}
           >
             <MaterialSymbolsSearchRounded />
           </Button>

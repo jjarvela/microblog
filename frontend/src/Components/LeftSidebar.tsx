@@ -4,7 +4,7 @@ import PostModal from "./Elements/Modals/PostModal";
 import SidebarLink from "./Elements/SidebarLink";
 import MaterialSymbolsAccountCircle from "./Icons/MaterialSymbolsAccountCircle";
 import MaterialSymbolsEditSquareOutlineRounded from "./Icons/MaterialSymbolsEditSquareOutlineRounded";
-import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
+// import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
 import MaterialSymbolsHomeRounded from "./Icons/MaterialSymbolsHomeRounded";
 import MaterialSymbolsMailRounded from "./Icons/MaterialSymbolsMailRounded";
 import MaterialSymbolsNotificationsRounded from "./Icons/MaterialSymbolsNotificationsRounded";
@@ -108,11 +108,11 @@ function LeftSidebar(/*{ unreadCount }: LeftSidebarProps*/) {
                 text="Profile"
                 icon={<MaterialSymbolsAccountCircle />}
               />
-              <SidebarLink
+              {/* <SidebarLink
                 to="/groups"
                 text="Groups"
                 icon={<MaterialSymbolsGroupsRounded />}
-              />
+              /> */}
               <SidebarLink
                 to="/search"
                 text="Search"

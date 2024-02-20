@@ -19,6 +19,7 @@ export default function Conversation({ setClosed }: ConversationProps) {
   const user = useUser().user;
   const scrollTop = useRef<HTMLDivElement>(null);
   const scrollref = useRef<HTMLSpanElement>(null);
+  const [recipient, setRecipient] = useState<UserTouser | null>(null);
 
   const [messageText, setMessageText] = useState("");
 
@@ -33,8 +34,22 @@ export default function Conversation({ setClosed }: ConversationProps) {
    */
   const conversationQuery = useQuery({
     queryKey: ["conversation", id],
-    queryFn: () => {
-      return conversationService.getConversation(parseInt(id));
+    queryFn: async () => {
+      const conversation = await conversationService.getConversation(
+        parseInt(id),
+      );
+      if ((conversation as Conversation[])[0].participant_1 === user?.id) {
+        setRecipient(
+          (conversation as Conversation[])[0]
+            .users_conversations_participant_2Tousers,
+        );
+      } else {
+        setRecipient(
+          (conversation as Conversation[])[0]
+            .users_conversations_participant_1Tousers,
+        );
+      }
+      return conversation;
     },
   });
 
@@ -65,8 +80,8 @@ export default function Conversation({ setClosed }: ConversationProps) {
     mutationFn: () => {
       return conversationService.addNewMessage(id, {
         conversation_id: parseInt(id),
-        sender_userid: testUserId,
-        recipient_userid: testUserId,
+        sender_userid: user!.id,
+        recipient_userid: recipient!.uid,
         message: messageText,
         notification: true,
       });
@@ -76,6 +91,9 @@ export default function Conversation({ setClosed }: ConversationProps) {
       socket.emit("send-message", testUserId);
       console.log("mutated");
       queryClient.invalidateQueries({ queryKey: ["messages", id] });
+      queryClient.invalidateQueries({
+        queryKey: ["conversations"],
+      });
     },
   });
 
@@ -114,22 +132,10 @@ export default function Conversation({ setClosed }: ConversationProps) {
           <ProfilePicture width={50} />
         </div>
         <div className="flex w-[90%] flex-col">
-          <p className="truncate">
-            {conversationQuery.data[0].users_conversations_participant_1Tousers
-              .screen_name === user?.screenName
-              ? conversationQuery.data[0]
-                  .users_conversations_participant_2Tousers.screen_name
-              : conversationQuery.data[0]
-                  .users_conversations_participant_1Tousers.screen_name}
-          </p>
+          <p className="truncate">{recipient?.screen_name}</p>
           <small className="text-black50">
             {"@"}
-            {conversationQuery.data[0].users_conversations_participant_1Tousers
-              .username === user?.userName
-              ? conversationQuery.data[0]
-                  .users_conversations_participant_2Tousers.username
-              : conversationQuery.data[0]
-                  .users_conversations_participant_1Tousers.username}
+            {recipient?.username}
           </small>
         </div>
       </div>
@@ -159,7 +165,7 @@ export default function Conversation({ setClosed }: ConversationProps) {
               ? (messageQuery.data as ConversationMessage[]).map((message) => (
                   <MessageBubble
                     key={message.id + Date.parse(message.timestamp)}
-                    sender={testUserId === message.sender_userid}
+                    sender={user?.id === message.sender_userid}
                     message={message}
                   />
                 ))

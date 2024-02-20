@@ -11,9 +11,10 @@ import { Link } from "react-router-dom";
 import MessagingSettings from "./Elements/MessagingElements/MessagingSettings.tsx";
 import { useQuery } from "@tanstack/react-query";
 import conversationService from "../Services/conversationService.ts";
-import { testUserId } from "../globalData.ts";
+import { useUser } from "../UserWrapper.tsx";
 
 const UserMessages = () => {
+  const user = useUser().user;
   const { isXl } = useBreakpoint("xl");
   const [closed, setClosed] = useState(true);
 
@@ -21,14 +22,15 @@ const UserMessages = () => {
    * Query to get conversation list
    */
   const conversationQuery = useQuery({
-    queryKey: ["conversations", testUserId],
+    queryKey: ["conversations"],
     queryFn: () => {
-      return conversationService.getUserConversations(testUserId);
+      return conversationService.getUserConversations(user!.id);
     },
+    enabled: !!user,
   });
 
   return (
-    <div className="h-[37em] overflow-hidden">
+    <div className="h-full overflow-hidden">
       {/**
        * Left column
        */}
@@ -51,7 +53,7 @@ const UserMessages = () => {
       <div className="h-full w-full xl:flex xl:flex-row">
         <div
           className={`${
-            !isXl && !closed ? "hidden h-0" : "h-[32em]"
+            !isXl && !closed ? "hidden h-0" : "h-full"
           } scrollbar-thin w-full overflow-y-auto border-b-[1px] border-solid border-black50 xl:w-[50%] xl:border-b-0 xl:border-r-[1px]`}
         >
           {

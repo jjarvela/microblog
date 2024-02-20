@@ -14,6 +14,7 @@ function FollowButton({ followUserName }: FollowButtonProps) {
   const followTargetDetailsQuery = useQuery({
     queryKey: ["details", followUserName],
     queryFn: () => userService.getUserDetails(followUserName),
+    enabled: !!followUserName,
   });
 
   const isFollowingQuery = useQuery({

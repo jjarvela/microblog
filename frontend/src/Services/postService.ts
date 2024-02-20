@@ -1,6 +1,30 @@
 import axios from "axios";
 import { serverUrl } from "../globalData";
 
+function queryPosts(param?: {
+  hashtags?: string[];
+  usernames?: string[];
+  keyword?: string;
+  startDate?: string;
+  endDate?: string;
+}) {
+  return axios
+    .get(
+      `${serverUrl}/blog${param ? "?" : ""}${
+        param?.hashtags ? "hashtags=" + param.hashtags : ""
+      }${param?.hashtags && param.usernames ? "&" : ""}${
+        param?.usernames ? "usernames=" + param.usernames : ""
+      }${param?.usernames && param.keyword ? "&" : ""}${
+        param?.keyword ? "keyword=" + param.keyword : ""
+      }${param?.keyword && param.startDate ? "&" : ""}${
+        param?.startDate && param.endDate ? "startDate=" + param.startDate : ""
+      } ${param?.startDate ? "&" : ""}${
+        param?.endDate ? "endDate=" + param.endDate : ""
+      }`,
+    )
+    .then((res) => res.data);
+}
+
 function getPosts(userId: string, postId?: number) {
   return axios
     .get(`${serverUrl}/blog/${userId}` + (postId ? `?postId=${postId}` : ""))
@@ -57,6 +81,7 @@ function deleteReaction(postId: number, userId: string, type: string) {
 }
 
 export default {
+  queryPosts,
   getUserPosts: getPosts,
   getPosts,
   getReactions,

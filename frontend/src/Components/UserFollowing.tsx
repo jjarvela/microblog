@@ -1,14 +1,14 @@
 import { Route, Routes, Navigate } from "react-router";
 import FollowedUsers from "./Elements/FollowedUsers";
 import FollowedHashtags from "./Elements/FollowedHashtags";
-import FollowedGroups from "./Elements/FollowedGroups";
+// import FollowedGroups from "./Elements/FollowedGroups";
 import NotFound from "./NotFound";
 import TextInput from "./Elements/Inputs/TextInput";
 import Button from "./Elements/Button";
 import MaterialSymbolsSearchRounded from "./Icons/MaterialSymbolsSearchRounded";
 import TopPageNav from "./Elements/TopPageNav";
 import MaterialSymbolsPerson from "./Icons/MaterialSymbolsPerson";
-import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
+// import MaterialSymbolsGroupsRounded from "./Icons/MaterialSymbolsGroupsRounded";
 import MaterialSymbolsTagRounded from "./Icons/MaterialSymbolsTagRounded";
 
 const UserFollowing = () => {
@@ -20,11 +20,11 @@ const UserFollowing = () => {
           linkName="People"
           icon={MaterialSymbolsPerson}
         />
-        <TopPageNav
+        {/* <TopPageNav
           destination="groups"
           linkName="Groups"
           icon={MaterialSymbolsGroupsRounded}
-        />
+        /> */}
         <TopPageNav
           destination="hashtags"
           linkName="Hashtags"
@@ -44,7 +44,7 @@ const UserFollowing = () => {
         <Routes>
           <Route index element={<Navigate to={"people"} />} />
           <Route path="people" element={<FollowedUsers />} />
-          <Route path="groups" element={<FollowedGroups />} />
+          {/* <Route path="groups" element={<FollowedGroups />} /> */}
           <Route path="hashtags" element={<FollowedHashtags />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

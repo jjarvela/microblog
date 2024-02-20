@@ -5,8 +5,8 @@ import UserSettings from "./Components/UserSettings";
 import UserNotifications from "./Components/UserNotifications";
 import UserMessages from "./Components/UserMessages";
 import UserFollowing from "./Components/UserFollowing";
-import GroupList from "./Components/GroupList";
-import GroupProfile from "./Components/GroupProfile";
+// import GroupList from "./Components/GroupList";
+// import GroupProfile from "./Components/GroupProfile";
 import Landing from "./Components/Landing";
 import Search from "./Components/Search";
 import Header from "./Components/Header";
@@ -71,8 +71,8 @@ function App() {
           <Route path="/messages/*" element={<UserMessages />} />
           <Route path="/following/*" element={<UserFollowing />} />
           {/*Groups routes*/}
-          <Route path="/groups/*" element={<GroupList />} />
-          <Route path="/groups/profile/:id" element={<GroupProfile />} />
+          {/* <Route path="/groups/*" element={<GroupList />} />
+          <Route path="/groups/profile/:id" element={<GroupProfile />} /> */}
 
           {/*Post routes*/}
           <Route path="/:username/post/:postid" element={<PostPage />} />

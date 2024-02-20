@@ -1,4 +1,4 @@
-import { PrismaClient, blog_posts } from "@prisma/client";
+import { PrismaClient, blog_posts, item_properties } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -128,6 +128,93 @@ export const selectOnePost = async (param: { blog_post_id: number }) => {
     }
   });
   console.log(result);
+  return result;
+};
+
+export const queryPosts = async (param?: {
+  hashtags?: string[];
+  usernames?: string[];
+  keyword?: string;
+  startDate?: string;
+  endDate?: string;
+}) => {
+  console.log(param);
+
+  const users = await prisma.users.findMany({
+    where: {
+      username: { in: param?.usernames }
+    }
+  });
+
+  const userIds = users.map((item) => item.uid);
+
+  const tags = await prisma.item_properties.findMany({
+    where: {
+      value: { in: param?.hashtags }
+    }
+  });
+
+  const ids = tags.map((item) => {
+    if (item.blogpost_id) return item.blogpost_id;
+    else return -1;
+  });
+
+  const result = await prisma.blog_posts.findMany({
+    where: {
+      id: param?.hashtags ? { in: ids } : undefined,
+      user_id: param?.usernames ? { in: userIds } : undefined,
+      blog_text: param?.keyword ? { contains: param?.keyword } : undefined,
+      reposter_id: null
+    },
+    include: {
+      item_properties: {
+        select: {
+          blogpost_id: true,
+          value: true,
+          context_id: true
+        },
+        where: {
+          context_id: 1
+        }
+      },
+      user_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true
+        }
+      },
+      original_poster_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true
+        }
+      },
+      reposter_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true
+        }
+      },
+      commenter_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true
+        }
+      }
+    },
+    orderBy: {
+      timestamp: "desc"
+    }
+  });
+
   return result;
 };
 
