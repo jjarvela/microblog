@@ -20,7 +20,12 @@ function UserThumbnail({ username }: UserThumbnailProps) {
     },
   });
 
-  if (userQuery.isLoading || !userQuery.data) return <></>;
+  if (
+    userQuery.isLoading ||
+    !userQuery.data?.details ||
+    !userQuery.data?.profile
+  )
+    return <></>;
   if (userQuery.isError) return <></>;
 
   return (
@@ -43,7 +48,7 @@ function UserThumbnail({ username }: UserThumbnailProps) {
               </div>
               <div className="flex h-fit flex-grow justify-start px-4">
                 <small className="me-3 font-semibold text-secondary">
-                  {userQuery.data &&
+                  {userQuery.data.details &&
                     (userQuery.data?.details as UserDetails).followers
                       ?.length}{" "}
                   Followers
