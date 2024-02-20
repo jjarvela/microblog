@@ -10,8 +10,8 @@ export const selectUnread = async (param: {
     const result: reactions[] | null = await prisma.reactions.findMany({
       where: {
         recipient_userid: param.user_id,
-        read: false
-      }
+        read: false,
+      },
     });
     console.log(result);
     return result;
@@ -22,7 +22,7 @@ export const selectUnread = async (param: {
         where: {
           recipient_userid: param.user_id,
           type: item,
-          read: false
+          read: false,
         },
         include: {
           sender_useridTousers: {
@@ -30,18 +30,18 @@ export const selectUnread = async (param: {
               uid: true,
               username: true,
               screen_name: true,
-              profile_image: true
-            }
+              profile_image: true,
+            },
           },
           recipient_useridTousers: {
             select: {
-              uid: true
-            }
-          }
+              uid: true,
+            },
+          },
         },
         orderBy: {
-          timestamp: "asc"
-        }
+          timestamp: "asc",
+        },
       });
       result && resultArray.concat(result);
       console.log(resultArray);
@@ -63,15 +63,20 @@ export const selectReactions = async (
             uid: true,
             screen_name: true,
             username: true,
-            profile_image: true
-          }
+            profile_image: true,
+          },
         },
         recipient_useridTousers: {
           select: {
-            uid: true
-          }
-        }
-      }
+            uid: true,
+          },
+        },
+        blog_posts: {
+          select: {
+            blog_text: true,
+          },
+        },
+      },
     });
     console.log(result);
     return result;
@@ -85,15 +90,15 @@ export const selectReactions = async (
             select: {
               uid: true,
               username: true,
-              profile_image: true
-            }
+              profile_image: true,
+            },
           },
           recipient_useridTousers: {
             select: {
-              uid: true
-            }
-          }
-        }
+              uid: true,
+            },
+          },
+        },
       });
       result && resultArray.concat(result);
       console.log(resultArray);
@@ -118,8 +123,8 @@ export const insertReaction = async (param: {
       media_id: param.media_id,
       blogpost_id: param.blogpost_id,
       read: param.read,
-      timestamp: new Date(Date.now())
-    }
+      timestamp: new Date(Date.now()),
+    },
   });
   console.log(result);
   return result;
@@ -135,9 +140,9 @@ export const deleteReaction = async (param: {
       AND: [
         { blogpost_id: param.blogpost_id },
         { sender_userid: param.sender_userid },
-        { type: param.type }
-      ]
-    }
+        { type: param.type },
+      ],
+    },
   });
 
   if (result.length < 1) {
@@ -146,8 +151,8 @@ export const deleteReaction = async (param: {
 
   const deleted: reactions = await prisma.reactions.delete({
     where: {
-      id: result[0].id
-    }
+      id: result[0].id,
+    },
   });
 
   console.log(deleted);
@@ -164,13 +169,14 @@ export const updateReadStatus = async (
     const updated = await prisma.reactions.update({
       where: {
         id: reaction,
-        recipient_userid: userId
+        recipient_userid: userId,
       },
       data: {
-        read: status
-      }
+        read: status,
+      },
     });
     results.push(updated);
   });
   return results;
 };
+
