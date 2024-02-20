@@ -82,7 +82,9 @@ const UserNotificationBox = ({ reaction }: UserNotificationBoxProps) => {
       </div>
       <div className="flex basis-7/12 flex-col">
         <p>
-          @{reaction.sender_useridTousers.username!}{" "}
+          <a href={`/user/${reaction.sender_useridTousers.username!}/profile`}>
+            @{reaction.sender_useridTousers.username!}
+          </a>{" "}
           {reaction.type === "like" || reaction.type === "like of repost" ? (
             <span>liked</span>
           ) : (
@@ -92,6 +94,9 @@ const UserNotificationBox = ({ reaction }: UserNotificationBoxProps) => {
           reaction.type === "repost of repost"
             ? " your repost"
             : " your post"}
+        </p>
+        <p className="line-clamp-3 text-black50">
+          {reaction.blog_posts?.blog_text}
         </p>
       </div>
       <div className="absolute bottom-2 right-2 m-2 flex flex-col">
