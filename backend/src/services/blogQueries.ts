@@ -302,3 +302,29 @@ export const deletePost = async (param: { id: number; user_id?: string }) => {
     return result;
   }
 };
+
+export const selectReposts = async (param: {
+  original_post_id: number;
+  reposter_id?: string;
+}) => {
+  if (param.reposter_id) {
+    const result = await prisma.blog_posts.findMany({
+      where: {
+        original_post_id: param.original_post_id,
+        reposter_id: param.reposter_id
+      }
+    });
+
+    if (result) return result;
+    else return [];
+  } else {
+    const result = await prisma.blog_posts.findMany({
+      where: {
+        original_post_id: param.original_post_id
+      }
+    });
+
+    if (result) return result;
+    else return [];
+  }
+};

@@ -38,6 +38,13 @@ type UserDetails = {
   }[];
 };
 
+type UserFollowing = {
+  id: number;
+  user_id: string;
+  follows_user: string;
+  follows_group: number;
+};
+
 type UserTouser = {
   uid: string;
   username?: string;
