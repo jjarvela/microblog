@@ -88,10 +88,9 @@ export default function Conversation({ setClosed }: ConversationProps) {
     },
     onSuccess: () => {
       setMessageText("");
-      socket.emit("send-message", testUserId);
-      console.log("mutated");
-      queryClient.invalidateQueries({ queryKey: ["messages", id] });
-      queryClient.invalidateQueries({
+      socket.emit("send-message", recipient!.uid);
+      queryClient.refetchQueries({ queryKey: ["messages", id] });
+      queryClient.refetchQueries({
         queryKey: ["conversations"],
       });
     },
