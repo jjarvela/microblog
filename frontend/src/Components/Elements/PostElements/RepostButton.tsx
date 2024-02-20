@@ -39,6 +39,7 @@ export default function RepostButton({ reposted }: { reposted: boolean }) {
       queryClient.invalidateQueries({
         queryKey: ["post-reaction-query", post.id],
       });
+      queryClient.invalidateQueries({ queryKey: ["posts", user?.id] });
       if (post.original_post_id) {
         queryClient.invalidateQueries({
           queryKey: ["post-reaction-query", post.original_post_id],
@@ -60,6 +61,7 @@ export default function RepostButton({ reposted }: { reposted: boolean }) {
       queryClient.invalidateQueries({
         queryKey: ["post-reaction-query", post.id],
       });
+      queryClient.invalidateQueries({ queryKey: ["posts", user?.id] });
       if (post.original_post_id) {
         queryClient.invalidateQueries({
           queryKey: ["post-reaction-query", post.original_post_id],

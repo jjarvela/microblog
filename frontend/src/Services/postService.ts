@@ -31,6 +31,16 @@ function getPosts(userId: string, postId?: number) {
     .then((res) => res.data);
 }
 
+function getUserReactions(userId: string, type?: string[]) {
+  return axios
+    .get(
+      `${serverUrl}/blog/reactions?userId=${userId}${
+        type ? "&type=" + type : ""
+      }`,
+    )
+    .then((res) => res.data);
+}
+
 function addNewPost(newPost: BlogPostToServer, userId: string) {
   return axios.post(`${serverUrl}/blog/${userId}`, newPost);
 }
@@ -83,6 +93,7 @@ function deleteReaction(postId: number, userId: string, type: string) {
 export default {
   queryPosts,
   getUserPosts: getPosts,
+  getUserReactions,
   getPosts,
   getReactions,
   addNewPost,

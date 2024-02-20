@@ -1453,6 +1453,37 @@ paths:
           required: true
 
   ###### REACTIONS ######
+  /blog/reactions:
+    get:
+      operationId: getUserReactions
+      summary: get list of reactions on a post
+      tags:
+        - blog
+        - reaction
+      responses:
+        "200":
+          description: Return a list of reactions on a post.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/refPost"
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: type
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+
   /blog/{postId}/reactions:
     post:
       operationId: addPostReaction
@@ -1595,3 +1626,4 @@ paths:
           required: true
           schema:
             type: string
+

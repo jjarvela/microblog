@@ -154,7 +154,7 @@ function ProfileLinkBox({
                   <span className="flex w-6 flex-row justify-center">
                     {recognizedIconList.reduce(
                       (result, icon) =>
-                        link.text.toLowerCase().includes(icon.find)
+                        link.url.toLowerCase().includes(icon.find)
                           ? icon.icon
                           : result,
                       defaultIcon,

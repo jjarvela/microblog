@@ -88,7 +88,9 @@ function UserProfileInfo({
           >
             {user?.screenName}
           </h5>
-          <p className={"text-black50" + " " + handleClass}>{user?.userName}</p>
+          <p className={"text-black50" + " " + handleClass}>
+            @{user?.userName}
+          </p>
         </div>
       </Link>
 
@@ -113,7 +115,7 @@ function UserProfileInfo({
                 <h5 className="hover:underline hover:underline-offset-2 ">
                   {user?.screenName}
                 </h5>
-                <small>{user?.userName}</small>
+                <small>@{user?.userName}</small>
               </Link>
               {detailQuery.data && profileQuery.data && (
                 <>
