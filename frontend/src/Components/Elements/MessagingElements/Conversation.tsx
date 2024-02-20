@@ -5,7 +5,7 @@ import { MaterialSymbolsChevronLeftRounded } from "../../Icons/MaterialSymbolsCh
 import { Link, useNavigate, useParams } from "react-router-dom";
 import conversationService from "../../../Services/conversationService";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { socket, testUserId } from "../../../globalData";
+import { socket } from "../../../globalData";
 import { useUser } from "../../../UserWrapper";
 import { queryClient } from "../../../main.tsx";
 import Chatbox from "./Chatbox.tsx";
