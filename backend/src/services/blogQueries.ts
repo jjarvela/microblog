@@ -20,7 +20,7 @@ export const insertPost = async (param: {
       creator_user_id: param.user_uuid,
       value: param.hashtags[i],
       context_id: 1,
-      time: param.timestamp
+      time: param.timestamp,
     });
   }
   const result = await prisma.blog_posts.create({
@@ -34,8 +34,8 @@ export const insertPost = async (param: {
       reposter_id: param.reposter_id || null,
       commenter_id: param.commenter_id || null,
       item_properties: {
-        create: createdObjects
-      }
+        create: createdObjects,
+      },
     },
     include: {
       item_properties: true,
@@ -44,34 +44,92 @@ export const insertPost = async (param: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       original_poster_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       reposter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       commenter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
-      }
-    }
+          profile_image: true,
+        },
+      },
+    },
+  });
+  console.log(result);
+  return result;
+};
+
+export const selectPostsById = async (param: {
+  ids: number[];
+  reposts?: string | null;
+}) => {
+  const result: object[] | null = await prisma.blog_posts.findMany({
+    where: {
+      id: { in: param.ids },
+      reposter_id: param.reposts ? param.reposts : undefined,
+    },
+    include: {
+      item_properties: {
+        select: {
+          blogpost_id: true,
+          value: true,
+          context_id: true,
+        },
+        where: {
+          context_id: 1,
+        },
+      },
+      user_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true,
+        },
+      },
+      original_poster_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true,
+        },
+      },
+      reposter_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true,
+        },
+      },
+      commenter_idTousers: {
+        select: {
+          uid: true,
+          username: true,
+          screen_name: true,
+          profile_image: true,
+        },
+      },
+    },
   });
   console.log(result);
   return result;
@@ -80,52 +138,52 @@ export const insertPost = async (param: {
 export const selectOnePost = async (param: { blog_post_id: number }) => {
   const result: object | null = await prisma.blog_posts.findUnique({
     where: {
-      id: param.blog_post_id
+      id: param.blog_post_id,
     },
     include: {
       item_properties: {
         select: {
           blogpost_id: true,
           value: true,
-          context_id: true
+          context_id: true,
         },
         where: {
-          context_id: 1
-        }
+          context_id: 1,
+        },
       },
       user_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       original_poster_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       reposter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       commenter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
-      }
-    }
+          profile_image: true,
+        },
+      },
+    },
   });
   console.log(result);
   return result;
@@ -142,16 +200,16 @@ export const queryPosts = async (param?: {
 
   const users = await prisma.users.findMany({
     where: {
-      username: { in: param?.usernames }
-    }
+      username: { in: param?.usernames },
+    },
   });
 
   const userIds = users.map((item) => item.uid);
 
   const tags = await prisma.item_properties.findMany({
     where: {
-      value: { in: param?.hashtags }
-    }
+      value: { in: param?.hashtags },
+    },
   });
 
   const ids = tags.map((item) => {
@@ -164,55 +222,55 @@ export const queryPosts = async (param?: {
       id: param?.hashtags ? { in: ids } : undefined,
       user_id: param?.usernames ? { in: userIds } : undefined,
       blog_text: param?.keyword ? { contains: param?.keyword } : undefined,
-      reposter_id: null
+      reposter_id: null,
     },
     include: {
       item_properties: {
         select: {
           blogpost_id: true,
           value: true,
-          context_id: true
+          context_id: true,
         },
         where: {
-          context_id: 1
-        }
+          context_id: 1,
+        },
       },
       user_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       original_poster_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       reposter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       commenter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
-      }
+          profile_image: true,
+        },
+      },
     },
     orderBy: {
-      timestamp: "desc"
-    }
+      timestamp: "desc",
+    },
   });
 
   return result;
@@ -229,63 +287,63 @@ export const selectPosts = async (param: {
       AND: [
         {
           timestamp: {
-            gte: param.startdate //greater than or equals
-          }
+            gte: param.startdate, //greater than or equals
+          },
         },
         {
           timestamp: {
-            lte: param.enddate
-          }
-        }
-      ]
+            lte: param.enddate,
+          },
+        },
+      ],
     },
     include: {
       item_properties: {
         select: {
           blogpost_id: true,
           value: true,
-          context_id: true
+          context_id: true,
         },
         where: {
-          context_id: 1
-        }
+          context_id: 1,
+        },
       },
       user_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       original_poster_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       reposter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       commenter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
-      }
+          profile_image: true,
+        },
+      },
     },
     orderBy: {
-      timestamp: "desc"
-    }
+      timestamp: "desc",
+    },
   });
   console.log(result);
   return result;
@@ -303,8 +361,8 @@ export const updatePost = async (param: {
   const deleted = prisma.item_properties.deleteMany({
     // Delete existing post hashtags
     where: {
-      blogpost_id: param.id
-    }
+      blogpost_id: param.id,
+    },
   });
   console.log("Deleted " + (await deleted).count + " tags");
 
@@ -315,19 +373,19 @@ export const updatePost = async (param: {
       creator_user_id: param.post.user_uuid,
       value: param.post.hashtags[i],
       context_id: 1,
-      time: param.post.timestamp
+      time: param.post.timestamp,
     });
   }
 
   const result: blog_posts | null = await prisma.blog_posts.update({
     where: {
-      id: param.id
+      id: param.id,
     },
     data: {
       blog_text: param.post.text,
       item_properties: {
-        create: createdObjects
-      }
+        create: createdObjects,
+      },
     },
     include: {
       item_properties: true,
@@ -336,34 +394,34 @@ export const updatePost = async (param: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       original_poster_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       reposter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
+          profile_image: true,
+        },
       },
       commenter_idTousers: {
         select: {
           uid: true,
           username: true,
           screen_name: true,
-          profile_image: true
-        }
-      }
-    }
+          profile_image: true,
+        },
+      },
+    },
   });
   console.log(result);
   return result;
@@ -374,16 +432,16 @@ export const deletePost = async (param: { id: number; user_id?: string }) => {
     const result: object | null = await prisma.blog_posts.delete({
       where: {
         id: param.id,
-        user_id: param.user_id
-      }
+        user_id: param.user_id,
+      },
     });
     console.log(result);
     return result;
   } else {
     const result: object | null = await prisma.blog_posts.delete({
       where: {
-        id: param.id
-      }
+        id: param.id,
+      },
     });
     console.log(result);
     return result;
@@ -398,8 +456,8 @@ export const selectReposts = async (param: {
     const result = await prisma.blog_posts.findMany({
       where: {
         original_post_id: param.original_post_id,
-        reposter_id: param.reposter_id
-      }
+        reposter_id: param.reposter_id,
+      },
     });
 
     if (result) return result;
@@ -407,11 +465,12 @@ export const selectReposts = async (param: {
   } else {
     const result = await prisma.blog_posts.findMany({
       where: {
-        original_post_id: param.original_post_id
-      }
+        original_post_id: param.original_post_id,
+      },
     });
 
     if (result) return result;
     else return [];
   }
 };
+
