@@ -22,6 +22,7 @@ function UserThumbnail({ username }: UserThumbnailProps) {
 
   if (userQuery.isLoading || !userQuery.data) return <></>;
   if (userQuery.isError) return <></>;
+
   return (
     <div className="timeline-box">
       <div className="flex justify-start gap-4">
@@ -31,19 +32,26 @@ function UserThumbnail({ username }: UserThumbnailProps) {
             <div>
               <div className="flex h-fit flex-grow flex-col justify-start px-3">
                 <h5 className="me-3 dark:text-white">
-                  {(userQuery.data?.details as UserDetails).screenName}
+                  {userQuery.data.details &&
+                    (userQuery.data?.details as UserDetails).screenName}
                 </h5>
                 <p className="mb-2 text-black50">
-                  @{(userQuery.data?.details as UserDetails).userName}
+                  @
+                  {userQuery.data.details &&
+                    (userQuery.data?.details as UserDetails).userName}
                 </p>
               </div>
               <div className="flex h-fit flex-grow justify-start px-4">
                 <small className="me-3 font-semibold text-secondary">
-                  {(userQuery.data?.details as UserDetails).followers?.length}{" "}
+                  {userQuery.data &&
+                    (userQuery.data?.details as UserDetails).followers
+                      ?.length}{" "}
                   Followers
                 </small>
                 <small className="font-semibold text-black50">
-                  {(userQuery.data?.details as UserDetails).following?.length}{" "}
+                  {userQuery.data.details &&
+                    (userQuery.data?.details as UserDetails).following
+                      ?.length}{" "}
                   Following
                 </small>
               </div>
@@ -51,6 +59,7 @@ function UserThumbnail({ username }: UserThumbnailProps) {
             <div className="flex h-fit flex-col justify-end gap-4 self-center lg:flex-row">
               <FollowButton
                 followUserName={
+                  userQuery.data.details &&
                   (userQuery.data?.details as UserDetails).userName
                 }
               />
@@ -58,7 +67,8 @@ function UserThumbnail({ username }: UserThumbnailProps) {
           </div>
           <div className="mx-4">
             <p className="text-black75 dark:text-white">
-              {(userQuery.data?.profile as UserProfile).profile_text}
+              {userQuery.data.profile &&
+                (userQuery.data?.profile as UserProfile).profile_text}
             </p>
           </div>
         </div>
